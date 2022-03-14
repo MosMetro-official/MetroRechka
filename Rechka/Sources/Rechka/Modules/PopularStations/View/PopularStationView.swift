@@ -50,7 +50,7 @@ class PopularStationView: UIView {
         return table
     }()
     
-    private let settingsView: UIView = {
+    internal let settingsView: UIView = {
         let view = BottomSettingsView()
         view.backgroundColor = .settingsPanel
         view.layer.isOpaque = false

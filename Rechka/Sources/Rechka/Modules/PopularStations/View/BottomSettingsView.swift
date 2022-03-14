@@ -9,6 +9,8 @@ import UIKit
 
 class BottomSettingsView: UIView {
     
+    public var onDatesMenu : (() -> Void)?
+    
     private let datesButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("🗓 Даты", for: .normal)
@@ -79,14 +81,47 @@ class BottomSettingsView: UIView {
         stackView.distribution = .fillEqually
         return stackView
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupActions()
         setupConstrains()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupDatesMenu() -> [UIAction] {
+        // TODO: откуда-то их брать наверное?/
+        let holiday = UIAction(
+            title: "🌶 23 февраля"
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.onDatesMenu?()
+        }
+        return [
+            holiday
+        ]
+    }
+    
+    private func setupActions() {
+        filterButton.alpha = 0.3
+        filterButton.isEnabled = false
+        categoryButton.alpha = 0.3
+        categoryButton.isEnabled = false
+        
+        if #available(iOS 14, *) {
+            datesButton.showsMenuAsPrimaryAction = true
+            datesButton.menu = UIMenu(title: "", children: setupDatesMenu())
+        } else {
+            
+        }
+    }
+    
+    @objc
+    private func onDatesTap() {
+        print(#function)
     }
     
     private func setupConstrains() {
@@ -107,5 +142,4 @@ class BottomSettingsView: UIView {
             ]
         )
     }
-    
 }

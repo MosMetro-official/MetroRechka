@@ -14,6 +14,7 @@ public class PopularStationController: UIViewController {
     
     public override func loadView() {
         self.view = nestedView
+        setupSettingsActions()
         view.backgroundColor = Appearance.colors[.base]
     }
     
@@ -31,6 +32,20 @@ public class PopularStationController: UIViewController {
         let section = SectionState(header: nil, footer: nil)
         let state = State(model: section, elements: elements)
         nestedView.viewState = PopularStationView.ViewState(state: [state], dataState: .loaded)
+    }
+    
+    @available(iOS 13)
+    
+    private func setupSettingsActions() {
+        guard let settingsView = nestedView.settingsView as? BottomSettingsView else { return }
+        settingsView.onDatesMenu = { [weak self] in
+            guard let self = self else { return }
+            let alert = UIAlertController(title: "😐😐😐😐", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "🕐🔨🏞", style: .default, handler: { _ in
+                alert.dismiss(animated: true)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
