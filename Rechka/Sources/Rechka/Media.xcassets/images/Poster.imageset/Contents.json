@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Show Poster.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
