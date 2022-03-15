@@ -7,14 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6DEFF8AC27E0A0880070E498 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AA27E0A0870070E498 /* MapViewController.swift */; };
+		6DEFF8AD27E0A0880070E498 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AB27E0A0880070E498 /* MapViewController.xib */; };
 		952BEF2827D53AAD00299639 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2727D53AAD00299639 /* AppDelegate.swift */; };
 		952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2927D53AAD00299639 /* SceneDelegate.swift */; };
 		952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3027D53AAD00299639 /* Assets.xcassets */; };
 		952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3227D53AAD00299639 /* LaunchScreen.storyboard */; };
 		95FF332A27DA1F0F004826E2 /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = 95FF332927DA1F0F004826E2 /* Rechka */; };
+		E4E49390563C00C9E5B35338 /* Pods_MetroRechka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02ECF890C5917E9BB433A74C /* Pods_MetroRechka.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02ECF890C5917E9BB433A74C /* Pods_MetroRechka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetroRechka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
+		6DEFF8AA27E0A0870070E498 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		6DEFF8AB27E0A0880070E498 /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
 		952BEF2427D53AAD00299639 /* MetroRechka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetroRechka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952BEF2727D53AAD00299639 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		952BEF2927D53AAD00299639 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +29,7 @@
 		952BEF3327D53AAD00299639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952BEF3527D53AAD00299639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		952BEF3B27D53AD400299639 /* Rechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Rechka; sourceTree = "<group>"; };
+		AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,12 +38,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				95FF332A27DA1F0F004826E2 /* Rechka in Frameworks */,
+				E4E49390563C00C9E5B35338 /* Pods_MetroRechka.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6DEFF8A527E09EED0070E498 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				6DEFF8AA27E0A0870070E498 /* MapViewController.swift */,
+				6DEFF8AB27E0A0880070E498 /* MapViewController.xib */,
+			);
+			path = Maps;
+			sourceTree = "<group>";
+		};
 		952BEF1B27D53AAD00299639 = {
 			isa = PBXGroup;
 			children = (
@@ -43,6 +61,7 @@
 				952BEF2627D53AAD00299639 /* MetroRechka */,
 				952BEF2527D53AAD00299639 /* Products */,
 				952BEF3C27D53E3500299639 /* Frameworks */,
+				FC6D80C81A50908710746F23 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +76,7 @@
 		952BEF2627D53AAD00299639 /* MetroRechka */ = {
 			isa = PBXGroup;
 			children = (
+				6DEFF8A527E09EED0070E498 /* Maps */,
 				952BEF2727D53AAD00299639 /* AppDelegate.swift */,
 				952BEF2927D53AAD00299639 /* SceneDelegate.swift */,
 				952BEF3027D53AAD00299639 /* Assets.xcassets */,
@@ -69,8 +89,18 @@
 		952BEF3C27D53E3500299639 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				02ECF890C5917E9BB433A74C /* Pods_MetroRechka.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FC6D80C81A50908710746F23 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */,
+				62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -80,9 +110,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 952BEF3827D53AAD00299639 /* Build configuration list for PBXNativeTarget "MetroRechka" */;
 			buildPhases = (
+				DBEC5426923E4DA4D2EA15ED /* [CP] Check Pods Manifest.lock */,
 				952BEF2027D53AAD00299639 /* Sources */,
 				952BEF2127D53AAD00299639 /* Frameworks */,
 				952BEF2227D53AAD00299639 /* Resources */,
+				DD35B744B865193C0F3D3F17 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -139,11 +171,54 @@
 			buildActionMask = 2147483647;
 			files = (
 				952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */,
+				6DEFF8AD27E0A0880070E498 /* MapViewController.xib in Resources */,
 				952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DBEC5426923E4DA4D2EA15ED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MetroRechka-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DD35B744B865193C0F3D3F17 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetroRechka/Pods-MetroRechka-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetroRechka/Pods-MetroRechka-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetroRechka/Pods-MetroRechka-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		952BEF2027D53AAD00299639 /* Sources */ = {
@@ -151,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				952BEF2827D53AAD00299639 /* AppDelegate.swift in Sources */,
+				6DEFF8AC27E0A0880070E498 /* MapViewController.swift in Sources */,
 				952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,7 +363,9 @@
 		};
 		952BEF3927D53AAD00299639 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -316,7 +394,9 @@
 		};
 		952BEF3A27D53AAD00299639 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

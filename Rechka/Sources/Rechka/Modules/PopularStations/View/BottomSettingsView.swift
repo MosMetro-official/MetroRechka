@@ -10,6 +10,8 @@ import UIKit
 class BottomSettingsView: UIView {
     
     public var onDatesMenu : (() -> Void)?
+    public var onPersonsMenu : ((Int) -> Void)?
+    public var onTerminalsButton : (() -> Void)?
     
     private let datesButton: UIButton = {
         let button = UIButton(type: .system)
@@ -31,7 +33,7 @@ class BottomSettingsView: UIView {
         return button
     }()
     
-    private let stationsButton: UIButton = {
+    private let terminalsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("🛥️ Причал", for: .normal)
         button.layer.cornerRadius = 20
@@ -63,7 +65,7 @@ class BottomSettingsView: UIView {
     }()
     
     private lazy var firstLinebuttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [datesButton, personsButton, stationsButton])
+        let stackView = UIStackView(arrangedSubviews: [datesButton, personsButton, terminalsButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 10
@@ -105,23 +107,70 @@ class BottomSettingsView: UIView {
         ]
     }
     
+    private func setupPersonsMenu() -> [UIAction] {
+        let party = UIAction(
+            title: "Пятеро",
+            image: UIImage(named: "lonely", in: .module, compatibleWith: nil) ?? UIImage()
+        ) { [weak self]_ in
+            guard let self = self else { return }
+            self.onPersonsMenu?(5)
+        }
+        let bigFamily = UIAction(
+            title: "Четверо",
+            image: UIImage(named: "big_family", in: .module, compatibleWith: nil) ?? UIImage()
+        ) { [weak self]_ in
+            guard let self = self else { return }
+            self.onPersonsMenu?(4)
+        }
+        let smallFamily = UIAction(
+            title: "Трое",
+            image: UIImage(named: "small_family", in: .module, compatibleWith: nil) ?? UIImage()
+        ) { [weak self]_ in
+            guard let self = self else { return }
+            self.onPersonsMenu?(3)
+        }
+        let couple = UIAction(
+            title: "Пара",
+            image: UIImage(named: "couple", in: .module, compatibleWith: nil) ?? UIImage()
+        ) { [weak self]_ in
+            guard let self = self else { return }
+            self.onPersonsMenu?(2)
+        }
+        let lonely = UIAction(
+            title: "Для одного",
+            image: UIImage(named: "lonely", in: .module, compatibleWith: nil) ?? UIImage()
+        ) { [weak self]_ in
+            guard let self = self else { return }
+            self.onPersonsMenu?(1)
+        }
+        return [
+            lonely,
+            couple,
+            smallFamily,
+            bigFamily,
+            party
+        ]
+    }
+    
     private func setupActions() {
         filterButton.alpha = 0.3
         filterButton.isEnabled = false
         categoryButton.alpha = 0.3
         categoryButton.isEnabled = false
-        
+        terminalsButton.addTarget(self, action: #selector(openTerminals), for: .touchUpInside)
         if #available(iOS 14, *) {
             datesButton.showsMenuAsPrimaryAction = true
             datesButton.menu = UIMenu(title: "", children: setupDatesMenu())
+            personsButton.showsMenuAsPrimaryAction = true
+            personsButton.menu = UIMenu(title: "", children: setupPersonsMenu())
         } else {
             
         }
     }
     
     @objc
-    private func onDatesTap() {
-        print(#function)
+    private func openTerminals() {
+        onTerminalsButton?()
     }
     
     private func setupConstrains() {
@@ -130,7 +179,7 @@ class BottomSettingsView: UIView {
         NSLayoutConstraint.activate(
             [
                 personsButton.widthAnchor.constraint(equalToConstant: 81),
-                firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+                firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
                 firstLinebuttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
                 firstLinebuttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
                 firstLinebuttonsStackView.heightAnchor.constraint(equalToConstant: 40),

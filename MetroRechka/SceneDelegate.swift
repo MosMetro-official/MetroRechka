@@ -16,7 +16,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = Rechka.showRechkaFlow()
+        let rechka = Rechka(
+            isMapsAvailable: true,
+            delegate: self
+        )
+        window?.rootViewController = rechka.showRechkaFlow()
         window?.makeKeyAndVisible()
+    }
+}
+
+extension SceneDelegate : RechkaMapDelegate {
+    
+    func getRechkaMapController() -> RechkaMapController {
+        return MapViewController(nibName: "MapViewController", bundle: nil)
     }
 }

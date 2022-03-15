@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "CoreNetwork",
-        "repositoryURL": "https://github.com/MosMetro-official/CoreNetwork.git",
-        "state": {
-          "branch": null,
-          "revision": "abd1c5d4196e9fcf3e98c3394fe77ecffb022dc7",
-          "version": "0.0.1"
-        }
-      },
-      {
         "package": "CoreTableView",
         "repositoryURL": "https://github.com/MosMetro-official/CoreTableView",
         "state": {

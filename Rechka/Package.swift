@@ -21,9 +21,14 @@ let package = Package(
     targets: [
         .target(
             name: "Rechka",
-            dependencies: ["CoreNetwork", "CoreTableView"],
-            resources: [.copy("Fonts/MoscowSans-Bold.otf"), .copy("Fonts/MoscowSans-Regular.otf")]
-            //resources: [.process("Fonts")]
+            dependencies: [
+                "CoreNetwork",
+                "CoreTableView"
+            ],
+            resources: [
+                .copy("Fonts/MoscowSans-Bold.otf"),
+                .copy("Fonts/MoscowSans-Regular.otf")
+            ]
         ),
         .testTarget(
             name: "RechkaTests",

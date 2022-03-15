@@ -7,12 +7,14 @@
 
 import UIKit
 import Rechka
+import YandexMapsMobile
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Rechka.registerFonts()
+        YMKMapKit.setApiKey("dee693d0-349d-4757-9a94-e9a237abb930")
         if let files = try? FileManager.default.contentsOfDirectory(atPath: fontBundle.bundlePath ){
             for file in files {
                 print(file)

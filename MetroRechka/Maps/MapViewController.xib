@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapViewController" customModule="MetroRechka" customModuleProvider="target">
+            <connections>
+                <outlet property="backButton" destination="NVm-j0-z7F" id="7xL-jl-mek"/>
+                <outlet property="mapView" destination="mTK-ai-CjY" id="0l6-X7-RvP"/>
+                <outlet property="terminalsButton" destination="UV8-kz-JNQ" id="8Wa-Yt-xoQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mTK-ai-CjY" customClass="YMKMapView">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVm-j0-z7F">
+                    <rect key="frame" x="16" y="60" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="Z4n-8J-Zgv"/>
+                        <constraint firstAttribute="width" constant="32" id="kKs-eP-nTg"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="backButton"/>
+                    <connections>
+                        <action selector="onBackSelect" destination="-1" eventType="touchUpInside" id="IHt-7f-YTz"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-kz-JNQ">
+                    <rect key="frame" x="132" y="802" width="150" height="40"/>
+                    <color key="backgroundColor" name="base"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="Pj9-Tc-El0"/>
+                        <constraint firstAttribute="height" constant="40" id="xwg-pn-e3G"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="tintColor" systemColor="labelColor"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                    <state key="normal" title="Списком" image="terminalsList">
+                        <color key="titleColor" systemColor="labelColor"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onTerminalsSelect" destination="-1" eventType="touchUpInside" id="9ci-fJ-tem"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="NVm-j0-z7F" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="S4A-zR-6g7"/>
+                <constraint firstItem="mTK-ai-CjY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="abW-63-BUr"/>
+                <constraint firstItem="UV8-kz-JNQ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="bVk-Lw-xcT"/>
+                <constraint firstItem="mTK-ai-CjY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dxy-OF-bpS"/>
+                <constraint firstItem="mTK-ai-CjY" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="enQ-OW-nZt"/>
+                <constraint firstAttribute="bottom" secondItem="UV8-kz-JNQ" secondAttribute="bottom" constant="54" id="kf9-J6-Rkf"/>
+                <constraint firstItem="NVm-j0-z7F" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="lc1-sV-qZH"/>
+                <constraint firstAttribute="bottom" secondItem="mTK-ai-CjY" secondAttribute="bottom" id="vDF-dl-rVs"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="151.33928571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="backButton" width="33" height="33"/>
+        <image name="terminalsList" width="20" height="20"/>
+        <namedColor name="base">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

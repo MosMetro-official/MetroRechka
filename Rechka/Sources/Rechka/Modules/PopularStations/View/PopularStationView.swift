@@ -55,7 +55,7 @@ class PopularStationView: UIView {
         view.backgroundColor = .settingsPanel
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 30
+        view.layer.cornerRadius = UIScreen.main.displayCornerRadius
         view.clipsToBounds = true
         return view
     }()
@@ -83,7 +83,7 @@ class PopularStationView: UIView {
                 settingsView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 settingsView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 settingsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-                settingsView.heightAnchor.constraint(equalToConstant: bounds.height / 5.3)
+                settingsView.heightAnchor.constraint(equalToConstant: bounds.height / 5)
             ]
         )
     }
