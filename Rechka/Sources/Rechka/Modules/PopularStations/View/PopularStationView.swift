@@ -73,19 +73,17 @@ class PopularStationView: UIView {
     private func setupConstrains() {
         addSubview(tableView)
         addSubview(settingsView)
-        NSLayoutConstraint.activate(
-            [
-                tableView.topAnchor.constraint(equalTo: topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: settingsView.topAnchor, constant: 10),
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: settingsView.topAnchor, constant: 10),
                 
-                settingsView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                settingsView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                settingsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-                settingsView.heightAnchor.constraint(equalToConstant: bounds.height / 5)
-            ]
-        )
+            settingsView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            settingsView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            settingsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
+            settingsView.heightAnchor.constraint(equalToConstant: bounds.height / 5)
+        ])
     }
     
     private func render() {

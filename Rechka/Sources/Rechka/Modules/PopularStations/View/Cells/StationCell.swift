@@ -18,6 +18,7 @@ protocol _StationCell: CellData {
 }
 
 extension _StationCell {
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? StationCell else { return }
         cell.configure(with: self)

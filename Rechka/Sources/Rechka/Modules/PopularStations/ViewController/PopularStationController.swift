@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 
-public class PopularStationController: UIViewController {
+public class PopularStationController : UIViewController {
     
     var delegate : RechkaMapDelegate?
     var reverceDelegate : RechkaMapReverceDelegate?
@@ -24,9 +24,10 @@ public class PopularStationController: UIViewController {
                     // ТУт ловим нужное от нажатия на пин
                     guard
                         let self = self,
-                        let navigation = self.navigationController
+                        let navigation = self.navigationController,
+                        let controller = navigation.viewControllers.first
                     else { return }
-                    navigation.popViewController(animated: true)
+                    navigation.popToViewController(controller, animated: true)
                 }
             )
         ]
@@ -102,7 +103,9 @@ extension PopularStationController : RechkaMapReverceDelegate {
     }
     
     public func onTerminalsListSelect() {
-//        self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+        let controller = StationsListController()
+        controller.terminals = terminals
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 

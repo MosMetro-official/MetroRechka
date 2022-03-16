@@ -176,19 +176,17 @@ class BottomSettingsView: UIView {
     private func setupConstrains() {
         addSubview(firstLinebuttonsStackView)
         addSubview(secondLineButtonsStackView)
-        NSLayoutConstraint.activate(
-            [
-                personsButton.widthAnchor.constraint(equalToConstant: 81),
-                firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
-                firstLinebuttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                firstLinebuttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                firstLinebuttonsStackView.heightAnchor.constraint(equalToConstant: 40),
+        NSLayoutConstraint.activate([
+            personsButton.widthAnchor.constraint(equalToConstant: 81),
+            firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
+            firstLinebuttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            firstLinebuttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            firstLinebuttonsStackView.heightAnchor.constraint(equalToConstant: 40),
                 
-                secondLineButtonsStackView.topAnchor.constraint(equalTo: firstLinebuttonsStackView.bottomAnchor, constant: 8),
-                secondLineButtonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                secondLineButtonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                secondLineButtonsStackView.heightAnchor.constraint(equalToConstant: 40)
-            ]
-        )
+            secondLineButtonsStackView.topAnchor.constraint(equalTo: firstLinebuttonsStackView.bottomAnchor, constant: 8),
+            secondLineButtonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            secondLineButtonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            secondLineButtonsStackView.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
 }
