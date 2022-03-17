@@ -51,11 +51,13 @@ final class StationListView : UIView {
         let button = UIButton(
             frame: CGRect(x: 0, y: 0, width: 142, height: 40)
         )
-        button.tintColor = .label
-        button.backgroundColor = .cyan
+        button.tintColor = Appearance.colors[.textInverted]
         button.setTitle("На карте", for: .normal)
+        button.setTitleColor(Appearance.colors[.textInverted], for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "map", in: .module, compatibleWith: nil), for: .normal)
+        button.backgroundColor = Appearance.colors[.buttonSecondary]
         return button
     }()
     
@@ -63,7 +65,6 @@ final class StationListView : UIView {
         super.init(frame: frame)
         setupConstrains()
         mapButton.layer.cornerRadius = 20
-        mapButton.backgroundColor = Appearance.colors[.content]
         backgroundColor = Appearance.colors[.base]
         self.mapButton.addTarget(
             self,

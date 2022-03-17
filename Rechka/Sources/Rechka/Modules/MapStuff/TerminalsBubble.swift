@@ -14,7 +14,7 @@ class TerminalBubbleView : UIView {
     let bubbleView : UIView = {
         let view = UIView()
         view.alpha = 0.9
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.frame = CGRect(x: 0, y: 0, width: 230, height: 60)

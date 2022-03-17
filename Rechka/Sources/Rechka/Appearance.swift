@@ -10,9 +10,13 @@ import UIKit
 public enum Colors: String {
     case base
     case content
-    case emptyTicketsLayer
-    case settingsPanel
     case priceLayer
+    case textPrimary
+    case textInverted
+    case textSecondary
+    case settingsPanel
+    case buttonSecondary
+    case emptyTicketsLayer
     case settingsButtonColor
 }
 
@@ -50,10 +54,14 @@ public class Appearance: _Appearance {
     static var colors: [Colors : UIColor] = [
         .base: UIColor(named: Colors.base.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
         .content: UIColor(named: Colors.content.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .emptyTicketsLayer: UIColor(named: Colors.emptyTicketsLayer.rawValue) ?? UIColor(),
         .priceLayer: UIColor(named: Colors.priceLayer.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .settingsPanel: UIColor(named: Colors.settingsPanel.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .textPrimary: UIColor(named: Colors.textPrimary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .textInverted: UIColor(named: Colors.textInverted.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .textSecondary: UIColor(named: Colors.textSecondary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .buttonSecondary: UIColor(named: Colors.buttonSecondary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .emptyTicketsLayer: UIColor(named: Colors.emptyTicketsLayer.rawValue) ?? UIColor(),
         .settingsButtonColor: UIColor(named: Colors.settingsButtonColor.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .settingsPanel: UIColor(named: Colors.settingsPanel.rawValue, in: .module, compatibleWith: nil) ?? UIColor()
     ]
 }
 

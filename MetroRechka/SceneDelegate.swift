@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         let rechka = Rechka(
-            isMapsAvailable: true,
+            isMapsAvailable: false,
             delegate: self
         )
         window?.rootViewController = rechka.showRechkaFlow()

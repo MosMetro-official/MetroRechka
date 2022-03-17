@@ -38,7 +38,7 @@ class StationCell: UITableViewCell {
         
     private let backgroundContent: UIView = {
         let view = UIView()
-        view.backgroundColor = .custom(for: .content)
+        view.backgroundColor = Appearance.colors[.content]
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +59,7 @@ class StationCell: UITableViewCell {
         label.numberOfLines = 0
         label.font = .customFont(forTextStyle: .title3)
         label.textAlignment = .left
-        label.textColor = .white
+        label.textColor = Appearance.colors[.textPrimary]
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -69,7 +69,7 @@ class StationCell: UITableViewCell {
         label.text = "test jetty text"
         label.font = .customFont(forTextStyle: .headline)
         label.textAlignment = .left
-        label.textColor = .white
+        label.textColor = Appearance.colors[.textPrimary]
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -79,7 +79,7 @@ class StationCell: UITableViewCell {
         label.text = "test time text"
         label.font = .customFont(forTextStyle: .headline)
         label.textAlignment = .left
-        label.textColor = .white
+        label.textColor = Appearance.colors[.textPrimary]
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -89,7 +89,7 @@ class StationCell: UITableViewCell {
         label.numberOfLines = 0
         label.font = .customFont(forTextStyle: .headline)
         label.textAlignment = .left
-        label.textColor = .white
+        label.textColor = Appearance.colors[.textPrimary]
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -178,32 +178,31 @@ extension StationCell {
         backgroundContent.addSubview(descriptionStackView)
         backgroundContent.addSubview(priceButton)
         
-        NSLayoutConstraint.activate(
-            [
-                posterImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                posterImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-                posterImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-                posterImage.widthAnchor.constraint(equalToConstant: contentView.bounds.width / 2.5),
+        NSLayoutConstraint.activate([
+            posterImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            posterImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            posterImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            posterImage.widthAnchor.constraint(equalToConstant: contentView.bounds.width / 2.5),
                 
-                backgroundContent.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                backgroundContent.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-                backgroundContent.leadingAnchor.constraint(equalTo: posterImage.trailingAnchor, constant: 10),
-                backgroundContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            backgroundContent.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            backgroundContent.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            backgroundContent.leadingAnchor.constraint(equalTo: posterImage.trailingAnchor, constant: 10),
+            backgroundContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
                 
-                titleLabel.topAnchor.constraint(equalTo: backgroundContent.topAnchor, constant: 16),
-                titleLabel.leadingAnchor.constraint(equalTo: backgroundContent.leadingAnchor, constant: 12),
-                titleLabel.trailingAnchor.constraint(equalTo: backgroundContent.trailingAnchor, constant: -12),
-                titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 18),
+            titleLabel.topAnchor.constraint(equalTo: backgroundContent.topAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: backgroundContent.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: backgroundContent.trailingAnchor, constant: -12),
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 18),
                 
-                descriptionStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-                descriptionStackView.leadingAnchor.constraint(equalTo: backgroundContent.leadingAnchor, constant: 12),
-                descriptionStackView.trailingAnchor.constraint(equalTo: backgroundContent.trailingAnchor, constant: -12),
+            descriptionStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            descriptionStackView.leadingAnchor.constraint(equalTo: backgroundContent.leadingAnchor, constant: 12),
+            descriptionStackView.trailingAnchor.constraint(equalTo: backgroundContent.trailingAnchor, constant: -12),
                 
-                priceButton.leadingAnchor.constraint(equalTo: backgroundContent.leadingAnchor, constant: 12),
-                priceButton.trailingAnchor.constraint(equalTo: backgroundContent.trailingAnchor, constant: -12),
-                priceButton.bottomAnchor.constraint(equalTo: backgroundContent.bottomAnchor, constant: -16),
-                priceButton.heightAnchor.constraint(equalToConstant: 38)
-            ])
+            priceButton.leadingAnchor.constraint(equalTo: backgroundContent.leadingAnchor, constant: 12),
+            priceButton.trailingAnchor.constraint(equalTo: backgroundContent.trailingAnchor, constant: -12),
+            priceButton.bottomAnchor.constraint(equalTo: backgroundContent.bottomAnchor, constant: -16),
+            priceButton.heightAnchor.constraint(equalToConstant: 38)
+        ])
     }
 }
 

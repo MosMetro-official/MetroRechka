@@ -41,16 +41,16 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-kz-JNQ">
                     <rect key="frame" x="132" y="802" width="150" height="40"/>
-                    <color key="backgroundColor" name="base"/>
+                    <color key="backgroundColor" name="buttonSecondary"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="Pj9-Tc-El0"/>
                         <constraint firstAttribute="height" constant="40" id="xwg-pn-e3G"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="tintColor" systemColor="labelColor"/>
+                    <color key="tintColor" name="textInverted"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                     <state key="normal" title="Списком" image="terminalsList">
-                        <color key="titleColor" systemColor="labelColor"/>
+                        <color key="titleColor" name="textInverted"/>
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -80,12 +80,12 @@
     <resources>
         <image name="backButton" width="33" height="33"/>
         <image name="terminalsList" width="20" height="20"/>
-        <namedColor name="base">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="buttonSecondary">
+            <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="textInverted">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

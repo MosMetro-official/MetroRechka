@@ -26,7 +26,6 @@ final class StationsListController : UIViewController {
             else { return }
             navigation.popViewController(animated: true)
         }
-        self.makeDummyState(with: self.terminals)
         navigationItem.hidesBackButton = true
         let backItem = UIBarButtonItem(
             image: UIImage(named: "backButton", in: .module, compatibleWith: nil)!,
@@ -35,6 +34,7 @@ final class StationsListController : UIViewController {
             action: #selector(backButtonPressed)
         )
         navigationItem.leftBarButtonItem = backItem
+        self.makeDummyState(with: self.terminals)
     }
     
     @objc

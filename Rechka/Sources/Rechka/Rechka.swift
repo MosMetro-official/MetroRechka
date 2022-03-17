@@ -4,10 +4,10 @@ public let fontBundle = Bundle.module
 
 public struct Rechka {
     
-    public static var isMapsAvailable : Bool = true
+    public static var isMapsAvailable : Bool!
     private var delegate : RechkaMapDelegate? = nil
     
-    public init(isMapsAvailable: Bool = true, delegate: RechkaMapDelegate? = nil) {
+    public init(isMapsAvailable: Bool = false, delegate: RechkaMapDelegate? = nil) {
         self.delegate = delegate
         Rechka.isMapsAvailable = isMapsAvailable
     }
