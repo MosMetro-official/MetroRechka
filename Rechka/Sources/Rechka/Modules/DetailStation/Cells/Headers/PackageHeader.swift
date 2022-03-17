@@ -9,8 +9,8 @@ import UIKit
 import CoreTableView
 
 protocol _PackageHeader: HeaderData {
-    var isExpanded: Bool { get set }
-    var onSelect: () -> () { get set }
+    var isExpanded: Bool { get }
+    var onExpandTap: () -> () { get }
 }
 
 extension _PackageHeader {
@@ -71,7 +71,7 @@ class PackageHeader: UITableViewHeaderFooterView {
     
     public func configure(with data: _PackageHeader) {
         isExpanded = data.isExpanded
-        onExpandTap = data.onSelect
+        onExpandTap = data.onExpandTap
     }
 
 }

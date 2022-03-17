@@ -9,8 +9,8 @@ import UIKit
 import CoreTableView
 
 protocol _RefundHeader: HeaderData {
-    var isExpanded: Bool { get set }
-    var onSelect: () -> () { get set }
+    var isExpanded: Bool { get }
+    var onExpandTap: () -> () { get }
 }
 
 extension _RefundHeader {
@@ -71,7 +71,7 @@ class RefundHeader: UITableViewHeaderFooterView {
     
     public func configure(with data: _RefundHeader) {
         isExpanded = data.isExpanded
-        onExpandTap = data.onSelect
+        onExpandTap = data.onExpandTap
     }
     
 }

@@ -21,6 +21,7 @@ struct FakeModel {
     let duration: String
     let fromTo: String
     let ticketsList: [FakeTickets]
+    let ticketsCount: Int
     
     static func getModels() -> [FakeModel] {
         let first = FakeModel(
@@ -31,7 +32,13 @@ struct FakeModel {
             price: "700 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "700 ₽", tariff: "Детский"), FakeTickets(price: "1100 ₽", tariff: "Взрослый")]
+            ticketsList: [
+                FakeTickets(price: "700 ₽", tariff: "Детский (с ужином или обедом, Standard)"),
+                FakeTickets(price: "1000 ₽", tariff: "Детский (с ужином или обедом, Premium)"),
+                FakeTickets(price: "1100 ₽", tariff: "Взрослый (с ужином или обедом, Standard)"),
+                FakeTickets(price: "1500 ₽", tariff: "Взрослый (с ужином или обедом, Premium)")
+            ],
+            ticketsCount: 6
         )
         let second = FakeModel(
             title: "Экскурсия",
@@ -41,7 +48,8 @@ struct FakeModel {
             price: "1500 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1500 ₽", tariff: "Единый")]
+            ticketsList: [FakeTickets(price: "1500 ₽", tariff: "Единый")],
+            ticketsCount: 2
         )
         let third = FakeModel(
             title: "Круиз «Filmonter» ресторана «METRO»",
@@ -51,7 +59,13 @@ struct FakeModel {
             price: "1200 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1200 ₽", tariff: "Детский"), FakeTickets(price: "1500 ₽", tariff: "Взрослый")]
+            ticketsList: [
+                FakeTickets(price: "1200 ₽", tariff: "Детский (с ужином или обедом, Standard)"),
+                FakeTickets(price: "1300 ₽", tariff: "Детский (с ужином или обедом, Premium)"),
+                FakeTickets(price: "1500 ₽", tariff: "Взрослый (с ужином или обедом, Standard)"),
+                FakeTickets(price: "1800 ₽", tariff: "Взрослый (с ужином или обедом, Premium)")
+            ],
+            ticketsCount: 2
         )
         let fourth = FakeModel(
             title: "Экскурсия",
@@ -61,7 +75,7 @@ struct FakeModel {
             price: "1900 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Единый")]
+            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Единый")], ticketsCount: 0
         )
         let fiveth = FakeModel(
             title: "Круиз «Рэдиссон» ресторана «ERWIN.Река»",
@@ -71,7 +85,8 @@ struct FakeModel {
             price: "900 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "900 ₽", tariff: "Детский"), FakeTickets(price: "1300 ₽", tariff: "Взрослый")]
+            ticketsList: [FakeTickets(price: "900 ₽", tariff: "Детский"), FakeTickets(price: "1300 ₽", tariff: "Взрослый")],
+            ticketsCount: 4
         )
         let sixth = FakeModel(
             title: "Экскурсия",
@@ -81,7 +96,8 @@ struct FakeModel {
             price: "1100 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1100 ₽", tariff: "Единый")]
+            ticketsList: [FakeTickets(price: "1100 ₽", tariff: "Единый")],
+            ticketsCount: 12
         )
         let seventh = FakeModel(
             title: "Круиз «Рэдиссон» ресторана «ERWIN.Река",
@@ -91,7 +107,8 @@ struct FakeModel {
             price: "1900 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Детский"), FakeTickets(price: "2100 ₽", tariff: "Взрослый")]
+            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Детский"), FakeTickets(price: "2100 ₽", tariff: "Взрослый")],
+            ticketsCount: 2
         )
         let eighth = FakeModel(
             title: "Экскурсия",
@@ -101,7 +118,8 @@ struct FakeModel {
             price: "800 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "800 ₽", tariff: "Единый")]
+            ticketsList: [FakeTickets(price: "800 ₽", tariff: "Единый")],
+            ticketsCount: 0
         )
         return [first, second, third, fourth, fiveth, sixth, seventh, eighth]
     }

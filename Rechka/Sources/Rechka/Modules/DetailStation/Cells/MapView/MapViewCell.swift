@@ -53,5 +53,4 @@ class MapViewCell: UITableViewCell {
     public func configure(with data: _MapView) {
         onSelect = data.onButtonSelect
     }
-    
 }

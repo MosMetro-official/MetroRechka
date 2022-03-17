@@ -12,11 +12,7 @@ class DetailStationController: UIViewController {
     
     let nestedView = DetailView(frame: UIScreen.main.bounds)
     
-    var model: FakeModel! {
-        didSet {
-            print(model.title)
-        }
-    }
+    var model: FakeModel!
     
     override func loadView() {
         super.loadView()
@@ -30,12 +26,6 @@ class DetailStationController: UIViewController {
         makeState()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        let img = UIImage()
-        self.navigationController?.navigationBar.shadowImage = img
-        self.navigationController?.navigationBar.setBackgroundImage(img, for: UIBarMetrics.default)
-    }
-    
     func makeState() {
         // summary and mapView section
         let summary = DetailView.ViewState.Summary(duration: model.duration, fromTo: model.fromTo, height: 70).toElement()
@@ -43,19 +33,25 @@ class DetailStationController: UIViewController {
         let mainSection = SectionState(header: nil, footer: nil)
         let stateSummary = State(model: mainSection, elements: [summary, mapView])
         
+        // Tikcets
+        let tickets = DetailView.ViewState.Tickets(ticketList: model, height: 130).toElement()
+        let ticketsHeader = DetailView.ViewState.TicketsHeader(ticketsCount: model.ticketsCount, height: 20)
+        let ticketsSection = SectionState(header: ticketsHeader, footer: nil)
+        let ticketsState = State(model: ticketsSection, elements: [tickets])
+        
         // Expanded section
         let refund = DetailView.ViewState.AboutRefund(height: 150).toElement()
-        let refundHeader = DetailView.ViewState.RefundHeader(height: 50, isExpanded: true, onSelect: {
-            /// reload section
+        let refundHeader = DetailView.ViewState.RefundHeader(height: 50, isExpanded: true, onExpandTap: {
+            /// reload section or insert row
         })
         let refundSectionState = SectionState(isCollapsed: refundHeader.isExpanded, header: refundHeader, footer: nil)
         let stateRefund = State(model: refundSectionState, elements: [refund])
-        let packageHeader = DetailView.ViewState.PackageHeader(height: 50, isExpanded: true, onSelect: {
-            /// reload section
+        let packageHeader = DetailView.ViewState.PackageHeader(height: 50, isExpanded: true, onExpandTap: {
+            /// reload section or insert row
         })
         let packageSectionState = SectionState(isCollapsed: packageHeader.isExpanded, header: packageHeader, footer: nil)
         let package = DetailView.ViewState.AboutPackage(height: 150).toElement()
         let statePackage = State(model: packageSectionState, elements: [package])
-        self.nestedView.viewState = DetailView.ViewState(state: [stateSummary, stateRefund, statePackage], dataState: .loaded)
+        self.nestedView.viewState = DetailView.ViewState(state: [stateSummary, ticketsState, stateRefund, statePackage], dataState: .loaded)
     }
 }

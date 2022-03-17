@@ -47,43 +47,24 @@ class PosterHeaderView: UIView {
     }
      
     private func createViews() {
-        addSubview(containerView)
-        containerView.addSubview(imageView)
-        addSubview(titleLabel)
+        addSubview(imageView)
+        imageView.addSubview(titleLabel)
     }
     
     private func setViewConstrains() {
         NSLayoutConstraint.activate(
             [
-                widthAnchor.constraint(equalTo: containerView.widthAnchor),
-                centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                heightAnchor.constraint(equalTo: containerView.heightAnchor),
+                imageView.topAnchor.constraint(equalTo: topAnchor),
+                imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 
-                titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-                titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 20),
+                titleLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+                titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 10),
+                titleLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -10),
                 titleLabel.heightAnchor.constraint(equalToConstant: 100)
             ]
         )
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        containerViewHeight = containerView.heightAnchor.constraint(equalTo: self.heightAnchor)
-        containerViewHeight.isActive = true
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageViewBottom = imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        imageViewBottom.isActive = true
-        imageViewHeight = imageView.heightAnchor.constraint(equalTo: containerView.heightAnchor)
-        imageViewHeight.isActive = true
         
     }
-    
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
-        containerViewHeight.constant = scrollView.contentInset.top
-        let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
-        containerView.clipsToBounds = offsetY <= 0
-        imageViewBottom.constant = offsetY >= 0 ? 0 : -offsetY / 2
-        imageViewHeight.constant = max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top)
-    }
-    
 }
