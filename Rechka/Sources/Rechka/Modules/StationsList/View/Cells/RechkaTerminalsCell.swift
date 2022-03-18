@@ -39,9 +39,6 @@ class RechkaTerminalsCell : UITableViewCell {
     @IBOutlet private weak var title : UILabel!
     @IBOutlet private weak var descr : UILabel!
     @IBOutlet private weak var shipImage : UIImageView!
-    override func awakeFromNib() {
-        
-    }
     
     public func configure(with data: _TerminalCell) {
         self.title.text = data.title

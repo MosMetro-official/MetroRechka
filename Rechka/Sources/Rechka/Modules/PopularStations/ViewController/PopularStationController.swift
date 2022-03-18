@@ -21,7 +21,6 @@ public class PopularStationController : UIViewController {
                 latitude: 55.7522200,
                 longitude: 37.6155600,
                 onSelect: { [weak self] in
-                    // ТУт ловим нужное от нажатия на пин
                     guard
                         let self = self,
                         let navigation = self.navigationController,
@@ -87,7 +86,8 @@ public class PopularStationController : UIViewController {
                 myDatePicker.preferredDatePickerStyle = .wheels
             }
             myDatePicker.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
-            let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
+            let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
+            
             alertController.view.addSubview(myDatePicker)
             let selectAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in
                 print("Selected Date: \(myDatePicker.date)")
@@ -118,7 +118,7 @@ public class PopularStationController : UIViewController {
             })
             let lonelyAction = UIAlertAction(title: "Для одного 👩", style: .default, handler: {
                 (alert: UIAlertAction!) -> Void in
-                self.handle(2)
+                self.handle(1)
             })
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {

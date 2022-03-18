@@ -88,8 +88,13 @@ class BottomSettingsView: UIView {
         return stackView
     }()
     
+    private var bgBlurView : UIVisualEffectView!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        bgBlurView = UIVisualEffectView(frame: frame)
+        let effect = UIBlurEffect(style: .systemChromeMaterial)
+        bgBlurView.effect = effect
         setupActions()
         setupConstrains()
     }
@@ -194,9 +199,16 @@ class BottomSettingsView: UIView {
     }
     
     private func setupConstrains() {
+        addSubview(bgBlurView)
+        bgBlurView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(firstLinebuttonsStackView)
         addSubview(secondLineButtonsStackView)
         NSLayoutConstraint.activate([
+            bgBlurView.topAnchor.constraint(equalTo: topAnchor),
+            bgBlurView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bgBlurView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bgBlurView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
             personsButton.widthAnchor.constraint(equalToConstant: 81),
             firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
             firstLinebuttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),

@@ -28,7 +28,7 @@ class PopularStationView: UIView {
             let tickets: Bool
             let price: String
             let height: CGFloat
-            let onPay: () -> ()
+            let onPay: (() -> Void)
         }
                         
         static let initial = PopularStationView.ViewState(state: [], dataState: .loading)
@@ -52,7 +52,6 @@ class PopularStationView: UIView {
     
     internal let settingsView: UIView = {
         let view = BottomSettingsView()
-        view.backgroundColor = .settingsPanel
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = UIScreen.main.displayCornerRadius
@@ -63,7 +62,6 @@ class PopularStationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstrains()
-        backgroundColor = Appearance.colors[.base]
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +75,7 @@ class PopularStationView: UIView {
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: settingsView.topAnchor, constant: 10),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
                 
             settingsView.leadingAnchor.constraint(equalTo: leadingAnchor),
             settingsView.trailingAnchor.constraint(equalTo: trailingAnchor),
