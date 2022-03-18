@@ -47,6 +47,7 @@ class StationCell: UITableViewCell {
     private let posterImage: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 10
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -138,7 +139,7 @@ class StationCell: UITableViewCell {
         if data.tickets {
             ticketsLabel.text = lowTicketsCount
         }
-        posterImage.image = UIImage(named: "Poster", in: Bundle.module, with: nil)
+        posterImage.image = UIImage(named: "poster", in: .module, with: nil)
         priceButton.setTitle("От \(data.price)", for: .normal)
         priceButton.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
         onSelect = data.onPay

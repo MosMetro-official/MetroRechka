@@ -114,7 +114,7 @@ public class Appearance: _Appearance {
     }
     
     static var customFonts: [UIFont.TextStyle: UIFont] = [
-        .largeTitle: UIFont(name: "MoscowSans-Regular", size: 34) ?? UIFont(),
+        .largeTitle: UIFont(name: "MoscowSans-Regular", size: 30) ?? UIFont(),
         .title1: UIFont(name: "MoscowSans-Bold", size: 22) ?? UIFont(),
         .title2: UIFont(name: "MoscowSans-Regular", size: 22) ?? UIFont(),
         .title3: UIFont(name: "MoscowSans-Bold", size: 16) ?? UIFont(),
@@ -123,7 +123,7 @@ public class Appearance: _Appearance {
         .callout: UIFont(name: "MoscowSans-Regular", size: 16) ?? UIFont(),
         .subheadline: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont(),
         .footnote: UIFont(name: "MoscowSans-Regular", size: 13) ?? UIFont(),
-        .caption1: UIFont(name: "MoscowSans-Regular", size: 12) ?? UIFont(),
+        .caption1: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont(),
         .caption2: UIFont(name: "MoscowSans-Regular", size: 11) ?? UIFont()
     ]
     
