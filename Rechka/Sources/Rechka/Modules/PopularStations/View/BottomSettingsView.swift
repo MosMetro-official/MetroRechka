@@ -9,9 +9,13 @@ import UIKit
 
 class BottomSettingsView: UIView {
     
-    public var onDatesMenu : (() -> Void)?
     public var onPersonsMenu : ((Int) -> Void)?
+    public var onCategoriesMenu : (() -> Void)?
     public var onTerminalsButton : (() -> Void)?
+    
+    public var swowDatesAlert : (() -> Void)?
+    public var swowPersonsAlert : (() -> Void)?
+    public var swowCategoriesAlert : (() -> Void)?
     
     private let datesButton: UIButton = {
         let button = UIButton(type: .system)
@@ -84,8 +88,13 @@ class BottomSettingsView: UIView {
         return stackView
     }()
     
+    private var bgBlurView : UIVisualEffectView!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        bgBlurView = UIVisualEffectView(frame: frame)
+        let effect = UIBlurEffect(style: .systemChromeMaterial)
+        bgBlurView.effect = effect
         setupActions()
         setupConstrains()
     }
@@ -94,13 +103,12 @@ class BottomSettingsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupDatesMenu() -> [UIAction] {
-        // TODO: откуда-то их брать наверное?/
+    private func setupCategoriesMenu() -> [UIAction] {
         let holiday = UIAction(
             title: "🌶 23 февраля"
         ) { [weak self] _ in
             guard let self = self else { return }
-            self.onDatesMenu?()
+            self.onCategoriesMenu?()
         }
         return [
             holiday
@@ -159,13 +167,30 @@ class BottomSettingsView: UIView {
         categoryButton.isEnabled = false
         terminalsButton.addTarget(self, action: #selector(openTerminals), for: .touchUpInside)
         if #available(iOS 14, *) {
-            datesButton.showsMenuAsPrimaryAction = true
-            datesButton.menu = UIMenu(title: "", children: setupDatesMenu())
             personsButton.showsMenuAsPrimaryAction = true
             personsButton.menu = UIMenu(title: "", children: setupPersonsMenu())
+            categoryButton.showsMenuAsPrimaryAction = true
+            categoryButton.menu = UIMenu(title: "", children: setupCategoriesMenu())
         } else {
-            
+            personsButton.addTarget(self, action: #selector(onPersonsSelect), for: .touchUpInside)
+            categoryButton.addTarget(self, action: #selector(onCategoriesSelect), for: .touchUpInside)
         }
+        datesButton.addTarget(self, action: #selector(onDatesTap), for: .touchUpInside)
+    }
+    
+    @objc
+    private func onDatesTap() {
+        self.swowDatesAlert?()
+    }
+    
+    @objc
+    private func onPersonsSelect() {
+        self.swowPersonsAlert?()
+    }
+    
+    @objc
+    private func onCategoriesSelect() {
+        self.swowCategoriesAlert?()
     }
     
     @objc
@@ -174,21 +199,26 @@ class BottomSettingsView: UIView {
     }
     
     private func setupConstrains() {
+        addSubview(bgBlurView)
+        bgBlurView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(firstLinebuttonsStackView)
         addSubview(secondLineButtonsStackView)
-        NSLayoutConstraint.activate(
-            [
-                personsButton.widthAnchor.constraint(equalToConstant: 81),
-                firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
-                firstLinebuttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                firstLinebuttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                firstLinebuttonsStackView.heightAnchor.constraint(equalToConstant: 40),
+        NSLayoutConstraint.activate([
+            bgBlurView.topAnchor.constraint(equalTo: topAnchor),
+            bgBlurView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bgBlurView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bgBlurView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            personsButton.widthAnchor.constraint(equalToConstant: 81),
+            firstLinebuttonsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
+            firstLinebuttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            firstLinebuttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            firstLinebuttonsStackView.heightAnchor.constraint(equalToConstant: 40),
                 
-                secondLineButtonsStackView.topAnchor.constraint(equalTo: firstLinebuttonsStackView.bottomAnchor, constant: 8),
-                secondLineButtonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                secondLineButtonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                secondLineButtonsStackView.heightAnchor.constraint(equalToConstant: 40)
-            ]
-        )
+            secondLineButtonsStackView.topAnchor.constraint(equalTo: firstLinebuttonsStackView.bottomAnchor, constant: 8),
+            secondLineButtonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            secondLineButtonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            secondLineButtonsStackView.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
 }

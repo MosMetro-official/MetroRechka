@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group.pdf",
+      "filename" : "Frame 2453.pdf",
       "idiom" : "universal"
     }
   ],
@@ -10,6 +10,7 @@
     "version" : 1
   },
   "properties" : {
+    "compression-type" : "automatic",
     "template-rendering-intent" : "template"
   }
 }

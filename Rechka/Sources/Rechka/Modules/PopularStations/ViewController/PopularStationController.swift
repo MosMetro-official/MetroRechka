@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 
-public class PopularStationController: UIViewController {
+public class PopularStationController : UIViewController {
     
     var delegate : RechkaMapDelegate?
     var reverceDelegate : RechkaMapReverceDelegate?
@@ -21,12 +21,12 @@ public class PopularStationController: UIViewController {
                 latitude: 55.7522200,
                 longitude: 37.6155600,
                 onSelect: { [weak self] in
-                    // ТУт ловим нужное от нажатия на пин
                     guard
                         let self = self,
-                        let navigation = self.navigationController
+                        let navigation = self.navigationController,
+                        let controller = navigation.viewControllers.first
                     else { return }
-                    navigation.popViewController(animated: true)
+                    navigation.popToViewController(controller, animated: true)
                 }
             )
         ]
@@ -58,7 +58,7 @@ public class PopularStationController: UIViewController {
     
     private func setupSettingsActions() {
         guard let settingsView = nestedView.settingsView as? BottomSettingsView else { return }
-        settingsView.onDatesMenu = { [weak self] in
+        settingsView.onCategoriesMenu = { [weak self] in
             guard let self = self else { return }
             let alert = UIAlertController(title: "😐😐😐😐", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "🕐🔨🏞", style: .default, handler: { _ in
@@ -74,9 +74,72 @@ public class PopularStationController: UIViewController {
                 self.openTerminalsTable()
             }
         }
+        settingsView.onPersonsMenu = { [weak self] persons in
+            guard let self = self else { return }
+            self.handle(persons)
+        }
+        settingsView.swowDatesAlert = { [weak self] in
+            guard let self = self else { return }
+            let myDatePicker: UIDatePicker = UIDatePicker()
+            myDatePicker.timeZone = .current
+            if #available(iOS 13.4, *) {
+                myDatePicker.preferredDatePickerStyle = .wheels
+            }
+            myDatePicker.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
+            let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
+            
+            alertController.view.addSubview(myDatePicker)
+            let selectAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in
+                print("Selected Date: \(myDatePicker.date)")
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(selectAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true)
+        }
+        settingsView.swowPersonsAlert = { [weak self] in
+            guard let self = self else { return }
+            let optionMenu = UIAlertController(title: nil, message: "Persons", preferredStyle: .actionSheet)
+            let partyAction = UIAlertAction(title: "Пятеро 🥳", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.handle(5)
+            })
+            let bigFamilyAction = UIAlertAction(title: "Четверо 👨‍👩‍👧‍👦", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.handle(4)
+            })
+            let smallFamilyAction = UIAlertAction(title: "Трое 👨‍👩‍👦", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.handle(3)
+            })
+            let coupleAction = UIAlertAction(title: "Двое 👨‍❤️‍👨", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.handle(2)
+            })
+            let lonelyAction = UIAlertAction(title: "Для одного 👩", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.handle(1)
+            })
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+                print("Cancelled")
+            })
+            optionMenu.addAction(partyAction)
+            optionMenu.addAction(bigFamilyAction)
+            optionMenu.addAction(smallFamilyAction)
+            optionMenu.addAction(coupleAction)
+            optionMenu.addAction(lonelyAction)
+            optionMenu.addAction(cancelAction)
+            self.present(optionMenu, animated: true, completion: nil)
+        }
     }
     
-    private func openTerminalsTable() { }
+    private func handle(_ persons: Int) { }
+    
+    private func openTerminalsTable() {
+        self.onTerminalsListSelect()
+    }
     
     private func openMapController() {
         let controller = delegate?.getRechkaMapController()
@@ -102,7 +165,9 @@ extension PopularStationController : RechkaMapReverceDelegate {
     }
     
     public func onTerminalsListSelect() {
-//        self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+        let controller = StationsListController()
+        controller.terminals = terminals
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 
