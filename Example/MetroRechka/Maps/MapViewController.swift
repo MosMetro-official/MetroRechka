@@ -25,6 +25,8 @@ class MapViewController : UIViewController, YMKMapObjectTapListener {
     
     public var terminalsImages = [UIImage]()
     
+    public var shouldShowTerminalsButton = false
+    
     @IBOutlet weak var mapView : YMKMapView!
     
     @IBOutlet weak var backButton : UIButton!
@@ -57,6 +59,9 @@ class MapViewController : UIViewController, YMKMapObjectTapListener {
             cameraCallback: nil
         )
         showTerminalsOnMap(from: terminalsImages, and: terminals)
+        if shouldShowTerminalsButton {
+            self.showTerminalListButton()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +76,10 @@ class MapViewController : UIViewController, YMKMapObjectTapListener {
 }
 
 extension MapViewController : RechkaMapController {
+    
+    func showTerminalListButton() {
+        self.terminalsButton.isHidden = false
+    }
     
     private func createNewPoint(with terminal: _RechkaTerminal) -> YMKPoint {
         var point = YMKPoint()

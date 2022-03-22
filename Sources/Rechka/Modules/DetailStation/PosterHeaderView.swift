@@ -9,12 +9,7 @@ import UIKit
 
 class PosterHeaderView : UIView {
     
-    private let gradientView : GradientView = {
-        let view = GradientView()
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private let gradientView = UIImageView(image: UIImage(named: "Gradient", in: .module, compatibleWith: nil)!)
     
     private let containerView: UIView = {
         let view = UIView()
@@ -46,6 +41,7 @@ class PosterHeaderView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        gradientView.frame = frame
         createViews()
         setViewConstrains()
     }
@@ -67,23 +63,21 @@ class PosterHeaderView : UIView {
     }
     
     private func setViewConstrains() {
-        NSLayoutConstraint.activate(
-            [
-                widthAnchor.constraint(equalTo: containerView.widthAnchor),
-                centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                heightAnchor.constraint(equalTo: containerView.heightAnchor),
-                
-                titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-                titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 30),
-                titleLabel.heightAnchor.constraint(equalToConstant: 100),
-                
-                gradientView.topAnchor.constraint(equalTo: containerView.topAnchor),
-                gradientView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-                gradientView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-                gradientView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            heightAnchor.constraint(equalTo: containerView.heightAnchor),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 30),
+            titleLabel.heightAnchor.constraint(equalToConstant: 100),
+            
+            gradientView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
         containerView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
         containerViewHeight = containerView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: 20)
         containerViewHeight.isActive = true

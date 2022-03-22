@@ -11,6 +11,7 @@ import CoreTableView
 public class PopularStationController : UIViewController {
     
     var delegate : RechkaMapDelegate?
+    
     var reverceDelegate : RechkaMapReverceDelegate?
     
     var terminals : [_RechkaTerminal] {
@@ -148,6 +149,7 @@ public class PopularStationController : UIViewController {
             let navigation = navigationController
         else { fatalError() }
         controller.delegate = self
+        controller.shouldShowTerminalsButton = true
         navigation.pushViewController(controller, animated: true)
         var points = [UIImage]()
         for terminal in terminals {

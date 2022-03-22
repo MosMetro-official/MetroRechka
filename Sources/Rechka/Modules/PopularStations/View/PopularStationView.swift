@@ -62,6 +62,7 @@ class PopularStationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstrains()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bounds.height / 5, right: 0)
     }
     
     required init?(coder: NSCoder) {

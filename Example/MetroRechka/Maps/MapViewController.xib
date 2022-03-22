@@ -39,7 +39,7 @@
                         <action selector="onBackSelect" destination="-1" eventType="touchUpInside" id="IHt-7f-YTz"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-kz-JNQ">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-kz-JNQ">
                     <rect key="frame" x="132" y="802" width="150" height="40"/>
                     <color key="backgroundColor" name="buttonSecondary"/>
                     <constraints>

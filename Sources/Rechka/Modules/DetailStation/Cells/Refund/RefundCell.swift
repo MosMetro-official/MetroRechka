@@ -18,7 +18,7 @@ extension _Refund {
     }
 }
 
-class RefundCell: UITableViewCell {
+class RefundCell : UITableViewCell {
 
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!

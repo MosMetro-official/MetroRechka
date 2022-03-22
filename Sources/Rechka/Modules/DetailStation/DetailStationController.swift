@@ -8,9 +8,36 @@
 import UIKit
 import CoreTableView
 
-class DetailStationController: UIViewController {
+class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     
-    let nestedView = DetailView(frame: UIScreen.main.bounds)
+    func onMapBackSelect() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func onTerminalsListSelect() {
+        
+    }
+    
+    
+    var nestedView = DetailView(frame: UIScreen.main.bounds)
+    
+    var delegate : RechkaMapDelegate? = nil
+    
+    var showRefundRow = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.makeState()
+            }
+        }
+    }
+    
+    var showBaggageRow = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.makeState()
+            }
+        }
+    }
     
     var model: FakeModel!
     
@@ -49,34 +76,74 @@ class DetailStationController: UIViewController {
     }
     
     func makeState() {
-        // summary and mapView section
-        let summary = DetailView.ViewState.Summary(duration: model.duration, fromTo: model.fromTo, height: 70).toElement()
-        let mapView = DetailView.ViewState.MapView(onButtonSelect: {print("open map")}, height: 175).toElement()
+        var main = [Element]()
+        let summary = DetailView.ViewState.Summary(
+            duration: model.duration,
+            fromTo: model.fromTo,
+            height: 70
+        ).toElement()
+        main.append(summary)
+        if Rechka.isMapsRoutesAvailable {
+            let mapView = DetailView.ViewState.MapView(
+                onButtonSelect: { [weak self] in
+                    guard let self = self else { return }
+                    self.showRouteOnMap()
+                },
+                height: 175
+            ).toElement()
+            main.append(mapView)
+        }
         let mainSection = SectionState(header: nil, footer: nil)
-        let stateSummary = State(model: mainSection, elements: [summary, mapView])
+        let stateSummary = State(model: mainSection, elements: main)
         
         // Tikcets
-        let tickets = DetailView.ViewState.Tickets(ticketList: model, height: 130).toElement()
-        let ticketsHeader = DetailView.ViewState.TicketsHeader(ticketsCount: model.ticketsCount, height: 20)
+        let tickets = DetailView.ViewState.Tickets(
+            ticketList: model,
+            height: 130
+        ).toElement()
+        let ticketsHeader = DetailView.ViewState.TicketsHeader(
+            ticketsCount: model.ticketsCount,
+            height: 20
+        )
         let ticketsSection = SectionState(header: ticketsHeader, footer: nil)
         let ticketsState = State(model: ticketsSection, elements: [tickets])
         
         // Refund section
         let refund = DetailView.ViewState.AboutRefund(height: 210).toElement()
+        
         let refundHeader = DetailView.ViewState.RefundHeader(height: 50, isExpanded: true, onExpandTap: {
-            /// reload section or insert row
+            self.showRefundRow.toggle()
         })
-        let refundSectionState = SectionState(isCollapsed: refundHeader.isExpanded, header: refundHeader, footer: nil)
-        let stateRefund = State(model: refundSectionState, elements: [refund])
+        var refundElements = [Element]()
+        if showRefundRow { refundElements.append(refund) }
+        let refundSectionState = SectionState(isCollapsed: false, header: refundHeader, footer: nil)
+        let stateRefund = State(model: refundSectionState, elements: refundElements)
         
         // Package section
         let package = DetailView.ViewState.AboutPackage(height: 210).toElement()
-        let packageHeader = DetailView.ViewState.PackageHeader(height: 50, isExpanded: true, onExpandTap: {
-            /// reload section or insert row
+        let packageHeader = DetailView.ViewState.PackageHeader(
+            height: 50,
+            isExpanded: true,
+            onExpandTap: {
+            self.showBaggageRow.toggle()
         })
+        var packagelements = [Element]()
+        if showBaggageRow { packagelements.append(package) }
         let packageSectionState = SectionState(isCollapsed: false, header: packageHeader, footer: nil)
-        let statePackage = State(model: packageSectionState, elements: [package])
+        let statePackage = State(model: packageSectionState, elements: packagelements)
         self.nestedView.viewState = DetailView.ViewState(state: [stateSummary, ticketsState, stateRefund, statePackage], dataState: .loaded)
+    }
+    
+    private func showRouteOnMap() {
+        self.delegate = Rechka.delegate
+        let controller = delegate?.getRechkaMapController()
+        guard
+            let controller = controller,
+            let navigation = navigationController
+        else { fatalError() }
+        controller.delegate = self
+        controller.shouldShowTerminalsButton = false
+        navigation.pushViewController(controller, animated: true)
     }
 }
 

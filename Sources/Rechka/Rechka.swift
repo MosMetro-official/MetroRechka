@@ -4,19 +4,21 @@ public let fontBundle = Bundle.module
 
 public struct Rechka {
     
+    public static var delegate : RechkaMapDelegate? = nil
     public static var isMapsAvailable : Bool!
-    private var delegate : RechkaMapDelegate? = nil
+    public static var isMapsRoutesAvailable : Bool!
     
-    public init(isMapsAvailable: Bool = false, delegate: RechkaMapDelegate? = nil) {
-        self.delegate = delegate
+    public init(isMapsAvailable: Bool = true, isMapsRoutesAvailable: Bool = true, delegate: RechkaMapDelegate? = nil) {
+        Rechka.delegate = delegate
         Rechka.isMapsAvailable = isMapsAvailable
+        Rechka.isMapsRoutesAvailable = isMapsRoutesAvailable
     }
     
     /// Return first view controller of packge module
     public func showRechkaFlow() -> UINavigationController {
         /// load data
         let controller = PopularStationController()
-        controller.delegate = self.delegate
+        controller.delegate = Rechka.delegate
         return UINavigationController(rootViewController: controller)
     }
     

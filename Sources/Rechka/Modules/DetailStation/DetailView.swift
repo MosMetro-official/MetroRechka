@@ -64,7 +64,7 @@ class DetailView: UIView {
         
         static let initial = DetailView.ViewState(state: [], dataState: .loading)
     }
-        
+    
     var viewState: ViewState = .initial {
         didSet {
             render()
@@ -79,9 +79,9 @@ class DetailView: UIView {
         return button
     }()
     
-    internal let buttonView: UIView = {
+    internal var buttonView: UIView = {
         let view = UIView()
-        view.backgroundColor = .settingsPanel
+        view.backgroundColor = .clear
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = UIScreen.main.displayCornerRadius
@@ -92,8 +92,9 @@ class DetailView: UIView {
     internal let choiceTicketButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .white
-        button.tintColor = .black
+        button.backgroundColor = UIColor.custom(for: .buttonSecondary)
+        button.tintColor = UIColor.custom(for: .textPrimary)
+        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
         button.titleLabel?.textAlignment = .center
         button.layer.cornerRadius = 10
@@ -101,27 +102,35 @@ class DetailView: UIView {
         button.addTarget(self, action: #selector(goToChoiceTickets), for: .touchUpInside)
         return button
     }()
-
+    
     private lazy var tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .clear
         table.clipsToBounds = true
+        table.shouldUseReload = true
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.tableHeaderView = posterHeaderView
         return table
     }()
     
-    var posterHeaderView: PosterHeaderView?
     var onClose: (() -> Void)?
     var onChoice: (() -> Void)?
+    var posterHeaderView: PosterHeaderView?
+    private var bgBlurView : UIVisualEffectView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        bgBlurView = UIVisualEffectView(frame: frame)
+        let effect = UIBlurEffect(style: .systemChromeMaterial)
+        bgBlurView.effect = effect
+        self.buttonView.insertSubview(bgBlurView, at: 0)
         posterHeaderView = PosterHeaderView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.width * 0.9))
         setupConstrains()
         setupHeaderView()
+        
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 125, right: 0)
     }
     
     required init?(coder: NSCoder) {
@@ -142,35 +151,33 @@ class DetailView: UIView {
             header.scrollViewDidScroll(scrollView: scroll)
         }
     }
-        
+    
     private func setupConstrains() {
         addSubview(tableView)
         addSubview(buttonView)
         addSubview(backButton)
         buttonView.addSubview(choiceTicketButton)
-        NSLayoutConstraint.activate(
-            [
-                tableView.topAnchor.constraint(equalTo: topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor),
-                
-                buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                buttonView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-                buttonView.heightAnchor.constraint(equalToConstant: 106),
-                
-                choiceTicketButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 20),
-                choiceTicketButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 16),
-                choiceTicketButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -16),
-                choiceTicketButton.heightAnchor.constraint(equalToConstant: 44),
-                
-                backButton.topAnchor.constraint(equalTo: topAnchor, constant: 52),
-                backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                backButton.widthAnchor.constraint(equalToConstant: 32),
-                backButton.heightAnchor.constraint(equalToConstant: 32)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            buttonView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
+            buttonView.heightAnchor.constraint(equalToConstant: 125),
+            
+            choiceTicketButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 30),
+            choiceTicketButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 16),
+            choiceTicketButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -16),
+            choiceTicketButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            backButton.topAnchor.constraint(equalTo: topAnchor, constant: 52),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            backButton.widthAnchor.constraint(equalToConstant: 32),
+            backButton.heightAnchor.constraint(equalToConstant: 32)
+        ])
     }
     
     private func render() {

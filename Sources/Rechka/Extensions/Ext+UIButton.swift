@@ -8,6 +8,7 @@
 import UIKit
 
 extension UIButton {
+    
     func addHorizontalGradientLayer() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = bounds

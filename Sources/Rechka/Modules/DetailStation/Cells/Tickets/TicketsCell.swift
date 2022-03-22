@@ -13,6 +13,11 @@ protocol _Tickets: CellData {
 }
 
 extension _Tickets {
+    
+    var height: CGFloat {
+        return 60
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? TicketsCell else { return }
         cell.configure(with: self)

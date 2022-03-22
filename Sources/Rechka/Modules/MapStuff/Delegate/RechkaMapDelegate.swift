@@ -15,6 +15,10 @@ public protocol RechkaMapController : UIViewController {
     
     var terminalsImages : [UIImage] { get set }
     
+    var shouldShowTerminalsButton : Bool { get set }
+    
+    func showTerminalListButton()
+    
     func showTerminalsOnMap(from images: [UIImage], and for: [_RechkaTerminal])
 }
 

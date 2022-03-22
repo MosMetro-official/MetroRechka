@@ -47,5 +47,4 @@ class TicketsHeader: UITableViewHeaderFooterView {
     public func configure(with data: _TicketsHeader) {
         isLowTicketsCount = data.ticketsCount
     }
-    
 }
