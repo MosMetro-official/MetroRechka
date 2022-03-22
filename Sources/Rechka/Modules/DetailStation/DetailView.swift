@@ -21,7 +21,7 @@ class DetailView: UIView {
             case error
         }
         
-        struct Summary: _Suumary {            
+        struct Summary: _Suumary {
             let duration: String
             let fromTo: String
             let height: CGFloat
@@ -38,7 +38,7 @@ class DetailView: UIView {
         }
         
         struct Tickets: _Tickets {
-            var ticketList: FakeModel            
+            var ticketList: FakeModel
             let height: CGFloat
         }
         
@@ -71,7 +71,13 @@ class DetailView: UIView {
         }
     }
     
-    var posterHeaderView: PosterHeaderView?
+    internal let backButton: UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "back", in: .module, with: nil), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(popToRoot), for: .touchUpInside)
+        return button
+    }()
     
     internal let buttonView: UIView = {
         let view = UIView()
@@ -97,9 +103,8 @@ class DetailView: UIView {
     }()
 
     private lazy var tableView: BaseTableView = {
-        let table = BaseTableView(frame: .zero, style: .plain)
+        let table = BaseTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.contentInsetAdjustmentBehavior = .never
         table.separatorColor = .clear
         table.clipsToBounds = true
         table.showsVerticalScrollIndicator = false
@@ -108,10 +113,15 @@ class DetailView: UIView {
         return table
     }()
     
+    var posterHeaderView: PosterHeaderView?
+    var onClose: (() -> Void)?
+    var onChoice: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        posterHeaderView = PosterHeaderView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.width))
+        posterHeaderView = PosterHeaderView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.width * 0.9))
         setupConstrains()
+        setupHeaderView()
     }
     
     required init?(coder: NSCoder) {
@@ -119,29 +129,46 @@ class DetailView: UIView {
     }
     
     @objc private func goToChoiceTickets() {
-        
+        onChoice?()
+    }
+    
+    @objc private func popToRoot() {
+        onClose?()
+    }
+    
+    private func setupHeaderView() {
+        tableView.onScroll = { scroll in
+            guard let header = self.tableView.tableHeaderView as? PosterHeaderView else { return }
+            header.scrollViewDidScroll(scrollView: scroll)
+        }
     }
         
     private func setupConstrains() {
         addSubview(tableView)
         addSubview(buttonView)
+        addSubview(backButton)
         buttonView.addSubview(choiceTicketButton)
         NSLayoutConstraint.activate(
             [
                 tableView.topAnchor.constraint(equalTo: topAnchor),
                 tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor, constant: -10),
+                tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor),
                 
                 buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 buttonView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-                buttonView.heightAnchor.constraint(equalToConstant: 100),
+                buttonView.heightAnchor.constraint(equalToConstant: 106),
                 
                 choiceTicketButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 20),
                 choiceTicketButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 16),
                 choiceTicketButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -16),
-                choiceTicketButton.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -42)
+                choiceTicketButton.heightAnchor.constraint(equalToConstant: 44),
+                
+                backButton.topAnchor.constraint(equalTo: topAnchor, constant: 52),
+                backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+                backButton.widthAnchor.constraint(equalToConstant: 32),
+                backButton.heightAnchor.constraint(equalToConstant: 32)
             ]
         )
     }

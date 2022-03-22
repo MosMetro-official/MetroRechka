@@ -31,4 +31,9 @@ class RefundCell: UITableViewCell {
         descriptionLabel.text = text
         descriptionLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0))
+    }
 }
