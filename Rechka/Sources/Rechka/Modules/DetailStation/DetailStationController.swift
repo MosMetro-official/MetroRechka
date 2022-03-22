@@ -41,6 +41,11 @@ class DetailStationController: UIViewController {
         nestedView.onClose = { [weak self] in
             self?.navigationController?.popToRootViewController(animated: true)
         }
+        
+        nestedView.onChoice = { [weak self] in
+            guard let self = self else { return }
+            self.goToBuyTicketsWithPersonData(with: self.model)
+        }
     }
     
     func makeState() {
@@ -72,5 +77,14 @@ class DetailStationController: UIViewController {
         let packageSectionState = SectionState(isCollapsed: false, header: packageHeader, footer: nil)
         let statePackage = State(model: packageSectionState, elements: [package])
         self.nestedView.viewState = DetailView.ViewState(state: [stateSummary, ticketsState, stateRefund, statePackage], dataState: .loaded)
+    }
+}
+
+extension DetailStationController {
+    private func goToBuyTicketsWithPersonData(with model: FakeModel) {
+        // if model.isPersonalDataRequired { push with personData } else { push without personData }
+        let bookingWithPerson = PersonBookingController()
+        bookingWithPerson.model = model
+        navigationController?.pushViewController(bookingWithPerson, animated: true)
     }
 }
