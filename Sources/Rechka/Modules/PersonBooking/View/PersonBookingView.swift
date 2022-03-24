@@ -8,46 +8,67 @@
 import UIKit
 import CoreTableView
 
-class SomeCache {
-    static let shared = SomeCache()
-    private init() {}
-    var cache: [String: [Any]] = ["user": ["User 1"]]
-}
-
-struct User {
-    
-}
-
 class PersonBookingView: UIView {
     
     struct ViewState {
         
-        let state: [State]
-        let dataState: DataState
+        var state: [State]
+        var dataState: DataState
         
         enum DataState {
             case addPersonData
-            case addedPersonData(User)
+            case addedPersonData([State])
+        }
+        
+        struct PassengerHeader: _PassengerHeaderCell {
+            let onAdd: () -> ()
+            let height: CGFloat
+        }
+        
+        struct Passenger: _Passenger {
+            let name: String
+            let tariff: String
+            let height: CGFloat
+        }
+        
+        struct TariffHeader: _TariffHeaderCell {
+            let height: CGFloat
+        }
+        
+        struct Tariff: _Tariff {
+            let tariffs: String
+            let price: String
+            let height: CGFloat
+        }
+        
+        struct Commission: _Commission {
+            let commission: String
+            let price: String
+            let height: CGFloat
         }
         
         static let initial = PersonBookingView.ViewState(state: [], dataState: .addPersonData)
     }
     
-    public var viewState: ViewState = .initial {
+    public var state: PersonBookingView.ViewState = .initial {
         didSet {
-            render()
+            updateView()
         }
     }
+    
     public var showPersonAlert: (() -> Void)?
     public var showPersonDataEntry: (() -> Void)?
+    public var showUserFromCache: ((User) -> Void)?
     
     private let tableView: BaseTableView = {
-        let table = BaseTableView(frame: .zero, style: .grouped)
+        let table = BaseTableView(frame: .zero, style: .insetGrouped)
+        table.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: -10, right: 0)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .clear
         table.clipsToBounds = true
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
+        table.isHidden = true
         return table
     }()
     
@@ -120,12 +141,12 @@ class PersonBookingView: UIView {
     
     private func setupPersonsMenu() -> [UIAction] {
         var actions: [UIAction] = []
-        guard let users = SomeCache.shared.cache["user"] as? [String] else { return [] }
+        guard let users = SomeCache.shared.cache["user"] as? [User] else { return [] }
         users.forEach { user in
             let action = UIAction(
-                title: user,
+                title: "\(user.surname ?? "") \(user.name?.first ?? Character("")).\(user.patronymic?.first ?? Character("")).",
                 image: UIImage(systemName: "person")) { _ in
-                    print(user)
+                    self.showUserFromCache?(user)
                 }
             actions.append(action)
         }
@@ -137,7 +158,7 @@ class PersonBookingView: UIView {
     }
     
     private func setupAction() {
-        guard let users = SomeCache.shared.cache["user"] as? [String] else { return }
+        guard let users = SomeCache.shared.cache["user"] as? [User] else { return }
         if !users.isEmpty {
             if #available(iOS 14, *) {
                 addButton.showsMenuAsPrimaryAction = true
@@ -160,32 +181,47 @@ class PersonBookingView: UIView {
         showPersonDataEntry?()
     }
     
-    private func render() {
-        
+    private func updateView() {
+        switch state.dataState {
+        case .addPersonData:
+            tableView.isHidden = true
+            layoutSubviews()
+        case .addedPersonData(let state):
+            containerView.isHidden = true
+            tableView.isHidden = false
+            tableView.viewStateInput = state
+            layoutSubviews()
+        }
     }
-    
+
     public func configureTitle(with model: FakeModel) {
         titleLabel.text = model.title
-    } 
+    }
+    
+    public func onReload() {
+        setupAction()
+    }
 }
 
 extension PersonBookingView {
     private func setupConstrains() {
         addSubview(containerView)
-        [titleLabel, userProfileImage, summaryLabel, descriptionLabel, addButton].forEach { view in
+        addSubview(tableView)
+        addSubview(titleLabel)
+        [userProfileImage, summaryLabel, descriptionLabel, addButton].forEach { view in
             containerView.addSubview(view)
         }
         NSLayoutConstraint.activate(
             [
-                containerView.topAnchor.constraint(equalTo: topAnchor),
+                titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 104),
+                titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+                
+                containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
                 containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                
-                titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 104),
-                titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-                titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-                
+                                
                 userProfileImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 56),
                 userProfileImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
                 userProfileImage.heightAnchor.constraint(equalToConstant: 96),
@@ -202,7 +238,12 @@ extension PersonBookingView {
                 addButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 28),
                 addButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
                 addButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-                addButton.heightAnchor.constraint(equalToConstant: 52)
+                addButton.heightAnchor.constraint(equalToConstant: 52),
+                
+                tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ]
         )
     }

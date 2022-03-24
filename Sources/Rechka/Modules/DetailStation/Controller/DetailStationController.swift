@@ -71,7 +71,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         
         nestedView.onChoice = { [weak self] in
             guard let self = self else { return }
-            self.goToBuyTicketsWithPersonData(with: self.model)
+            self.openBuyTicketsController(with: self.model)
         }
     }
     
@@ -125,8 +125,8 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
             height: 50,
             isExpanded: true,
             onExpandTap: {
-            self.showBaggageRow.toggle()
-        })
+                self.showBaggageRow.toggle()
+            })
         var packagelements = [Element]()
         if showBaggageRow { packagelements.append(package) }
         let packageSectionState = SectionState(isCollapsed: false, header: packageHeader, footer: nil)
@@ -148,10 +148,13 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
 }
 
 extension DetailStationController {
-    private func goToBuyTicketsWithPersonData(with model: FakeModel) {
-        // if model.isPersonalDataRequired { push with personData } else { push without personData }
-        let bookingWithPerson = PersonBookingController()
-        bookingWithPerson.model = model
-        navigationController?.pushViewController(bookingWithPerson, animated: true)
+    private func openBuyTicketsController(with model: FakeModel) {
+        if model.isPersonalDataRequired {
+            let bookingWithPerson = PersonBookingController()
+            bookingWithPerson.model = model
+            navigationController?.pushViewController(bookingWithPerson, animated: true)
+        } else {
+            
+        }
     }
 }
