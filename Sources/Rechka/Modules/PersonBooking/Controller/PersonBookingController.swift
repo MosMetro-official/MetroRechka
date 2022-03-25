@@ -64,7 +64,7 @@ class PersonBookingController: UIViewController {
     private func setupPersonAlert() {
         nestedView.showPersonAlert = { [weak self] in
             guard let self = self else { return }
-            guard let users = SomeCache.shared.cache["user"] as? [User] else { return }
+            guard let users = SomeCache.shared.cache["user"] else { return }
             var actions: [UIAlertAction] = []
             users.forEach { user in
                 let action = UIAlertAction(title: "\(user.surname ?? "")", style: .default) { _ in
@@ -89,7 +89,7 @@ class PersonBookingController: UIViewController {
         passenderDataEntry.delegate = self
         passenderDataEntry.model = model!
         if user != nil {
-            passenderDataEntry.user = user!
+            passenderDataEntry.oldUser = user
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         } else {
             navigationController?.pushViewController(passenderDataEntry, animated: true)
@@ -99,7 +99,7 @@ class PersonBookingController: UIViewController {
     private func setupCacheUser() {
         nestedView.showUserFromCache = { [weak self] user in
             guard let self = self else { return }
-            self.makeState(for: user)
+            self.pushPersonDataEntry(with: user, and: self.model)
         }
     }
 }

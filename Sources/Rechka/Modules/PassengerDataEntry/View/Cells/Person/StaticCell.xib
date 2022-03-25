@@ -32,7 +32,6 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" name="settingsPanel"/>
-            <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="titleLabel" destination="7Cm-uH-4zv" id="mtp-IM-lKu"/>
             </connections>

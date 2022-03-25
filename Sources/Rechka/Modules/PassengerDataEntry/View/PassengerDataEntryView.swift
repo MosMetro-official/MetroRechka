@@ -26,6 +26,7 @@ class PassengerDataEntryView: UIView {
         }
         
         struct NameField: _Field {
+            let text: String?
             let placeholder: String
             let onTap: () -> ()
             let onFieldEdit: (UITextField) -> ()
@@ -33,6 +34,7 @@ class PassengerDataEntryView: UIView {
         }
         
         struct SurnameField: _Field {
+            let text: String?
             let placeholder: String
             let onTap: () -> ()
             let onFieldEdit: (UITextField) -> ()
@@ -40,6 +42,7 @@ class PassengerDataEntryView: UIView {
         }
         
         struct PatronymicFiled: _Field {
+            let text: String?
             let placeholder: String
             let onTap: () -> ()
             let onFieldEdit: (UITextField) -> ()
@@ -63,7 +66,7 @@ class PassengerDataEntryView: UIView {
         }
         
         struct GenderCell: _Gender {
-            let gender: Gender
+            var gender: Gender
             let onTap: (Gender) -> ()
             let height: CGFloat
         }
@@ -126,7 +129,7 @@ class PassengerDataEntryView: UIView {
     
     private let buttonView: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
+        view.backgroundColor = .custom(for: .settingsPanel)
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = UIScreen.main.displayCornerRadius
@@ -149,11 +152,13 @@ class PassengerDataEntryView: UIView {
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
+        table.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .systemGray
         table.clipsToBounds = true
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
+        table.sectionFooterHeight = .leastNormalMagnitude
         return table
     }()
     
@@ -192,7 +197,7 @@ class PassengerDataEntryView: UIView {
                 tableView.topAnchor.constraint(equalTo: topAnchor),
                 tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor),
                 
                 buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="69" id="KGk-i7-Jjw" customClass="ChoicePlaceCell" customModule="Rechka">
+            <rect key="frame" x="0.0" y="0.0" width="353" height="69"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="324.5" height="69"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="choicePlace" translatesAutoresizingMaskIntoConstraints="NO" id="fs6-L7-Sqn">
+                        <rect key="frame" x="16" y="20" width="29" height="29"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="29" id="XEb-Rx-gOu"/>
+                            <constraint firstAttribute="width" constant="29" id="YCI-Zv-yMJ"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Выберите место" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpP-Uk-MkM">
+                        <rect key="frame" x="63" y="24" width="132" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="fs6-L7-Sqn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="7Dc-No-zad"/>
+                    <constraint firstItem="VpP-Uk-MkM" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="OWO-c0-NSc"/>
+                    <constraint firstItem="fs6-L7-Sqn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="bH7-XQ-anO"/>
+                    <constraint firstItem="VpP-Uk-MkM" firstAttribute="leading" secondItem="fs6-L7-Sqn" secondAttribute="trailing" constant="18" id="eJt-CS-kEL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" name="settingsPanel"/>
+            <connections>
+                <outlet property="titleLabel" destination="VpP-Uk-MkM" id="3xJ-ZM-Eyh"/>
+            </connections>
+            <point key="canvasLocation" x="161.59420289855075" y="88.058035714285708"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="choicePlace" width="116" height="117"/>
+        <namedColor name="settingsPanel">
+            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

@@ -9,6 +9,7 @@ import UIKit
 import CoreTableView
 
 protocol _Field: CellData {
+    var text: String? { get }
     var placeholder: String { get }
     var textFieldType: UIKeyboardType { get }
     var onFieldEdit: (UITextField) -> () { get }
@@ -16,6 +17,10 @@ protocol _Field: CellData {
 }
 
 extension _Field {
+    var text: String? {
+        return nil
+    }
+    
     var textFieldType: UIKeyboardType {
         return .default
     }
@@ -36,27 +41,21 @@ class FieldCell: UITableViewCell {
 
     @IBOutlet weak var textField: UITextField!
     
-    var closure: ((UITextField) -> ())?
+    var handleText: ((UITextField) -> ())?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         textField.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     public func configure(with data: _Field) {
+        textField.text = data.text
         textField.placeholder = data.placeholder
         textField.keyboardType = data.textFieldType
-        closure = data.onFieldEdit
+        handleText = data.onFieldEdit
     }
     
-    @IBAction func tf(_ sender: UITextField) {
-        closure?(sender)
+    @IBAction func textEnter(_ sender: UITextField) {
+        handleText?(sender)
     }
 }

@@ -21,6 +21,7 @@ extension _Static {
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         tableView.register(StaticCell.nib, forCellReuseIdentifier: StaticCell.identifire)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: StaticCell.identifire, for: indexPath) as? StaticCell else { return .init() }
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         return cell
     }
 }

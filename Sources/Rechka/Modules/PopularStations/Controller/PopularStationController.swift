@@ -183,7 +183,7 @@ extension PopularStationController {
     
     private func mockElements() -> [Element] {
         let elements = FakeModel.getModels().map { model -> Element in
-            let element = PopularStationView.ViewState.Station(title: model.title, jetty: model.jetty, time: model.time, tickets: model.ticketsCount < 3, price: model.price, height: 250, onPay: { self.pushDetail(with: model) }).toElement()
+            let element = PopularStationView.ViewState.Station(title: model.title, jetty: model.jetty, time: model.time, tickets: model.ticketsCount < 3, price: model.price, height: 250, onSelect: { self.pushDetail(with: model) }).toElement()
             return element
         }
         return elements

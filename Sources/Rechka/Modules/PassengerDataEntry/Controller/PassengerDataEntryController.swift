@@ -18,6 +18,7 @@ class PassengerDataEntryController: UIViewController {
             setupValidate()
         }
     }
+    var oldUser: User!
     
     override func loadView() {
         super.loadView()
@@ -26,35 +27,71 @@ class PassengerDataEntryController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeState()
+        check()
         setupReadyButton()
         dismissKeyboard()
         title = "Пассажир"
     }
     
-    func makeState() {
+    func check() {
+        if oldUser == nil {
+            makeState()
+        } else {
+            makeState(for: oldUser)
+        }
+    }
+    
+    func makeState(for oldUser: User? = nil) {
+        var elements: [Element] = []
         let personDataHeader = PassengerDataEntryView.ViewState.PersonHeader(title: "Личные данные", height: 40).toElement()
-        let surname = PassengerDataEntryView.ViewState.SurnameField(placeholder: "Фамилия", onTap: {}, onFieldEdit: {
-            textfield in
-            self.user.surname = textfield.text
-        }, height: 40).toElement()
-        let name = PassengerDataEntryView.ViewState.NameField(placeholder: "Имя", onTap: {}, onFieldEdit: { textfield in
-            self.user.name = textfield.text
-        }, height: 40).toElement()
-        let patronymic = PassengerDataEntryView.ViewState.PatronymicFiled(placeholder: "Отчество", onTap: {}, onFieldEdit: { textfield in
-            self.user.patronymic = textfield.text
-        }, height: 40).toElement()
-        let birthday = PassengerDataEntryView.ViewState.BirthdayField(placeholder: "День рождения", textFieldType: .numberPad, onTap: {}, onFieldEdit: { textfield in
-            self.user.birthday = textfield.text
-        } ,height: 40).toElement()
-        let number = PassengerDataEntryView.ViewState.NumberFiled(placeholder: "Телефон", textFieldType: .numberPad, onTap: {}, onFieldEdit: { textfield in
-            self.user.phoneNumber = textfield.text
-        }, height: 40).toElement()
-        let gender = PassengerDataEntryView.ViewState.GenderCell(gender: .male, onTap: { gender in
-            self.user.gender = gender
-        }, height: 50).toElement()
+        elements.append(personDataHeader)
+        if oldUser != nil {
+            let surname = PassengerDataEntryView.ViewState.SurnameField(text: oldUser?.surname, placeholder: "Фамилия", onTap: {}, onFieldEdit: {
+                textfield in
+                self.user.surname = textfield.text
+            }, height: 40).toElement()
+            let name = PassengerDataEntryView.ViewState.NameField(text: oldUser?.name, placeholder: "Имя", onTap: {}, onFieldEdit: { textfield in
+                self.user.name = textfield.text
+            }, height: 40).toElement()
+            let patronymic = PassengerDataEntryView.ViewState.PatronymicFiled(text: oldUser?.patronymic, placeholder: "Отчество", onTap: {}, onFieldEdit: { textfield in
+                self.user.patronymic = textfield.text
+            }, height: 40).toElement()
+            let birthday = PassengerDataEntryView.ViewState.BirthdayField(placeholder: "День рождения", textFieldType: .numberPad, onTap: {}, onFieldEdit: { textfield in
+                textfield.text = oldUser?.birthday
+                self.user.birthday = textfield.text
+            } ,height: 40).toElement()
+            let number = PassengerDataEntryView.ViewState.NumberFiled(placeholder: "Телефон", textFieldType: .numberPad, onTap: {}, onFieldEdit: { textfield in
+                textfield.text = oldUser?.phoneNumber
+                self.user.phoneNumber = textfield.text
+            }, height: 40).toElement()
+            let gender = PassengerDataEntryView.ViewState.GenderCell(gender: .male, onTap: { gender in
+                self.user.gender = gender
+            }, height: 50).toElement()
+            elements.append(contentsOf: [surname, name, patronymic, birthday, number, gender])
+        } else {
+            let surname = PassengerDataEntryView.ViewState.SurnameField(text: nil, placeholder: "Фамилия", onTap: {}, onFieldEdit: {
+                textfield in
+                self.user.surname = textfield.text
+            }, height: 40).toElement()
+            let name = PassengerDataEntryView.ViewState.NameField(text: nil, placeholder: "Имя", onTap: {}, onFieldEdit: { textfield in
+                self.user.name = textfield.text
+            }, height: 40).toElement()
+            let patronymic = PassengerDataEntryView.ViewState.PatronymicFiled(text: nil, placeholder: "Отчество", onTap: {}, onFieldEdit: { textfield in
+                self.user.patronymic = textfield.text
+            }, height: 40).toElement()
+            let birthday = PassengerDataEntryView.ViewState.BirthdayField(placeholder: "День рождения", textFieldType: .numberPad, onTap: {}, onFieldEdit: { textfield in
+                self.user.birthday = textfield.text
+            } ,height: 40).toElement()
+            let number = PassengerDataEntryView.ViewState.NumberFiled(placeholder: "Телефон", textFieldType: .numberPad, onTap: {}, onFieldEdit: { textfield in
+                self.user.phoneNumber = textfield.text
+            }, height: 40).toElement()
+            let gender = PassengerDataEntryView.ViewState.GenderCell(gender: .male, onTap: { gender in
+                self.user.gender = gender
+            }, height: 50).toElement()
+            elements.append(contentsOf: [surname, name, patronymic, birthday, number, gender])
+        }
         let personSection = SectionState(header: nil, footer: nil)
-        let personState = State(model: personSection, elements: [personDataHeader, surname, name, patronymic, birthday, number, gender])
+        let personState = State(model: personSection, elements: elements)
         
         let citizenHeader = PassengerDataEntryView.ViewState.CitizenshipHeader(title: "Гражданство", height: 50).toElement()
         let citizenship = PassengerDataEntryView.ViewState.CitizenshipCell(title: "Указать гражданство", onSelect: {}, height: 50).toElement()
@@ -65,15 +102,19 @@ class PassengerDataEntryController: UIViewController {
         let document = PassengerDataEntryView.ViewState.DocumentCell(title: "Выбрать документ", onSelect: {}, height: 50).toElement()
         let documentSection = SectionState(header: nil, footer: nil)
         let documentState = State(model: documentSection, elements: [documentHeader, document])
-        
         nestedView.viewState.state = [personState, citizenshipState, documentState]
     }
     
     private func setupReadyButton() {
         nestedView.onReadySelect = { [weak self] in
             guard let self = self else { return }
-            SomeCache.shared.addToCache(user: self.user)
-            self.popToBooking()
+            if SomeCache.shared.checkCache(for: self.user) {
+                SomeCache.shared.addToCache(user: self.user)
+                self.popToBooking()
+            } else {
+                SomeCache.shared.replaceUser(on: self.user)
+                self.popToBooking()
+            }
         }
     }
     

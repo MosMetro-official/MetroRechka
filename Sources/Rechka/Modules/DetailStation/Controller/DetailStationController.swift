@@ -154,7 +154,9 @@ extension DetailStationController {
             bookingWithPerson.model = model
             navigationController?.pushViewController(bookingWithPerson, animated: true)
         } else {
-            
+            let bookingWithoutPerson = WithoutPersonBookingController()
+            bookingWithoutPerson.model = model
+            navigationController?.pushViewController(bookingWithoutPerson, animated: true)
         }
     }
 }
