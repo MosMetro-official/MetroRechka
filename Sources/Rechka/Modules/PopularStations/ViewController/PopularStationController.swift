@@ -69,11 +69,13 @@ public class PopularStationController : UIViewController {
         }
         settingsView.onTerminalsButton = {[weak self] in
             guard let self = self else { return }
-            if Rechka.isMapsAvailable {
-                self.openMapController()
-            } else {
-                self.openTerminalsTable()
-            }
+            let controller = BookingController()
+            self.present(controller, animated: true)
+//            if Rechka.isMapsAvailable {
+//                self.openMapController()
+//            } else {
+//                self.openTerminalsTable()
+//            }
         }
         settingsView.onPersonsMenu = { [weak self] persons in
             guard let self = self else { return }

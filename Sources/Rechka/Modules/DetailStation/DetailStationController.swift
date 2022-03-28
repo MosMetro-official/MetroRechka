@@ -14,10 +14,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func onTerminalsListSelect() {
-        
-    }
-    
+    func onTerminalsListSelect() { }
     
     var nestedView = DetailView(frame: UIScreen.main.bounds)
     
