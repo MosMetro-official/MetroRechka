@@ -7,12 +7,64 @@
 
 import Foundation
 
+class SomeCache {
+    static let shared = SomeCache()
+    private init() {}
+    var cache: [String: [User]] = ["user": []]
+    
+    func replaceUser(on user: User) {
+        guard var users = cache["user"] else { return }
+        for (index, _) in users.enumerated() {
+            users[index] = user
+        }
+    }
+   
+    func checkCache(for user: User) -> Bool {
+        guard let users = cache["user"] else { return false }
+        if users.contains(user) {
+            return false
+        }
+        return true
+    }
+    
+    func addToCache(user: User) {
+        cache["user"]?.append(user)
+    }
+}
+
+struct PaymentModel {
+    var ticket: [Ticket]
+}
+
+struct Ticket {
+    var user: User?
+    var ticket: FakeTickets?
+}
+
+struct User: Equatable {
+    var name: String?
+    var surname: String?
+    var middleName: String?
+    var birthday: String?
+    var phoneNumber: String?
+    var gender: Gender?
+}
+
+enum Gender: String {
+    case male
+    case female
+}
+
 struct FakeTickets {
     let price: String
     let tariff: String
+    //var user: User?
 }
 
-struct FakeModel {
+struct FakeModel: Equatable {
+    static func == (lhs: FakeModel, rhs: FakeModel) -> Bool {
+        return lhs.title == rhs.title
+    }
     let title: String
     let jetty: String
     let time: String
@@ -20,8 +72,11 @@ struct FakeModel {
     let price: String
     let duration: String
     let fromTo: String
-    let ticketsList: [FakeTickets]
+    var ticketsList: [FakeTickets]
     let ticketsCount: Int
+    let isPersonalDataRequired: Bool
+    let isWithoutPlace: Bool
+    let places: [String]
     
     static func getModels() -> [FakeModel] {
         let first = FakeModel(
@@ -38,7 +93,10 @@ struct FakeModel {
                 FakeTickets(price: "1100 ₽", tariff: "Взрослый (с ужином или обедом, Standard)"),
                 FakeTickets(price: "1500 ₽", tariff: "Взрослый (с ужином или обедом, Premium)")
             ],
-            ticketsCount: 6
+            ticketsCount: 6,
+            isPersonalDataRequired: true,
+            isWithoutPlace: false,
+            places: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
         )
         let second = FakeModel(
             title: "Экскурсия",
@@ -49,7 +107,10 @@ struct FakeModel {
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
             ticketsList: [FakeTickets(price: "1500 ₽", tariff: "Единый")],
-            ticketsCount: 2
+            ticketsCount: 2,
+            isPersonalDataRequired: false,
+            isWithoutPlace: true,
+            places: []
         )
         let third = FakeModel(
             title: "Круиз «Filmonter» ресторана «METRO»",
@@ -65,7 +126,10 @@ struct FakeModel {
                 FakeTickets(price: "1500 ₽", tariff: "Взрослый (с ужином или обедом, Standard)"),
                 FakeTickets(price: "1800 ₽", tariff: "Взрослый (с ужином или обедом, Premium)")
             ],
-            ticketsCount: 2
+            ticketsCount: 2,
+            isPersonalDataRequired: false,
+            isWithoutPlace: false,
+            places: ["1", "2", "3", "4", "5"]
         )
         let fourth = FakeModel(
             title: "Экскурсия",
@@ -75,7 +139,11 @@ struct FakeModel {
             price: "1900 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Единый")], ticketsCount: 0
+            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Единый")],
+            ticketsCount: 0,
+            isPersonalDataRequired: false,
+            isWithoutPlace: true,
+            places: []
         )
         let fiveth = FakeModel(
             title: "Круиз «Рэдиссон» ресторана «ERWIN.Река»",
@@ -85,8 +153,14 @@ struct FakeModel {
             price: "900 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "900 ₽", tariff: "Детский"), FakeTickets(price: "1300 ₽", tariff: "Взрослый")],
-            ticketsCount: 4
+            ticketsList: [
+                FakeTickets(price: "900 ₽", tariff: "Детский"),
+                FakeTickets(price: "1300 ₽", tariff: "Взрослый")
+            ],
+            ticketsCount: 4,
+            isPersonalDataRequired: true,
+            isWithoutPlace: true,
+            places: []
         )
         let sixth = FakeModel(
             title: "Экскурсия",
@@ -97,7 +171,10 @@ struct FakeModel {
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
             ticketsList: [FakeTickets(price: "1100 ₽", tariff: "Единый")],
-            ticketsCount: 12
+            ticketsCount: 12,
+            isPersonalDataRequired: false,
+            isWithoutPlace: true,
+            places: []
         )
         let seventh = FakeModel(
             title: "Круиз «Рэдиссон» ресторана «ERWIN.Река",
@@ -107,8 +184,14 @@ struct FakeModel {
             price: "1900 ₽",
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
-            ticketsList: [FakeTickets(price: "1900 ₽", tariff: "Детский"), FakeTickets(price: "2100 ₽", tariff: "Взрослый")],
-            ticketsCount: 2
+            ticketsList: [
+                FakeTickets(price: "1900 ₽", tariff: "Детский"),
+                FakeTickets(price: "2100 ₽", tariff: "Взрослый")
+            ],
+            ticketsCount: 2,
+            isPersonalDataRequired: true,
+            isWithoutPlace: true,
+            places: []
         )
         let eighth = FakeModel(
             title: "Экскурсия",
@@ -119,7 +202,10 @@ struct FakeModel {
             duration: "22 марта 13:00 • 2 часа • 15 км",
             fromTo: "От Холмогорская улица до АС Бронницы",
             ticketsList: [FakeTickets(price: "800 ₽", tariff: "Единый")],
-            ticketsCount: 0
+            ticketsCount: 0,
+            isPersonalDataRequired: false,
+            isWithoutPlace: true,
+            places: []
         )
         return [first, second, third, fourth, fiveth, sixth, seventh, eighth]
     }
