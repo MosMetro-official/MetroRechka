@@ -169,7 +169,7 @@ class PersonBookingView: UIView {
         guard let users = SomeCache.shared.cache["user"] else { return [] }
         users.forEach { user in
             let action = UIAction(
-                title: "\(user.surname ?? "") \(user.name?.first ?? Character("")).\(user.patronymic?.first ?? Character("")).",
+                title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
                 image: UIImage(systemName: "person")) { _ in
                     self.showUserFromCache?(user)
                 }

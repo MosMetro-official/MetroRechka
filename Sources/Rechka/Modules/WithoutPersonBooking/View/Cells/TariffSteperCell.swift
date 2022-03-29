@@ -10,10 +10,10 @@ import CoreTableView
 
 protocol _TariffSteper: CellData {
     var tariff: String { get }
-    var price: String { get set }
-    var stepperCount: String { get set }
-    var onPlus: (Int) -> () { get set }
-    var onMinus: (Int) -> () { get set }
+    var price: String { get }
+    var stepperCount: String { get }
+    var onPlus: (Int) -> () { get }
+    var onMinus: (Int) -> () { get }
 }
 
 extension _TariffSteper {
@@ -30,7 +30,7 @@ extension _TariffSteper {
 }
 
 class TariffSteperCell: UITableViewCell {
-
+    
     @IBOutlet weak var stepperView: UIView!
     @IBOutlet weak var stepperLabel: UILabel!
     @IBOutlet weak var minusButton: UIButton!
@@ -40,13 +40,18 @@ class TariffSteperCell: UITableViewCell {
     var onPlus: ((Int) -> ())?
     var onMinus: ((Int) -> ())?
     var enableMinus: Bool {
-        return stepperLabel.text == "0"
+        return currentCount > 0
     }
-    lazy var currentCount = Int(stepperLabel.text ?? "1")
+    private var currentCount: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        stepperView.layer.cornerRadius = 6
+        stepperView.layer.cornerRadius = 8
+        minusButton.isEnabled = false
+        minusButton.alpha = 0.3
+        stepperLabel.font = UIFont(name: "MoscowSans-Regular", size: 15)
+        tariffLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
+        priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
     }
     
     public func configure(with data: _TariffSteper) {
@@ -55,18 +60,35 @@ class TariffSteperCell: UITableViewCell {
         stepperLabel.text = data.stepperCount
         onPlus = data.onPlus
         onMinus = data.onMinus
-        minusButton.alpha = enableMinus ? 0.3 : 1
     }
     
     @IBAction func minusButtonTapped() {
-        let count = Int(stepperLabel.text ?? "0")
-        stepperLabel.text = String((count ?? 0) - 1)
-        onMinus?(currentCount ?? 0)
+        if enableMinus {
+            currentCount -= 1
+            stepperLabel.text = String(currentCount)
+            onMinus?(currentCount)
+            if currentCount == 0 {
+                disableMinus()
+            }
+        }
     }
     
     @IBAction func plusButtonTapped() {
-        let count = Int(stepperLabel.text ?? "0")
-        stepperLabel.text = String((count ?? 0) + 1)
-        onPlus?(currentCount ?? 0)
+        currentCount += 1
+        stepperLabel.text = String(currentCount)
+        onPlus?(currentCount)
+        if currentCount != 0 {
+            enableMinuse()
+        }
+    }
+    
+    private func disableMinus() {
+        minusButton.isEnabled = false
+        minusButton.alpha = 0.3
+    }
+    
+    private func enableMinuse() {
+        minusButton.isEnabled = true
+        minusButton.alpha = 1
     }
 }

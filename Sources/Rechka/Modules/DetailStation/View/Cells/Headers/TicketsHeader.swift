@@ -10,9 +10,13 @@ import CoreTableView
 
 protocol _TicketsHeader: HeaderData {
     var ticketsCount: Int { get }
+    var title: String { get }
+    var isInsetGroup: Bool { get }
 }
 
 extension _TicketsHeader {
+    var isInsetGroup: Bool { return false }
+    
     func header(for tableView: UITableView, section: Int) -> UIView? {
         tableView.register(TicketsHeader.nib, forHeaderFooterViewReuseIdentifier: TicketsHeader.identifire)
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TicketsHeader.identifire) as? TicketsHeader else { return nil }
@@ -25,6 +29,7 @@ class TicketsHeader: UITableViewHeaderFooterView {
 
     @IBOutlet weak var ticketLabel: UILabel!
     @IBOutlet weak var lowTicketsCount: UILabel!
+    @IBOutlet weak var leftConstraintTitleLabel: NSLayoutConstraint!
     
     var isLowTicketsCount: Int! {
         didSet {
@@ -46,5 +51,7 @@ class TicketsHeader: UITableViewHeaderFooterView {
     
     public func configure(with data: _TicketsHeader) {
         isLowTicketsCount = data.ticketsCount
+        ticketLabel.text = data.title
+        leftConstraintTitleLabel.constant = data.isInsetGroup ? 20 : 10
     }
 }

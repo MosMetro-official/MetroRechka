@@ -14,6 +14,9 @@ protocol _Suumary: CellData {
 }
 
 extension _Suumary {
+    public func hashValues() -> [Int] {
+        return [duration.hashValue, fromTo.hashValue]
+    }
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? SummaryCell else { return }
         cell.configure(with: self)

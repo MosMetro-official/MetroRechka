@@ -14,7 +14,6 @@ protocol _StationCell: CellData {
     var time: String { get }
     var tickets: Bool { get }
     var price: String { get }
-    var onSelect: () -> () { get }
 }
 
 extension _StationCell {

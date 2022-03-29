@@ -49,7 +49,7 @@ class WithoutPersonBookingView: UIView {
         label.font = UIFont(name: "MoscowSans-Bold", size: 22)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .custom(for: .textPrimary)
         return label
     }()
     
@@ -133,7 +133,5 @@ class WithoutPersonBookingView: UIView {
                 tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor)
             ]
         )
-        
     }
-    
 }

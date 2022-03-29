@@ -9,22 +9,11 @@ import UIKit
 import CoreTableView
 
 protocol _Field: CellData {
-    var text: String? { get }
-    var placeholder: String { get }
-    var textFieldType: UIKeyboardType { get }
-    var onFieldEdit: (UITextField) -> () { get }
-    var onTap: () -> () { get }
+    var text: String { get }
+    var onSelect: () -> () { get }
 }
 
 extension _Field {
-    var text: String? {
-        return nil
-    }
-    
-    var textFieldType: UIKeyboardType {
-        return .default
-    }
-    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? FieldCell else { return }
         cell.configure(with: self)
@@ -38,24 +27,16 @@ extension _Field {
 }
 
 class FieldCell: UITableViewCell {
-
-    @IBOutlet weak var textField: UITextField!
     
-    var handleText: ((UITextField) -> ())?
-    
+    @IBOutlet weak var mainTextLabel: UILabel!
+        
     override func awakeFromNib() {
         super.awakeFromNib()
-        textField.font = UIFont(name: "MoscowSans-Regular", size: 17)
+        mainTextLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
     
     public func configure(with data: _Field) {
-        textField.text = data.text
-        textField.placeholder = data.placeholder
-        textField.keyboardType = data.textFieldType
-        handleText = data.onFieldEdit
+        mainTextLabel.text = data.text
     }
     
-    @IBAction func textEnter(_ sender: UITextField) {
-        handleText?(sender)
-    }
 }

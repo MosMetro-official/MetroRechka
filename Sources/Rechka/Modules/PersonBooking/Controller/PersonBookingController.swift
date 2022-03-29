@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 
 protocol PersonBookingDelegate: AnyObject {
-    func setupNewUser(for user: User, and oldModel: FakeModel)
+    func setupNewUser(for payment: [PaymentModel], and model: FakeModel)
 }
 
 class PersonBookingController: UIViewController {
@@ -17,7 +17,11 @@ class PersonBookingController: UIViewController {
     let nestedView = PersonBookingView(frame: UIScreen.main.bounds)
         
     var model: FakeModel!
-    var user: User?
+    var paymentModel: [PaymentModel]? {
+        didSet {
+            print("🔥🔥🔥 paymnet for booking - \(paymentModel)")
+        }
+    }
     
     override func loadView() {
         super.loadView()
@@ -38,25 +42,36 @@ class PersonBookingController: UIViewController {
         nestedView.onReload()
     }
     
-    private func makeState(for cacheUser: User? = nil) {
-        var elements: [Element] = []
-        if cacheUser != nil {
-            let passengerHeaderCell = PersonBookingView.ViewState.PassengerHeader(onAdd: {}, height: 50).toElement()
-            let passenger = PersonBookingView.ViewState.Passenger(name: "\(cacheUser?.surname ?? "") \(cacheUser?.name ?? "")", tariff: model.ticketsList.first?.tariff ?? "", height: 70).toElement()
-            elements.append(contentsOf: [passengerHeaderCell, passenger])
-        } else {
-            let passengerHeaderCell = PersonBookingView.ViewState.PassengerHeader(onAdd: {}, height: 50).toElement()
-            let passenger = PersonBookingView.ViewState.Passenger(name: "\(user?.surname ?? "") \(user?.name ?? "")", tariff: model.ticketsList.first?.tariff ?? "", height: 70).toElement()
-            elements.append(contentsOf: [passengerHeaderCell, passenger])
+    private func makeState(for cacheUser: User? = nil, from payment: [PaymentModel]) {
+        let users = payment.flatMap({$0.ticket}).map({$0.user})
+        var pasElements: [Element] = []
+        let tickets = payment.flatMap({$0.ticket})
+        var tickElements: [Element] = []
+        // passenger
+        let passengerHeaderCell = PersonBookingView.ViewState.PassengerHeader(onAdd: {
+            self.pushPersonDataEntry()
+        }, height: 50).toElement()
+        users.forEach { user in
+            tickets.forEach { ticket in
+                let passenger = PersonBookingView.ViewState.Passenger(name: "\(user?.surname ?? "") \(user?.name ?? "")", tariff: ticket.ticket?.tariff ?? "", height: 70).toElement()
+                pasElements.append(contentsOf: [passengerHeaderCell, passenger])
+            }
         }
+        //}
         let passengerSection = SectionState(header: nil, footer: nil)
-        let passengerState = State(model: passengerSection, elements: elements)
+        let passengerState = State(model: passengerSection, elements: pasElements)
         
+        // tickets
         let tariffHeader = PersonBookingView.ViewState.TariffHeader(height: 50).toElement()
-        let tariff = PersonBookingView.ViewState.Tariff(tariffs: model.ticketsList.first?.tariff ?? "", price: model.ticketsList.first!.price, height: 60).toElement()
+        tickElements.append(tariffHeader)
+        tickets.forEach { ticket in
+            let tariff = PersonBookingView.ViewState.Tariff(tariffs: "\(ticket.ticket?.tariff ?? "") x\(tickets.count)", price: ticket.ticket?.price ?? "", height: 60).toElement()
+            tickElements.append(tariff)
+        }
         let commission = PersonBookingView.ViewState.Commission(commission: "Комиссия сервиса", price: "60 ₽", height: 60).toElement()
+        tickElements.append(commission)
         let tariffSection = SectionState(header: nil, footer: nil)
-        let tariffState = State(model: tariffSection, elements: [tariffHeader, tariff, commission])
+        let tariffState = State(model: tariffSection, elements: tickElements)
         
         nestedView.state = PersonBookingView.ViewState(state: [], dataState: .addedPersonData([passengerState, tariffState]))
     }
@@ -69,7 +84,8 @@ class PersonBookingController: UIViewController {
             users.forEach { user in
                 let action = UIAlertAction(title: "\(user.surname ?? "")", style: .default) { _ in
                     print("action alert")
-                    self.pushPersonDataEntry(with: user)
+                    //self.pushPersonDataEntry(model: self.model, with: self.paymentModel)
+                    self.pushPersonDataEntry(model: self.model, and: user)
                 }
                 actions.append(action)
             }
@@ -79,17 +95,21 @@ class PersonBookingController: UIViewController {
             self.present(personAlert, animated: true)
         }
         
-        nestedView.showPersonDataEntry = {
-            self.pushPersonDataEntry(with: self.user, and: self.model)
+        nestedView.showPersonDataEntry = { [weak self] in
+            guard let self = self else { return }
+            self.pushPersonDataEntry(model: self.model, with: self.paymentModel?[0])
         }
     }
     
-    private func pushPersonDataEntry(with user: User? = nil, and model: FakeModel? = nil) {
+    private func pushPersonDataEntry(model: FakeModel? = nil, with payment: PaymentModel? = nil, and user: User? = nil) {
         let passenderDataEntry = PassengerDataEntryController()
         passenderDataEntry.delegate = self
-        passenderDataEntry.model = model!
-        if user != nil {
-            passenderDataEntry.oldUser = user
+        if let model = model {
+            passenderDataEntry.model = model
+        }
+        if payment != nil {
+            passenderDataEntry.paymentModel = payment
+            passenderDataEntry.displayUser = user
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         } else {
             navigationController?.pushViewController(passenderDataEntry, animated: true)
@@ -99,15 +119,15 @@ class PersonBookingController: UIViewController {
     private func setupCacheUser() {
         nestedView.showUserFromCache = { [weak self] user in
             guard let self = self else { return }
-            self.pushPersonDataEntry(with: user, and: self.model)
+            //self.pushPersonDataEntry(model: self.model, with: self.paymentModel)
         }
     }
 }
 
 extension PersonBookingController: PersonBookingDelegate {
-    func setupNewUser(for user: User, and oldModel: FakeModel) {
-        self.user = user
-        self.model = oldModel
-        self.makeState()
+    func setupNewUser(for payment: [PaymentModel], and model: FakeModel) {
+        self.paymentModel = payment
+        self.model = model
+        self.makeState(from: payment)
     }
 }

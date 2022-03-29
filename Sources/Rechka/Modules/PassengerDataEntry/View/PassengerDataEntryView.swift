@@ -14,55 +14,22 @@ class PassengerDataEntryView: UIView {
         
         var state: [State]
         let dataState: DataState
+        var onSave: () -> ()
         
         enum DataState {
             case loading
             case loaded
         }
         
-        struct PersonHeader: _Static {
+        struct Header: _Static {
             let title: String
             let height: CGFloat
         }
         
-        struct NameField: _Field {
-            let text: String?
-            let placeholder: String
-            let onTap: () -> ()
-            let onFieldEdit: (UITextField) -> ()
+        struct Filed: _Field {
+            let text: String
             let height: CGFloat
-        }
-        
-        struct SurnameField: _Field {
-            let text: String?
-            let placeholder: String
-            let onTap: () -> ()
-            let onFieldEdit: (UITextField) -> ()
-            let height: CGFloat
-        }
-        
-        struct PatronymicFiled: _Field {
-            let text: String?
-            let placeholder: String
-            let onTap: () -> ()
-            let onFieldEdit: (UITextField) -> ()
-            let height: CGFloat
-        }
-        
-        struct BirthdayField: _Field {
-            let placeholder: String
-            let textFieldType: UIKeyboardType
-            let onTap: () -> ()
-            let onFieldEdit: (UITextField) -> ()
-            let height: CGFloat
-        }
-        
-        struct NumberFiled: _Field {
-            let placeholder: String
-            let textFieldType: UIKeyboardType
-            let onTap: () -> ()
-            let onFieldEdit: (UITextField) -> ()
-            let height: CGFloat
+            let onSelect: () -> ()
         }
         
         struct GenderCell: _Gender {
@@ -71,46 +38,38 @@ class PassengerDataEntryView: UIView {
             let height: CGFloat
         }
         
-        struct CitizenshipHeader: _Static {
+        struct SelectField: _SelectCell {
             let title: String
             let height: CGFloat
-        }
-        
-        struct CitizenshipCell: _Citizen {
-            let title: String
             let onSelect: () -> ()
-            let height: CGFloat
-        }
-        
-        struct DocumentHeader: _Static {
-            let title: String
-            let height: CGFloat
-        }
-        
-        struct DocumentCell: _Document {
-            let title: String
-            let onSelect: () -> ()
-            let height: CGFloat
         }
         
         struct DocumentField: _Field {
-            let placeholder: String
-            let textFieldType: UIKeyboardType
-            let onTap: () -> ()
-            let onFieldEdit: (UITextField) -> ()
+            let text: String
             let height: CGFloat
-        }
-        
-        struct TariffHeader {
-            let title: String
-        }
-        
-        struct TariffCell {
-            let tariffs: FakeModel
             let onSelect: () -> ()
         }
         
-        static let initial = PassengerDataEntryView.ViewState(state: [], dataState: .loading)
+        struct TariffHeader: _TicketsHeader {
+            let title: String
+            let ticketsCount: Int
+            let isInsetGroup: Bool
+            let height: CGFloat
+        }
+        
+        struct Tickets: _Tickets {
+            let ticketList: FakeModel
+            let onChoice: ((Int) -> ())?
+            let isSelectable: Bool
+            let height: CGFloat
+        }
+        
+        struct ChoicePlace: _ChoicePlace {
+            let onSelect: () -> ()
+            let height: CGFloat
+        }
+                
+        static let initial = PassengerDataEntryView.ViewState(state: [], dataState: .loading, onSave: {})
     }
     
     var viewState: ViewState = .initial {
@@ -127,9 +86,9 @@ class PassengerDataEntryView: UIView {
     
     var onReadySelect: (() -> ())?
     
-    private let buttonView: UIView = {
+    private var buttonView: UIView = {
         let view = UIView()
-        view.backgroundColor = .custom(for: .settingsPanel)
+        view.backgroundColor = .clear
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = UIScreen.main.displayCornerRadius
@@ -159,13 +118,21 @@ class PassengerDataEntryView: UIView {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
+        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 125, right: 0)
         return table
     }()
     
+    private var bgBlurView : UIVisualEffectView!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        bgBlurView = UIVisualEffectView(frame: frame)
+        let effect = UIBlurEffect(style: .systemChromeMaterial)
+        bgBlurView.effect = effect
+        self.buttonView.insertSubview(bgBlurView, at: 0)
         setupConstrains()
         setupButtonAction()
+        backgroundColor = .custom(for: .base)
     }
     
     required init?(coder: NSCoder) {
@@ -197,7 +164,7 @@ class PassengerDataEntryView: UIView {
                 tableView.topAnchor.constraint(equalTo: topAnchor),
                 tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor),
+                tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 
                 buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -215,6 +182,7 @@ class PassengerDataEntryView: UIView {
     private func render() {
         DispatchQueue.main.async {
             self.tableView.viewStateInput = self.viewState.state
+            self.tableView.shouldUseReload = true
         }
     }
 

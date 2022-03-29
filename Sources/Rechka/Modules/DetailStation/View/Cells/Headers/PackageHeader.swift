@@ -14,6 +14,10 @@ protocol _PackageHeader: HeaderData {
 }
 
 extension _PackageHeader {
+    public func hashValues() -> [Int] {
+        return [isExpanded.hashValue]
+    }
+    
     func header(for tableView: UITableView, section: Int) -> UIView? {
         tableView.register(PackageHeader.nib, forHeaderFooterViewReuseIdentifier: PackageHeader.identifire)
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: PackageHeader.identifire) as? PackageHeader else { return nil }

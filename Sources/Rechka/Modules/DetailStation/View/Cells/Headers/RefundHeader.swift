@@ -14,6 +14,9 @@ protocol _RefundHeader: HeaderData {
 }
 
 extension _RefundHeader {
+    public func hashValues() -> [Int] {
+        return [isExpanded.hashValue]
+    }
     func header(for tableView: UITableView, section: Int) -> UIView? {
         tableView.register(RefundHeader.nib, forHeaderFooterViewReuseIdentifier: RefundHeader.identifire)
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: RefundHeader.identifire) as? RefundHeader else { return nil }

@@ -10,9 +10,12 @@ import CoreTableView
 
 protocol _Tickets: CellData {
     var ticketList: FakeModel { get }
+    var onChoice: ((Int) -> ())? { get }
+    var isSelectable: Bool { get }
 }
 
 extension _Tickets {
+    var onChoice: ((Int) -> ())? { return nil }
     
     var height: CGFloat {
         return 60
@@ -38,6 +41,8 @@ class TicketsCell: UITableViewCell {
             collectionView.reloadData()
         }
     }
+    private var choiceTicket: ((Int) -> ())?
+    private var isSelectable: Bool!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -49,11 +54,17 @@ class TicketsCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: 15, left: 10, bottom: 0, right: 10))
+        if isSelectable {
+            contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0))
+        } else {
+            contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: 15, left: 10, bottom: 0, right: 10))
+        }
     }
     
     public func configure(with data: _Tickets) {
         model = data.ticketList
+        isSelectable = data.isSelectable
+        choiceTicket = data.onChoice
     }
 }
 
@@ -77,11 +88,26 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
                 return cell
             default:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return .init() }
+                cell.isSelectable = isSelectable
                 cell.configure(with: ticket)
                 return cell
             }
         }
         return .init()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch model?.ticketsCount {
+        case 0:
+            break
+        default:
+            if isSelectable {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return }
+                cell.isSelectable = isSelectable
+                choiceTicket?(indexPath.row)
+                cell.isSelected.toggle()
+            }
+        }
     }
 }
 

@@ -32,10 +32,19 @@ class SomeCache {
     }
 }
 
+struct PaymentModel {
+    var ticket: [Ticket]
+}
+
+struct Ticket {
+    var user: User?
+    var ticket: FakeTickets?
+}
+
 struct User: Equatable {
     var name: String?
     var surname: String?
-    var patronymic: String?
+    var middleName: String?
     var birthday: String?
     var phoneNumber: String?
     var gender: Gender?
@@ -49,9 +58,13 @@ enum Gender: String {
 struct FakeTickets {
     let price: String
     let tariff: String
+    //var user: User?
 }
 
-struct FakeModel {
+struct FakeModel: Equatable {
+    static func == (lhs: FakeModel, rhs: FakeModel) -> Bool {
+        return lhs.title == rhs.title
+    }
     let title: String
     let jetty: String
     let time: String
@@ -59,7 +72,7 @@ struct FakeModel {
     let price: String
     let duration: String
     let fromTo: String
-    let ticketsList: [FakeTickets]
+    var ticketsList: [FakeTickets]
     let ticketsCount: Int
     let isPersonalDataRequired: Bool
     let isWithoutPlace: Bool
@@ -115,8 +128,8 @@ struct FakeModel {
             ],
             ticketsCount: 2,
             isPersonalDataRequired: false,
-            isWithoutPlace: true,
-            places: []
+            isWithoutPlace: false,
+            places: ["1", "2", "3", "4", "5"]
         )
         let fourth = FakeModel(
             title: "Экскурсия",

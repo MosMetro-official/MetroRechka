@@ -12,6 +12,7 @@ class DetailView: UIView {
     
     struct ViewState {
         
+        var isChoiceButtonDisable: Bool
         let state: [State]
         let dataState: DataState
         
@@ -33,11 +34,13 @@ class DetailView: UIView {
         }
         
         struct TicketsHeader: _TicketsHeader {
+            let title: String
             let ticketsCount: Int
             let height: CGFloat
         }
         
         struct Tickets: _Tickets {
+            var isSelectable: Bool
             var ticketList: FakeModel
             let height: CGFloat
         }
@@ -62,7 +65,7 @@ class DetailView: UIView {
             let height: CGFloat
         }
         
-        static let initial = DetailView.ViewState(state: [], dataState: .loading)
+        static let initial = DetailView.ViewState(isChoiceButtonDisable: false, state: [], dataState: .loading)
     }
     
     var viewState: ViewState = .initial {
@@ -103,7 +106,7 @@ class DetailView: UIView {
         return button
     }()
     
-    private lazy var tableView: BaseTableView = {
+     lazy var tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .clear
@@ -145,6 +148,11 @@ class DetailView: UIView {
         onClose?()
     }
     
+    private func disableChoiceButton() {
+        choiceTicketButton.isEnabled = false
+        choiceTicketButton.alpha = 0.3
+    }
+    
     private func setupHeaderView() {
         tableView.onScroll = { scroll in
             guard let header = self.tableView.tableHeaderView as? PosterHeaderView else { return }
@@ -183,6 +191,9 @@ class DetailView: UIView {
     private func render() {
         DispatchQueue.main.async {
             self.tableView.viewStateInput = self.viewState.state
+            if self.viewState.isChoiceButtonDisable {
+                self.disableChoiceButton()
+            }
         }
     }
 }

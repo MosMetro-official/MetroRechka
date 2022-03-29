@@ -98,10 +98,12 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         
         // Tikcets
         let tickets = DetailView.ViewState.Tickets(
+            isSelectable: false,
             ticketList: model,
             height: 130
         ).toElement()
         let ticketsHeader = DetailView.ViewState.TicketsHeader(
+            title: "Билеты",
             ticketsCount: model.ticketsCount,
             height: 20
         )
@@ -111,7 +113,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         // Refund section
         let refund = DetailView.ViewState.AboutRefund(height: 210).toElement()
         
-        let refundHeader = DetailView.ViewState.RefundHeader(height: 50, isExpanded: true, onExpandTap: {
+        let refundHeader = DetailView.ViewState.RefundHeader(height: 50, isExpanded: !showRefundRow, onExpandTap: {
             self.showRefundRow.toggle()
         })
         var refundElements = [Element]()
@@ -123,7 +125,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         let package = DetailView.ViewState.AboutPackage(height: 210).toElement()
         let packageHeader = DetailView.ViewState.PackageHeader(
             height: 50,
-            isExpanded: true,
+            isExpanded: !showBaggageRow,
             onExpandTap: {
                 self.showBaggageRow.toggle()
             })
@@ -131,7 +133,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         if showBaggageRow { packagelements.append(package) }
         let packageSectionState = SectionState(isCollapsed: false, header: packageHeader, footer: nil)
         let statePackage = State(model: packageSectionState, elements: packagelements)
-        self.nestedView.viewState = DetailView.ViewState(state: [stateSummary, ticketsState, stateRefund, statePackage], dataState: .loaded)
+        self.nestedView.viewState = DetailView.ViewState(isChoiceButtonDisable: model.ticketsCount == 0, state: [stateSummary, ticketsState, stateRefund, statePackage], dataState: .loaded)
     }
     
     private func showRouteOnMap() {
