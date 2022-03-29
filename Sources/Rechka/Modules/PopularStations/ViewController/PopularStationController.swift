@@ -67,9 +67,10 @@ public class PopularStationController : UIViewController {
             }))
             self.present(alert, animated: true, completion: nil)
         }
-        settingsView.onTerminalsButton = {[weak self] in
+        settingsView.onTerminalsButton = { [weak self] in
             guard let self = self else { return }
-            let controller = BookingController()
+            struct Mock : _TicietsDetailsView { }
+            let controller = TicketDetailsController()
             self.present(controller, animated: true)
 //            if Rechka.isMapsAvailable {
 //                self.openMapController()
