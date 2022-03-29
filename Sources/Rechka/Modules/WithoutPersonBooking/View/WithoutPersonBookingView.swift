@@ -35,6 +35,22 @@ class WithoutPersonBookingView: UIView {
             let height: CGFloat
         }
         
+        struct TariffHeader: _TariffHeaderCell {
+            let height: CGFloat
+        }
+        
+        struct Tariff: _Tariff {
+            let tariffs: String
+            let price: String
+            let height: CGFloat
+        }
+        
+        struct Commission: _Commission {
+            let commission: String
+            let price: String
+            let height: CGFloat
+        }
+        
         static let initial = WithoutPersonBookingView.ViewState(title: "", state: [], dataState: .loading)
     }
     
@@ -62,6 +78,7 @@ class WithoutPersonBookingView: UIView {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
+        table.shouldUseReload = true
         return table
     }()
     
