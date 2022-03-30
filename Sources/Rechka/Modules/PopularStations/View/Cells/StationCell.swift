@@ -14,7 +14,6 @@ protocol _StationCell: CellData {
     var time: String { get }
     var tickets: Bool { get }
     var price: String { get }
-    var onPay: () -> () { get }
 }
 
 extension _StationCell {
@@ -143,7 +142,7 @@ class StationCell: UITableViewCell {
         posterImage.image = UIImage(named: "poster", in: .module, with: nil)
         priceButton.setTitle("От \(data.price)", for: .normal)
         priceButton.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        onSelect = data.onPay
+        onSelect = data.onSelect
     }
     
     public func earaseData() {

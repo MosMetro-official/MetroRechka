@@ -60,7 +60,7 @@ public class Appearance: _Appearance {
         .textInverted: UIColor(named: Colors.textInverted.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
         .textSecondary: UIColor(named: Colors.textSecondary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
         .buttonSecondary: UIColor(named: Colors.buttonSecondary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .emptyTicketsLayer: UIColor(named: Colors.emptyTicketsLayer.rawValue) ?? UIColor(),
+        .emptyTicketsLayer: UIColor(named: Colors.emptyTicketsLayer.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
         .settingsButtonColor: UIColor(named: Colors.settingsButtonColor.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
     ]
 }

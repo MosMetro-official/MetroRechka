@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="MoscowSans-Bold.otf">
+            <string>MoscowSans-Bold</string>
+        </array>
+        <array key="MoscowSans-Medium.otf">
+            <string>MoscowSans-Medium</string>
+        </array>
+        <array key="MoscowSans-Regular.otf">
+            <string>MoscowSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="290" id="KGk-i7-Jjw" customClass="TicketDetailCell" customModule="Rechka">
+            <rect key="frame" x="0.0" y="0.0" width="356" height="290"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="356" height="290"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zr0-DC-Qr1">
+                        <rect key="frame" x="0.0" y="0.0" width="356" height="56"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Тут типо статус" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tHc-Gc-bqc">
+                                <rect key="frame" x="16" y="12" width="324" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="ged-nf-PqE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                <color key="textColor" name="textInverted"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="textPrimary"/>
+                        <constraints>
+                            <constraint firstItem="tHc-Gc-bqc" firstAttribute="top" secondItem="Zr0-DC-Qr1" secondAttribute="top" constant="12" id="IrD-LB-9L9"/>
+                            <constraint firstItem="tHc-Gc-bqc" firstAttribute="leading" secondItem="Zr0-DC-Qr1" secondAttribute="leading" constant="16" id="JWQ-Yq-m5M"/>
+                            <constraint firstAttribute="trailing" secondItem="tHc-Gc-bqc" secondAttribute="trailing" constant="16" id="ekJ-Kc-mxT"/>
+                            <constraint firstAttribute="height" constant="56" id="pNm-mj-fdh"/>
+                        </constraints>
+                    </view>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fFK-co-TN4">
+                        <rect key="frame" x="0.0" y="40" width="356" height="250"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="orW-dc-oxt">
+                                <rect key="frame" x="16" y="20" width="44" height="17"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Bold" family="Moscow Sans" pointSize="17"/>
+                                <color key="textColor" name="textInverted"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmM-mD-hV8">
+                                <rect key="frame" x="297" y="20" width="43" height="17"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="17"/>
+                                <color key="textColor" name="textInverted"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Пассажир" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYN-80-91a">
+                                <rect key="frame" x="16" y="53" width="61.5" height="13"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="13"/>
+                                <color key="textColor" name="textSecondary"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizeKey" value="main_bus_passenger"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Место" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTB-sN-1LV">
+                                <rect key="frame" x="300" y="53" width="40" height="13"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="13"/>
+                                <color key="textColor" name="textSecondary"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizeKey" value="main_bus_place"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZN-0H-QFu">
+                                <rect key="frame" x="16" y="72" width="38" height="15"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                <color key="textColor" name="textInverted"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKk-mM-xGc">
+                                <rect key="frame" x="302" y="72" width="38" height="15"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                <color key="textColor" name="textInverted"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T4Q-PW-Vbn">
+                                <rect key="frame" x="0.0" y="138" width="356" height="24"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hVd-Pp-EHI">
+                                        <rect key="frame" x="-12" y="0.0" width="24" height="24"/>
+                                        <color key="backgroundColor" name="base"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="CpB-H3-F9l"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TOy-JL-H07">
+                                        <rect key="frame" x="344" y="0.0" width="24" height="24"/>
+                                        <color key="backgroundColor" name="base"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="DFl-Xb-Dcy"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="TOy-JL-H07" firstAttribute="top" secondItem="T4Q-PW-Vbn" secondAttribute="top" id="585-Hh-hc6"/>
+                                    <constraint firstAttribute="bottom" secondItem="hVd-Pp-EHI" secondAttribute="bottom" id="Bxw-q7-gm9"/>
+                                    <constraint firstAttribute="bottom" secondItem="TOy-JL-H07" secondAttribute="bottom" id="YoM-Mh-bhM"/>
+                                    <constraint firstAttribute="height" constant="24" id="crL-fT-obq"/>
+                                    <constraint firstItem="hVd-Pp-EHI" firstAttribute="leading" secondItem="T4Q-PW-Vbn" secondAttribute="leading" constant="-12" id="dnh-ae-gOv"/>
+                                    <constraint firstItem="hVd-Pp-EHI" firstAttribute="top" secondItem="T4Q-PW-Vbn" secondAttribute="top" id="fed-CV-ssY"/>
+                                    <constraint firstAttribute="trailing" secondItem="TOy-JL-H07" secondAttribute="trailing" constant="-12" id="s7C-8B-fsL"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QD6-aH-mI0">
+                                <rect key="frame" x="16" y="186" width="324" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aoa-mO-HSk">
+                                        <rect key="frame" x="0.0" y="0.0" width="77.5" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
+                                        <color key="tintColor" name="emptyTicketsLayer"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Возврат">
+                                            <color key="titleColor" name="emptyTicketsLayer"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizeKey" value="main_bus_return_ticket"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleRefund:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iCZ-dD-mPw"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dn-HE-X5r">
+                                        <rect key="frame" x="82.5" y="0.0" width="77" height="44"/>
+                                        <color key="backgroundColor" name="ButtonTertiary"/>
+                                        <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal">
+                                            <color key="titleColor" name="buttonSecondary"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="handleDownload:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZU9-um-y6l"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U6E-Zg-H7o">
+                                        <rect key="frame" x="164.5" y="0.0" width="77.5" height="44"/>
+                                        <color key="backgroundColor" name="ButtonTertiary"/>
+                                        <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Важная">
+                                            <color key="titleColor" name="buttonSecondary"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizeKey" value="main_bus_refund_details"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleRefundDetails:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="gQe-Hm-N3X"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Инфо" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bXv-x3-WSg">
+                                        <rect key="frame" x="247" y="0.0" width="77" height="44"/>
+                                        <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                        <color key="textColor" name="textSecondary"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizeKey" value="main_bus_ticket_need_to_pay"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="W7U-u5-I06"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" name="buttonSecondary"/>
+                        <constraints>
+                            <constraint firstItem="KmM-mD-hV8" firstAttribute="top" secondItem="fFK-co-TN4" secondAttribute="top" constant="20" id="3Dh-Ws-Txy"/>
+                            <constraint firstItem="T4Q-PW-Vbn" firstAttribute="leading" secondItem="fFK-co-TN4" secondAttribute="leading" id="5tQ-Ww-NVa"/>
+                            <constraint firstItem="HYN-80-91a" firstAttribute="top" secondItem="orW-dc-oxt" secondAttribute="bottom" constant="16" id="EZ6-wH-nlV"/>
+                            <constraint firstItem="zKk-mM-xGc" firstAttribute="top" secondItem="vTB-sN-1LV" secondAttribute="bottom" constant="6" id="L0M-a8-GSo"/>
+                            <constraint firstAttribute="trailing" secondItem="QD6-aH-mI0" secondAttribute="trailing" constant="16" id="LpV-7j-mIw"/>
+                            <constraint firstItem="QD6-aH-mI0" firstAttribute="leading" secondItem="fFK-co-TN4" secondAttribute="leading" constant="16" id="NvX-Dq-f8K"/>
+                            <constraint firstItem="IZN-0H-QFu" firstAttribute="leading" secondItem="fFK-co-TN4" secondAttribute="leading" constant="16" id="Nxp-xR-Fi5"/>
+                            <constraint firstItem="HYN-80-91a" firstAttribute="leading" secondItem="fFK-co-TN4" secondAttribute="leading" constant="16" id="Rzv-AZ-SWo"/>
+                            <constraint firstAttribute="trailing" secondItem="T4Q-PW-Vbn" secondAttribute="trailing" id="Udr-1M-Kuc"/>
+                            <constraint firstItem="IZN-0H-QFu" firstAttribute="top" secondItem="HYN-80-91a" secondAttribute="bottom" constant="6" id="bTM-X9-Sgf"/>
+                            <constraint firstAttribute="trailing" secondItem="KmM-mD-hV8" secondAttribute="trailing" constant="16" id="fn1-d5-uBM"/>
+                            <constraint firstItem="orW-dc-oxt" firstAttribute="leading" secondItem="fFK-co-TN4" secondAttribute="leading" constant="16" id="gYV-3J-w3r"/>
+                            <constraint firstAttribute="trailing" secondItem="vTB-sN-1LV" secondAttribute="trailing" constant="16" id="kD6-2V-Kwp"/>
+                            <constraint firstAttribute="trailing" secondItem="zKk-mM-xGc" secondAttribute="trailing" constant="16" id="lHn-W2-7K2"/>
+                            <constraint firstAttribute="bottom" secondItem="QD6-aH-mI0" secondAttribute="bottom" constant="20" id="o00-vl-YFX"/>
+                            <constraint firstItem="vTB-sN-1LV" firstAttribute="top" secondItem="KmM-mD-hV8" secondAttribute="bottom" constant="16" id="oWF-Zr-Ivi"/>
+                            <constraint firstItem="orW-dc-oxt" firstAttribute="top" secondItem="fFK-co-TN4" secondAttribute="top" constant="20" id="y07-rv-O4R"/>
+                            <constraint firstItem="QD6-aH-mI0" firstAttribute="top" secondItem="T4Q-PW-Vbn" secondAttribute="bottom" constant="24" id="z8X-k1-PYB"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Zr0-DC-Qr1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="14n-8r-9e4"/>
+                    <constraint firstAttribute="trailing" secondItem="Zr0-DC-Qr1" secondAttribute="trailing" id="Brv-y0-UtA"/>
+                    <constraint firstAttribute="bottom" secondItem="fFK-co-TN4" secondAttribute="bottom" id="EdR-tK-43O"/>
+                    <constraint firstAttribute="trailing" secondItem="fFK-co-TN4" secondAttribute="trailing" id="NzN-r9-NBb"/>
+                    <constraint firstItem="fFK-co-TN4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" priority="997" constant="8" id="a1J-Qi-2BX"/>
+                    <constraint firstItem="Zr0-DC-Qr1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="n2k-eH-pFx"/>
+                    <constraint firstItem="fFK-co-TN4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="yoG-dg-5cp"/>
+                    <constraint firstItem="fFK-co-TN4" firstAttribute="top" secondItem="Zr0-DC-Qr1" secondAttribute="bottom" constant="-16" id="zTg-fm-Htq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="docButton" destination="7dn-HE-X5r" id="HGD-Iq-aNc"/>
+                <outlet property="leftRoundView" destination="hVd-Pp-EHI" id="Ozd-Gd-Xtc"/>
+                <outlet property="needToPayLabel" destination="bXv-x3-WSg" id="C0I-vT-uma"/>
+                <outlet property="passengerDataLabel" destination="IZN-0H-QFu" id="1yM-DL-mte"/>
+                <outlet property="placelabel" destination="zKk-mM-xGc" id="S4t-ZL-nPD"/>
+                <outlet property="refundDetailsButton" destination="U6E-Zg-H7o" id="hXF-Yx-7WP"/>
+                <outlet property="returnButton" destination="aoa-mO-HSk" id="CWx-lP-0nk"/>
+                <outlet property="rightRoundView" destination="TOy-JL-H07" id="ftb-hu-RuC"/>
+                <outlet property="separatorView" destination="T4Q-PW-Vbn" id="Jlm-Gh-nsb"/>
+                <outlet property="statusLabel" destination="tHc-Gc-bqc" id="pht-Gk-pDv"/>
+                <outlet property="statusView" destination="Zr0-DC-Qr1" id="2nF-yZ-qkN"/>
+                <outlet property="ticketNumberLabel" destination="orW-dc-oxt" id="9X1-VO-S56"/>
+                <outlet property="ticketPriceLabel" destination="KmM-mD-hV8" id="JHM-Cf-CMi"/>
+                <outlet property="ticketView" destination="fFK-co-TN4" id="X8o-Gd-ckv"/>
+                <outlet property="ticketViewToStatusView" destination="zTg-fm-Htq" id="LPO-by-49d"/>
+                <outlet property="ticketViewToSuperview" destination="a1J-Qi-2BX" id="L4f-gJ-uJM"/>
+            </connections>
+            <point key="canvasLocation" x="163.768115942029" y="235.04464285714283"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="ButtonTertiary">
+            <color red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="base">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="buttonSecondary">
+            <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="emptyTicketsLayer">
+            <color red="1" green="0.27058823529411763" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="textInverted">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textPrimary">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textSecondary">
+            <color red="0.45490196078431372" green="0.4823529411764706" blue="0.51764705882352946" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

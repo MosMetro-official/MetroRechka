@@ -28,7 +28,7 @@ class PopularStationView: UIView {
             let tickets: Bool
             let price: String
             let height: CGFloat
-            let onPay: (() -> Void)
+            let onSelect: (() -> Void)
         }
                         
         static let initial = PopularStationView.ViewState(state: [], dataState: .loading)
