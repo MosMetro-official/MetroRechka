@@ -58,6 +58,7 @@ class TariffSteperCell: UITableViewCell {
         tariffLabel.text = data.tariff
         priceLabel.text = data.price
         stepperLabel.text = data.stepperCount
+        currentCount = Int(data.stepperCount) ?? 0
         onPlus = data.onPlus
         onMinus = data.onMinus
     }
