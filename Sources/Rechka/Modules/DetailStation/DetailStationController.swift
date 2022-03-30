@@ -7,6 +7,8 @@
 
 import UIKit
 import CoreTableView
+import CoreNetwork
+import SwiftDate
 
 class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     
@@ -20,23 +22,49 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     
     var delegate : RechkaMapDelegate? = nil
     
-    var showRefundRow = false {
+    private var selectedTripId: Int? {
         didSet {
-            DispatchQueue.main.async {
-                self.makeState()
+            createState()
+        }
+    }
+    
+    private var isFirstLoad = true
+    
+    public var routeID: Int? {
+        didSet {
+            guard let routeID = routeID else {
+                return
+            }
+            Task.detached { [weak self] in
+                do {
+                    let route = try await RiverRoute.getRoute(by: routeID)
+                    await self?.setRoute(route)
+                } catch {
+                    guard let err = error as? APIError else { throw error }
+                    
+                }
+                
             }
         }
     }
     
-    var showBaggageRow = false {
+    
+    public var route: RiverRoute? {
         didSet {
-            DispatchQueue.main.async {
-                self.makeState()
+            createState()
+        }
+    }
+    
+    private func createState() {
+        if let route = route {
+            Task.detached { [weak self] in
+                guard let self = self else { return }
+                let state = await self.makeState(with: route)
+                await self.setState(state)
             }
         }
     }
     
-    var model: FakeModel!
     
     override func loadView() {
         super.loadView()
@@ -46,8 +74,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        nestedView.posterHeaderView?.configurePosterHeader(with: model)
-        makeState()
+        //nestedView.posterHeaderView?.configurePosterHeader(with: model)
         setupNestedViewActions()
     }
     
@@ -61,6 +88,16 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    @MainActor
+    private func setRoute(_ route: RiverRoute) {
+        self.route = route
+    }
+    
+    @MainActor
+    private func setState(_ state: DetailView.ViewState) {
+        self.nestedView.viewState = state
+    }
+    
     private func setupNestedViewActions() {
         nestedView.onClose = { [weak self] in
             self?.navigationController?.popToRootViewController(animated: true)
@@ -68,18 +105,20 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         
         nestedView.onChoice = { [weak self] in
             guard let self = self else { return }
-            self.goToBuyTicketsWithPersonData(with: self.model)
+            //self.goToBuyTicketsWithPersonData(with: self.model)
         }
     }
     
-    func makeState() {
+    func makeState(with model: RiverRoute) async -> DetailView.ViewState {
+        var resultSections = [State]()
         var main = [Element]()
         let summary = DetailView.ViewState.Summary(
-            duration: model.duration,
-            fromTo: model.fromTo,
+            duration: "dasdadsa",
+            fromTo: "test1",
             height: 70
         ).toElement()
         main.append(summary)
+        
         if Rechka.isMapsRoutesAvailable {
             let mapView = DetailView.ViewState.MapView(
                 onButtonSelect: { [weak self] in
@@ -90,45 +129,47 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
             ).toElement()
             main.append(mapView)
         }
-        let mainSection = SectionState(header: nil, footer: nil)
-        let stateSummary = State(model: mainSection, elements: main)
-        
-        // Tikcets
-        let tickets = DetailView.ViewState.Tickets(
-            ticketList: model,
-            height: 130
-        ).toElement()
-        let ticketsHeader = DetailView.ViewState.TicketsHeader(
-            ticketsCount: model.ticketsCount,
-            height: 20
-        )
-        let ticketsSection = SectionState(header: ticketsHeader, footer: nil)
-        let ticketsState = State(model: ticketsSection, elements: [tickets])
-        
-        // Refund section
-        let refund = DetailView.ViewState.AboutRefund(height: 210).toElement()
-        
-        let refundHeader = DetailView.ViewState.RefundHeader(height: 50, isExpanded: true, onExpandTap: {
-            self.showRefundRow.toggle()
+        let infoSection = SectionState(header: nil, footer: nil)
+        let infoSectionState = State(model: infoSection, elements: main)
+        let dict = Dictionary.init(grouping: model.shortTrips, by: { element -> DateComponents in
+            let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
+           // let date = Calendar.current.dateComponents([.day, .month, .year], from: (element.dateStart))
+            return date
+            
         })
-        var refundElements = [Element]()
-        if showRefundRow { refundElements.append(refund) }
-        let refundSectionState = SectionState(isCollapsed: false, header: refundHeader, footer: nil)
-        let stateRefund = State(model: refundSectionState, elements: refundElements)
+        resultSections.append(infoSectionState)
         
-        // Package section
-        let package = DetailView.ViewState.AboutPackage(height: 210).toElement()
-        let packageHeader = DetailView.ViewState.PackageHeader(
-            height: 50,
-            isExpanded: true,
-            onExpandTap: {
-            self.showBaggageRow.toggle()
-        })
-        var packagelements = [Element]()
-        if showBaggageRow { packagelements.append(package) }
-        let packageSectionState = SectionState(isCollapsed: false, header: packageHeader, footer: nil)
-        let statePackage = State(model: packageSectionState, elements: packagelements)
-        self.nestedView.viewState = DetailView.ViewState(state: [stateSummary, ticketsState, stateRefund, statePackage], dataState: .loaded)
+        let sorted = dict.sorted(by: { $0.key < $1.key })
+        for item in sorted {
+            print("=======================")
+            print("KEY: \(item.key)\n")
+            print("Values: \(item.value)")
+        }
+        
+        let tripsSections: [State]  = sorted.compactMap { (key, value) in
+            if let first = value.first {
+                let sortedTrips: [Element] = value.sorted(by: { $0.dateStart < $1.dateStart}).map { trip in
+                    return DetailView.ViewState.ShortTripInfo(
+                        date: trip.dateStart.toFormat("d MMMM yyyy HH:mm", locale: Locales.russian),
+                        isSelected: trip.id == self.selectedTripId ,
+                        price: "\(trip.price) ₽",
+                        seats: "\(trip.freePlaceCount)",
+                        onSelect: {})
+                        .toElement()
+                    
+                }
+                let sectionTitle = first.dateStart.toFormat("d MMMM", locale: Locales.russianRussia)
+                let headerData = DetailView.ViewState.DateHeader(title: sectionTitle)
+                let sectionData = SectionState(header: headerData, footer: nil)
+                return State(model: sectionData, elements: sortedTrips)
+                
+            }
+            return nil
+        }
+        resultSections.append(contentsOf: tripsSections)
+        
+    
+        return .init(state: resultSections, dataState: .loaded)
     }
     
     private func showRouteOnMap() {

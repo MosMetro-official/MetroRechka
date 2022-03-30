@@ -28,3 +28,12 @@ public struct Rechka {
         _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Regular", fontExtension: "otf")
     }
 }
+
+extension DateComponents: Comparable {
+    public static func < (lhs: DateComponents, rhs: DateComponents) -> Bool {
+        if let lhsDate = Date(components: lhs, region: nil), let rhsDate = Date(components: rhs, region: nil) {
+            return lhsDate < rhsDate
+        }
+        return false
+    }
+}

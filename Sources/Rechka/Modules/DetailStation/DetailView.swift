@@ -32,35 +32,27 @@ class DetailView: UIView {
             let height: CGFloat
         }
         
-        struct TicketsHeader: _TicketsHeader {
-            let ticketsCount: Int
-            let height: CGFloat
+        struct DateHeader: _TripsDateHeader {
+            var title: String
         }
         
-        struct Tickets: _Tickets {
-            var ticketList: FakeModel
-            let height: CGFloat
+        struct ShortTripInfo: _ShortTripTableCell {
+            var date: String
+            
+            var isSelected: Bool
+            
+            var price: String
+            
+            var seats: String
+            
+            var onSelect: (() -> Void)
+            
         }
         
-        struct RefundHeader: _RefundHeader {
-            let height: CGFloat
-            var isExpanded: Bool
-            var onExpandTap: () -> ()
-        }
+      
         
-        struct AboutRefund: _Refund {
-            let height: CGFloat
-        }
-        
-        struct PackageHeader: _PackageHeader {
-            let height: CGFloat
-            var isExpanded: Bool
-            var onExpandTap: () -> ()
-        }
-        
-        struct AboutPackage: _Package {
-            let height: CGFloat
-        }
+       
+     
         
         static let initial = DetailView.ViewState(state: [], dataState: .loading)
     }
@@ -146,8 +138,8 @@ class DetailView: UIView {
     }
     
     private func setupHeaderView() {
-        tableView.onScroll = { scroll in
-            guard let header = self.tableView.tableHeaderView as? PosterHeaderView else { return }
+        tableView.onScroll = { [weak self] scroll in
+            guard let header = self?.tableView.tableHeaderView as? PosterHeaderView else { return }
             header.scrollViewDidScroll(scrollView: scroll)
         }
     }
