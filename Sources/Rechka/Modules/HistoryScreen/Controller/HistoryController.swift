@@ -21,30 +21,35 @@ class HistoryController: UIViewController {
     override func loadView() {
         super.loadView()
         view = nestedView
+        title = "История"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         makeState()
-        title = "История"
     }
     
     private func makeState() {
-        var ticketStates: [State] = []
+        var states = [State]()
         for ticket in tickets {
-            let ticketRow = HistoryView.ViewState.HistoryTicket(title: ticket.title, description: ticket.desc, price: ticket.price, onSelect: {
-                // open ticket
-            }, height: 60).toElement()
+            let ticketRow = HistoryView.ViewState.HistoryTicket(
+                title: ticket.title,
+                description: ticket.desc,
+                price: ticket.price,
+                onSelect: {
+                    #warning("OPEN_TICKET_HERE")
+                }, height: 60
+            ).toElement()
             let ticketSec = SectionState(header: nil, footer: nil)
             let ticketState = State(model: ticketSec, elements: [ticketRow])
             ticketStates.append(ticketState)
         }
-        
         nestedView.viewState = HistoryView.ViewState(state: ticketStates, dataState: .loaded)
     }
 }
 
 extension HistoryController {
+    
     struct Ticket {
         let title: String
         let desc: String

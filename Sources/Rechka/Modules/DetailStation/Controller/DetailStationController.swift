@@ -169,7 +169,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         resultSections.append(contentsOf: tripsSections)
         
     
-        return .init(state: resultSections, dataState: .loaded)
+        return .init(isChoiceButtonDisable: false, state: resultSections, dataState: .loaded)
     }
     
     private func showRouteOnMap() {
@@ -186,6 +186,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
 }
 
 extension DetailStationController {
+    
     private func openBuyTicketsController(with model: FakeModel) {
         if model.isPersonalDataRequired {
             let bookingWithPerson = PersonBookingController()

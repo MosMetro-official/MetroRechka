@@ -91,7 +91,7 @@ public class PopularStationController : UIViewController {
                                                                  tickets: true,
                                                                  price: "\(route.minPrice) ₽",
                                                                  height: height,
-                                                                 onPay: onPay)
+                                                                 onSelect: onPay)
                 .toElement()
             return routeData
         }
@@ -231,6 +231,4 @@ extension PopularStationController {
         navigationController?.pushViewController(detail, animated: true)
         detail.routeID = routeID
     }
-    
-
 }

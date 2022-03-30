@@ -9,13 +9,13 @@ import UIKit
 import CoreTableView
 
 protocol _History: CellData {
-    var title: String { get }
-    var description: String { get }
-    var price: String { get }
-    var onSelect: () -> () { get }
+    var title : String { get }
+    var descr : String { get }
+    var price : String { get }
 }
 
 extension _History {
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? HistoryTicketCell else { return }
         cell.configure(with: self)
@@ -37,8 +37,8 @@ class HistoryTicketCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        descriptionLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
         priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
+        descriptionLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
     }
     
     public func configure(with data: _History) {
@@ -46,5 +46,4 @@ class HistoryTicketCell: UITableViewCell {
         descriptionLabel.text = data.description
         priceLabel.text = data.price
     }
-    
 }

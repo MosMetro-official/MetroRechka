@@ -21,10 +21,10 @@ class HistoryView: UIView {
         }
         
         struct HistoryTicket: _History {
-            let title: String
-            let description: String
-            let price: String
-            let onSelect: () -> ()
+            let title : String
+            let descr : String
+            let price : String
+            let onSelect : (() -> Void)
             let height: CGFloat
         }
         
@@ -39,12 +39,12 @@ class HistoryView: UIView {
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.separatorColor = .systemGray
         table.clipsToBounds = true
+        table.separatorColor = .systemGray
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
+        table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
     
@@ -60,14 +60,12 @@ class HistoryView: UIView {
     
     private func setupConstrains() {
         addSubview(tableView)
-        NSLayoutConstraint.activate(
-            [
-                tableView.topAnchor.constraint(equalTo: topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
     }
     
     private func render() {
@@ -75,5 +73,4 @@ class HistoryView: UIView {
             self.tableView.viewStateInput = self.viewState.state
         }
     }
-
 }
