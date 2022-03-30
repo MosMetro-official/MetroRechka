@@ -14,6 +14,7 @@ protocol _Field: CellData {
 }
 
 extension _Field {
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? FieldCell else { return }
         cell.configure(with: self)
@@ -37,6 +38,6 @@ class FieldCell: UITableViewCell {
     
     public func configure(with data: _Field) {
         mainTextLabel.text = data.text
+        
     }
-    
 }
