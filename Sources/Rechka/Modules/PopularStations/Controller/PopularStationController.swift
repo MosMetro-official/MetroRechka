@@ -33,6 +33,16 @@ public class PopularStationController : UIViewController {
         ]
     }
     
+    private var searchResponse: RiverRouteResponse? {
+        didSet {
+            Task.detached { [weak self] in
+                guard let self = self else { return}
+                guard let state = await self.makeState() else { return }
+                await self.setState(state)
+            }
+        }
+    }
+    
     let nestedView = PopularStationView(frame: UIScreen.main.bounds)
     
     public override func loadView() {
@@ -47,14 +57,52 @@ public class PopularStationController : UIViewController {
             .font: UIFont.customFont(forTextStyle: .title1)
         ]
         title = "Популярное"
-        makeState()
+        self.nestedView.viewState = .init(state: [], dataState: .loading)
+        Task.detached(priority: .high) {
+            do {
+                let routeResponse = try await RiverRoute.getRoutes()
+                await self.setResponse(routeResponse)
+                print("adadsdas")
+            } catch {
+                print("shiiiet")
+            }
+            
+        }
     }
     
-    private func makeState() {
-        let elements = mockElements()
+    @MainActor
+    private func setResponse(_ response: RiverRouteResponse) async {
+        self.searchResponse = response
+    }
+    
+    private func makeState() async -> PopularStationView.ViewState? {
+        guard let searchResponse = searchResponse else {
+            return nil
+        }
+        let elements: [Element] = searchResponse.items.map { route in
+            let height = (UIScreen.main.bounds.width - 32) * 0.75
+            let firstStation = route.stations.first?.name ?? ""
+            let onPay: () -> () = { [weak self] in
+                self?.pushDetail(with: route.id)
+            }
+            let routeData = PopularStationView.ViewState.Station(title: route.name,
+                                                                 jetty: firstStation,
+                                                                 time: "\(route.time) mins",
+                                                                 tickets: true,
+                                                                 price: "\(route.minPrice) ₽",
+                                                                 height: height,
+                                                                 onPay: onPay)
+                .toElement()
+            return routeData
+        }
         let section = SectionState(header: nil, footer: nil)
         let state = State(model: section, elements: elements)
-        nestedView.viewState = PopularStationView.ViewState(state: [state], dataState: .loaded)
+        return PopularStationView.ViewState(state: [state], dataState: .loaded)
+    }
+    
+    @MainActor
+    func setState(_ state: PopularStationView.ViewState) {
+        self.nestedView.viewState = state
     }
     
     private func setupSettingsActions() {
@@ -178,28 +226,11 @@ extension PopularStationController : RechkaMapReverceDelegate {
 
 extension PopularStationController {
     
-    private func pushDetail(with model: FakeModel) {
+    private func pushDetail(with routeID: Int) {
         let detail = DetailStationController()
-        detail.model = model
         navigationController?.pushViewController(detail, animated: true)
+        detail.routeID = routeID
     }
     
-    private func mockElements() -> [Element] {
-        let elements = FakeModel.getModels().map { model -> Element in
-            let element = PopularStationView.ViewState.Station(
-                title: model.title,
-                jetty: model.jetty,
-                time: model.time,
-                tickets: model.ticketsCount < 3,
-                price: model.price,
-                height: 250,
-                onSelect: { [weak self] in
-                    guard let self = self else { return }
-                    self.pushDetail(with: model)
-                }
-            ).toElement()
-            return element
-        }
-        return elements
-    }
+
 }
