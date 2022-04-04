@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 
-class PassengerDataEntryController: UIViewController {
+class PassengerDataEntryController : UIViewController {
     
     weak var delegate: PersonBookingDelegate?
     private let nestedView = PassengerDataEntryView(frame: UIScreen.main.bounds)
@@ -50,7 +50,7 @@ class PassengerDataEntryController: UIViewController {
     private func firstSetup() {
         let user = RiverUser()
         displayUser = user
-        let ticket = FakeTickets(price: "", tariff: "")
+        let ticket = FakeTickets(price: "100500", tariff: "ЕдиныЙ")
         self.paymentModel = PaymentModel(ticket: [Ticket(user: user, ticket: ticket)])
     }
     
@@ -67,7 +67,6 @@ class PassengerDataEntryController: UIViewController {
             self.nestedView.viewState = PassengerDataEntryView.ViewState(state: finalState, dataState: .loaded, onSave: {} )
         }
     }
-    
     
     private func setupReadyButton() {
         nestedView.onReadySelect = { [weak self] in
@@ -97,13 +96,13 @@ class PassengerDataEntryController: UIViewController {
     
     private func popToBooking() {
         guard let paymentModel = paymentModel else { return }
-        delegate?.setupNewUser(for: [paymentModel], and: model)
-        //delegate?.setupNewUser(for: user, and: model)
+        delegate?.setupNewUser(for: paymentModel, and: model)
         navigationController?.popViewController(animated: true)
     }
 }
 
 extension PassengerDataEntryController {
+    
     private func createInputField(index: Int, text: String?, desc: String, placeholder: String, keyboardType: UIKeyboardType, onTextEnter: @escaping (TextEnterData) -> Void, validation: ((TextValidationData) -> Bool)? = nil) -> InputView.ViewState {
         let onNext: () -> () = {
             if let current = self.inputStates.firstIndex(where: {  $0.id == index }), let next = self.inputStates[safe: current + 1] {
@@ -129,17 +128,19 @@ extension PassengerDataEntryController {
         let nextEndImage = UIImage(named: "addPlus", in: .module, with: nil)
         let nextImage = UIImage(named: "backButton", in: .module, with: nil)
         
-        return .init(id: index,
-                     desc: desc,
-                     text: text,
-                     placeholder: placeholder,
-                     onTextEnter: onTextEnter,
-                     keyboardType: keyboardType,
-                     onNext: onNext,
-                     onBack: onBack,
-                     nextImage: (isLast ? nextEndImage : nextImage) ?? UIImage(),
-                     backImageEnabled: !isFirst,
-                     validation: validation)
+        return .init(
+            id: index,
+            desc: desc,
+            text: text,
+            placeholder: placeholder,
+            onTextEnter: onTextEnter,
+            keyboardType: keyboardType,
+            onNext: onNext,
+            onBack: onBack,
+            nextImage: (isLast ? nextEndImage : nextImage) ?? UIImage(),
+            backImageEnabled: !isFirst,
+            validation: validation
+        )
     }
     
     private func passengerFieldExists(for index: Int) -> Bool {
@@ -155,7 +156,7 @@ extension PassengerDataEntryController {
         
         var personalItems = [Element]()
         personalItems.append(titleElement)
-        // surname
+
         let onSurnameEnter: (TextEnterData) -> () = { data in
             if self.passengerFieldExists(for: index) {
                 self.paymentModel?.ticket[index].user?.surname = data.text.isEmpty ? nil : data.text

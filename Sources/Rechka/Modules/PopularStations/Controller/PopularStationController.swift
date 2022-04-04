@@ -248,6 +248,4 @@ extension PopularStationController {
         navigationController?.pushViewController(detail, animated: true)
         detail.routeID = routeID
     }
-    
-
 }

@@ -41,6 +41,7 @@ class WithoutPersonBookingController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createTicketsCount()
         title = "Покупка"
     }
     

@@ -42,7 +42,7 @@ class TicketsCell: UITableViewCell {
         }
     }
     private var choiceTicket: ((Int) -> ())?
-    private var isSelectable: Bool!
+    private var isSelectable: Bool?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,16 +51,7 @@ class TicketsCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if isSelectable {
-            contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0))
-        } else {
-            contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: 15, left: 10, bottom: 0, right: 10))
-        }
-    }
-    
+  
     public func configure(with data: _Tickets) {
         model = data.ticketList
         isSelectable = data.isSelectable
@@ -88,7 +79,7 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
                 return cell
             default:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return .init() }
-                cell.isSelectable = isSelectable
+                cell.isSelectable = isSelectable ?? false
                 cell.configure(with: ticket)
                 return cell
             }
@@ -101,9 +92,9 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
         case 0:
             break
         default:
-            if isSelectable {
+            if isSelectable ?? false {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return }
-                cell.isSelectable = isSelectable
+                cell.isSelectable = isSelectable ?? false
                 choiceTicket?(indexPath.row)
                 cell.isSelected.toggle()
             }
@@ -117,8 +108,15 @@ extension TicketsCell: UICollectionViewDelegateFlowLayout {
         case 0:
             return CGSize(width: UIScreen.main.bounds.width - 20, height: collectionView.frame.height)
         default:
-            return CGSize(width: UIScreen.main.bounds.width * 0.4, height: collectionView.frame.height)
+            return CGSize(width: UIScreen.main.bounds.width * 0.4, height: collectionView.frame.height - 20)
         }
-        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if isSelectable ?? true {
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        } else {
+            return UIEdgeInsets(top: 15, left: 10, bottom: 10, right: 10)
+        }
     }
 }

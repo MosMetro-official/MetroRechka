@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 
 protocol PersonBookingDelegate: AnyObject {
-    func setupNewUser(for payment: [PaymentModel], and model: FakeModel)
+    func setupNewUser(for payment: PaymentModel, and model: FakeModel)
 }
 
 class PersonBookingController: UIViewController {
@@ -17,7 +17,7 @@ class PersonBookingController: UIViewController {
     let nestedView = PersonBookingView(frame: UIScreen.main.bounds)
         
     var model: FakeModel!
-    var paymentModel: [PaymentModel]? {
+    var paymentModel: [PaymentModel] = [] {
         didSet {
             print("🔥🔥🔥 paymnet for booking - \(paymentModel)")
         }
@@ -44,22 +44,35 @@ class PersonBookingController: UIViewController {
     
     private func makeState(for cacheUser: RiverUser? = nil, from payment: [PaymentModel]) {
         let users = payment.flatMap({$0.ticket}).map({$0.user})
-        var pasElements: [Element] = []
         let tickets = payment.flatMap({$0.ticket})
         var tickElements: [Element] = []
         // passenger
-        let passengerHeaderCell = PersonBookingView.ViewState.PassengerHeader(onAdd: {
-            self.pushPersonDataEntry()
-        }, height: 50).toElement()
+        var passElements = [Element]()
+        let passengerHeaderCell = PersonBookingView.ViewState.PassengerHeader(
+            onAdd: {
+                self.pushPersonDataEntry()
+            },
+            height: 50
+        ).toElement()
+        passElements.append(passengerHeaderCell)
+        
         users.forEach { user in
             tickets.forEach { ticket in
-                let passenger = PersonBookingView.ViewState.Passenger(name: "\(user?.surname ?? "") \(user?.name ?? "")", tariff: ticket.ticket?.tariff ?? "", height: 70).toElement()
-                pasElements.append(contentsOf: [passengerHeaderCell, passenger])
+                if ticket.user == user {
+                    let passenger = PersonBookingView.ViewState.Passenger(
+                        name: "\(user?.surname ?? "") \(user?.name ?? "")",
+                        tariff: ticket.ticket?.tariff ?? "",
+                        height: 70
+                    ).toElement()
+                    if !passElements.contains(passenger) {
+                        passElements.append(passenger)
+                    }
+                }
             }
         }
-        //}
+        
         let passengerSection = SectionState(header: nil, footer: nil)
-        let passengerState = State(model: passengerSection, elements: pasElements)
+        let passengerState = State(model: passengerSection, elements: passElements)
         
         // tickets
         let tariffHeader = PersonBookingView.ViewState.TariffHeader(height: 50).toElement()
@@ -84,7 +97,6 @@ class PersonBookingController: UIViewController {
             users.forEach { user in
                 let action = UIAlertAction(title: "\(user.surname ?? "")", style: .default) { _ in
                     print("action alert")
-                    //self.pushPersonDataEntry(model: self.model, with: self.paymentModel)
                     self.pushPersonDataEntry(model: self.model, and: user)
                 }
                 actions.append(action)
@@ -97,16 +109,16 @@ class PersonBookingController: UIViewController {
         
         nestedView.showPersonDataEntry = { [weak self] in
             guard let self = self else { return }
-            self.pushPersonDataEntry(model: self.model, with: self.paymentModel?[0])
+            self.pushPersonDataEntry(model: self.model, with: self.paymentModel.first)
         }
     }
     
     private func pushPersonDataEntry(model: FakeModel? = nil, with payment: PaymentModel? = nil, and user: RiverUser? = nil) {
         let passenderDataEntry = PassengerDataEntryController()
         passenderDataEntry.delegate = self
-        if let model = model {
-            passenderDataEntry.model = model
-        }
+//        if let model = model {
+            passenderDataEntry.model = self.model
+//        }
         if payment != nil {
             passenderDataEntry.paymentModel = payment
             passenderDataEntry.displayUser = user
@@ -125,9 +137,10 @@ class PersonBookingController: UIViewController {
 }
 
 extension PersonBookingController: PersonBookingDelegate {
-    func setupNewUser(for payment: [PaymentModel], and model: FakeModel) {
-        self.paymentModel = payment
+    
+    func setupNewUser(for payment: PaymentModel, and model: FakeModel) {
+        self.paymentModel.append(payment)
         self.model = model
-        self.makeState(from: payment)
+        self.makeState(from: self.paymentModel)
     }
 }

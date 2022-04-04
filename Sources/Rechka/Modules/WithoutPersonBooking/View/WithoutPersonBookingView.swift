@@ -72,6 +72,7 @@ class WithoutPersonBookingView: UIView {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
+        table.shouldUseReload = true
         return table
     }()
     
