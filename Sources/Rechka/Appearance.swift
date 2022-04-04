@@ -20,8 +20,23 @@ public enum Colors: String {
     case settingsButtonColor
 }
 
+public enum FontTextStyle: String {
+    case largeTitle = "largeTitle"
+    case title1 = "title1"
+    case title2 = "title2"
+    case headline = "headline"
+    case body = "body"
+    case subhead = "subhead"
+    case button1 = "button1"
+    case button2 = "button2"
+    case button3 = "button3"
+    case footnote = "footnote"
+    case caption1 = "caption1"
+    case caption2 = "caption2"
+}
+
 protocol _Appearance: AnyObject {
-    static var customFonts: [UIFont.TextStyle: UIFont] { get }
+    static var customFonts: [FontTextStyle: UIFont] { get }
     static var colors: [Colors: UIColor] { get }
 }
 
@@ -37,18 +52,20 @@ public class Appearance: _Appearance {
         return bubble.asImage()
     }
     
-    static var customFonts: [UIFont.TextStyle: UIFont] = [
-        .largeTitle: UIFont(name: "MoscowSans-Regular", size: 30) ?? UIFont(),
-        .title1: UIFont(name: "MoscowSans-Bold", size: 22) ?? UIFont(),
-        .title2: UIFont(name: "MoscowSans-Regular", size: 22) ?? UIFont(),
-        .title3: UIFont(name: "MoscowSans-Bold", size: 16) ?? UIFont(),
-        .headline: UIFont(name: "MoscowSans-Regular", size: 14) ?? UIFont(),
-        .body: UIFont(name: "MoscowSans-Regular", size: 17) ?? UIFont(),
-        .callout: UIFont(name: "MoscowSans-Regular", size: 16) ?? UIFont(),
-        .subheadline: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont(),
-        .footnote: UIFont(name: "MoscowSans-Regular", size: 13) ?? UIFont(),
-        .caption1: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont(),
-        .caption2: UIFont(name: "MoscowSans-Regular", size: 11) ?? UIFont()
+    static var customFonts: [FontTextStyle: UIFont] = [
+        .largeTitle: UIFont(name: "MoscowSans-Bold", size: 30) ?? UIFont.systemFont(ofSize: 30, weight: .bold),
+        .title1: UIFont(name: "MoscowSans-Bold", size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .bold),
+        .title2: UIFont(name: "MoscowSans-Medium", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .medium),
+        .headline: UIFont(name: "MoscowSans-Medium", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium),
+        .body: UIFont(name: "MoscowSans-Regular", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .regular),
+        .subhead: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular),
+        .button1: UIFont(name: "MoscowSans-Medium", size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .medium),
+        .button2: UIFont(name: "MoscowSans-Medium", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .medium),
+        .button3: UIFont(name: "MoscowSans-Medium", size: 10) ?? UIFont.systemFont(ofSize: 10, weight: .medium),
+        .footnote: UIFont(name: "MoscowSans-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .regular),
+        .caption1: UIFont(name: "MoscowSans-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular),
+        .caption2: UIFont(name: "MoscowSans-Regular", size: 11) ?? UIFont.systemFont(ofSize: 11, weight: .regular),
+        
     ]
     
     static var colors: [Colors : UIColor] = [

@@ -16,7 +16,8 @@ enum PurchaseStatus {
 
 protocol _TicketStatus : CellData {
     var title : String { get }
-    var status : PurchaseStatus {  get }
+    var statusImage: UIImage {  get }
+    var statusColor: UIColor { get }
 }
 
 extension _TicketStatus {
@@ -28,7 +29,8 @@ extension _TicketStatus {
     func hashValues() -> [Int] {
         return [
             title.hashValue,
-            status.hashValue
+            statusImage.hashValue,
+            statusColor.hashValue
         ]
     }
     
@@ -50,14 +52,8 @@ class TicketStatusCell: UITableViewCell {
     
     public func configure(with data: _TicketStatus) {
         title.text = data.title
-        switch data.status {
-        case .denied :
-            status.image = UIImage(named: "result_error", in: .module, compatibleWith: nil)
-        case .success :
-            status.image = UIImage(named: "checkmark", in: .module, compatibleWith: nil)
-        case .waitnig :
-            status.image = UIImage(named: "payment_waiting", in: .module, compatibleWith: nil)
-        }
+        status.image = data.statusImage
+        status.tintColor = data.statusColor
     }
     
     @IBOutlet private weak var title : UILabel!

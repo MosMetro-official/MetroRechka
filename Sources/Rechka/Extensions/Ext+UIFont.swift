@@ -29,10 +29,8 @@ extension UIFont {
     }
     
     /// Method to set custom fonts
-    open class func customFont(forTextStyle style: UIFont.TextStyle) -> UIFont {
-        let customFont = Appearance.customFonts[style] ?? UIFont()
-        let metrics = UIFontMetrics(forTextStyle: style)
-        let scaledFont = metrics.scaledFont(for: customFont)
-        return scaledFont
+    open class func customFont(forTextStyle style: FontTextStyle) -> UIFont {
+        let customFont = Appearance.customFonts[style] ?? UIFont.systemFont(ofSize: 17, weight: .regular)
+        return customFont
     }
 }

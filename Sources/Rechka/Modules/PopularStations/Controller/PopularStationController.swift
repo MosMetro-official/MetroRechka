@@ -53,6 +53,8 @@ public class PopularStationController : UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        Rechka.shared.token = "id46Uawk9YwxL_SdmTQjJ9zcu5V6_xbgVQRLST0rAgk"
+        setOrderListener()
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.customFont(forTextStyle: .title1)
         ]
@@ -66,13 +68,28 @@ public class PopularStationController : UIViewController {
             } catch {
                 print("shiiiet")
             }
-            
         }
+        
+        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 14])
     }
     
     @MainActor
     private func setResponse(_ response: RiverRouteResponse) async {
         self.searchResponse = response
+    }
+    
+    @objc private func showOrder(from notification: Notification) {
+        if let orderID = notification.userInfo?["orderID"] as? Int {
+            print("Order: \(orderID)")
+            let orderController = TicketDetailsController()
+            self.present(orderController, animated: true) {
+                orderController.orderID = orderID
+            }
+        }
+    }
+    
+    private func setOrderListener() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showOrder(from:)), name: .riverShowOrder, object: nil)
     }
     
     private func makeState() async -> PopularStationView.ViewState? {
@@ -91,7 +108,7 @@ public class PopularStationController : UIViewController {
                                                                  tickets: true,
                                                                  price: "\(route.minPrice) ₽",
                                                                  height: height,
-                                                                 onPay: onPay)
+                                                                 onSelect: onPay)
                 .toElement()
             return routeData
         }

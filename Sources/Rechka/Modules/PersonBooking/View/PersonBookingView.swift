@@ -58,7 +58,7 @@ class PersonBookingView: UIView {
     
     public var showPersonAlert: (() -> Void)?
     public var showPersonDataEntry: (() -> Void)?
-    public var showUserFromCache: ((User) -> Void)?
+    public var showUserFromCache: ((RiverUser) -> Void)?
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)

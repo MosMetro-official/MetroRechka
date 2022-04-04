@@ -14,10 +14,10 @@ protocol _TicketDetail : CellData {
     var place : String { get }
     var number : String { get }
     var passenger : String { get }
-    var onRefund : (() -> Void) { get }
-    var onDownload : (() -> Void) { get }
+    var onRefund : Command<Void>? { get }
+    var onDownload : Command<Void>? { get }
     var downloadTitle : String { get }
-    var onRefundDetails : (() -> Void) { get }
+    var onRefundDetails : Command<Void>? { get }
 }
 
 extension _TicketDetail {
@@ -52,9 +52,9 @@ extension _TicketDetail {
 
 class TicketDetailCell: UITableViewCell {
 
-    private  var onRefund : (() -> Void)?
-    private  var onDownload : (() -> Void)?
-    private  var onRefundDetails : (() -> Void)?
+    private  var onRefund : Command<Void>?
+    private  var onDownload : Command<Void>?
+    private  var onRefundDetails : Command<Void>?
     
     @IBOutlet private var ticketViewToStatusView: NSLayoutConstraint!
     
@@ -85,16 +85,16 @@ class TicketDetailCell: UITableViewCell {
     }
     
     @IBAction func handleRefund(_ sender: UIButton) {
-        self.onRefund?()
+        self.onRefund?.perform(with: ())
     }
     
     
     @IBAction func handleDownload(_ sender: Any) {
-        self.onDownload?()
+        self.onDownload?.perform(with: ())
     }
     
     @IBAction func handleRefundDetails(_ sender: Any) {
-        self.onRefundDetails?()
+        self.onRefundDetails?.perform(with: ())
     }
     
     private func setup() {

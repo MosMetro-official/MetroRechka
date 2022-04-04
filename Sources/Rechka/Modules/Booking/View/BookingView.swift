@@ -10,22 +10,29 @@ import CoreTableView
 
 final class BookingView : UIView {
     
-    public var onPay : (() -> Void)?
-    public var onClose : (() -> Void)?
     
     @objc
     private func popToRoot() {
-        self.onClose?()
+        self.viewState.onClose?.perform(with: ())
     }
     
     @objc
     private func paySelected() {
-        self.onPay?()
+        self.viewState.onPay?.perform(with: ())
     }
     
     struct ViewState {
-        
+        var dataState: DataState
         var states : [State]
+        var onClose: Command<Void>?
+        var onPay: Command<Void>?
+        var totalPrice: String
+        
+        enum DataState {
+            case loading
+            case loaded
+            case error
+        }
         
         struct Title : _Title {
             var title : String
@@ -42,12 +49,26 @@ final class BookingView : UIView {
         }
     }
     
-    public var viewState = ViewState(states: []) {
+    public var viewState = ViewState(dataState: .loading, states: [], onClose: nil, onPay: nil, totalPrice: "") {
         didSet {
-            DispatchQueue.main.async {
-                self.tableView.viewStateInput = self.viewState.states
-            }
+            render()
         }
+    }
+    
+    private func render() {
+        switch self.viewState.dataState {
+        case .loading:
+            self.showBlurLoading()
+        case .loaded:
+            self.removeBlurLoading()
+        case .error:
+            self.removeBlurLoading()
+        }
+        self.paySumm.text = self.viewState.totalPrice
+        self.payButton.alpha = self.viewState.onPay == nil ? 0.3 : 1
+        self.payButton.isUserInteractionEnabled = self.viewState.onPay == nil ? false : true
+        
+        self.tableView.viewStateInput = self.viewState.states
     }
     
     private var payView : UIView = {

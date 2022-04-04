@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20AA10BB7D722753089B0FF9 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E73052680017F56BAF634627 /* libPods-MetroRechka.a */; };
 		6DEFF8AC27E0A0880070E498 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AA27E0A0870070E498 /* MapViewController.swift */; };
 		6DEFF8AD27E0A0880070E498 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AB27E0A0880070E498 /* MapViewController.xib */; };
 		952BEF2827D53AAD00299639 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2727D53AAD00299639 /* AppDelegate.swift */; };
@@ -14,11 +15,9 @@
 		952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3027D53AAD00299639 /* Assets.xcassets */; };
 		952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3227D53AAD00299639 /* LaunchScreen.storyboard */; };
 		95FF332A27DA1F0F004826E2 /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = 95FF332927DA1F0F004826E2 /* Rechka */; };
-		E4E49390563C00C9E5B35338 /* Pods_MetroRechka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02ECF890C5917E9BB433A74C /* Pods_MetroRechka.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02ECF890C5917E9BB433A74C /* Pods_MetroRechka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetroRechka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
 		6DEE71E927E88F2E0005FCCE /* MetroRechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MetroRechka; path = ..; sourceTree = "<group>"; };
 		6DEFF8AA27E0A0870070E498 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -30,6 +29,7 @@
 		952BEF3327D53AAD00299639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952BEF3527D53AAD00299639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
+		E73052680017F56BAF634627 /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,7 +38,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				95FF332A27DA1F0F004826E2 /* Rechka in Frameworks */,
-				E4E49390563C00C9E5B35338 /* Pods_MetroRechka.framework in Frameworks */,
+				20AA10BB7D722753089B0FF9 /* libPods-MetroRechka.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +97,7 @@
 		952BEF3C27D53E3500299639 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				02ECF890C5917E9BB433A74C /* Pods_MetroRechka.framework */,
+				E73052680017F56BAF634627 /* libPods-MetroRechka.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

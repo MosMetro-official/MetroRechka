@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -33,6 +33,7 @@
                                     <constraint firstAttribute="height" constant="24" id="FHb-E2-szV"/>
                                     <constraint firstAttribute="width" constant="24" id="wdX-lq-uCb"/>
                                 </constraints>
+                                <color key="tintColor" name="base"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="minus"/>
                                 <connections>
@@ -45,6 +46,7 @@
                                     <constraint firstAttribute="height" constant="24" id="Kxo-xn-XSH"/>
                                     <constraint firstAttribute="width" constant="24" id="kZO-hK-VNG"/>
                                 </constraints>
+                                <color key="tintColor" name="base"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="plus"/>
                                 <connections>
@@ -94,6 +96,7 @@
             <color key="backgroundColor" name="settingsPanel"/>
             <connections>
                 <outlet property="minusButton" destination="Rwq-HC-YFw" id="1tH-hb-hiP"/>
+                <outlet property="plusButton" destination="5sy-GU-H99" id="Ejm-zS-3XW"/>
                 <outlet property="priceLabel" destination="UDj-tD-6DK" id="E6v-hM-xsv"/>
                 <outlet property="stepperLabel" destination="UjR-Fh-aMC" id="gPH-n9-BPy"/>
                 <outlet property="stepperView" destination="HTz-px-vDD" id="47p-st-cFz"/>
@@ -105,6 +108,9 @@
     <resources>
         <image name="minus" width="96" height="96"/>
         <image name="plus" width="96" height="96"/>
+        <namedColor name="base">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="buttonSecondary">
             <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

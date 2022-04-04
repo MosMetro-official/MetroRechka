@@ -10,16 +10,16 @@ import Foundation
 class SomeCache {
     static let shared = SomeCache()
     private init() {}
-    var cache: [String: [User]] = ["user": []]
+    var cache: [String: [RiverUser]] = ["user": []]
     
-    func replaceUser(on user: User) {
+    func replaceUser(on user: RiverUser) {
         guard var users = cache["user"] else { return }
         for (index, _) in users.enumerated() {
             users[index] = user
         }
     }
    
-    func checkCache(for user: User) -> Bool {
+    func checkCache(for user: RiverUser) -> Bool {
         guard let users = cache["user"] else { return false }
         if users.contains(user) {
             return false
@@ -27,7 +27,7 @@ class SomeCache {
         return true
     }
     
-    func addToCache(user: User) {
+    func addToCache(user: RiverUser) {
         cache["user"]?.append(user)
     }
 }
@@ -37,23 +37,13 @@ struct PaymentModel {
 }
 
 struct Ticket {
-    var user: User?
+    var user: RiverUser?
     var ticket: FakeTickets?
 }
 
-struct User: Equatable {
-    var name: String?
-    var surname: String?
-    var middleName: String?
-    var birthday: String?
-    var phoneNumber: String?
-    var gender: Gender?
-}
 
-enum Gender: String {
-    case male
-    case female
-}
+
+
 
 struct FakeTickets {
     let price: String

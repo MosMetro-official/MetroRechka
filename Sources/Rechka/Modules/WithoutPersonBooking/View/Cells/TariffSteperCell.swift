@@ -12,11 +12,16 @@ protocol _TariffSteper: CellData {
     var tariff: String { get }
     var price: String { get }
     var stepperCount: String { get }
-    var onPlus: (Int) -> () { get }
-    var onMinus: (Int) -> () { get }
+    var onPlus: Command<Void>? { get }
+    var onMinus: Command<Void>? { get }
 }
 
 extension _TariffSteper {
+    
+    func hashValues() -> [Int] {
+        return [tariff.hashValue,price.hashValue,stepperCount.hashValue]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? TariffSteperCell else { return }
         cell.configure(with: self)
@@ -31,24 +36,20 @@ extension _TariffSteper {
 
 class TariffSteperCell: UITableViewCell {
     
-    @IBOutlet weak var stepperView: UIView!
-    @IBOutlet weak var stepperLabel: UILabel!
-    @IBOutlet weak var minusButton: UIButton!
-    @IBOutlet weak var tariffLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet private weak var stepperView: UIView!
+    @IBOutlet private weak var stepperLabel: UILabel!
+    @IBOutlet private weak var minusButton: UIButton!
+    @IBOutlet private weak var tariffLabel: UILabel!
+    @IBOutlet private weak var priceLabel: UILabel!
     
-    var onPlus: ((Int) -> ())?
-    var onMinus: ((Int) -> ())?
-    var enableMinus: Bool {
-        return currentCount > 0
-    }
-    private var currentCount: Int = 0
+    @IBOutlet weak var plusButton: UIButton!
+    private var onPlus: Command<Void>?
+    private var onMinus: Command<Void>?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         stepperView.layer.cornerRadius = 8
-        minusButton.isEnabled = false
-        minusButton.alpha = 0.3
+        stepperView.layer.cornerCurve = .continuous
         stepperLabel.font = UIFont(name: "MoscowSans-Regular", size: 15)
         tariffLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
         priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
@@ -58,37 +59,20 @@ class TariffSteperCell: UITableViewCell {
         tariffLabel.text = data.tariff
         priceLabel.text = data.price
         stepperLabel.text = data.stepperCount
+        minusButton.alpha = data.onMinus == nil ? 0.3 : 1
+        plusButton.alpha = data.onPlus == nil ? 0.3 : 1
         onPlus = data.onPlus
         onMinus = data.onMinus
     }
     
     @IBAction func minusButtonTapped() {
-        if enableMinus {
-            currentCount -= 1
-            stepperLabel.text = String(currentCount)
-            onMinus?(currentCount)
-            if currentCount == 0 {
-                disableMinus()
-            }
-        }
+        onMinus?.perform(with: ())
     }
     
     @IBAction func plusButtonTapped() {
-        currentCount += 1
-        stepperLabel.text = String(currentCount)
-        onPlus?(currentCount)
-        if currentCount != 0 {
-            enableMinuse()
-        }
+        onPlus?.perform(with: ())
     }
     
-    private func disableMinus() {
-        minusButton.isEnabled = false
-        minusButton.alpha = 0.3
-    }
     
-    private func enableMinuse() {
-        minusButton.isEnabled = true
-        minusButton.alpha = 1
-    }
+   
 }

@@ -15,6 +15,7 @@ class WithoutPersonBookingView: UIView {
         var title: String
         var state: [State]
         var dataState: DataState
+        var onBooking: Command<Void>?
         
         enum DataState {
             case loading
@@ -22,12 +23,19 @@ class WithoutPersonBookingView: UIView {
         }
         
         struct TariffSteper: _TariffSteper {
-            let tariff: String
+            var tariff: String
+            
             var price: String
+            
             var stepperCount: String
-            var onPlus: (Int) -> ()
-            var onMinus: (Int) -> ()
-            let height: CGFloat
+            
+            var onPlus: Command<Void>?
+            
+            var onMinus: Command<Void>?
+            
+            var height: CGFloat
+            
+            
         }
         
         struct ChoicePlace: _ChoicePlace {
@@ -35,7 +43,7 @@ class WithoutPersonBookingView: UIView {
             let height: CGFloat
         }
         
-        static let initial = WithoutPersonBookingView.ViewState(title: "", state: [], dataState: .loading)
+        static let initial = WithoutPersonBookingView.ViewState(title: "", state: [], dataState: .loading, onBooking: nil)
     }
     
     var viewState: ViewState = .initial {
@@ -59,6 +67,8 @@ class WithoutPersonBookingView: UIView {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .clear
         table.clipsToBounds = true
+        table.backgroundColor = Appearance.colors[.base]
+        table.shouldUseReload = true
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
@@ -100,15 +110,31 @@ class WithoutPersonBookingView: UIView {
     
     private func render() {
         DispatchQueue.main.async {
+            
+            
             self.titleLabel.text = self.viewState.title
             self.tableView.viewStateInput = self.viewState.state
+            self.bookButton.alpha = self.viewState.onBooking == nil ? 0.3 : 1
+            self.bookButton.isUserInteractionEnabled = self.viewState.onBooking == nil ? false : true
+            switch self.viewState.dataState {
+            case .loading:
+                self.showBlurLoading()
+            case .loaded:
+                self.removeBlurLoading()
+            }
+            
         }
+    }
+    
+    @objc private func handleBook() {
+        self.viewState.onBooking?.perform(with: ())
     }
     
     private func setupConstrains() {
         addSubview(tableView)
         addSubview(buttonView)
         addSubview(titleLabel)
+        bookButton.addTarget(self, action: #selector(handleBook), for: .touchUpInside)
         buttonView.addSubview(bookButton)
         
         NSLayoutConstraint.activate(

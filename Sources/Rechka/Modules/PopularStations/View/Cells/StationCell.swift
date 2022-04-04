@@ -57,7 +57,7 @@ class StationCell: UITableViewCell {
         let label = UILabel()
         label.text = "test title text"
         label.numberOfLines = 0
-        label.font = .customFont(forTextStyle: .title3)
+        label.font = .customFont(forTextStyle: .headline)
         label.textAlignment = .left
         label.textColor = Appearance.colors[.textPrimary]
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -55,6 +55,9 @@
                                                 <integer key="value" value="16"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleClose:" destination="iN0-l3-epB" eventType="touchUpInside" id="rKg-k0-bbC"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>

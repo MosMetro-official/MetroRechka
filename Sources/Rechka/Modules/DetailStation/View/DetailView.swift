@@ -11,10 +11,9 @@ import CoreTableView
 class DetailView: UIView {
     
     struct ViewState {
-        
-        var isChoiceButtonDisable: Bool
         let state: [State]
         let dataState: DataState
+        let onChoice: Command<Void>?
         
         enum DataState {
             case loading
@@ -55,7 +54,7 @@ class DetailView: UIView {
        
      
         
-        static let initial = DetailView.ViewState(isChoiceButtonDisable: false, state: [], dataState: .loading)
+        static let initial = DetailView.ViewState(state: [], dataState: .loading, onChoice: nil)
     }
     
     var viewState: ViewState = .initial {
@@ -131,7 +130,7 @@ class DetailView: UIView {
     }
     
     @objc private func goToChoiceTickets() {
-        onChoice?()
+        self.viewState.onChoice?.perform(with: ())
     }
     
     @objc private func popToRoot() {
@@ -180,10 +179,17 @@ class DetailView: UIView {
     
     private func render() {
         DispatchQueue.main.async {
-            self.tableView.viewStateInput = self.viewState.state
-            if self.viewState.isChoiceButtonDisable {
-                self.disableChoiceButton()
+            switch self.viewState.dataState {
+            case .loading:
+                self.showBlurLoading()
+            case .loaded:
+                self.removeBlurLoading()
+            case .error:
+                self.removeBlurLoading()
             }
+            self.choiceTicketButton.alpha = self.viewState.onChoice == nil ? 0.4 : 1
+            self.choiceTicketButton.isUserInteractionEnabled = self.viewState.onChoice == nil ? false : true
+            self.tableView.viewStateInput = self.viewState.state
         }
     }
 }

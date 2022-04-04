@@ -12,6 +12,9 @@ import SwiftDate
 
 class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     
+   
+   
+    
     func onMapBackSelect() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -76,6 +79,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         view.backgroundColor = .systemBackground
         //nestedView.posterHeaderView?.configurePosterHeader(with: model)
         setupNestedViewActions()
+        self.nestedView.viewState = .init(state: [], dataState: .loading, onChoice: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,6 +94,9 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     
     @MainActor
     private func setRoute(_ route: RiverRoute) {
+        if let first = route.shortTrips.first {
+            self.selectedTripId = first.id
+        }
         self.route = route
     }
     
@@ -97,6 +104,32 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
     private func setState(_ state: DetailView.ViewState) {
         self.nestedView.viewState = state
     }
+    
+    
+    private func handleChoice() {
+        guard let selectedTripId = selectedTripId else {
+            return
+        }
+        let loadingState = DetailView.ViewState(state: self.nestedView.viewState.state,
+                                                dataState: .loading,
+                                                onChoice: self.nestedView.viewState.onChoice)
+        self.nestedView.viewState = loadingState
+        Task.detached { [weak self] in
+            do {
+                let trip = try await RiverTrip.get(by: selectedTripId)
+                let loadedState = DetailView.ViewState(state: loadingState.state,
+                                                       dataState: .loaded,
+                                                       onChoice: loadingState.onChoice)
+                await self?.setState(loadedState)
+                await self?.openBuyTicketsController(with: trip)
+                
+            } catch {
+                
+            }
+            
+        }
+    }
+    
     
     private func setupNestedViewActions() {
         nestedView.onClose = { [weak self] in
@@ -119,7 +152,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         ).toElement()
         main.append(summary)
         
-        if Rechka.isMapsRoutesAvailable {
+        if Rechka.shared.isMapsRoutesAvailable {
             let mapView = DetailView.ViewState.MapView(
                 onButtonSelect: { [weak self] in
                     guard let self = self else { return }
@@ -132,9 +165,10 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         let infoSection = SectionState(header: nil, footer: nil)
         let infoSectionState = State(model: infoSection, elements: main)
         let dict = Dictionary.init(grouping: model.shortTrips, by: { element -> DateComponents in
-            let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
-           // let date = Calendar.current.dateComponents([.day, .month, .year], from: (element.dateStart))
+            //let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
+            let date = Calendar.current.dateComponents([.day, .month, .year], from: (element.dateStart.dateAt(.startOfDay).date))
             return date
+        
             
         })
         resultSections.append(infoSectionState)
@@ -149,12 +183,29 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
         let tripsSections: [State]  = sorted.compactMap { (key, value) in
             if let first = value.first {
                 let sortedTrips: [Element] = value.sorted(by: { $0.dateStart < $1.dateStart}).map { trip in
+                    let onSelect: () -> () = { [weak self] in
+                        guard let self = self else { return }
+                        self.selectedTripId = trip.id
+                        
+                    }
+                    
+                    let seats: String = {
+                        switch trip.freePlaceCount {
+                        case 0:
+                            return "Мест не осталось"
+                        case 1...3:
+                            return "🔥 Осталось мало мест"
+                        default:
+                            return "\(trip.freePlaceCount)"
+                        }
+                    }()
+                    
                     return DetailView.ViewState.ShortTripInfo(
                         date: trip.dateStart.toFormat("d MMMM yyyy HH:mm", locale: Locales.russian),
                         isSelected: trip.id == self.selectedTripId ,
                         price: "\(trip.price) ₽",
-                        seats: "\(trip.freePlaceCount)",
-                        onSelect: {})
+                        seats: seats,
+                        onSelect: onSelect)
                         .toElement()
                     
                 }
@@ -167,13 +218,16 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
             return nil
         }
         resultSections.append(contentsOf: tripsSections)
-        
+        let onChoice = Command { [weak self] in
+            guard let self = self else { return }
+            self.handleChoice()
+        }
     
-        return .init(state: resultSections, dataState: .loaded)
+        return .init(state: resultSections, dataState: .loaded, onChoice: onChoice)
     }
     
     private func showRouteOnMap() {
-        self.delegate = Rechka.delegate
+        self.delegate = Rechka.shared.delegate
         let controller = delegate?.getRechkaMapController()
         guard
             let controller = controller,
@@ -186,15 +240,21 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
 }
 
 extension DetailStationController {
-    private func openBuyTicketsController(with model: FakeModel) {
-        if model.isPersonalDataRequired {
-            let bookingWithPerson = PersonBookingController()
-            bookingWithPerson.model = model
-            navigationController?.pushViewController(bookingWithPerson, animated: true)
-        } else {
-            let bookingWithoutPerson = WithoutPersonBookingController()
-            bookingWithoutPerson.model = model
-            navigationController?.pushViewController(bookingWithoutPerson, animated: true)
-        }
+    
+    
+    @MainActor
+    private func openBuyTicketsController(with model: RiverTrip) {
+        let bookingWithoutPerson = WithoutPersonBookingController()
+        bookingWithoutPerson.model = model
+        navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+//        if model.isPersonalDataRequired {
+//            let bookingWithPerson = PersonBookingController()
+//            bookingWithPerson.model = model
+//            navigationController?.pushViewController(bookingWithPerson, animated: true)
+//        } else {
+//            let bookingWithoutPerson = WithoutPersonBookingController()
+//            //bookingWithoutPerson.model = model
+//            navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+//        }
     }
 }

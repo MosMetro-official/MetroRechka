@@ -13,7 +13,7 @@ class PassengerDataEntryController: UIViewController {
     weak var delegate: PersonBookingDelegate?
     private let nestedView = PassengerDataEntryView(frame: UIScreen.main.bounds)
     
-    var displayUser: User! {
+    var displayUser: RiverUser! {
         didSet {
             makeState()
         }
@@ -48,7 +48,7 @@ class PassengerDataEntryController: UIViewController {
     }
     
     private func firstSetup() {
-        let user = User(name: nil, surname: nil, middleName: nil, birthday: nil, phoneNumber: nil, gender: .male)
+        let user = RiverUser()
         displayUser = user
         let ticket = FakeTickets(price: "", tariff: "")
         self.paymentModel = PaymentModel(ticket: [Ticket(user: user, ticket: ticket)])
@@ -149,7 +149,7 @@ extension PassengerDataEntryController {
         return false
     }
     
-    private func createTableState(for user: User, index: Int) -> [State] {
+    private func createTableState(for user: RiverUser, index: Int) -> [State] {
         var sections = [State]()
         let titleElement = PassengerDataEntryView.ViewState.Header(title: "Личные данные", height: 50).toElement()
         

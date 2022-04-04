@@ -71,7 +71,7 @@ final class StationListView : UIView {
             action: #selector(openMap),
             for: .touchUpInside
         )
-        if !Rechka.isMapsAvailable {
+        if !Rechka.shared.isMapsAvailable {
             mapButton.isHidden = true
         }
     }

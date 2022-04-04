@@ -7,71 +7,134 @@
 
 import UIKit
 import CoreTableView
+import SwiftDate
+import SafariServices
 
-// TODO: Удалить
-extension Date {
-    
-    func adding(minutes: Int) -> Date {
-        return Calendar.current.date(byAdding: .minute, value: minutes, to: self)!
-    }
-}
 
 final class BookingController : UIViewController {
     
     private var timer: Timer?
+    private var paymentController: SFSafariViewController?
     
-    private var endTime = Date().adding(minutes: 1)
+    var onDismiss: (() -> Void)?
     
     var nestedView = BookingView(frame: UIScreen.main.bounds)
     
+    var model: RiverOrder? {
+        didSet {
+            guard let model = model else {
+                return
+            }
+            self.seconds = model.operation.timeLeftToCancel
+        }
+    }
+    
+    private var seconds: Int = 1200 {
+        didSet {
+            if needToSetTimer {
+                self.setTimer()
+            }
+            Task.detached { [weak self] in
+                guard let self = self else { return }
+                let state = await self.makeState()
+                await self.set(state: state)
+            }
+            
+        }
+    }
+    
+    private var needToSetTimer = true
+    
     override func loadView() {
         self.view = nestedView
-        nestedView.onClose = { [weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.dismiss(animated: true)
-            }
-        }
+       
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.makeDummyState()
-        self.runCountdown()
+        setListeners()
     }
     
-    var countdown: DateComponents {
-        return Calendar.current.dateComponents([.minute, .second], from: Date(), to: endTime)
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let timer = timer else {
+            return
+        }
+        timer.invalidate()
+        self.timer = nil
     }
     
-    var currentTime : String = "20:00" {
-        didSet {
-            self.makeDummyState()
+    private func setListeners() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSuccessfulPayment), name: .riverPaymentSuccess, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
+    }
+    
+    
+    @objc private func handleSuccessfulPayment() {
+        hidePaymentController {
+            self.dismiss(animated: true) { [weak self] in
+                self?.onDismiss?()
+            }
         }
     }
     
-    @objc
-    func updateTime() {
-        let minutes = countdown.minute!
-        let seconds = countdown.second!
-        if minutes == 0, seconds == 0 {
-            timer?.invalidate()
+    @objc private func handlePaymentFailure() {
+        hidePaymentController {
+            // TODO: Показать ошибку
         }
-        currentTime = String(format: "%02d:%02d", minutes, seconds)
-    }
-
-    func runCountdown() {
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     
-    private func makeDummyState() {
+    
+    private func hidePaymentController(onDismiss: @escaping () -> Void) {
+        guard let paymentController = paymentController else {
+            return
+        }
+        paymentController.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.paymentController = nil
+            onDismiss()
+        }
+    }
+    
+    private func setTimer() {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] timer in
+            guard let self = self else { return }
+            self.seconds -= 1
+        })
+        RunLoop.current.add(timer!, forMode: .default)
+        
+        self.needToSetTimer = false
+        
+        
+    }
+    
+    @MainActor
+    private func set(state: BookingView.ViewState) {
+        self.nestedView.viewState = state
+    }
+    
+    private func showPaymentController(with url: String) {
+        guard let paymentURL = URL(string: url) else { return }
+        self.paymentController = SFSafariViewController(url: paymentURL)
+        self.present(self.paymentController!, animated: true, completion: nil)
+    }
+    
+    private func makeState() async -> BookingView.ViewState {
+        guard let model = model else {
+            return .init(dataState: .error, states: [], totalPrice: "")
+        }
+        let endBookingDate = model.operation.orderDate + seconds.seconds
+        let period = endBookingDate - model.operation.orderDate
+        guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error, states: [], totalPrice: "")}
+        let elapsedTime = "\(minute):\(seconds)"
         var topElements = [Element]()
         let title = BookingView.ViewState.Title(
             title: "Билеты забронированы"
         ).toElement()
         topElements.append(title)
         let timer = BookingView.ViewState.Timer(
-            timer: self.currentTime,
+            timer: elapsedTime,
             descr: "Осталось времени для оплаты"
         ).toElement()
         topElements.append(timer)
@@ -95,6 +158,23 @@ final class BookingController : UIViewController {
         let cancelSection = SectionState(header: nil, footer: nil)
         let cancelState = State(model: cancelSection, elements: cancelElements)
         
-        self.nestedView.viewState.states = [topState, cancelState]
+        let onClose = Command { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.dismiss(animated: true)
+            }
+        }
+        
+        let onPay = Command { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.showPaymentController(with: model.url)
+            }
+        }
+        
+        return .init(dataState: .loaded, states: [topState, cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(model.operation.totalPrice)) ₽")
+
     }
+
+  
 }

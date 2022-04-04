@@ -15,7 +15,11 @@ extension APIClient {
     public static var unauthorizedClient : APIClient {
         return APIClient(host: "river.brndev.ru")
     }
+    
 }
+
+
+
 
 struct RiverRouteResponse {
     let items: [RiverRoute]
@@ -29,7 +33,7 @@ struct RiverPoint {
     let longitude: Double
     let position: Int
     
-    init(data: SwiftyJSON.JSON) {
+    init(data: CoreNetwork.JSON) {
         self.latitude = data["lat"].doubleValue
         self.longitude = data["lon"].doubleValue
         self.position = data["position"].intValue
@@ -50,7 +54,7 @@ struct RiverVehicle {
 
 // MARK: - RiverTariff
 
-struct RiverTariff {
+struct RiverTariff: Hashable {
     
     enum TariffType: Int {
         case base = 1
@@ -66,8 +70,9 @@ struct RiverTariff {
     let price: Double
     let info: String?
     let isWithoutPlace: Bool
+    var place: Int?
     
-    init?(data: SwiftyJSON.JSON) {
+    init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].string, let type = TariffType(rawValue: data["type"].intValue) else { return nil }
         self.id = id
         self.type = type
@@ -81,7 +86,102 @@ struct RiverTariff {
     
 }
 
+struct RiverDocument: Equatable {
+    let id: Int
+    let name: String
+    let inputMask: String
+    let regularMask: String
+    let useNumpadOnly: String
+    let exampleNumber: String
+    
+}
 
+struct RiverCitizenship: Equatable {
+    let id: Int
+    let name: String
+    let iso: Int
+    let isoAlpha: String
+}
+
+// MARK: - User
+struct RiverUser: Equatable {
+    
+    var name: String?
+    var surname: String?
+    var middleName: String?
+    var birthday: String?
+    var phoneNumber: String?
+    var mail: String?
+    var citizenShip: RiverCitizenship?
+    var document: RiverDocument?
+    var gender: Gender?
+    var ticket: RiverTariff?
+    
+    init(ticket: RiverTariff) {
+        self.ticket = ticket
+    }
+    
+    init() { } 
+    
+    func createBodyItem() -> [String: Any] {
+        var resultingList = [String: Any]()
+        if let name = name, let surname = surname {
+            let middleNameStr = middleName == nil ? "" : " \(middleName!)"
+            resultingList.updateValue("\(name) \(surname)\(middleNameStr)", forKey: "passengerName")
+        }
+        
+        if let birthday = birthday {
+            let separated = birthday.split(separator: ".")
+            
+            if let day = separated[safe: 0], let month = separated[safe: 1], let year = separated[safe: 2] {
+                let newBirthdayString = "\(year)-\(month)-\(day)"
+                resultingList.updateValue(newBirthdayString, forKey: "passengerBirthday")
+            }
+        }
+        
+        if let mail = mail {
+            resultingList.updateValue(mail, forKey: "passengerEmail")
+        }
+        
+        if let gender = gender {
+            resultingList.updateValue(gender.rawValue, forKey: "passengerGender")
+        }
+        
+        if let phoneNumber = phoneNumber {
+            resultingList.updateValue(phoneNumber, forKey: "passengerPhone")
+        }
+        
+        if let document = document {
+            resultingList.updateValue(document.id, forKey: "cardIdentityId")
+        }
+        
+        if let citizenShip = citizenShip {
+            resultingList.updateValue(citizenShip.id, forKey: "citizenshipId")
+        }
+        
+        resultingList.updateValue("auto", forKey: "position")
+        
+        if let ticket = ticket {
+            resultingList.updateValue(ticket.id, forKey: "ticketTariffId")
+            if ticket.isWithoutPlace {
+                resultingList.updateValue("none", forKey: "position")
+            } else {
+                if let place = ticket.place {
+                    resultingList.updateValue(place, forKey: "position")
+                }
+            }
+        }
+        
+        resultingList.updateValue([], forKey: "additionService")
+        return resultingList
+        
+    }
+}
+
+enum Gender: Int {
+    case male = 1
+    case female = 0
+}
 
 // MARK: - Trip
 
@@ -91,7 +191,7 @@ struct RiverShortTrip {
     let price: Double
     let dateStart: Date
     
-    init?(data: SwiftyJSON.JSON) {
+    init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
               let freePlaceCount = data["freePlaceCount"].int,
               let startDate = data["dateTimeStart"].stringValue.toDate()?.date,
@@ -117,9 +217,10 @@ struct RiverTrip {
     let vehicle: Vehicle?
     let ticketPrintedRequired: Bool?
     let tarrifs: [RiverTariff]?
+    let personalDataRequired: Bool?
     
     
-    init?(data: SwiftyJSON.JSON) {
+    init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
                 let name = data["routeName"].string,
               let startDate = data["dateTimeStart"].stringValue.toDate()?.date,
@@ -136,6 +237,67 @@ struct RiverTrip {
         self.vehicle = nil
         self.ticketPrintedRequired = data["ticketPrintedRequired"].bool
         self.tarrifs = data["tariffs"].array?.compactMap { RiverTariff(data: $0) }
+        self.personalDataRequired = data["personalDataRequired"].bool
+        
+    }
+    
+}
+
+
+
+
+extension RiverTrip {
+    
+    static func book(with users: [RiverUser], tripID: Int) async throws -> RiverOrder {
+        let tickets: [[String:Any]] = users.map { user in
+            return user.createBodyItem()
+        }
+        
+        let body: [String: Any] = [
+            "id": tripID,
+            "returnUrl": Rechka.shared.returnURL,
+            "failUrl": Rechka.shared.failURL,
+            "tickets": tickets
+        ]
+        let client = APIClient.authorizedClient
+        
+        do {
+            let bookingResponse = try await client.send(.POST(
+                path: "/api/orders/v1/booking",
+                body: body,
+                contentType: .json)
+            )
+            let json = CoreNetwork.JSON(bookingResponse.data)
+            guard let order = RiverOrder(data: json["data"]) else {
+                throw APIError.badData
+            }
+            print(order)
+            return order
+        } catch {
+            guard let err = error as? APIError else { throw error }
+            print(err)
+            throw err
+        }
+    }
+    
+    static func get(by id: Int) async throws -> RiverTrip {
+        let client = APIClient.unauthorizedClient
+        do {
+            let response = try await client.send(
+                .GET(
+                    path: "/api/trips/v1/\(id)",
+                    query: nil)
+            )
+            let json = CoreNetwork.JSON(response.data)
+            guard let trip = RiverTrip(data: json["data"]) else {
+                throw APIError.badData
+            }
+            return trip
+        } catch {
+            guard let err = error as? APIError else { throw error }
+            print(err)
+            throw err
+        }
     }
     
 }
@@ -147,7 +309,7 @@ struct RiverGallery {
     let galleryDescription: String?
     let urls: [String]
     
-    init(data: SwiftyJSON.JSON) {
+    init(data: CoreNetwork.JSON) {
         self.id = data["id"].intValue
         self.title = data["title"].stringValue
         self.galleryDescription = data["description"].string
@@ -169,7 +331,7 @@ struct RiverStation {
     let galleries: [RiverGallery]
     
     
-    init(data: SwiftyJSON.JSON) {
+    init(data: CoreNetwork.JSON) {
         self.id = data["id"].intValue
         self.name = data["name"].stringValue
         self.cityID = data["cityId"].intValue
@@ -212,7 +374,7 @@ struct RiverRoute {
     
     
     
-    init(data: SwiftyJSON.JSON) {
+    init(data: CoreNetwork.JSON) {
         self.id = data["id"].intValue
         self.name = data["name"].stringValue
         self.minPrice = data["minPrice"].intValue
@@ -240,7 +402,7 @@ extension RiverRoute {
                     path: "/api/routes/v1/\(id)",
                     query: nil)
             )
-            let json = SwiftyJSON.JSON(response.data)
+            let json = CoreNetwork.JSON(response.data)
             let route = RiverRoute(data: json["data"])
             return route
         } catch {
@@ -258,7 +420,7 @@ extension RiverRoute {
                     path: "/api/routes/v1",
                     query: nil)
             )
-            let json = SwiftyJSON.JSON(response.data)
+            let json = CoreNetwork.JSON(response.data)
             guard let routesArray = json["data"]["items"].array,
                   let page = json["data"]["page"].int,
                   let totalPages = json["data"]["totalPages"].int,
@@ -273,3 +435,6 @@ extension RiverRoute {
         
     }
 }
+
+
+
