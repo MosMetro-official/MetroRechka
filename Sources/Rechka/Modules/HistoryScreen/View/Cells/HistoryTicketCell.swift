@@ -43,7 +43,7 @@ class HistoryTicketCell: UITableViewCell {
     
     public func configure(with data: _History) {
         titleLabel.text = data.title
-        descriptionLabel.text = data.description
+        descriptionLabel.text = data.descr
         priceLabel.text = data.price
     }
 }

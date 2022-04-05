@@ -31,9 +31,6 @@ class WithoutPersonBookingController: UIViewController {
         }
     }
     
-    
-   
-    
     override func loadView() {
         super.loadView()
         view = nestedView
@@ -41,7 +38,6 @@ class WithoutPersonBookingController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createTicketsCount()
         title = "Покупка"
     }
     

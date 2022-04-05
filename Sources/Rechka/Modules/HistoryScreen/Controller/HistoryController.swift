@@ -34,7 +34,7 @@ class HistoryController: UIViewController {
         for ticket in tickets {
             let ticketRow = HistoryView.ViewState.HistoryTicket(
                 title: ticket.title,
-                description: ticket.desc,
+                descr: ticket.desc,
                 price: ticket.price,
                 onSelect: {
                     #warning("OPEN_TICKET_HERE")
@@ -42,9 +42,9 @@ class HistoryController: UIViewController {
             ).toElement()
             let ticketSec = SectionState(header: nil, footer: nil)
             let ticketState = State(model: ticketSec, elements: [ticketRow])
-            ticketStates.append(ticketState)
+            states.append(ticketState)
         }
-        nestedView.viewState = HistoryView.ViewState(state: ticketStates, dataState: .loaded)
+        nestedView.viewState = HistoryView.ViewState(state: states, dataState: .loaded)
     }
 }
 
