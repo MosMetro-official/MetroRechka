@@ -14,7 +14,7 @@
 		952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2927D53AAD00299639 /* SceneDelegate.swift */; };
 		952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3027D53AAD00299639 /* Assets.xcassets */; };
 		952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3227D53AAD00299639 /* LaunchScreen.storyboard */; };
-		95FF332A27DA1F0F004826E2 /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = 95FF332927DA1F0F004826E2 /* Rechka */; };
+		D89B884527FDBED100901551 /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = D89B884427FDBED100901551 /* Rechka */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95FF332A27DA1F0F004826E2 /* Rechka in Frameworks */,
+				D89B884527FDBED100901551 /* Rechka in Frameworks */,
 				20AA10BB7D722753089B0FF9 /* libPods-MetroRechka.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,7 +130,7 @@
 			);
 			name = MetroRechka;
 			packageProductDependencies = (
-				95FF332927DA1F0F004826E2 /* Rechka */,
+				D89B884427FDBED100901551 /* Rechka */,
 			);
 			productName = MetroRechka;
 			productReference = 952BEF2427D53AAD00299639 /* MetroRechka.app */;
@@ -474,7 +474,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		95FF332927DA1F0F004826E2 /* Rechka */ = {
+		D89B884427FDBED100901551 /* Rechka */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Rechka;
 		};

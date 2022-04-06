@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 import CoreNetwork
 import SwiftDate
 
