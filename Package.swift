@@ -9,7 +9,6 @@ let package = Package(
         .iOS(.v13),
     ],
     products: [
-        .library(name: "Rechka", targets: ["Rechka"]),
             .library(name: "RechkaStatic", type: .static, targets: ["Rechka"]),
             .library(name: "RechkaDynamic", type: .dynamic, targets: ["Rechka"])
         
