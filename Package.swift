@@ -16,9 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "CoreNetwork", url: "https://github.com/MosMetro-official/CoreNetwork", from: "0.0.2"),
-        .package(name: "CoreTableView", url: "https://github.com/MosMetro-official/CoreTableView", from: "0.0.2"),
-        .package(name: "SwiftyJSON", url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.0.0"),
-        .package(url: "https://github.com/malcommac/SwiftDate.git", from: "5.0.0")
+        .package(name: "CoreTableView", url: "https://github.com/MosMetro-official/CoreTableView", from: "0.0.3")
     ],
     targets: [
         .target(
@@ -26,8 +24,6 @@ let package = Package(
             dependencies: [
                 "CoreNetwork",
                 "CoreTableView",
-                "SwiftyJSON",
-                "SwiftDate"
             ],
             resources: [
                 .copy("Fonts/MoscowSans-Bold.otf"),

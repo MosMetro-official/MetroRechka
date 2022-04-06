@@ -18,6 +18,7 @@ class HistoryView: UIView {
         enum DataState {
             case loaded
             case loading
+            case error
         }
         
         struct HistoryTicket: _History {
@@ -25,7 +26,14 @@ class HistoryView: UIView {
             let descr : String
             let price : String
             let onSelect : (() -> Void)
-            let height: CGFloat
+        }
+        
+        struct DateHeader: _TripsDateHeader {
+            var title: String
+        }
+        
+        struct LoadMore: _RechkaLoadMoreCell {
+            var onLoad: Command<Void>?
         }
         
         static let initial = HistoryView.ViewState(state: [], dataState: .loading)
@@ -37,14 +45,18 @@ class HistoryView: UIView {
         }
     }
     
+    public var onWillDisplay: ((CellWillDisplayData) -> Void)?
+    
     private let tableView: BaseTableView = {
-        let table = BaseTableView(frame: .zero, style: .insetGrouped)
+        let table = BaseTableView(frame: .zero, style: .grouped)
         table.clipsToBounds = true
-        table.separatorColor = .systemGray
+        table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = Appearance.colors[.base]
+        table.shouldUseReload = true
         return table
     }()
     
@@ -52,6 +64,10 @@ class HistoryView: UIView {
         super.init(frame: frame)
         setupConstrains()
         backgroundColor = .custom(for: .base)
+        tableView.onWillDisplay = { [weak self] displayData in
+            guard let self = self else { return }
+            self.onWillDisplay?(displayData)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -69,7 +85,15 @@ class HistoryView: UIView {
     }
     
     private func render() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
+            switch self.viewState.dataState {
+            case .loaded:
+                self.removeBlurLoading(from: self)
+            case .loading:
+                self.showBlurLoading(on: self)
+            case .error:
+                self.removeBlurLoading(from: self)
+            }
             self.tableView.viewStateInput = self.viewState.state
         }
     }

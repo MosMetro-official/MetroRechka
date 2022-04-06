@@ -53,7 +53,7 @@ public class PopularStationController : UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        Rechka.shared.token = "id46Uawk9YwxL_SdmTQjJ9zcu5V6_xbgVQRLST0rAgk"
+        Rechka.shared.token = "Pzk866b1qrmQll220UbfSKnWnYnbjA6obLr0KWKb1MY"
         setOrderListener()
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.customFont(forTextStyle: .title1)
@@ -63,6 +63,7 @@ public class PopularStationController : UIViewController {
         Task.detached(priority: .high) {
             do {
                 let routeResponse = try await RiverRoute.getRoutes()
+                try await Task.sleep(nanoseconds: 0_500_000_000)
                 await self.setResponse(routeResponse)
                 print("adadsdas")
             } catch {
@@ -70,7 +71,7 @@ public class PopularStationController : UIViewController {
             }
         }
         
-        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 14])
+        //NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 14])
     }
     
     @MainActor
@@ -134,9 +135,8 @@ public class PopularStationController : UIViewController {
         }
         settingsView.onTerminalsButton = { [weak self] in
             guard let self = self else { return }
-            struct Mock : _TicietsDetailsView { }
-            let controller = TicketDetailsController()
-            self.present(controller, animated: true)
+            let controller = HistoryController()
+            self.navigationController?.pushViewController(controller, animated: true)
 //            if Rechka.isMapsAvailable {
 //                self.openMapController()
 //            } else {

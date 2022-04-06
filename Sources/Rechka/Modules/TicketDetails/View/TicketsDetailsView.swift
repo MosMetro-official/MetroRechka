@@ -49,10 +49,7 @@ final class TicketsDetailsView : UIView {
             var place: String
             var number: String
             var passenger: String
-            var onRefund: Command<Void>?
-            var onDownload: Command<Void>?
-            var downloadTitle: String
-            var onRefundDetails: Command<Void>?
+            var buttons: TicketDetailCell.Buttons
         }
         
         struct TicketStatus : _TicketStatus {

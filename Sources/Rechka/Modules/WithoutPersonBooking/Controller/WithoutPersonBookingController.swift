@@ -18,8 +18,6 @@ class WithoutPersonBookingController: UIViewController {
         }
     }
     
-    
-    
     var selectedTarrifs: [RiverTariff: [RiverUser]] = [:] {
         didSet {
             Task.detached { [weak self] in
@@ -41,7 +39,6 @@ class WithoutPersonBookingController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createTicketsCount()
         title = "Покупка"
     }
     

@@ -16,6 +16,18 @@ protocol _History: CellData {
 
 extension _History {
     
+    func hashValues() -> [Int] {
+        return [
+            title.hashValue,
+            descr.hashValue,
+            price.hashValue
+        ]
+    }
+    
+    var height: CGFloat {
+        return 104
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? HistoryTicketCell else { return }
         cell.configure(with: self)
@@ -30,20 +42,21 @@ extension _History {
 
 class HistoryTicketCell: UITableViewCell {
 
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var mainTitleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     
+    @IBOutlet weak var cardView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        descriptionLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
+        self.cardView.layer.cornerRadius = 20
+        self.cardView.layer.cornerCurve = .continuous
     }
     
     public func configure(with data: _History) {
-        titleLabel.text = data.title
-        descriptionLabel.text = data.description
+        mainTitleLabel.text = data.title
+        descriptionLabel.text = data.descr
         priceLabel.text = data.price
     }
 }

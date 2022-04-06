@@ -247,6 +247,8 @@ extension DetailStationController {
         let bookingWithoutPerson = WithoutPersonBookingController()
         bookingWithoutPerson.model = model
         navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+        
+        
 //        if model.isPersonalDataRequired {
 //            let bookingWithPerson = PersonBookingController()
 //            bookingWithPerson.model = model

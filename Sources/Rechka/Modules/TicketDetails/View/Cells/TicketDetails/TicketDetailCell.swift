@@ -14,13 +14,11 @@ protocol _TicketDetail : CellData {
     var place : String { get }
     var number : String { get }
     var passenger : String { get }
-    var onRefund : Command<Void>? { get }
-    var onDownload : Command<Void>? { get }
-    var downloadTitle : String { get }
-    var onRefundDetails : Command<Void>? { get }
+    var buttons: TicketDetailCell.Buttons { get }
 }
 
 extension _TicketDetail {
+    
     
     var height: CGFloat {
         return 275 // тут проверку на статус надо сделать
@@ -31,8 +29,7 @@ extension _TicketDetail {
             price.hashValue,
             place.hashValue,
             number.hashValue,
-            passenger.hashValue,
-            downloadTitle.hashValue,
+            passenger.hashValue
         ]
     }
     
@@ -51,6 +48,18 @@ extension _TicketDetail {
 }
 
 class TicketDetailCell: UITableViewCell {
+    
+    struct Buttons {
+        let onRefund: ButtonData?
+        let onDownload: ButtonData?
+        let onRefundDetails: ButtonData?
+        let info: ButtonData?
+        
+        struct ButtonData {
+            let title: String
+            let onSelect: Command<Void>?
+        }
+    }
 
     private  var onRefund : Command<Void>?
     private  var onDownload : Command<Void>?
@@ -157,14 +166,16 @@ class TicketDetailCell: UITableViewCell {
 //    }
     
     public func configure(with data: _TicketDetail) {
-        self.onRefund = data.onRefund
-        self.onDownload = data.onDownload
         self.placelabel.text = data.place
-        self.onRefundDetails = data.onRefundDetails
         self.ticketPriceLabel.text = data.price
         self.ticketNumberLabel.text = data.number
         self.passengerDataLabel.text = data.passenger
-        self.docButton.setTitle(data.downloadTitle, for: .normal)
+        self.docButton.isHidden = data.buttons.onDownload == nil
+        self.returnButton.isHidden = data.buttons.onRefund == nil
+        self.refundDetailsButton.isHidden = data.buttons.onRefundDetails == nil
+        self.needToPayLabel.isHidden = data.buttons.info == nil
+        
+      //  self.docButton.setTitle(data.downloadTitle, for: .normal)
         
 //        self.handleButtons(status: data.status)
 //        self.handleStatusView(status: data.status)

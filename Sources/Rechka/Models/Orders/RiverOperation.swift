@@ -9,10 +9,15 @@ import Foundation
 import CoreNetwork
 import SwiftDate
 
+enum RechkaOrderStatus: Int {
+    case success = 1
+    case canceled = 2
+    case booked = 3
+}
 
 struct RiverOperation {
     let id: Int
-    let status: Status
+    let status: RechkaOrderStatus
     let timeLeftToCancel: Int // seconds
     let orderDate: Date // MSK timezone
     let hash: String
@@ -28,16 +33,12 @@ struct RiverOperation {
     }
     
     
-    enum Status: Int {
-        case success = 1
-        case canceled = 2
-        case booked = 3
-    }
+    
     
     init?(data: CoreNetwork.JSON) {
         guard
             let id = data["id"].int,
-            let status = Status(rawValue: data["status"].intValue),
+            let status = RechkaOrderStatus(rawValue: data["status"].intValue),
             let orderDate = data["dateTimeOrder"].stringValue.toDate()?.date,
             let tickets = data["tickets"].array else { return nil }
         self.id = id

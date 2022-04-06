@@ -58,6 +58,49 @@ final class TicketDetailsController : UIViewController {
         }
     }
     
+    private func buttonStateForPayed(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
+        let onRefundAction = Command { [weak self] in
+            print("started refund")
+        }
+        let refunData = TicketDetailCell.Buttons.ButtonData(title: "Вернуть билет", onSelect: onRefundAction)
+        
+        let onDownloadAction = Command { [weak self] in
+            print("started loading")
+        }
+        let downloadData = TicketDetailCell.Buttons.ButtonData(title: "Квитанция", onSelect: onDownloadAction)
+        
+        return .init(onRefund: refunData,
+                     onDownload: downloadData,
+                     onRefundDetails: nil,
+                     info: nil)
+    }
+    
+    private func buttonStateForReturned(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
+        let onRefundDetails = Command { [weak self] in
+            print("started refund")
+        }
+        let refundDetails = TicketDetailCell.Buttons.ButtonData(title: "Детали возврата", onSelect: onRefundDetails)
+        
+        let onDownloadAction = Command { [weak self] in
+            print("started loading")
+        }
+        let downloadData = TicketDetailCell.Buttons.ButtonData(title: "Квитанция", onSelect: onDownloadAction)
+        
+        return .init(onRefund: nil,
+                     onDownload: downloadData,
+                     onRefundDetails: refundDetails,
+                     info: nil)
+    }
+    
+    private func buttonStateForBooked(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
+       
+        
+        return .init(onRefund: nil,
+                     onDownload: nil,
+                     onRefundDetails: nil,
+                     info: .init(title: "Билет забронирован, ожидаем оплаты", onSelect: nil))
+    }
+    
     private func makeState(for order: RiverOrder) async -> TicketsDetailsView.ViewState {
         var resultigState = [State]()
         // Status
@@ -117,15 +160,25 @@ final class TicketDetailsController : UIViewController {
                 }
             }()
             
+            let buttonsData: TicketDetailCell.Buttons = {
+                switch ticket.status {
+                case .payed:
+                    return buttonStateForPayed(ticket: ticket)
+                case .returnedByCarrier:
+                    return buttonStateForReturned(ticket: ticket)
+                case .booked:
+                    return buttonStateForBooked(ticket: ticket)
+                case .returnedByAgent:
+                    return buttonStateForReturned(ticket: ticket)
+                }
+            }()
+            
             let element = TicketsDetailsView.ViewState.Ticket(
                 price: "\(Int(ticket.price)) ₽",
                 place: place,
                 number: "\(ticket.id)",
                 passenger: "",
-                onRefund: nil,
-                onDownload: nil,
-                downloadTitle: "some",
-                onRefundDetails: nil)
+                buttons: buttonsData)
                 .toElement()
             let section = SectionState(header: nil, footer: nil)
             return .init(model: section, elements: [element])
