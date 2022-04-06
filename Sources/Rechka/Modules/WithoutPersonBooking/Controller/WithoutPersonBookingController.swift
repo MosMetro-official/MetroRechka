@@ -29,9 +29,6 @@ class WithoutPersonBookingController: UIViewController {
         }
     }
     
-    
-   
-    
     override func loadView() {
         super.loadView()
         view = nestedView
