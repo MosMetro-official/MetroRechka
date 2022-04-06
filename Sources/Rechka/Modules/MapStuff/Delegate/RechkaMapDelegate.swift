@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RechkaMapDelegate.swift
 //  
 //
 //  Created by polykuzin on 15/03/2022.

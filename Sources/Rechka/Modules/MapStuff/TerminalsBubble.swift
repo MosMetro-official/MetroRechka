@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TerminalBubbleView.swift
 //  
 //
 //  Created by polykuzin on 16/03/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TerminalBubbleView : UIView {
+internal final class TerminalBubbleView : UIView {
         
     var onSelect : (() -> Void)?
     

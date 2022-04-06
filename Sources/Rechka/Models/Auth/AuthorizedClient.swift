@@ -14,7 +14,7 @@ extension APIClient {
     }
 }
 
-final class SecureApiClientDelegate : APIClientDelegate {
+internal final class SecureApiClientDelegate : APIClientDelegate {
     
     
     

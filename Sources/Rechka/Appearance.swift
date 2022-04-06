@@ -40,7 +40,7 @@ protocol _Appearance: AnyObject {
     static var colors: [Colors: UIColor] { get }
 }
 
-public class Appearance: _Appearance {
+public final class Appearance: _Appearance {
     
     static func makeRechkaTerminalImage(from terminal: _RechkaTerminal) -> UIImage {
         let bubble = TerminalBubbleView(frame: CGRect(x: 0, y: 0, width: 230, height: 100))

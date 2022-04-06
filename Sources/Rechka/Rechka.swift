@@ -95,7 +95,7 @@ public class Rechka {
     /// Return first view controller of packge module
     public func showRechkaFlow() -> UINavigationController {
         /// load data
-        let controller = PopularStationController()
+        let controller = R_PopularStationsController()
         controller.delegate = Rechka.shared.delegate
         return UINavigationController(rootViewController: controller)
     }

@@ -10,7 +10,7 @@ import UIKit
 typealias TextEnterData = (text: String, textField: UITextField)
 typealias TextValidationData = (text: String, textField: UITextField, replacementString: String)
 
-class InputView: UIView {
+internal final class InputView: UIView {
     
     @IBOutlet var backgroundBlurView: UIView!
     
@@ -71,9 +71,7 @@ extension InputView {
     
     private func render() {
         DispatchQueue.main.async {
-            
             self.backButton.isEnabled = self.viewState.backImageEnabled
-            
             self.submitButton.setImage(self.viewState.nextImage, for: .normal)
             self.descLabel.text = self.viewState.desc
             self.textField.text = self.viewState.text
@@ -144,8 +142,7 @@ extension InputView {
                                                name: UIResponder.keyboardWillChangeFrameNotification,
                                                object: nil)
         
-        floatingView.layer.cornerRadius = 16
-        //floatingView.roundCorners(.top, radius: 16)
+        floatingView.roundCorners(.top, radius: 16)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap))
         tapGesture.numberOfTapsRequired = 1
         backgroundBlurView.addGestureRecognizer(tapGesture)
@@ -174,7 +171,6 @@ extension UIView {
             let propertyAnimator = UIViewPropertyAnimator(duration: 0.25, dampingRatio: 0.3) {
                 currentView.descLabel.textColor = .red
                 currentView.descLabel.text = error
-                    
                 currentView.floatingView.transform = CGAffineTransform(translationX: 20, y: 0)
                 }
 

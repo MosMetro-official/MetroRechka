@@ -16,6 +16,18 @@ protocol _History: CellData {
 
 extension _History {
     
+    var height: CGFloat {
+        return 60
+    }
+    
+    func hashValues() -> [Int] {
+        return [
+            title.hashValue,
+            descr.hashValue,
+            price.hashValue
+        ]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? HistoryTicketCell else { return }
         cell.configure(with: self)
