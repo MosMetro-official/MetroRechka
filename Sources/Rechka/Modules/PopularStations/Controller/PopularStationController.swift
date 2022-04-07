@@ -72,7 +72,7 @@ public class PopularStationController : UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        Rechka.shared.token = "EjAQOZcjjJWkPc79v8dQlyIKV9UFaRyjURIGeOqRnc4"
+        
         setOrderListener()
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.customFont(forTextStyle: .title1)
@@ -90,7 +90,7 @@ public class PopularStationController : UIViewController {
             }
         }
         
-        //NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 14])
+        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 15])
     }
     
     @MainActor

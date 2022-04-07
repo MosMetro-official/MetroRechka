@@ -157,7 +157,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U6E-Zg-H7o">
                                         <rect key="frame" x="164.5" y="0.0" width="77.5" height="44"/>
-                                        <color key="backgroundColor" name="ButtonTertiary"/>
+                                        <color key="backgroundColor" name="textInverted"/>
                                         <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Детали возврата">
@@ -243,9 +243,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="ButtonTertiary">
-            <color red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="base">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

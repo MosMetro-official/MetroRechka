@@ -22,15 +22,32 @@ protocol _BlurResult {
 
 final class BlurResultView : UIView {
     
-    public func configure(with data: _BlurResult) {
-        title.text = data.title
-        descr.text = data.descr
-        handleResult(data.result)
+    
+    struct ViewState {
+        let title: String
+        let subtitle: String
+        let image: UIImage
+        let onClose: Command<Void>?
+        let onRetry: Command<Void>?
+        
+        static let initial = ViewState(title: "", subtitle: "", image: UIImage(), onClose: nil, onRetry: nil)
     }
     
-    private var onClose : (() -> Void)?
+    var viewState: ViewState = .initial {
+        didSet {
+            DispatchQueue.main.async {
+                self.render()
+            }
+        }
+    }
     
-    private var onRetry : (() -> Void)?
+    private func render() {
+        self.title.text = viewState.title
+        self.descr.text = viewState.subtitle
+        self.resultImage.image = viewState.image
+        self.retryButton.isHidden = viewState.onRetry == nil
+    }
+    
     
     @IBOutlet private weak var title : UILabel!
     
@@ -43,11 +60,11 @@ final class BlurResultView : UIView {
     @IBOutlet private weak var resultImage : UIImageView!
     
     @IBAction private func onCloseSelect() {
-        onClose?()
+        viewState.onClose?.perform(with: ())
     }
     
     @IBAction private func onRetrySelect() {
-        onRetry?()
+        viewState.onClose?.perform(with: ())
     }
     
     private func handleSuccess() {
@@ -60,12 +77,5 @@ final class BlurResultView : UIView {
         resultImage.image = UIImage(named: "result_error", in: .module, compatibleWith: nil)
     }
     
-    private func handleResult(_ status: Result) {
-        switch status {
-        case .success:
-            handleSuccess()
-        case .failure:
-            handleFailure()
-        }
-    }
+   
 }

@@ -20,6 +20,7 @@ final class SecureApiClientDelegate : APIClientDelegate {
     
     func client(_ client: APIClient, willSendRequest request: inout URLRequest) {
         request.appendBasicHeaders()
+        
     }
     
     func client(_ client: APIClient, initialRequest: Request, didReceiveInvalidResponse response: HTTPURLResponse, data: Data?) async throws -> Response {

@@ -171,7 +171,7 @@ struct RiverUser: Equatable {
             }
         }
         
-        resultingList.updateValue([], forKey: "additionService")
+        //resultingList.updateValue([], forKey: "additionService")
         return resultingList
         
     }
@@ -259,6 +259,7 @@ extension RiverTrip {
             "tickets": tickets
         ]
         let client = APIClient.authorizedClient
+    
         
         do {
             let bookingResponse = try await client.send(.POST(

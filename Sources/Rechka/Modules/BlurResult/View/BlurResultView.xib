@@ -25,7 +25,7 @@
             <subviews>
                 <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBd-Vs-aT6">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="frB-x7-bzy">
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="frB-x7-bzy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -89,11 +89,11 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="oBQ-lF-dMD"/>
                         <constraints>
                             <constraint firstItem="A5d-9B-DhA" firstAttribute="centerY" secondItem="frB-x7-bzy" secondAttribute="centerY" id="1sl-k4-5fh"/>
                             <constraint firstItem="aO7-EF-huX" firstAttribute="top" secondItem="nAc-X1-LJT" secondAttribute="bottom" constant="11" id="3q0-50-tfI"/>
                             <constraint firstItem="A5d-9B-DhA" firstAttribute="centerX" secondItem="frB-x7-bzy" secondAttribute="centerX" id="74F-k1-Zmw"/>
-                            <constraint firstAttribute="bottom" secondItem="CIP-CL-p6C" secondAttribute="bottom" constant="58" id="D1M-d9-NzN"/>
                             <constraint firstItem="aO7-EF-huX" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="Dzz-1n-QXe"/>
                             <constraint firstAttribute="trailing" secondItem="nAc-X1-LJT" secondAttribute="trailing" constant="16" id="E0d-iy-1Gg"/>
                             <constraint firstItem="CIP-CL-p6C" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="Q8R-ka-bro"/>
@@ -102,6 +102,7 @@
                             <constraint firstItem="nAc-X1-LJT" firstAttribute="top" secondItem="A5d-9B-DhA" secondAttribute="bottom" constant="50" id="aBv-II-DaM"/>
                             <constraint firstItem="1n6-jX-cpt" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="dnu-T1-zyV"/>
                             <constraint firstAttribute="trailing" secondItem="1n6-jX-cpt" secondAttribute="trailing" constant="16" id="fHX-Gz-ita"/>
+                            <constraint firstItem="oBQ-lF-dMD" firstAttribute="bottom" secondItem="CIP-CL-p6C" secondAttribute="bottom" constant="24" id="hFz-Mm-Lru"/>
                             <constraint firstAttribute="trailing" secondItem="CIP-CL-p6C" secondAttribute="trailing" constant="16" id="i23-P5-vfF"/>
                             <constraint firstItem="nAc-X1-LJT" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="oZ0-Cl-YKY"/>
                         </constraints>

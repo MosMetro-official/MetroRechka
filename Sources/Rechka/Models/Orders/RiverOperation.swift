@@ -17,6 +17,7 @@ enum RechkaOrderStatus: Int {
 
 struct RiverOperation {
     let id: Int
+    let internalOrderID: Int
     let status: RechkaOrderStatus
     let timeLeftToCancel: Int // seconds
     let orderDate: Date // MSK timezone
@@ -35,18 +36,19 @@ struct RiverOperation {
     
     
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: CoreNetwork.JSON, internalOrderID: Int) {
         guard
             let id = data["id"].int,
             let status = RechkaOrderStatus(rawValue: data["status"].intValue),
             let orderDate = data["dateTimeOrder"].stringValue.toDate()?.date,
             let tickets = data["tickets"].array else { return nil }
         self.id = id
+        self.internalOrderID = internalOrderID
         self.status = status
         self.timeLeftToCancel = data["timeLeftToCancel"].intValue
         self.hash = data["hash"].stringValue
         self.orderDate = orderDate
-        self.tickets = tickets.compactMap { RiverOperationTicket(data: $0) }
+        self.tickets = tickets.compactMap { RiverOperationTicket(data: $0, parentOrderID: internalOrderID) }
     }
     
 }

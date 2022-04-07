@@ -12,14 +12,15 @@ import SwiftDate
 struct RiverTicketRefund {
     let ticketID: Int
     let refundPrice: Double
-    let refundDate: Date // MSK timezone
+    let refundDate: Date? // MSK timezone
     let totalPriceRefund: Double
     
     init?(data: CoreNetwork.JSON) {
-        guard let ticketID = data["id"].int, let refundDate = data["dateTimeRefund"].stringValue.toDate()?.date else { return nil }
+        guard let ticketID = data["id"].int else { return nil }
         self.ticketID = ticketID
+        
         self.refundPrice = data["ticketPriceRefund"].doubleValue
-        self.refundDate  = refundDate
+        self.refundDate  = data["dateTimeRefund"].stringValue.toDate()?.date
         self.totalPriceRefund = data["totalPriceRefund"].doubleValue
     }
     
@@ -32,9 +33,11 @@ struct RiverOperationTicket {
         case returnedByCarrier = 2 // Билет продан, после продажи возвращен перевозчиком
         case booked = 3 // Билет находится во временной брони
         case returnedByAgent = 4 // Билет продан, после продажи возвращен агентом.
+        case returned = 5 // билет возвращен
     }
     
     let id: Int
+    let parentOrderID: Int
     let routeName: String 
     let price: Double
     let status: Status
@@ -47,12 +50,13 @@ struct RiverOperationTicket {
     let operationHash: String
     
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: CoreNetwork.JSON, parentOrderID: Int) {
         guard let id = data["id"].int,
               let dateTimeStart = data["dateTimeStart"].stringValue.toDate()?.date,
               let dateTimeEnd = data["dateTimeEnd"].stringValue.toDate()?.date,
         let status = Status(rawValue: data["status"].intValue) else { return nil }
         self.id = id
+        self.parentOrderID = parentOrderID
         self.routeName = data["routeName"].stringValue
         self.price = data["ticketPrice"].doubleValue
         self.status = status
@@ -70,9 +74,38 @@ struct RiverOperationTicket {
 
 extension RiverOperationTicket {
     
-//    public func calculateRefund() async throws -> RiverTicketRefund {
-//
-//    }
+    public func confirmRefund() async throws {
+        do {
+            let client = APIClient.authorizedClient
+            let _ = try await client.send(
+                .POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)",
+                      body: nil,
+                      contentType: .json)
+            )
+            return
+        } catch {
+            throw error
+        }
+    }
+    
+    public func calculateRefund() async throws -> RiverTicketRefund {
+        do {
+            let client = APIClient.authorizedClient
+            let response = try await client.send(
+                .GET(
+                    path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refundAmount",
+                    query: nil)
+            )
+            let json = CoreNetwork.JSON(response.data)
+            guard let refund = RiverTicketRefund(data: json["data"]) else {
+                throw APIError.badData
+            }
+            return refund
+            
+        } catch {
+            throw error
+        }
+    }
     
     private func documentExist(path: String) -> URL? {
         let fileManager = FileManager.default

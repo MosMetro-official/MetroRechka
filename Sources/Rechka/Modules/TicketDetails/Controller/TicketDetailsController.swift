@@ -162,9 +162,20 @@ final class TicketDetailsController : UIViewController {
         }
     }
     
+    @MainActor
+    private func showRefundCalculation(for ticket: RiverOperationTicket) {
+        let controller = BlurRefundController()
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        nav.modalTransitionStyle = .crossDissolve
+        self.present(nav, animated: true) {
+            controller.ticket = ticket
+        }
+    }
+    
     private func buttonStateForPayed(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
         let onRefundAction = Command { [weak self] in
-            print("started refund")
+            self?.showRefundCalculation(for: ticket)
         }
         let refunData = TicketDetailCell.Buttons.ButtonData(title: "Вернуть билет", onSelect: onRefundAction)
         
@@ -180,14 +191,41 @@ final class TicketDetailsController : UIViewController {
                      info: nil)
     }
     
+    private func showRefundDetails(for ticket: RiverOperationTicket) {
+        guard let refund = ticket.refund else { return }
+        
+        let comission = ticket.price - refund.refundPrice
+        
+        let comissionStr: String = {
+            if comission == 0 {
+                return "Комиссии нет"
+            } else {
+                return "Комиссия - \(comission) ₽"
+            }
+        }()
+        var finalMessage = "Возврат составил – \(refund.refundPrice) ₽\n(\(comissionStr))."
+        if let date = refund.refundDate {
+            finalMessage = "\(finalMessage) Возврат был сделан \(date.toFormat("d MMMM yyyy HH:mm", locale: Locales.russian))"
+        }
+        
+        let alert = UIAlertController(title: "Детали возврата", message: finalMessage, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: { _ in
+            alert.dismiss(animated: true, completion: nil)
+        })
+        
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func buttonStateForReturned(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
         let onRefundDetails = Command { [weak self] in
-            print("started refund")
+            self?.showRefundDetails(for: ticket)
         }
         let refundDetails = TicketDetailCell.Buttons.ButtonData(title: "Детали возврата", onSelect: onRefundDetails)
         
         let onDownloadAction = Command { [weak self] in
-            print("started loading")
+            guard let self = self else { return }
+            self.showPDF(for: ticket)
         }
         let downloadData = TicketDetailCell.Buttons.ButtonData(title: "Квитанция", onSelect: onDownloadAction)
         
@@ -297,11 +335,9 @@ final class TicketDetailsController : UIViewController {
                 switch ticket.status {
                 case .payed:
                     return buttonStateForPayed(ticket: ticket)
-                case .returnedByCarrier:
-                    return buttonStateForReturned(ticket: ticket)
                 case .booked:
                     return buttonStateForBooked(ticket: ticket)
-                case .returnedByAgent:
+                case .returned, .returnedByAgent, .returnedByCarrier:
                     return buttonStateForReturned(ticket: ticket)
                 }
             }()
@@ -322,7 +358,7 @@ final class TicketDetailsController : UIViewController {
         // info
         
         let title = TicketsDetailsView.ViewState.TicketTitle(
-            title: "Информэйшон:"
+            title: "Информация"
         ).toElement()
         let status = TicketsDetailsView.ViewState.TicketInfo(
             title: "Статус",

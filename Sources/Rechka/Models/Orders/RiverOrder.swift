@@ -21,7 +21,7 @@ struct RiverOrder {
         guard
             let id = data["id"].int,
             let url = data["formUrl"].string,
-            let operation = RiverOperation(data: data["operation"]),
+            let operation = RiverOperation(data: data["operation"], internalOrderID: id),
             let createdDate = data["createdDate"].stringValue.toDate()?.date else { return nil }
         self.id = id
         self.url = url
