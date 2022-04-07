@@ -12,8 +12,13 @@ internal final class R_BookingWithPersonView: UIView {
     
     struct ViewState {
         
-        var state: [State]
+        let title: String
+        let isUserCacheEmpty: Bool
+        let menuActions: [UIAction]
         var dataState: DataState
+        var showPersonAlert: Command<Void>?
+        var showPersonDataEntry: Command<Void>?
+        var showUserFromCache: Command<RiverUser>?
         
         enum DataState {
             case addPersonData
@@ -22,43 +27,38 @@ internal final class R_BookingWithPersonView: UIView {
         
         struct PassengerHeader: _PassengerHeaderCell {
             let onAdd: () -> ()
-            let height: CGFloat
         }
         
         struct Passenger: _Passenger {
             let name: String
             let tariff: String
-            let height: CGFloat
         }
         
-        struct TariffHeader: _TariffHeaderCell {
-            let height: CGFloat
-        }
+        struct TariffHeader: _TariffHeaderCell {}
         
         struct Tariff: _Tariff {
             let tariffs: String
             let price: String
-            let height: CGFloat
         }
         
         struct Commission: _Commission {
             let commission: String
             let price: String
-            let height: CGFloat
         }
         
-        static let initial = R_BookingWithPersonView.ViewState(state: [], dataState: .addPersonData)
+        static let initial = R_BookingWithPersonView.ViewState(
+            title: "",
+            isUserCacheEmpty: false,
+            menuActions: [],
+            dataState: .addPersonData
+        )
     }
     
-    public var state: R_BookingWithPersonView.ViewState = .initial {
+    public var viewState: R_BookingWithPersonView.ViewState = .initial {
         didSet {
             updateView()
         }
     }
-    
-    public var showPersonAlert: (() -> Void)?
-    public var showPersonDataEntry: (() -> Void)?
-    public var showUserFromCache: ((RiverUser) -> Void)?
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
@@ -164,68 +164,40 @@ internal final class R_BookingWithPersonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupPersonsMenu() -> [UIAction] {
-        var actions: [UIAction] = []
-        guard let users = SomeCache.shared.cache["user"] else { return [] }
-        users.forEach { user in
-            let action = UIAction(
-                title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
-                image: UIImage(systemName: "person")) { _ in
-                    self.showUserFromCache?(user)
-                }
-            actions.append(action)
-        }
-        let addAction = UIAction(title: "Новый пасажир", image: UIImage(systemName: "plus")) { _ in
-            self.pushPersonDataEntry()
-        }
-        actions.append(addAction)
-        return actions
-    }
-    
     private func setupAction() {
-        guard let users = SomeCache.shared.cache["user"] else { return }
-        if !users.isEmpty {
+        if viewState.isUserCacheEmpty {
             if #available(iOS 14, *) {
                 addButton.showsMenuAsPrimaryAction = true
-                addButton.menu = UIMenu(title: "Persons", children: setupPersonsMenu())
+                addButton.menu = UIMenu(title: "Persons", children: viewState.menuActions)
             } else {
-                addButton.addTarget(self, action: #selector(onPersonsSelect), for: .touchUpInside)
+                addButton.addTarget(self, action: #selector(preseentPersonAlert), for: .touchUpInside)
             }
         } else {
             addButton.addTarget(self, action: #selector(pushPersonDataEntry), for: .touchUpInside)
         }
-
     }
     
-    @objc private func onPersonsSelect() {
-        showPersonAlert?()
+    @objc private func preseentPersonAlert() {
+        viewState.showPersonAlert?.perform(with: ())
     }
     
     @objc private func pushPersonDataEntry() {
-        print("pushing new screen")
-        showPersonDataEntry?()
+        viewState.showPersonDataEntry?.perform(with: ())
     }
     
     private func updateView() {
-        switch state.dataState {
-        case .addPersonData:
-            tableView.isHidden = true
-            layoutSubviews()
-        case .addedPersonData(let state):
-            containerView.isHidden = true
-            tableView.isHidden = false
-            buttonView.isHidden = false
-            tableView.viewStateInput = state
-            layoutSubviews()
+        DispatchQueue.main.async {
+            switch self.viewState.dataState {
+            case .addPersonData:
+                self.tableView.isHidden = true
+            case .addedPersonData(let viewState):
+                self.containerView.isHidden = true
+                self.tableView.isHidden = false
+                self.buttonView.isHidden = false
+                self.tableView.viewStateInput = viewState
+                self.titleLabel.text = self.viewState.title
+            }
         }
-    }
-
-    public func configureTitle(with model: FakeModel) {
-        titleLabel.text = model.title
-    }
-    
-    public func onReload() {
-        setupAction()
     }
 }
 

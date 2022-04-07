@@ -19,13 +19,6 @@ internal final class R_StationsListController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.nestedView.onMapTap = {[weak self] in
-            guard
-                let self = self,
-                let navigation = self.navigationController
-            else { return }
-            navigation.popViewController(animated: true)
-        }
         navigationItem.hidesBackButton = true
         let backItem = UIBarButtonItem(
             image: UIImage(named: "backButton", in: .module, compatibleWith: nil)!,
@@ -61,8 +54,19 @@ internal final class R_StationsListController : UIViewController {
                 ).toElement()
             )
         }
+        let onMapTap: Command<Void>? = {
+            return Command { [weak self] in
+                guard
+                    let self = self,
+                    let navigation = self.navigationController
+                else { return }
+                navigation.popViewController(animated: true)
+            }
+        }()
+        
         let section = SectionState(header: nil, footer: nil)
         let state = State(model: section, elements: elements)
-        nestedView.viewState.states = [state]
+        let viewState = R_StationListView.ViewState(states: [state], onMapTap: onMapTap)
+        nestedView.viewState = viewState
     }
 }

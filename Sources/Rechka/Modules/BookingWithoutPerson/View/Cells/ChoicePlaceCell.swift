@@ -31,6 +31,5 @@ class ChoicePlaceCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
 }

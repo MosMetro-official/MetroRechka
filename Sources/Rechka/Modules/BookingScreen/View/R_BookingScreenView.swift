@@ -66,7 +66,6 @@ internal final class R_BookingScreenView : UIView {
         self.paySumm.text = self.viewState.totalPrice
         self.payButton.alpha = self.viewState.onPay == nil ? 0.3 : 1
         self.payButton.isUserInteractionEnabled = self.viewState.onPay == nil ? false : true
-        
         self.tableView.viewStateInput = self.viewState.states
     }
     

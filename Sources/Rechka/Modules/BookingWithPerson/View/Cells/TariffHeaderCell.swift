@@ -29,6 +29,5 @@ class TariffHeaderCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Bold", size: 20)
     }
 }

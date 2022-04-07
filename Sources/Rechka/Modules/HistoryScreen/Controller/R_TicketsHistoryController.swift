@@ -10,15 +10,8 @@ import CoreTableView
 import SwiftDate
 
 internal final class R_TicketsHistoryController: UIViewController {
-    
-    let tickets = [
-        Ticket(title: "Круиз Radisson", desc: "15 марта 17:00", price: "1900 ₽"),
-        Ticket(title: "Круиз Radisson", desc: "Заказ отменен", price: "1900 ₽"),
-        Ticket(title: "Круиз Radisson", desc: "Ожидает оплаты", price: "1900 ₽")
-    ]
-    
+        
     let nestedView = R_TicketsHistoryView(frame: UIScreen.main.bounds)
-    
     
     var model: RechkaHistoryResponse? {
         didSet {
@@ -58,10 +51,7 @@ internal final class R_TicketsHistoryController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-
         self.loadHistory(page: 0, size: 5)
-        
     }
     
     @MainActor
@@ -129,10 +119,7 @@ internal final class R_TicketsHistoryController: UIViewController {
                             return "Ожидает оплаты"
                         }
                     }()
-                    
-                    
-                    
-                    
+ 
                     return R_TicketsHistoryView.ViewState.HistoryTicket(
                         title: order.routeName,
                         descr: descr,
@@ -161,7 +148,6 @@ internal final class R_TicketsHistoryController: UIViewController {
                 let headerData = R_TicketsHistoryView.ViewState.DateHeader(title: sectionTitle)
                 let sectionData = SectionState(header: headerData, footer: nil)
                 return State(model: sectionData, elements: sortedTrips)
-                
             }
             return nil
         }
@@ -177,18 +163,6 @@ internal final class R_TicketsHistoryController: UIViewController {
             let loadMore = R_TicketsHistoryView.ViewState.LoadMore(onLoad: isLoading ? nil : onLoad).toElement()
             states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
         }
-        
-
         return .init(state: states, dataState: .loaded)
-        
-    }
-}
-
-extension R_TicketsHistoryController {
-    
-    struct Ticket {
-        let title: String
-        let desc: String
-        let price: String
     }
 }

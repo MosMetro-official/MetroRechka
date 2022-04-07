@@ -20,9 +20,7 @@ internal final class R_BlurLoadingView : UIView {
     }
     
     @IBOutlet private weak var title : UILabel!
-    
     @IBOutlet private weak var descr : UILabel!
-    
     @IBOutlet private weak var spinner : UIActivityIndicatorView!
 }
 
@@ -50,7 +48,6 @@ extension UIView {
         }
     }
     
-    
     func showBlurLoading() {
         guard let window = UIApplication.shared.keyWindow else { return }
         let blurView = R_BlurLoadingView.loadFromNib()
@@ -60,7 +57,6 @@ extension UIView {
             window.addSubview(blurView)
         }
         animator.startAnimation()
-        
     }
     
     func removeBlurLoading() {
@@ -74,5 +70,4 @@ extension UIView {
             }
         }
     }
-    
 }

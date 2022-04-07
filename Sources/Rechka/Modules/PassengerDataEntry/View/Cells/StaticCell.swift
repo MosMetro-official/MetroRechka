@@ -13,6 +13,15 @@ protocol _Static: CellData {
 }
 
 extension _Static {
+    
+    var height: CGFloat {
+        return 50
+    }
+    
+    func hashValues() -> [Int] {
+        return [title.hashValue]
+    }
+
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? StaticCell else { return }
         cell.configure(with: self)
@@ -32,7 +41,6 @@ class StaticCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Bold", size: 17)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

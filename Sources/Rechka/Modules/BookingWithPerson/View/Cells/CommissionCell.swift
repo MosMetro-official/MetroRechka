@@ -42,8 +42,6 @@ class CommissionCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        commissionLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
 
     public func configure(with data: _Commission) {

@@ -34,7 +34,6 @@ internal final class R_BookingScreenController : UIViewController {
             if needToSetTimer {
                 self.setTimer()
             }
-            
             if seconds > 0 {
                 Task.detached { [weak self] in
                     guard let self = self else { return }
@@ -44,9 +43,6 @@ internal final class R_BookingScreenController : UIViewController {
             } else {
                 self.removeTimer()
             }
-            
-           
-            
         }
     }
     
@@ -54,14 +50,12 @@ internal final class R_BookingScreenController : UIViewController {
     
     override func loadView() {
         self.view = nestedView
-       
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setListeners()
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -82,7 +76,6 @@ internal final class R_BookingScreenController : UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
     }
     
-    
     @objc private func handleSuccessfulPayment() {
         hidePaymentController {
             self.removeTimer()
@@ -97,7 +90,6 @@ internal final class R_BookingScreenController : UIViewController {
             // TODO: Показать ошибку
         }
     }
-    
     
     private func hidePaymentController(onDismiss: @escaping () -> Void) {
         guard let paymentController = paymentController else {
@@ -116,10 +108,7 @@ internal final class R_BookingScreenController : UIViewController {
             self.seconds -= 1
         })
         RunLoop.current.add(timer!, forMode: .default)
-        
         self.needToSetTimer = false
-        
-        
     }
     
     @MainActor
@@ -186,8 +175,5 @@ internal final class R_BookingScreenController : UIViewController {
         }
         
         return .init(dataState: .loaded, states: [topState, cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(model.operation.totalPrice)) ₽")
-
     }
-
-  
 }

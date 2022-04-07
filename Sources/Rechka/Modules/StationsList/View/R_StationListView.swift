@@ -9,12 +9,11 @@ import UIKit
 import CoreTableView
 
 internal final class R_StationListView : UIView {
-    
-    public var onMapTap : (() -> Void)?
-    
+        
     struct ViewState {
         
         var states : [State]
+        var onMapTap: Command<Void>?
         
         struct Terminal : _TerminalCell {
             var title : String
@@ -25,7 +24,7 @@ internal final class R_StationListView : UIView {
         }
     }
     
-    public var viewState = ViewState(states: []) {
+    public var viewState = ViewState(states: [], onMapTap: nil) {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.viewStateInput = self.viewState.states
@@ -78,7 +77,7 @@ internal final class R_StationListView : UIView {
     
     @objc
     private func openMap() {
-        self.onMapTap?()
+        self.viewState.onMapTap?.perform(with: ())
     }
     
     required init?(coder: NSCoder) {

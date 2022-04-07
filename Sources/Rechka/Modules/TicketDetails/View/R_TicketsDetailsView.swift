@@ -70,11 +70,8 @@ internal final class R_TicketsDetailsView : UIView {
         
         struct NeedToPay: _R_OrderPaymentTableViewCell {
             var onPay: Command<Void>
-            
             var time: String
-            
             var desc: String
-            
         }
     }
     

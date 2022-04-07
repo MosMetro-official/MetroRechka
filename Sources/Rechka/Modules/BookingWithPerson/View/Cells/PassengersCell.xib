@@ -26,27 +26,33 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="IYi-Iq-bCT">
-                        <rect key="frame" x="51" y="10" width="251.5" height="43"/>
+                        <rect key="frame" x="51" y="15.5" width="251.5" height="38.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Petrov Ivan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTx-9z-vZn">
                                 <rect key="frame" x="0.0" y="0.0" width="84.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" name="textPrimary"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="body"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o0C-7Y-j1O">
-                                <rect key="frame" x="0.0" y="22.5" width="41.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="0.0" y="22.5" width="33" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" name="textSecondary"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="footnote"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Neu-ls-coP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="6yb-sy-b9n"/>
+                    <constraint firstItem="IYi-Iq-bCT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3tm-A9-adn"/>
                     <constraint firstAttribute="trailing" secondItem="IYi-Iq-bCT" secondAttribute="trailing" constant="15" id="fo0-1s-Pge"/>
-                    <constraint firstItem="IYi-Iq-bCT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="rdw-Qc-IIl"/>
+                    <constraint firstItem="Neu-ls-coP" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="qG7-QB-yoK"/>
                     <constraint firstItem="IYi-Iq-bCT" firstAttribute="leading" secondItem="Neu-ls-coP" secondAttribute="trailing" constant="12" id="rtf-EW-4im"/>
                     <constraint firstItem="Neu-ls-coP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="uCZ-tB-sLB"/>
                 </constraints>

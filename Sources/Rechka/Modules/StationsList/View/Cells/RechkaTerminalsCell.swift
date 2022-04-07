@@ -19,6 +19,10 @@ extension _TerminalCell {
         return 61
     }
     
+    func hashValues() -> [Int] {
+        return [title.hashValue, descr.hashValue]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard
             let cell = cell as? RechkaTerminalsCell

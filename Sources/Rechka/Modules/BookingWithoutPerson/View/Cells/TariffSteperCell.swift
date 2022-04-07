@@ -54,9 +54,6 @@ class TariffSteperCell: UITableViewCell {
         super.awakeFromNib()
         stepperView.layer.cornerRadius = 8
         stepperView.layer.cornerCurve = .continuous
-        stepperLabel.font = UIFont(name: "MoscowSans-Regular", size: 15)
-        tariffLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
     }
     
     public func configure(with data: _TariffSteper) {

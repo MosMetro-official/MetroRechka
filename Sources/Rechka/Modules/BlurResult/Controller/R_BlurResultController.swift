@@ -9,14 +9,11 @@ import UIKit
 
 internal final class R_BlurResultController : UIViewController {
     
-    
     var model: R_BlurResultModel? {
         didSet {
             makeState()
         }
     }
-    
-    
     
     private let nestedView = R_BlurResultView.loadFromNib()
     
@@ -28,12 +25,10 @@ internal final class R_BlurResultController : UIViewController {
         guard let model = model else { return }
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
-            
         }
         
         let onRetry = Command { [weak self] in
             self?.navigationController?.popViewController(animated: true)
-            
         }
         
         switch model {
@@ -50,7 +45,5 @@ internal final class R_BlurResultController : UIViewController {
                                               onClose: onClose,
                                               onRetry: onRetry)
         }
-                
-
     }
 }

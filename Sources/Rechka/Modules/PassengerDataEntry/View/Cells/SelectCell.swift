@@ -14,6 +14,15 @@ protocol _SelectCell: CellData {
 }
 
 extension _SelectCell {
+    
+    var height: CGFloat {
+        return 50
+    }
+    
+    func hashValues() -> [Int] {
+        return [title.hashValue]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? SelectCell else { return }
         cell.configure(with: self)
@@ -32,7 +41,6 @@ class SelectCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
     
     public func configure(with data: _SelectCell) {

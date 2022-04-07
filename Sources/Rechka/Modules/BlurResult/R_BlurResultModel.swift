@@ -6,10 +6,6 @@
 //
 
 import Foundation
-import UIKit
-
-    
-    
 
 enum R_BlurResultModel {
     case success(StatusData)
@@ -20,5 +16,3 @@ enum R_BlurResultModel {
         let subtitle: String
     }
 }
-
-

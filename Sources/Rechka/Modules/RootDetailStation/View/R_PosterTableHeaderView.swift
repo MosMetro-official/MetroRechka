@@ -49,7 +49,7 @@ internal final class R_PosterTableHeaderView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configurePosterHeader(with title: String?, and image: UIImage?) {
+    public func configurePosterHeader(with title: String, and image: UIImage?) {
         titleLabel.text = title
         imageView.image = image ?? UIImage(named: "poster", in: .module, with: nil)
     }
