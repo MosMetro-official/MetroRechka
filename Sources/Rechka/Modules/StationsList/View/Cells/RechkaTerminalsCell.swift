@@ -8,8 +8,9 @@
 import UIKit
 import CoreTableView
 
-protocol _TerminalCell : _RechkaTerminal, CellData {
-    
+protocol _TerminalCell : CellData {
+    var title : String { get }
+    var descr : String { get }
 }
 
 extension _TerminalCell {

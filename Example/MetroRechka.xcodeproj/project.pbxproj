@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6D6F90CD27FF28240089C6F7 /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = 6D6F90CC27FF28240089C6F7 /* Rechka */; };
 		6DEFF8AC27E0A0880070E498 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AA27E0A0870070E498 /* MapViewController.swift */; };
 		6DEFF8AD27E0A0880070E498 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AB27E0A0880070E498 /* MapViewController.xib */; };
 		7B334B19ABE5A68C8E257125 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592F5114A08C6BD952C58CC /* libPods-MetroRechka.a */; };
@@ -14,12 +15,11 @@
 		952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2927D53AAD00299639 /* SceneDelegate.swift */; };
 		952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3027D53AAD00299639 /* Assets.xcassets */; };
 		952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3227D53AAD00299639 /* LaunchScreen.storyboard */; };
-		D886F43227FDD52000DF440E /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = D886F43127FDD52000DF440E /* Rechka */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5592F5114A08C6BD952C58CC /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6DEE71E927E88F2E0005FCCE /* MetroRechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MetroRechka; path = ..; sourceTree = "<group>"; };
+		6D6F90CB27FF22E80089C6F7 /* MetroRechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MetroRechka; path = ..; sourceTree = "<group>"; };
 		6DEFF8AA27E0A0870070E498 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		6DEFF8AB27E0A0880070E498 /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
 		8501FD262D33BE5D338F4EFF /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
@@ -29,7 +29,6 @@
 		952BEF3027D53AAD00299639 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952BEF3327D53AAD00299639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952BEF3527D53AAD00299639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D886F42E27FDD4CA00DF440E /* MetroRechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MetroRechka; path = ..; sourceTree = "<group>"; };
 		E47C794261F07B3884B525B7 /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -38,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D886F43227FDD52000DF440E /* Rechka in Frameworks */,
+				6D6F90CD27FF28240089C6F7 /* Rechka in Frameworks */,
 				7B334B19ABE5A68C8E257125 /* libPods-MetroRechka.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,8 +48,7 @@
 		6DEE71E827E88F2E0005FCCE /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				6DEE71E927E88F2E0005FCCE /* MetroRechka */,
-				D886F42E27FDD4CA00DF440E /* MetroRechka */,
+				6D6F90CB27FF22E80089C6F7 /* MetroRechka */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -132,7 +130,7 @@
 			);
 			name = MetroRechka;
 			packageProductDependencies = (
-				D886F43127FDD52000DF440E /* Rechka */,
+				6D6F90CC27FF28240089C6F7 /* Rechka */,
 			);
 			productName = MetroRechka;
 			productReference = 952BEF2427D53AAD00299639 /* MetroRechka.app */;
@@ -476,7 +474,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D886F43127FDD52000DF440E /* Rechka */ = {
+		6D6F90CC27FF28240089C6F7 /* Rechka */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Rechka;
 		};

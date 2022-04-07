@@ -10,7 +10,7 @@ import CoreTableView
 
 final class StationsListController : UIViewController {
     
-    var terminals = [_RechkaTerminal]()
+    var terminals = [RiverStation]()
     var nestedView = StationListView(frame: UIScreen.main.bounds)
     
     override func loadView() {
@@ -46,13 +46,13 @@ final class StationsListController : UIViewController {
         navigation.popToViewController(controller, animated: true)
     }
     
-    public func makeDummyState(with items: [_RechkaTerminal]) {
+    public func makeDummyState(with items: [RiverStation]) {
         var elements = [Element]()
         for item in items {
             elements.append(
                 StationListView.ViewState.Terminal(
-                    title: item.title,
-                    descr: item.descr,
+                    title: item.name,
+                    descr: item.cityName,
                     latitude: item.latitude,
                     longitude: item.longitude,
                     onSelect: {

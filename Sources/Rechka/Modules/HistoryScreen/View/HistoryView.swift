@@ -64,10 +64,10 @@ class HistoryView: UIView {
         super.init(frame: frame)
         setupConstrains()
         backgroundColor = .custom(for: .base)
-        tableView.onWillDisplay = { [weak self] displayData in
-            guard let self = self else { return }
-            self.onWillDisplay?(displayData)
-        }
+//        tableView.onWillDisplay = { [weak self] displayData in
+//            guard let self = self else { return }
+//            self.onWillDisplay?(displayData)
+//        }
     }
     
     required init?(coder: NSCoder) {

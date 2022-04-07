@@ -9,7 +9,7 @@ import UIKit
 
 class TerminalBubbleView : UIView {
         
-    var onSelect : (() -> Void)?
+    public var onSelect : (() -> Void)?
     
     let bubbleView : UIView = {
         let view = UIView()

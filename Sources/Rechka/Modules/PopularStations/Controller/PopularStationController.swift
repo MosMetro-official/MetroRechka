@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreTableView
+import CoreNetwork
 
 extension UIButton {
 
@@ -33,24 +34,7 @@ public class PopularStationController : UIViewController {
     
     var reverceDelegate : RechkaMapReverceDelegate?
     
-    var terminals : [_RechkaTerminal] {
-        return [
-            FakeTerminal(
-                title: "Парк \"Зарядье\"",
-                descr: "Москва",
-                latitude: 55.7522200,
-                longitude: 37.6155600,
-                onSelect: { [weak self] in
-                    guard
-                        let self = self,
-                        let navigation = self.navigationController,
-                        let controller = navigation.viewControllers.first
-                    else { return }
-                    navigation.popToViewController(controller, animated: true)
-                }
-            )
-        ]
-    }
+    var terminals = [RiverStation]()
     
     private var searchResponse: RiverRouteResponse? {
         didSet {
@@ -72,7 +56,6 @@ public class PopularStationController : UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        Rechka.shared.token = "EjAQOZcjjJWkPc79v8dQlyIKV9UFaRyjURIGeOqRnc4"
         setOrderListener()
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.customFont(forTextStyle: .title1)
@@ -154,13 +137,13 @@ public class PopularStationController : UIViewController {
         }
         settingsView.onTerminalsButton = { [weak self] in
             guard let self = self else { return }
-            let controller = HistoryController()
-            self.navigationController?.pushViewController(controller, animated: true)
-//            if Rechka.isMapsAvailable {
-//                self.openMapController()
-//            } else {
-//                self.openTerminalsTable()
-//            }
+//            let controller = HistoryController()
+//            self.navigationController?.pushViewController(controller, animated: true)
+            if Rechka.shared.isMapsAvailable {
+                self.openMapController()
+            } else {
+                self.openTerminalsTable()
+            }
         }
         settingsView.onPersonsMenu = { [weak self] persons in
             guard let self = self else { return }
@@ -238,12 +221,39 @@ public class PopularStationController : UIViewController {
         controller.delegate = self
         controller.shouldShowTerminalsButton = true
         navigation.pushViewController(controller, animated: true)
-        var points = [UIImage]()
-        for terminal in terminals {
-            points.append(Appearance.makeRechkaTerminalImage(from: terminal))
+        Task {
+            var points = [UIImage]()
+            let client = try APIClient.unauthorizedClient
+            do {
+                let resp1 = try await client.send(
+                    .GET(
+                        path: "/api/references/v1/stationsFrom",
+                        query: nil
+                    ), schouldPrint: true
+                )
+                let json1 = JSON(resp1.data)
+                self.terminals = json1["data"].arrayValue.map({
+                    var station = RiverStation.init(data: $0)
+                    station.onSelect = { [weak self] in
+                        guard
+                            let self = self,
+                            let navigation = self.navigationController,
+                            let controller = navigation.viewControllers.first
+                        else { return }
+                        navigation.popToViewController(controller, animated: true)
+                    }
+                    return station
+                })
+                for terminal in terminals {
+                    print(terminal)
+                    points.append(Appearance.makeRechkaTerminalImage(from: terminal))
+                }
+                controller.terminals = terminals
+                controller.terminalsImages = points
+            } catch {
+                print("😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫")
+            }
         }
-        controller.terminals = terminals
-        controller.terminalsImages = points
     }
 }
 
