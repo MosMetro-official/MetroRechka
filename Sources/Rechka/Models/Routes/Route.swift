@@ -213,7 +213,7 @@ struct RiverTrip {
     let buyPlaceCountMax: Int
     let dateStart: Date
     let dateEnd: Date
-    let vehicle: Vehicle?
+    let vehicle: RiverVehicle?
     let ticketPrintedRequired: Bool?
     let tarrifs: [RiverTariff]?
     let personalDataRequired: Bool?

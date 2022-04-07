@@ -18,6 +18,20 @@ protocol _StationCell: CellData {
 
 extension _StationCell {
     
+    var height: CGFloat {
+        return (UIScreen.main.bounds.width - 32) * 0.75
+    }
+    
+    func hashValues() -> [Int] {
+        return [
+            title.hashValue,
+            jetty.hashValue,
+            time.hashValue,
+            tickets.hashValue,
+            price.hashValue
+        ]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? StationCell else { return }
         cell.configure(with: self)
@@ -159,11 +173,6 @@ extension StationCell {
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         priceButton.addHorizontalGradientLayer()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = contentView.bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0))
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

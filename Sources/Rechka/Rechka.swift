@@ -15,7 +15,7 @@ public class Rechka {
     public var isMapsRoutesAvailable : Bool!
     public var returnURL =  "riverexample://main/riverPaymentSuccess"
     public var failURL =  "riverexample://main/riverPaymentFailure"
-    public var token: String?
+    public var token: String? = "HF4Unqb0UA6nPb5uFlZQ1HUwzkWSzsQLm4RKXbrwLV4"
     public var refreshToken: String?
     public var clientID: String = ""
     public var clientSecret: String = ""
@@ -95,7 +95,7 @@ public class Rechka {
     /// Return first view controller of packge module
     public func showRechkaFlow() -> UINavigationController {
         /// load data
-        let controller = PopularStationController()
+        let controller = R_PopularStationsController()
         controller.delegate = Rechka.shared.delegate
         return UINavigationController(rootViewController: controller)
     }
