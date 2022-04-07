@@ -34,11 +34,18 @@ final class BookingController : UIViewController {
             if needToSetTimer {
                 self.setTimer()
             }
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                let state = await self.makeState()
-                await self.set(state: state)
+            
+            if seconds > 0 {
+                Task.detached { [weak self] in
+                    guard let self = self else { return }
+                    let state = await self.makeState()
+                    await self.set(state: state)
+                }
+            } else {
+                self.removeTimer()
             }
+            
+           
             
         }
     }
@@ -58,11 +65,16 @@ final class BookingController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    @MainActor
+    private func removeTimer() {
         guard let timer = timer else {
             return
         }
         timer.invalidate()
         self.timer = nil
+        self.needToSetTimer = true
     }
     
     private func setListeners() {
@@ -73,6 +85,7 @@ final class BookingController : UIViewController {
     
     @objc private func handleSuccessfulPayment() {
         hidePaymentController {
+            self.removeTimer()
             self.dismiss(animated: true) { [weak self] in
                 self?.onDismiss?()
             }

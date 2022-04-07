@@ -9,18 +9,35 @@ import UIKit
 
 final class BlurRefundController : UIViewController {
     
-    public init(with data: _BlurRefund) {
-        super.init(nibName: nil, bundle: nil)
-        self.nestedView.configure(with: data)
+    
+    public var orderID: Int?
+    
+    public var ticket: RiverOperationTicket? {
+        didSet {
+            
+        }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
     
     private let nestedView = BlurRefundView.loadFromNib()
     
     override func loadView() {
         self.view = nestedView
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.nestedView.viewState = .loading(.init(title: "Считаем сумму возврата", descr: "Немного подождите"))
+    }
+}
+
+extension BlurRefundController {
+    
+//    private func makeState() async -> BlurRefundView.ViewState {
+//        
+//        
+//        
+//    }
+    
 }

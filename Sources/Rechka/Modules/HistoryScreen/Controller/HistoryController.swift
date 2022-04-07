@@ -113,7 +113,7 @@ class HistoryController: UIViewController {
         let sorted = dict.sorted(by: { $0.key > $1.key })
         let ordersSections: [State]  = sorted.compactMap { (key, value) in
             if let first = value.first {
-                let sortedTrips: [Element] = value.sorted(by: { $0.createdDate < $1.createdDate}).map { order in
+                let sortedTrips: [Element] = value.sorted(by: { $0.createdDate > $1.createdDate}).map { order in
                     let onSelect: () -> () = { [weak self] in
                         guard let self = self else { return }
                         self.showDetails(for: order)

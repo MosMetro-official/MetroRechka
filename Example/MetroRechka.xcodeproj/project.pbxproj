@@ -7,29 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20AA10BB7D722753089B0FF9 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E73052680017F56BAF634627 /* libPods-MetroRechka.a */; };
 		6DEFF8AC27E0A0880070E498 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AA27E0A0870070E498 /* MapViewController.swift */; };
 		6DEFF8AD27E0A0880070E498 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DEFF8AB27E0A0880070E498 /* MapViewController.xib */; };
+		7B334B19ABE5A68C8E257125 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5592F5114A08C6BD952C58CC /* libPods-MetroRechka.a */; };
 		952BEF2827D53AAD00299639 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2727D53AAD00299639 /* AppDelegate.swift */; };
 		952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2927D53AAD00299639 /* SceneDelegate.swift */; };
 		952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3027D53AAD00299639 /* Assets.xcassets */; };
 		952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3227D53AAD00299639 /* LaunchScreen.storyboard */; };
-		D89B884527FDBED100901551 /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = D89B884427FDBED100901551 /* Rechka */; };
+		D886F43227FDD52000DF440E /* Rechka in Frameworks */ = {isa = PBXBuildFile; productRef = D886F43127FDD52000DF440E /* Rechka */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
+		5592F5114A08C6BD952C58CC /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DEE71E927E88F2E0005FCCE /* MetroRechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MetroRechka; path = ..; sourceTree = "<group>"; };
 		6DEFF8AA27E0A0870070E498 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		6DEFF8AB27E0A0880070E498 /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		8501FD262D33BE5D338F4EFF /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
 		952BEF2427D53AAD00299639 /* MetroRechka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetroRechka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952BEF2727D53AAD00299639 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		952BEF2927D53AAD00299639 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		952BEF3027D53AAD00299639 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952BEF3327D53AAD00299639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952BEF3527D53AAD00299639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
-		E73052680017F56BAF634627 /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D886F42E27FDD4CA00DF440E /* MetroRechka */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MetroRechka; path = ..; sourceTree = "<group>"; };
+		E47C794261F07B3884B525B7 /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,8 +38,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D89B884527FDBED100901551 /* Rechka in Frameworks */,
-				20AA10BB7D722753089B0FF9 /* libPods-MetroRechka.a in Frameworks */,
+				D886F43227FDD52000DF440E /* Rechka in Frameworks */,
+				7B334B19ABE5A68C8E257125 /* libPods-MetroRechka.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,6 +50,7 @@
 			isa = PBXGroup;
 			children = (
 				6DEE71E927E88F2E0005FCCE /* MetroRechka */,
+				D886F42E27FDD4CA00DF440E /* MetroRechka */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -68,8 +70,8 @@
 				6DEE71E827E88F2E0005FCCE /* Packages */,
 				952BEF2627D53AAD00299639 /* MetroRechka */,
 				952BEF2527D53AAD00299639 /* Products */,
-				952BEF3C27D53E3500299639 /* Frameworks */,
 				FC6D80C81A50908710746F23 /* Pods */,
+				CD17D013B051EA5ADB49DBF1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,10 +96,10 @@
 			path = MetroRechka;
 			sourceTree = "<group>";
 		};
-		952BEF3C27D53E3500299639 /* Frameworks */ = {
+		CD17D013B051EA5ADB49DBF1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E73052680017F56BAF634627 /* libPods-MetroRechka.a */,
+				5592F5114A08C6BD952C58CC /* libPods-MetroRechka.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -105,8 +107,8 @@
 		FC6D80C81A50908710746F23 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */,
-				62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */,
+				8501FD262D33BE5D338F4EFF /* Pods-MetroRechka.debug.xcconfig */,
+				E47C794261F07B3884B525B7 /* Pods-MetroRechka.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -118,11 +120,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 952BEF3827D53AAD00299639 /* Build configuration list for PBXNativeTarget "MetroRechka" */;
 			buildPhases = (
-				DBEC5426923E4DA4D2EA15ED /* [CP] Check Pods Manifest.lock */,
+				16F3B1159F5F56A6F037918C /* [CP] Check Pods Manifest.lock */,
 				952BEF2027D53AAD00299639 /* Sources */,
 				952BEF2127D53AAD00299639 /* Frameworks */,
 				952BEF2227D53AAD00299639 /* Resources */,
-				DD35B744B865193C0F3D3F17 /* [CP] Copy Pods Resources */,
+				1723B78DE5F21468BE4A411B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,7 +132,7 @@
 			);
 			name = MetroRechka;
 			packageProductDependencies = (
-				D89B884427FDBED100901551 /* Rechka */,
+				D886F43127FDD52000DF440E /* Rechka */,
 			);
 			productName = MetroRechka;
 			productReference = 952BEF2427D53AAD00299639 /* MetroRechka.app */;
@@ -187,7 +189,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DBEC5426923E4DA4D2EA15ED /* [CP] Check Pods Manifest.lock */ = {
+		16F3B1159F5F56A6F037918C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -209,7 +211,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DD35B744B865193C0F3D3F17 /* [CP] Copy Pods Resources */ = {
+		1723B78DE5F21468BE4A411B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -371,7 +373,7 @@
 		};
 		952BEF3927D53AAD00299639 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC52B4795243C1DF553701AD /* Pods-MetroRechka.debug.xcconfig */;
+			baseConfigurationReference = 8501FD262D33BE5D338F4EFF /* Pods-MetroRechka.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -402,7 +404,7 @@
 		};
 		952BEF3A27D53AAD00299639 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 62F754D52059A42D252A4805 /* Pods-MetroRechka.release.xcconfig */;
+			baseConfigurationReference = E47C794261F07B3884B525B7 /* Pods-MetroRechka.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -474,7 +476,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D89B884427FDBED100901551 /* Rechka */ = {
+		D886F43127FDD52000DF440E /* Rechka */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Rechka;
 		};

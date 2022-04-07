@@ -129,7 +129,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aoa-mO-HSk">
                                         <rect key="frame" x="0.0" y="0.0" width="77.5" height="44"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" name="buttonSecondary"/>
                                         <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
                                         <color key="tintColor" name="emptyTicketsLayer"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -145,10 +145,10 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dn-HE-X5r">
                                         <rect key="frame" x="82.5" y="0.0" width="77" height="44"/>
-                                        <color key="backgroundColor" name="ButtonTertiary"/>
+                                        <color key="backgroundColor" name="textInverted"/>
                                         <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal">
+                                        <state key="normal" title="Квитанция">
                                             <color key="titleColor" name="buttonSecondary"/>
                                         </state>
                                         <connections>
@@ -160,7 +160,7 @@
                                         <color key="backgroundColor" name="ButtonTertiary"/>
                                         <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="15"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Важная">
+                                        <state key="normal" title="Детали возврата">
                                             <color key="titleColor" name="buttonSecondary"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>

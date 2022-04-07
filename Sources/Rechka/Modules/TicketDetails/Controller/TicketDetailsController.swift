@@ -8,6 +8,7 @@
 import UIKit
 import CoreTableView
 import SwiftDate
+import SafariServices
 
 final class TicketDetailsController : UIViewController {
     
@@ -26,10 +27,105 @@ final class TicketDetailsController : UIViewController {
                 guard let self = self else { return }
                 let state = await self.makeState(for: order)
                 await self.set(state: state)
+                if order.operation.status == .booked && order.operation.timeLeftToCancel > 0 {
+                    await self.set(seconds: order.operation.timeLeftToCancel)
+                }
             }
         }
     }
     
+    private var timer: Timer?
+    private var paymentController: SFSafariViewController?
+    private var needToSetTimer = true
+    
+    @MainActor
+    private func set(seconds: Int) {
+        self.seconds = seconds
+    }
+    
+    private var seconds: Int = 0 {
+        didSet {
+            guard let order = order else {
+                return
+            }
+            if needToSetTimer {
+                self.setTimer()
+            }
+            
+            if seconds > 0 {
+                Task.detached { [weak self] in
+                    guard let self = self else { return }
+                    let state = await self.makeState(for: order)
+                    await self.set(state: state)
+                }
+            } else {
+                self.removeTimer()
+            }
+            
+            
+            
+        }
+    }
+    
+    
+    @MainActor
+    private func removeTimer() {
+        guard let timer = timer else {
+            return
+        }
+        timer.invalidate()
+        self.timer = nil
+        self.needToSetTimer = true
+    }
+    
+    private func setListeners() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSuccessfulPayment), name: .riverPaymentSuccess, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
+    }
+    
+    
+    @objc private func handleSuccessfulPayment() {
+        hidePaymentController { [weak self] in
+            guard let self = self, let orderID = self.orderID else { return }
+            self.load(with: orderID)
+            
+        }
+    }
+    
+    @objc private func handlePaymentFailure() {
+        hidePaymentController {
+            // TODO: Показать ошибку
+        }
+    }
+    
+    private func hidePaymentController(onDismiss: @escaping () -> Void) {
+        guard let paymentController = paymentController else {
+            return
+        }
+        paymentController.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.paymentController = nil
+            onDismiss()
+        }
+    }
+    
+    private func showPaymentController(with url: String) {
+        guard let paymentURL = URL(string: url) else { return }
+        self.paymentController = SFSafariViewController(url: paymentURL)
+        self.present(self.paymentController!, animated: true, completion: nil)
+    }
+    
+    private func setTimer() {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] timer in
+            guard let self = self else { return }
+            self.seconds -= 1
+        })
+        RunLoop.current.add(timer!, forMode: .common)
+        
+        self.needToSetTimer = false
+        
+        
+    }
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -58,6 +154,14 @@ final class TicketDetailsController : UIViewController {
         }
     }
     
+    @MainActor
+    private func showPDF(for ticket: RiverOperationTicket) {
+        let controller = PDFDocumentController()
+        self.present(controller, animated: true) {
+            controller.ticket = ticket
+        }
+    }
+    
     private func buttonStateForPayed(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
         let onRefundAction = Command { [weak self] in
             print("started refund")
@@ -65,7 +169,8 @@ final class TicketDetailsController : UIViewController {
         let refunData = TicketDetailCell.Buttons.ButtonData(title: "Вернуть билет", onSelect: onRefundAction)
         
         let onDownloadAction = Command { [weak self] in
-            print("started loading")
+            guard let self = self else { return }
+            self.showPDF(for: ticket)
         }
         let downloadData = TicketDetailCell.Buttons.ButtonData(title: "Квитанция", onSelect: onDownloadAction)
         
@@ -99,6 +204,15 @@ final class TicketDetailsController : UIViewController {
                      onDownload: nil,
                      onRefundDetails: nil,
                      info: .init(title: "Билет забронирован, ожидаем оплаты", onSelect: nil))
+    }
+    
+    @MainActor
+    private func startPayment() {
+        guard let order = order else {
+            return
+        }
+        self.showPaymentController(with: order.url)
+
     }
     
     private func makeState(for order: RiverOrder) async -> TicketsDetailsView.ViewState {
@@ -146,6 +260,25 @@ final class TicketDetailsController : UIViewController {
         let statusSection = SectionState(header: nil, footer: nil)
         let statusBlock = State(model: statusSection, elements: [statusData])
         resultigState.append(statusBlock)
+        
+        if order.operation.status == .booked && self.seconds > 0 {
+            let onPay = Command { [weak self] in
+                self?.startPayment()
+            }
+            
+            let endBookingDate = order.operation.orderDate + seconds.seconds
+            let period = endBookingDate - order.operation.orderDate
+            guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error, state: [], onClose: nil)}
+            let elapsedTime = "\(minute):\(seconds)"
+            
+            let needToPay = TicketsDetailsView.ViewState.NeedToPay(onPay: onPay,
+                                                                   time: elapsedTime,
+                                                                   desc: "Осталось времени").toElement()
+            let needToPaySection = SectionState(header: nil, footer: nil)
+            let needToPayBlock = State(model: needToPaySection, elements: [needToPay])
+            resultigState.append(needToPayBlock)
+            
+        }
         
         // tickets
         let tickets: [State] = order.operation.tickets.map { ticket in
@@ -250,6 +383,11 @@ final class TicketDetailsController : UIViewController {
     
     override func loadView() {
         self.view = nestedView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setListeners()
     }
     
 //    private func makeDummyState() {

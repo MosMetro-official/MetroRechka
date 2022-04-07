@@ -9,10 +9,7 @@ let package = Package(
         .iOS(.v13),
     ],
     products: [
-            .library(name: "RechkaStatic", type: .static, targets: ["Rechka"]),
-            .library(name: "RechkaDynamic", type: .dynamic, targets: ["Rechka"])
-        
-   
+            .library(name: "Rechka", targets: ["Rechka"])
     ],
     dependencies: [
         .package(name: "CoreNetwork", url: "https://github.com/MosMetro-official/CoreNetwork", from: "0.0.2"),

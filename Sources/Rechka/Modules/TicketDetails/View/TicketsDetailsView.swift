@@ -70,6 +70,15 @@ final class TicketsDetailsView : UIView {
         struct TicketTitle : _TicketTitle {
             var title : String
         }
+        
+        struct NeedToPay: _R_OrderPaymentTableViewCell {
+            var onPay: Command<Void>
+            
+            var time: String
+            
+            var desc: String
+            
+        }
     }
     
     @IBOutlet private weak var closeView : UIView!
@@ -79,6 +88,7 @@ final class TicketsDetailsView : UIView {
         closeView.layer.cornerRadius = UIScreen.main.displayCornerRadius
         closeView.layer.masksToBounds = true
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 115, right: 0)
+        tableView.shouldUseReload = true
     }
     
     

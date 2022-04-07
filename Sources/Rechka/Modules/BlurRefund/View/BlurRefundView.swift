@@ -16,16 +16,9 @@ protocol _BlurRefund {
 
 final class BlurRefundView : UIView {
     
-    private var onCancel : (() -> Void)?
-    
-    private var onSubmit : (() -> Void)?
-    
-    public func configure(with data: _BlurRefund) {
-        onCancel = data.onCancel
-        onSubmit = data.onSubmit
-        title.text = data.title
-        descr.text = data.descr
-    }
+    @IBOutlet weak var loadingDescrLabel: UILabel!
+    @IBOutlet weak var loadingTitle: UILabel!
+    @IBOutlet weak var loadingView: UIView!
     
     @IBOutlet private weak var title : UILabel!
     
@@ -35,12 +28,60 @@ final class BlurRefundView : UIView {
     
     @IBOutlet private weak var submitButton : UIButton!
     
+    enum ViewState {
+        case loading(Loading)
+        case loaded(LoadedState)
+        case error
+        
+        struct Loading {
+            let title: String
+            let descr: String
+        }
+        
+        struct LoadedState {
+            let refunAmount: String
+            let comission: String
+            let onSubmit: Command<Void>
+            let onClose: Command<Void>
+        }
+    }
+    
+    var viewState: ViewState = .loading(.init(title: "", descr: "")) {
+        didSet {
+            DispatchQueue.main.async {
+                self.render()
+            }
+        }
+    }
+    
+    private func render() {
+        switch viewState {
+        case .loading(let loading):
+            [title,descr,cancelButton,submitButton].forEach { $0?.isHidden = true }
+            loadingView.isHidden = false
+            loadingTitle.text = loading.title
+            loadingDescrLabel.text = loading.descr
+        case .loaded(let loadedState):
+            [title,descr,cancelButton,submitButton].forEach { $0?.isHidden = false }
+            self.title.text = loadedState.refunAmount
+            self.descr.text = loadedState.comission
+            loadingView.isHidden = true
+        case .error:
+            [title,descr,cancelButton,submitButton].forEach { $0?.isHidden = true }
+            loadingView.isHidden = false
+        }
+    }
+    
     @IBAction private func onCancelSelect() {
-        onCancel?()
+        if case .loaded(let loadedData) = viewState {
+            loadedData.onClose.perform(with: ())
+        }
     }
     
     @IBAction private func onSubmitSelect() {
-        onSubmit?()
+        if case .loaded(let loadedData) = viewState {
+            loadedData.onSubmit.perform(with: ())
+        }
     }
     
     override func awakeFromNib() {

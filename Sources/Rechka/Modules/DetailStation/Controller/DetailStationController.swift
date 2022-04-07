@@ -41,6 +41,7 @@ class DetailStationController: UIViewController, RechkaMapReverceDelegate {
             Task.detached { [weak self] in
                 do {
                     let route = try await RiverRoute.getRoute(by: routeID)
+                    try await Task.sleep(nanoseconds: 0_300_000_000)
                     await self?.setRoute(route)
                 } catch {
                     guard let err = error as? APIError else { throw error }

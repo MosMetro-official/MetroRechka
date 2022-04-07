@@ -8,6 +8,25 @@
 import UIKit
 import CoreTableView
 
+extension UIButton {
+
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isHighlighted = true
+        super.touchesBegan(touches, with: event)
+    }
+
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isHighlighted = false
+        super.touchesEnded(touches, with: event)
+    }
+
+    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isHighlighted = false
+        super.touchesCancelled(touches, with: event)
+    }
+
+}
+
 public class PopularStationController : UIViewController {
     
     var delegate : RechkaMapDelegate?
@@ -53,7 +72,7 @@ public class PopularStationController : UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        Rechka.shared.token = "Pzk866b1qrmQll220UbfSKnWnYnbjA6obLr0KWKb1MY"
+        Rechka.shared.token = "EjAQOZcjjJWkPc79v8dQlyIKV9UFaRyjURIGeOqRnc4"
         setOrderListener()
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.customFont(forTextStyle: .title1)

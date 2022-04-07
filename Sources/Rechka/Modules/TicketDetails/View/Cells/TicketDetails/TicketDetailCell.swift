@@ -174,6 +174,9 @@ class TicketDetailCell: UITableViewCell {
         self.returnButton.isHidden = data.buttons.onRefund == nil
         self.refundDetailsButton.isHidden = data.buttons.onRefundDetails == nil
         self.needToPayLabel.isHidden = data.buttons.info == nil
+        self.onDownload = data.buttons.onDownload?.onSelect
+        self.onRefund = data.buttons.onRefund?.onSelect
+        self.onRefundDetails = data.buttons.onRefundDetails?.onSelect
         
       //  self.docButton.setTitle(data.downloadTitle, for: .normal)
         
