@@ -13,9 +13,9 @@ public class Rechka {
     public weak var networkDelegate: RechkaNetworkDelegate?
     public var isMapsAvailable : Bool!
     public var isMapsRoutesAvailable : Bool!
-    public let returnURL =  "riverexample://main/riverPaymentSuccess"
-    public let failURL =  "riverexample://main/riverPaymentFailure"
-    public var token: String? = "46sibIi8xU7jSqjyHCAvZEkBGhBkvpAMVjMDdS0LWlU"
+    public var returnURL =  "riverexample://main/riverPaymentSuccess"
+    public var failURL =  "riverexample://main/riverPaymentFailure"
+    public var token: String?
     public var refreshToken: String?
     public var clientID: String = ""
     public var clientSecret: String = ""

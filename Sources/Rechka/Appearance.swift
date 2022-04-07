@@ -42,9 +42,9 @@ protocol _Appearance: AnyObject {
 
 public class Appearance: _Appearance {
     
-    static func makeRechkaTerminalImage(from terminal: _RechkaTerminal) -> UIImage {
+    static func makeRechkaTerminalImage(from terminal: RiverStation) -> UIImage {
         let bubble = TerminalBubbleView(frame: CGRect(x: 0, y: 0, width: 230, height: 100))
-        bubble.titleLabel.text = terminal.title
+        bubble.titleLabel.text = terminal.name
         bubble.onSelect = {
             terminal.onSelect()
         }

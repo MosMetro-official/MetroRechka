@@ -12,18 +12,22 @@ import YandexMapsMobile
 class MapViewController : UIViewController, YMKMapObjectTapListener {
     
     private class TerminalUserData {
-        let terminal: _RechkaTerminal
+        let terminal: _RiverStation
         
-        init(terminal: _RechkaTerminal) {
+        init(terminal: _RiverStation) {
             self.terminal = terminal
         }
     }
     
     var delegate: RechkaMapReverceDelegate?
     
-    public var terminals = [_RechkaTerminal]()
+    public var terminals = [_RiverStation]()
     
-    public var terminalsImages = [UIImage]()
+    public var terminalsImages = [UIImage]() {
+        didSet {
+            self.showTerminalsOnMap(from: terminalsImages, and: terminals)
+        }
+    }
     
     public var shouldShowTerminalsButton = false
     
@@ -81,7 +85,7 @@ extension MapViewController : RechkaMapController {
         self.terminalsButton.isHidden = false
     }
     
-    private func createNewPoint(with terminal: _RechkaTerminal) -> YMKPoint {
+    private func createNewPoint(with terminal: _RiverStation) -> YMKPoint {
         var point = YMKPoint()
         let clusterCenter = terminal
         let latitude = clusterCenter.latitude
@@ -90,16 +94,18 @@ extension MapViewController : RechkaMapController {
         return point
     }
     
-    func showTerminalsOnMap(from images: [UIImage], and terminals: [_RechkaTerminal]) {
-        guard
-            images.count == terminals.count
-        else { fatalError() }
-        for (image, terminal) in zip(images, terminals) {
-            let point = createNewPoint(with: terminal)
-            let mapObjects = mapView.mapWindow.map.mapObjects
-            let teminalObject = mapObjects.addPlacemark(with: point, image: image, style: YMKIconStyle())
-            teminalObject.userData = TerminalUserData(terminal: terminal)
-            teminalObject.addTapListener(with: self)
+    func showTerminalsOnMap(from images: [UIImage], and terminals: [_RiverStation]) {
+        DispatchQueue.main.async {
+            guard
+                images.count == terminals.count
+            else { fatalError() }
+            for (image, terminal) in zip(images, terminals) {
+                let point = self.createNewPoint(with: terminal)
+                let mapObjects = self.mapView.mapWindow.map.mapObjects
+                let teminalObject = mapObjects.addPlacemark(with: point, image: image, style: YMKIconStyle())
+                teminalObject.userData = TerminalUserData(terminal: terminal)
+                teminalObject.addTapListener(with: self)
+            }
         }
     }
     

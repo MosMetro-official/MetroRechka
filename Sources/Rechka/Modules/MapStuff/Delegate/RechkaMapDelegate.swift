@@ -11,7 +11,7 @@ public protocol RechkaMapController : UIViewController {
     
     var delegate : RechkaMapReverceDelegate? { get set }
     
-    var terminals : [_RechkaTerminal] { get set }
+    var terminals : [_RiverStation] { get set }
     
     var terminalsImages : [UIImage] { get set }
     
@@ -19,7 +19,7 @@ public protocol RechkaMapController : UIViewController {
     
     func showTerminalListButton()
     
-    func showTerminalsOnMap(from images: [UIImage], and for: [_RechkaTerminal])
+    func showTerminalsOnMap(from images: [UIImage], and for: [_RiverStation])
 }
 
 public protocol RechkaMapDelegate : AnyObject {

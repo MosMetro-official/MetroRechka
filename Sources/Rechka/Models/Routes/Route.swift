@@ -120,7 +120,7 @@ struct RiverUser: Equatable {
         self.ticket = ticket
     }
     
-    init() { } 
+    init() { }
     
     func createBodyItem() -> [String: Any] {
         var resultingList = [String: Any]()
@@ -221,7 +221,7 @@ struct RiverTrip {
     
     init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
-                let name = data["routeName"].string,
+              let name = data["routeName"].string,
               let startDate = data["dateTimeStart"].stringValue.toDate()?.date,
               let endDate = data["dateTimeEnd"].stringValue.toDate()?.date
         else { return nil }
@@ -319,7 +319,7 @@ struct RiverGallery {
 }
 
 // MARK: - Station
-struct RiverStation {
+struct RiverStation : _RiverStation {
     let id: Int
     let name: String
     let cityID: Int
@@ -329,6 +329,7 @@ struct RiverStation {
     let latitude, longitude: Double
     let position: Int?
     let galleries: [RiverGallery]
+    var onSelect : (() -> Void)
     
     
     init(data: CoreNetwork.JSON) {
@@ -344,7 +345,7 @@ struct RiverStation {
         self.countryName = data["countryName"].stringValue
         self.countryISO = data["countryISO"].stringValue
         self.galleries = data["galleries"].arrayValue.map { RiverGallery(data: $0) }
-        
+        self.onSelect = { }
     }
     
 }
