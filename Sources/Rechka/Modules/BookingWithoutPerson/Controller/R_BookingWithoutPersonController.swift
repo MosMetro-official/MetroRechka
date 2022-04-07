@@ -38,6 +38,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
+        setupRiverBackButton()
     }
     
     @MainActor
