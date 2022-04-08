@@ -37,7 +37,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
             }
             Task.detached { [weak self] in
                 do {
-                    let route = try await RiverRoute.getRoute(by: routeID)
+                    let route = try await R_Route.getRoute(by: routeID)
                     try await Task.sleep(nanoseconds: 0_300_000_000)
                     await self?.setRoute(route)
                 } catch {
@@ -48,7 +48,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
     }
     
     
-    public var route: RiverRoute? {
+    public var route: R_Route? {
         didSet {
             createState()
         }
@@ -86,7 +86,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
     }
     
     @MainActor
-    private func setRoute(_ route: RiverRoute) {
+    private func setRoute(_ route: R_Route) {
         if let first = route.shortTrips.first {
             self.selectedTripId = first.id
         }
@@ -113,7 +113,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
         self.nestedView.viewState = loadingState
         Task.detached { [weak self] in
             do {
-                let trip = try await RiverTrip.get(by: selectedTripId)
+                let trip = try await R_Trip.get(by: selectedTripId)
                 let loadedState = R_RootDetailStationView.ViewState(
                     state: loadingState.state,
                     dataState: .loaded,
@@ -130,7 +130,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
         }
     }
     
-    func makeState(with model: RiverRoute) async -> R_RootDetailStationView.ViewState {
+    func makeState(with model: R_Route) async -> R_RootDetailStationView.ViewState {
         var resultSections = [State]()
         var main = [Element]()
         let summary = R_RootDetailStationView.ViewState.Summary(
@@ -234,7 +234,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
 extension R_RootDetailStationController {
         
     @MainActor
-    private func openBuyTicketsController(with model: RiverTrip) {
+    private func openBuyTicketsController(with model: R_Trip) {
         guard let needPersonalData = model.personalDataRequired else { return }
         if needPersonalData {
 //            let bookingWithPerson = R_BookingWithPersonController()

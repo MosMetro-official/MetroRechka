@@ -12,13 +12,13 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     
     let nestedView = R_BookingWithoutPersonView(frame: UIScreen.main.bounds)
     
-    var model: RiverTrip? {
+    var model: R_Trip? {
         didSet {
             createInitialSelectedItems()
         }
     }
  
-    var selectedTarrifs: [RiverTariff: [RiverUser]] = [:] {
+    var selectedTarrifs: [R_Tariff: [R_User]] = [:] {
         didSet {
             Task.detached { [weak self] in
                 guard let selectedTarrifs = await self?.selectedTarrifs,
@@ -49,14 +49,14 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         guard let tarrifs = model?.tarrifs else {
             return
         }
-        var initialSelectedTarrifs: [RiverTariff: [RiverUser]] = [:]
+        var initialSelectedTarrifs: [R_Tariff: [R_User]] = [:]
         tarrifs.forEach {
             initialSelectedTarrifs.updateValue([], forKey: $0)
         }
         self.selectedTarrifs = initialSelectedTarrifs
     }
     
-    private func handleOperation(for tariff: RiverTariff, isMinus: Bool) {
+    private func handleOperation(for tariff: R_Tariff, isMinus: Bool) {
         // check for availabilty
         guard var currentCount = self.selectedTarrifs[tariff] else {
             return
@@ -93,7 +93,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     private func startBooking() {
         guard let tripID = self.model?.id else { return }
         if let _ = Rechka.shared.token {
-            let users: [RiverUser] = self.selectedTarrifs.reduce([]) { partialResult, element in
+            let users: [R_User] = self.selectedTarrifs.reduce([]) { partialResult, element in
                 var result = partialResult
                 result.append(contentsOf: element.value)
                 return result
@@ -108,7 +108,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             
             Task.detached { [weak self] in
                 do {
-                    let order = try await RiverTrip.book(with: users, tripID: tripID)
+                    let order = try await R_Trip.book(with: users, tripID: tripID)
                     await self?.handle(order: order)
                 } catch {
                     
@@ -120,7 +120,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
-    private func makeState(with model: [RiverTariff: [RiverUser]]) async -> R_BookingWithoutPersonView.ViewState? {
+    private func makeState(with model: [R_Tariff: [R_User]]) async -> R_BookingWithoutPersonView.ViewState? {
         guard let mainModel = self.model else { return nil }
         var resultStates = [State]()
         var paidElements = [Element]()

@@ -18,14 +18,14 @@ extension APIClient {
 }
 
 
-struct RiverRouteResponse {
+struct R_RouteResponse {
     let items: [R_Route]
     let page: Int
     let totalPages: Int
     let totalElements: Int
 }
 
-struct RiverPoint {
+struct R_Point {
     let latitude: Double
     let longitude: Double
     let position: Int
@@ -49,13 +49,13 @@ struct R_Route {
     let schedule: [Date]
     
     // polyline
-    let polyline: [RiverPoint]
+    let polyline: [R_Point]
     
     // stations
     let stations: [R_Station]
     
     // galleries
-    let galleries: [RiverGallery]
+    let galleries: [R_Gallery]
     
     // trips short
     let shortTrips: [R_ShortTrip]
@@ -69,9 +69,9 @@ struct R_Route {
         self.time = data["time"].intValue
         self.distance = data["distance"].intValue
         self.tags = data["tags"].arrayValue.compactMap { $0.string }
-        self.polyline = data["polyline"].arrayValue.map { RiverPoint(data: $0)  }
+        self.polyline = data["polyline"].arrayValue.map { R_Point(data: $0)  }
         self.stations = data["stations"].arrayValue.map { R_Station(data: $0) }
-        self.galleries = data["galleries"].arrayValue.map { RiverGallery(data: $0) }
+        self.galleries = data["galleries"].arrayValue.map { R_Gallery(data: $0) }
         self.schedule = []
         self.shortTrips = data["trips"].arrayValue.compactMap { R_ShortTrip(data: $0) }
         
@@ -100,7 +100,7 @@ extension R_Route {
         }
     }
     
-    static func getRoutes() async throws -> RiverRouteResponse {
+    static func getRoutes() async throws -> R_RouteResponse {
         let client = APIClient.unauthorizedClient
         do {
             let response = try await client.send(

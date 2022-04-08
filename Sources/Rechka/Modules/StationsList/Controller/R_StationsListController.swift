@@ -10,7 +10,7 @@ import CoreTableView
 
 internal final class R_StationsListController : UIViewController {
     
-    var terminals = [RiverStation]()
+    var terminals = [R_Station]()
     var nestedView = R_StationListView(frame: UIScreen.main.bounds)
     
     override func loadView() {
@@ -46,7 +46,7 @@ internal final class R_StationsListController : UIViewController {
         navigation.popToViewController(controller, animated: true)
     }
     
-    public func makeDummyState(with items: [RiverStation]) {
+    public func makeDummyState(with items: [R_Station]) {
         var elements = [Element]()
         for item in items {
             elements.append(

@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+struct R_Citizenship: Equatable {
+    let id: Int
+    let name: String
+    let iso: Int
+    let isoAlpha: String
+}

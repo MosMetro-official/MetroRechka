@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+
+struct R_Document: Equatable {
+    let id: Int
+    let name: String
+    let inputMask: String
+    let regularMask: String
+    let useNumpadOnly: String
+    let exampleNumber: String
+    
+}

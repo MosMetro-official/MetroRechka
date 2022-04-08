@@ -6,3 +6,16 @@
 //
 
 import Foundation
+import CoreNetwork
+
+
+// MARK: - Vehicle
+struct R_Vehicle {
+    let name: String?
+    let number: String?
+    let placeCount: String?
+    let airConditioning: Bool?
+    let tv: Bool?
+    
+    
+}

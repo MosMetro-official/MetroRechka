@@ -6,3 +6,24 @@
 //
 
 import Foundation
+import CoreNetwork
+
+struct R_ShortTrip {
+    let id: Int
+    let freePlaceCount: Int
+    let price: Double
+    let dateStart: Date
+    
+    init?(data: CoreNetwork.JSON) {
+        guard let id = data["id"].int,
+              let freePlaceCount = data["freePlaceCount"].int,
+              let startDate = data["dateTimeStart"].stringValue.toDate()?.date,
+              let price = data["ticketPrice"].double
+        else { return nil }
+        self.id = id
+        self.freePlaceCount = freePlaceCount
+        self.price = price
+        self.dateStart = startDate
+    }
+    
+}

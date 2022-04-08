@@ -34,9 +34,9 @@ internal final class R_PopularStationsController : UIViewController {
     
     var reverceDelegate : RechkaMapReverceDelegate?
     
-    var terminals = [RiverStation]()
+    var terminals = [R_Station]()
     
-    private var searchResponse: RiverRouteResponse? {
+    private var searchResponse: R_RouteResponse? {
         didSet {
             Task.detached { [weak self] in
                 guard let self = self else { return}
@@ -64,7 +64,7 @@ internal final class R_PopularStationsController : UIViewController {
         self.nestedView.viewState = .init(state: [], dataState: .loading)
         Task.detached(priority: .high) {
             do {
-                let routeResponse = try await RiverRoute.getRoutes()
+                let routeResponse = try await R_Route.getRoutes()
                 try await Task.sleep(nanoseconds: 0_500_000_000)
                 await self.setResponse(routeResponse)
                 print("adadsdas")
@@ -77,7 +77,7 @@ internal final class R_PopularStationsController : UIViewController {
     }
     
     @MainActor
-    private func setResponse(_ response: RiverRouteResponse) async {
+    private func setResponse(_ response: R_RouteResponse) async {
         self.searchResponse = response
     }
     
@@ -238,7 +238,7 @@ internal final class R_PopularStationsController : UIViewController {
                 )
                 let json1 = JSON(resp1.data)
                 self.terminals = json1["data"].arrayValue.map({
-                    var station = RiverStation.init(data: $0)
+                    var station = R_Station.init(data: $0)
                     station.onSelect = { [weak self] in
                         guard
                             let self = self,

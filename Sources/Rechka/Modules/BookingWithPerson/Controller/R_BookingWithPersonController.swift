@@ -42,7 +42,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         nestedView.onReload()
     }
     
-    private func makeState(for cacheUser: RiverUser? = nil, from payment: [PaymentModel]) {
+    private func makeState(for cacheUser: R_User? = nil, from payment: [PaymentModel]) {
         let users = payment.flatMap({$0.ticket}).map({$0.user})
         let tickets = payment.flatMap({$0.ticket})
         var tickElements: [Element] = []
@@ -113,7 +113,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         }
     }
     
-    private func pushPersonDataEntry(model: FakeModel? = nil, with payment: PaymentModel? = nil, and user: RiverUser? = nil) {
+    private func pushPersonDataEntry(model: FakeModel? = nil, with payment: PaymentModel? = nil, and user: R_User? = nil) {
         let passenderDataEntry = R_PassengerDataEntryController()
         passenderDataEntry.delegate = self
 //        if let model = model {
