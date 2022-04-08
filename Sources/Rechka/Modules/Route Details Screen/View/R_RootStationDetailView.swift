@@ -25,8 +25,12 @@ internal final class R_RootDetailStationView: UIView {
         }
         
         struct Summary: _Summary {
-            let duration: String
-            let fromTo: String
+            var text: NSAttributedString
+            
+            var onMore: Command<Void>?
+            
+            var height: CGFloat
+
         }
         
         struct MapView: _MapView {

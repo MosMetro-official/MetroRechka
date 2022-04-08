@@ -9,24 +9,7 @@ import UIKit
 import CoreTableView
 import CoreNetwork
 
-extension UIButton {
 
-    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isHighlighted = true
-        super.touchesBegan(touches, with: event)
-    }
-
-    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isHighlighted = false
-        super.touchesEnded(touches, with: event)
-    }
-
-    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isHighlighted = false
-        super.touchesCancelled(touches, with: event)
-    }
-
-}
 
 internal final class R_PopularStationsController : UIViewController {
     
@@ -65,7 +48,7 @@ internal final class R_PopularStationsController : UIViewController {
         Task.detached(priority: .high) {
             do {
                 let routeResponse = try await R_Route.getRoutes()
-                try await Task.sleep(nanoseconds: 0_500_000_000)
+                try await Task.sleep(nanoseconds: 0_300_000_000)
                 await self.setResponse(routeResponse)
                 print("adadsdas")
             } catch {
@@ -73,7 +56,7 @@ internal final class R_PopularStationsController : UIViewController {
             }
         }
         
-        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 15])
+        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 74])
     }
     
     @MainActor
@@ -84,7 +67,7 @@ internal final class R_PopularStationsController : UIViewController {
     @objc private func showOrder(from notification: Notification) {
         if let orderID = notification.userInfo?["orderID"] as? Int {
             print("Order: \(orderID)")
-            let orderController = R_TicketDetailsController()
+            let orderController = R_OrderDetailsController()
             self.present(orderController, animated: true) {
                 orderController.orderID = orderID
             }
@@ -120,7 +103,7 @@ internal final class R_PopularStationsController : UIViewController {
     }
     
     private func pushDetail(with routeID: Int) {
-        let detail = R_RootDetailStationController()
+        let detail = R_RouteDetailsController()
         navigationController?.pushViewController(detail, animated: true)
         detail.routeID = routeID
     }
@@ -142,13 +125,13 @@ internal final class R_PopularStationsController : UIViewController {
         }
         settingsView.onTerminalsButton = { [weak self] in
             guard let self = self else { return }
-//            let controller = HistoryController()
-//            self.navigationController?.pushViewController(controller, animated: true)
-            if Rechka.shared.isMapsAvailable {
-                self.openMapController()
-            } else {
-                self.openTerminalsTable()
-            }
+            let controller = R_TicketsHistoryController()
+            self.navigationController?.pushViewController(controller, animated: true)
+//            if Rechka.shared.isMapsAvailable {
+//                self.openMapController()
+//            } else {
+//                self.openTerminalsTable()
+//            }
         }
         settingsView.onPersonsMenu = { [weak self] persons in
             guard let self = self else { return }

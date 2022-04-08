@@ -10,7 +10,7 @@ import CoreTableView
 import SwiftDate
 import SafariServices
 
-internal final class R_TicketDetailsController : UIViewController {
+internal final class R_OrderDetailsController : UIViewController {
     
     public var orderID: Int? {
         didSet {
@@ -36,6 +36,7 @@ internal final class R_TicketDetailsController : UIViewController {
     private var timer: Timer?
     private var paymentController: SFSafariViewController?
     private var needToSetTimer = true
+    private var isFirstLoad = true
     
     @MainActor
     private func set(seconds: Int) {
@@ -126,6 +127,14 @@ internal final class R_TicketDetailsController : UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let orderID = orderID, !isFirstLoad {
+            self.orderID = orderID
+        }
+        
+    }
+    
     public init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -134,7 +143,7 @@ internal final class R_TicketDetailsController : UIViewController {
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
-        let loadingState = R_TicketsDetailsView.ViewState(
+        let loadingState = R_OrderDetailsView.ViewState(
             dataState: .loading,
             state: [],
             onClose: onClose
@@ -250,7 +259,7 @@ internal final class R_TicketDetailsController : UIViewController {
 
     }
     
-    private func makeState(for order: RiverOrder) async -> R_TicketsDetailsView.ViewState {
+    private func makeState(for order: RiverOrder) async -> R_OrderDetailsView.ViewState {
         var resultigState = [State]()
         // Status
         let statusString: String = {
@@ -286,7 +295,7 @@ internal final class R_TicketDetailsController : UIViewController {
             }
         }()
         
-        let statusData = R_TicketsDetailsView.ViewState.TicketStatus(
+        let statusData = R_OrderDetailsView.ViewState.TicketStatus(
             title: statusString,
             statusImage: statusImage,
             statusColor: statusColor
@@ -306,7 +315,7 @@ internal final class R_TicketDetailsController : UIViewController {
             guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error, state: [], onClose: nil)}
             let elapsedTime = "\(minute):\(seconds)"
             
-            let needToPay = R_TicketsDetailsView.ViewState.NeedToPay(onPay: onPay,
+            let needToPay = R_OrderDetailsView.ViewState.NeedToPay(onPay: onPay,
                                                                    time: elapsedTime,
                                                                    desc: "Осталось времени").toElement()
             let needToPaySection = SectionState(header: nil, footer: nil)
@@ -339,7 +348,7 @@ internal final class R_TicketDetailsController : UIViewController {
                 }
             }()
             
-            let element = R_TicketsDetailsView.ViewState.Ticket(
+            let element = R_OrderDetailsView.ViewState.Ticket(
                 price: "\(Int(ticket.price)) ₽",
                 place: place,
                 number: "\(ticket.id)",
@@ -353,35 +362,35 @@ internal final class R_TicketDetailsController : UIViewController {
         resultigState.append(contentsOf: tickets)
         
         // info
-        let title = R_TicketsDetailsView.ViewState.TicketTitle(
+        let title = R_OrderDetailsView.ViewState.TicketTitle(
             title: "Информэйшон:"
         ).toElement()
         
-        let status = R_TicketsDetailsView.ViewState.TicketInfo(
+        let status = R_OrderDetailsView.ViewState.TicketInfo(
             title: "Статус",
             descr: statusString,
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
-        let bookDate = R_TicketsDetailsView.ViewState.TicketInfo(
+        let bookDate = R_OrderDetailsView.ViewState.TicketInfo(
             title: "Дата брони",
             descr: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm"),
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
-        let orderNumber = R_TicketsDetailsView.ViewState.TicketInfo(
+        let orderNumber = R_OrderDetailsView.ViewState.TicketInfo(
             title: "Номер заказа",
             descr: "\(order.operation.id)",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
-        let totalPrice = R_TicketsDetailsView.ViewState.TicketInfo(
+        let totalPrice = R_OrderDetailsView.ViewState.TicketInfo(
             title: "Общая цена",
             descr: "\(order.operation.totalPrice) ₽",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
-        let routeName = R_TicketsDetailsView.ViewState.TicketInfo(
+        let routeName = R_OrderDetailsView.ViewState.TicketInfo(
             title: "Маршрут",
             descr: "\(order.operation.routeName)",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
@@ -399,12 +408,13 @@ internal final class R_TicketDetailsController : UIViewController {
     }
     
     @MainActor
-    private func set(state: R_TicketsDetailsView.ViewState) {
+    private func set(state: R_OrderDetailsView.ViewState) {
         self.nestedView.viewState = state
     }
     
     @MainActor
     private func set(order: RiverOrder) {
+        isFirstLoad = false
         self.order = order
     }
     
@@ -412,7 +422,7 @@ internal final class R_TicketDetailsController : UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var nestedView = R_TicketsDetailsView.loadFromNib()
+    private var nestedView = R_OrderDetailsView.loadFromNib()
     
     override func loadView() {
         self.view = nestedView
@@ -423,79 +433,5 @@ internal final class R_TicketDetailsController : UIViewController {
         self.setListeners()
     }
     
-//    private func makeDummyState() {
-//        let status = TicketsDetailsView.ViewState.TicketStatus(
-//            title: "Qwerty",
-//            status: .waitnig
-//        ).toElement()
-//        let model0 = SectionState(header: nil, footer: nil)
-//        let block0 = State(model: model0, elements: [status])
-//        let ticket1 = TicketsDetailsView.ViewState.Ticket(
-//            price: "100500 $",
-//            place: "в жопе мира",
-//            number: "13 слева",
-//            passenger: "Николаус",
-//            onRefund: { [weak self] in
-//                guard let self = self else { return }
-//                self.onRefundSelect()
-//            },
-//            onDownload: { [weak self] in
-//                guard let self = self else { return }
-//                self.onDownloadSelect()
-//            },
-//            downloadTitle: "Квитошка",
-//            onRefundDetails: { [weak self] in
-//                guard let self = self else { return }
-//                self.onRefundDetailsSelect()
-//            }
-//        ).toElement()
-//        let model1 = SectionState(header: nil, footer: nil)
-//        let block1 = State(model: model1, elements: [ticket1])
-//        let ticket2 = TicketsDetailsView.ViewState.Ticket(
-//            price: "100500 $",
-//            place: "в жопе мира",
-//            number: "13 слева",
-//            passenger: "Николаус",
-//            onRefund: { [weak self] in
-//                guard let self = self else { return }
-//                self.onRefundSelect()
-//            },
-//            onDownload: { [weak self] in
-//                guard let self = self else { return }
-//                self.onDownloadSelect()
-//            },
-//            downloadTitle: "Квитошка",
-//            onRefundDetails: { [weak self] in
-//                guard let self = self else { return }
-//                self.onRefundDetailsSelect()
-//            }
-//        ).toElement()
-//        let model2 = SectionState(header: nil, footer: nil)
-//        let block2 = State(model: model2, elements: [ticket2])
-//
-//        let title = TicketsDetailsView.ViewState.TicketTitle(
-//            title: "Информэйшон:"
-//        ).toElement()
-//        let info0 = TicketsDetailsView.ViewState.TicketInfo(
-//            title: "Мой статус",
-//            descr: "Интересный",
-//            image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
-//        ).toElement()
-//        let model3 = SectionState(header: nil, footer: nil)
-//        let block3 = State(model: model3, elements: [title, info0])
-//
-//        self.nestedView.configure(with: [block0, block1, block2, block3])
-//    }
-    
-    private func onRefundSelect() {
-        print(#function)
-    }
-    
-    private func onDownloadSelect() {
-        print(#function)
-    }
-    
-    private func onRefundDetailsSelect() {
-        print(#function)
-    }
+
 }

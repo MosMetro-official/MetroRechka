@@ -94,7 +94,7 @@ internal final class R_BlurRefundController : UIViewController {
 extension R_BlurRefundController {
     
     private func startRefundConfirm() {
-        self.nestedView.viewState = .loading(.init(title: "Вовзращаем билет", descr: "Немного подождите"))
+        self.nestedView.viewState = .loading(.init(title: "Возвращаем билет", descr: "Немного подождите"))
         guard let ticket = ticket else { return }
         Task.detached { [weak self] in
             do  {

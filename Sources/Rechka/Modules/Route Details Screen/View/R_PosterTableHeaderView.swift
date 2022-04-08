@@ -67,8 +67,8 @@ internal final class R_PosterTableHeaderView : UIView {
             centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             heightAnchor.constraint(equalTo: containerView.heightAnchor),
             
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 30),
             titleLabel.heightAnchor.constraint(equalToConstant: 100),
             

@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mapView" translatesAutoresizingMaskIntoConstraints="NO" id="6ww-jl-F04">
-                        <rect key="frame" x="10" y="0.0" width="280" height="153"/>
+                        <rect key="frame" x="20" y="0.0" width="260" height="153"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EhU-lK-YSA">
                         <rect key="frame" x="71" y="56.5" width="158" height="40"/>
@@ -41,11 +41,11 @@
                 <constraints>
                     <constraint firstItem="EhU-lK-YSA" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Bjz-rg-TOd"/>
                     <constraint firstAttribute="trailingMargin" secondItem="EhU-lK-YSA" secondAttribute="trailing" constant="55" id="Cuh-Bw-B0l"/>
-                    <constraint firstAttribute="trailing" secondItem="6ww-jl-F04" secondAttribute="trailing" constant="10" id="E5C-Wv-ir9"/>
+                    <constraint firstAttribute="trailing" secondItem="6ww-jl-F04" secondAttribute="trailing" constant="20" id="E5C-Wv-ir9"/>
                     <constraint firstItem="EhU-lK-YSA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="55" id="KZl-lb-2II"/>
                     <constraint firstItem="6ww-jl-F04" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Toa-oU-1CP"/>
                     <constraint firstAttribute="bottom" secondItem="6ww-jl-F04" secondAttribute="bottom" id="dMJ-9s-7rm"/>
-                    <constraint firstItem="6ww-jl-F04" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="jNB-Hr-7jv"/>
+                    <constraint firstItem="6ww-jl-F04" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="jNB-Hr-7jv"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

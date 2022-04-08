@@ -8,9 +8,8 @@
 import UIKit
 import CoreTableView
 
-protocol _R_TicietsDetailsView { }
 
-internal final class R_TicketsDetailsView : UIView {
+internal final class R_OrderDetailsView: UIView {
     
     var viewState: ViewState = .init(dataState: .loading, state: [], onClose: nil) {
         didSet {

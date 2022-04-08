@@ -15,7 +15,7 @@ public class Rechka {
     public var isMapsRoutesAvailable : Bool!
     public var returnURL =  "riverexample://main/riverPaymentSuccess"
     public var failURL =  "riverexample://main/riverPaymentFailure"
-    public var token: String? = "HF4Unqb0UA6nPb5uFlZQ1HUwzkWSzsQLm4RKXbrwLV4"
+    public var token: String? = "zhW0vpBZbUGH2O4mcdUFMSBPVgT6HRx3keFHwD4PkAY"
     public var refreshToken: String?
     public var clientID: String = ""
     public var clientSecret: String = ""

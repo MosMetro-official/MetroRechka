@@ -125,46 +125,6 @@ class TicketDetailCell: UITableViewCell {
         drawDottedLine(start: CGPoint(x: 12, y: 12), end: CGPoint(x: (UIScreen.main.bounds.width - 32 - 12), y: 12), view: separatorView)
     }
     
-    // Не стал удалять - потом понадобится =)
-    
-//    private func handleStatusView(status: BusOrder.BookingStatus) {
-//        switch status {
-//        case .created, .booked, .error, .fullyReturned, .cancelled, .partiallyReturned, .partiallyCancelled:
-//            self.statusLabel.text = status.text()
-//            self.statusLabel.textColor = status.ticketTextColor()
-//            self.ticketViewToSuperview.priority = .defaultLow
-//            self.ticketViewToStatusView.priority = .defaultHigh
-//            self.statusView.isHidden = false
-//
-//        case .paid:
-//            self.ticketViewToSuperview.priority = .defaultHigh
-//            self.ticketViewToStatusView.priority = .defaultLow
-//            self.statusView.isHidden = true
-//        }
-//    }
-    
-    // Не стал удалять - потом понадобится =)
-    
-//    private func handleButtons(status: BusOrder.BookingStatus) {
-//        switch status {
-//        case .error, .fullyReturned, .cancelled, .partiallyReturned, .partiallyCancelled:
-//            self.docButton.isHidden = false
-//            self.returnButton.isHidden = true
-//            self.refundDetailsButton.isHidden = false
-//            self.needToPayLabel.isHidden = true
-//        case .booked, .created:
-//            self.docButton.isHidden = true
-//            self.returnButton.isHidden = true
-//            self.refundDetailsButton.isHidden = true
-//            self.needToPayLabel.isHidden = false
-//        case .paid:
-//            self.docButton.isHidden = false
-//            self.returnButton.isHidden = false
-//            self.refundDetailsButton.isHidden = true
-//            self.needToPayLabel.isHidden = true
-//        }
-//    }
-    
     public func configure(with data: _TicketDetail) {
         self.placelabel.text = data.place
         self.ticketPriceLabel.text = data.price
@@ -178,10 +138,6 @@ class TicketDetailCell: UITableViewCell {
         self.onRefund = data.buttons.onRefund?.onSelect
         self.onRefundDetails = data.buttons.onRefundDetails?.onSelect
         
-      //  self.docButton.setTitle(data.downloadTitle, for: .normal)
-        
-//        self.handleButtons(status: data.status)
-//        self.handleStatusView(status: data.status)
     }
     
     private func drawDottedLine(start p0: CGPoint, end p1: CGPoint, view: UIView) {

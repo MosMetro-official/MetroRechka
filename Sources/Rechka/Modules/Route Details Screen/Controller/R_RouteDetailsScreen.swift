@@ -10,7 +10,7 @@ import CoreTableView
 import CoreNetwork
 import SwiftDate
 
-internal class R_RootDetailStationController: UIViewController, RechkaMapReverceDelegate {
+internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDelegate {
       
     func onMapBackSelect() {
         self.navigationController?.popViewController(animated: true)
@@ -53,6 +53,21 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
             createState()
         }
     }
+    
+    
+    private var isTextCollapsed = true {
+        didSet {
+            if let route = route {
+                Task.detached { [weak self] in
+                    guard let self = self else { return }
+                    let state = await self.makeState(with: route)
+                    await self.setState(state)
+                }
+            }
+        }
+    }
+    
+    private var isNeedToCollapseText = true
     
     private func createState() {
         if let route = route {
@@ -130,14 +145,70 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
         }
     }
     
+    
+    func prepareText(for description: String) -> NSMutableAttributedString? {
+        let attributedString = NSMutableAttributedString(string: description)
+        let range = NSMakeRange(0, attributedString.string.count - 1)
+        if let font = Appearance.customFonts[.body] {
+            attributedString.addAttributes([NSAttributedString.Key.font: font], range: range)
+        }
+        attributedString.addAttributes([NSAttributedString.Key.kern: -0.17], range: range)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.lineSpacing = 4
+        attributedString.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle], range: range)
+        return attributedString
+//        if size.height > 60 {
+//            // надо урезать размер и добавить кнопку еще
+//            let moreStr = NSAttributedString(string: "...еще", attributes: [NSAttributedString.Key.font: Appearance.customFonts[.body], NSAttributedString.Key.foregroundColor: UIColor.systemBlue])
+//            attributedString.append(moreStr)
+//
+//
+//
+//        } else {
+//
+//        }
+//        return attributedString
+        
+    }
+    
     func makeState(with model: R_Route) async -> R_RootDetailStationView.ViewState {
         var resultSections = [State]()
         var main = [Element]()
-        let summary = R_RootDetailStationView.ViewState.Summary(
-            duration: "dasdadsa",
-            fromTo: "test1"
-        ).toElement()
-        main.append(summary)
+        if let gallery = model.galleries.first, let desc = gallery.galleryDescription {
+            if let text = self.prepareText(for: desc) {
+                let maxWidth = UIScreen.main.bounds.size.width - 40
+                let size = text.boundingRect(with: CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
+                self.isNeedToCollapseText = size.height > 80
+                
+                if isNeedToCollapseText {
+                    let onMore = Command { [weak self] in
+                        self?.isTextCollapsed = false
+                    }
+                    
+                    let summary = R_RootDetailStationView.ViewState.Summary(
+                        text: text,
+                        onMore: isTextCollapsed ? onMore : nil,
+                        height: isTextCollapsed ? 80 + 24 :  size.height + 24)
+                        .toElement()
+                    main.append(summary)
+                    
+                    
+                } else {
+                    let summary = R_RootDetailStationView.ViewState.Summary(
+                        text: text,
+                        onMore: nil,
+                        height: size.height + 24)
+                        .toElement()
+                    main.append(summary)
+                }
+                
+                
+            }
+            
+            
+        }
+        
         
         if Rechka.shared.isMapsRoutesAvailable {
             let mapView = R_RootDetailStationView.ViewState.MapView(
@@ -231,7 +302,7 @@ internal class R_RootDetailStationController: UIViewController, RechkaMapReverce
     }
 }
 
-extension R_RootDetailStationController {
+extension R_RouteDetailsController {
         
     @MainActor
     private func openBuyTicketsController(with model: R_Trip) {
