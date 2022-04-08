@@ -100,13 +100,26 @@ extension R_Route {
         }
     }
     
-    static func getRoutes() async throws -> R_RouteResponse {
+    static func getRoutes(page: Int, size: Int, stationID: Int? = nil, tags: [String]) async throws -> R_RouteResponse {
         let client = APIClient.unauthorizedClient
         do {
+            var query: [String: String] = [
+                "size": "\(size)",
+                "page": "\(page)"
+            ]
+            
+            if let stationID = stationID {
+                query.updateValue("\(stationID)", forKey: "stationId")
+            }
+            
+            if !tags.isEmpty {
+                query.updateValue(tags.joined(separator: ","), forKey: "tags")
+            }
+            
             let response = try await client.send(
                 .GET(
                     path: "/api/routes/v1",
-                    query: nil)
+                    query: query)
             )
             let json = CoreNetwork.JSON(response.data)
             guard let routesArray = json["data"]["items"].array,
