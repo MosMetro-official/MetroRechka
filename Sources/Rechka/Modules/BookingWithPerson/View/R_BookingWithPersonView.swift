@@ -10,6 +10,8 @@ import CoreTableView
 
 internal final class R_BookingWithPersonView: UIView {
     
+    var push: (() -> Void)?
+    
     struct ViewState {
         
         let title: String
@@ -19,6 +21,7 @@ internal final class R_BookingWithPersonView: UIView {
         var showPersonAlert: Command<Void>?
         var showPersonDataEntry: Command<Void>?
         var showUserFromCache: Command<RiverUser>?
+        var book: Command<Void>?
         
         enum DataState {
             case addPersonData
@@ -157,14 +160,15 @@ internal final class R_BookingWithPersonView: UIView {
         super.init(frame: frame)
         backgroundColor = Appearance.colors[.base]
         setupConstrains()
-        setupAction()
+        setupAddActions()
+        setupBookAction()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupAction() {
+    private func setupAddActions() {
         if viewState.isUserCacheEmpty {
             if #available(iOS 14, *) {
                 addButton.showsMenuAsPrimaryAction = true
@@ -173,8 +177,18 @@ internal final class R_BookingWithPersonView: UIView {
                 addButton.addTarget(self, action: #selector(preseentPersonAlert), for: .touchUpInside)
             }
         } else {
-            addButton.addTarget(self, action: #selector(pushPersonDataEntry), for: .touchUpInside)
+            addButton.addTarget(self, action: #selector(pushVC), for: .touchUpInside)
         }
+    }
+    
+    private func setupBookAction() {
+        if viewState.book != nil {
+            bookButton.addTarget(self, action: #selector(book), for: .touchUpInside)
+        }
+    }
+    
+    @objc private func book() {
+        viewState.book?.perform(with: ())
     }
     
     @objc private func preseentPersonAlert() {
@@ -183,6 +197,10 @@ internal final class R_BookingWithPersonView: UIView {
     
     @objc private func pushPersonDataEntry() {
         viewState.showPersonDataEntry?.perform(with: ())
+    }
+    
+    @objc private func pushVC() {
+        push?()
     }
     
     private func updateView() {

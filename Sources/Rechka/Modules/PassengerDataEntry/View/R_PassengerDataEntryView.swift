@@ -53,7 +53,7 @@ internal final class R_PassengerDataEntryView: UIView {
         }
         
         struct Tickets: _Tickets {
-            let ticketList: FakeModel
+            let ticketList: [RiverTariff]
             let onChoice: ((Int) -> ())?
             let isSelectable: Bool
         }

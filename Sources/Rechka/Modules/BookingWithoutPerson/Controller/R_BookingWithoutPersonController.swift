@@ -155,9 +155,11 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             ).toElement()
             ticketElemets.append(tariffElement)
             // Если к билету нужно выбрать место
-            if !tariff.isWithoutPlace {
-                let choicePlaceElement: Element = R_BookingWithoutPersonView.ViewState.ChoicePlace(onSelect: nil).toElement()
-                ticketElemets.append(choicePlaceElement)
+            if arrayOfSelection.count != 0 {
+                if !tariff.isWithoutPlace {
+                    let choicePlaceElement: Element = R_BookingWithoutPersonView.ViewState.ChoicePlace(onSelect: nil).toElement()
+                    ticketElemets.append(choicePlaceElement)
+                }
             }
             // Секция к оплате
             if selectedTarrifs[tariff]?.count != 0 {

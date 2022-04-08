@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 
 protocol _Tickets: CellData {
-    var ticketList: FakeModel { get }
+    var ticketList: [RiverTariff] { get }
     var onChoice: ((Int) -> ())? { get }
     var isSelectable: Bool { get }
 }
@@ -40,7 +40,7 @@ extension _Tickets {
 class TicketsCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    var model: FakeModel? {
+    var model: [RiverTariff]? {
         didSet {
             collectionView.reloadData()
         }
@@ -66,18 +66,13 @@ class TicketsCell: UITableViewCell {
 extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch model?.ticketsCount {
-        case 0:
-            return 1
-        default:
-            return model?.ticketsList.count ?? 0
-        }
+        return model?.count ?? 0
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let ticket = model?.ticketsList[indexPath.row] {
-            switch model?.ticketsCount {
+        if let ticket = model?[indexPath.row] {
+            switch model?.count {
             case 0:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyTicketCell.identifire, for: indexPath) as? EmptyTicketCell else { return .init() }
                 return cell
@@ -92,7 +87,7 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch model?.ticketsCount {
+        switch model?.count {
         case 0:
             break
         default:
@@ -108,7 +103,7 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
 
 extension TicketsCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch model?.ticketsCount {
+        switch model?.count {
         case 0:
             return CGSize(width: UIScreen.main.bounds.width - 20, height: collectionView.frame.height)
         default:
