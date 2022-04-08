@@ -99,6 +99,7 @@ internal final class R_RootDetailStationView: UIView {
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.tableHeaderView = posterHeaderView
+         table.backgroundColor = Appearance.colors[.base]
         return table
     }()
     

@@ -23,6 +23,8 @@ internal final class R_BookingWithoutPersonView: UIView {
         }
         
         struct TariffSteper: _TariffSteper {
+            var height: CGFloat
+            var serviceInfo: String?
             var tariff: String
             var price: String
             var stepperCount: String

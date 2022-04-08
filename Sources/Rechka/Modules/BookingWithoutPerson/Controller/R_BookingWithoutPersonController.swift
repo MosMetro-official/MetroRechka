@@ -151,8 +151,11 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                     self?.handleOperation(for: tariff, isMinus: false)
                 })
             }
-        
+            let normalHeight = 72.0
+            let bigHeight = 100.0
             let tariffElement: Element = R_BookingWithoutPersonView.ViewState.TariffSteper(
+                height: tariff.type == .additional ? bigHeight : normalHeight,
+                serviceInfo: tariff.type == .additional ? "ДОПОЛНИТЕЛЬНАЯ УСЛУГА" : nil,
                 tariff: tariff.name,
                 price: price,
                 stepperCount: "\(arrayOfSelection.count)",
