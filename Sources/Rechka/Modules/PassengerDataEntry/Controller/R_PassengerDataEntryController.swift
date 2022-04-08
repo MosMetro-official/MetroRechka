@@ -329,7 +329,7 @@ extension R_PassengerDataEntryController {
         
         if !model.isWithoutPlace {
             let onSelect = Command(action: {})
-            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(onSelect: onSelect).toElement()
+            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "", onItemSelect: onSelect).toElement()
             let choiceSec = SectionState(header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])
             sections.append(choiceState)

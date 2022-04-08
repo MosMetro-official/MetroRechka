@@ -120,6 +120,13 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
+    private func showPlaceController(for trip: R_Trip) {
+        let controller = R_PlaceController()
+        self.present(controller, animated: true) {
+            controller.trip = trip
+        }
+    }
+    
     private func makeState(with model: [R_Tariff: [R_User]]) async -> R_BookingWithoutPersonView.ViewState? {
         guard let mainModel = self.model else { return nil }
         var resultStates = [State]()
@@ -155,7 +162,12 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             ticketElemets.append(tariffElement)
             // Если к билету нужно выбрать место
             if !tariff.isWithoutPlace {
-                let choicePlaceElement: Element = R_BookingWithoutPersonView.ViewState.ChoicePlace(onSelect: nil).toElement()
+                let onSelectPlace = Command { [weak self] in
+                    guard let self = self else { return }
+                    self.showPlaceController(for: mainModel)
+                }
+                
+                let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "aadsasd", onItemSelect: onSelectPlace).toElement()
                 ticketElemets.append(choicePlaceElement)
             }
             // Секция к оплате

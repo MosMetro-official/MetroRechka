@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreNetwork
+import CoreTableView
 
 internal final class R_BlurRefundController : UIViewController {
     

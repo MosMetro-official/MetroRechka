@@ -8,6 +8,7 @@
 
 import UIKit
 import PDFKit
+import CoreTableView
 
 class R_PDFDocView: UIView {
     

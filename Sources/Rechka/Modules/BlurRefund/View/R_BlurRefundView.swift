@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import CoreTableView
+
 
 protocol _BlurRefund {
     var title : String { get }

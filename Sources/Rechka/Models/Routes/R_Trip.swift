@@ -48,6 +48,26 @@ struct R_Trip {
 
 extension R_Trip {
     
+    func getFreePlaces() async throws -> [Int] {
+        let client = APIClient.unauthorizedClient
+        do {
+            let response = try await client.send(
+                .GET(
+                    path: "/api/trips/v1/\(id)/placesAvailability",
+                    query: nil)
+            )
+            let json = CoreNetwork.JSON(response.data)
+            guard let array = json["data"].array else {
+                throw APIError.badData
+            }
+            return array.compactMap { $0.int }
+        } catch {
+            guard let err = error as? APIError else { throw error }
+            print(err)
+            throw err
+        }
+    }
+    
     static func book(with users: [R_User], tripID: Int) async throws -> RiverOrder {
         let tickets: [[String:Any]] = users.map { user in
             return user.createBodyItem()

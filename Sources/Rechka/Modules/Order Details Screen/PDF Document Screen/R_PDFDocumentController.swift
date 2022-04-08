@@ -8,6 +8,7 @@
 
 import Foundation
 import PDFKit
+import CoreTableView
 
 class PDFDocumentController: UIViewController {
     
