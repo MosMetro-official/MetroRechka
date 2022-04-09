@@ -15,7 +15,7 @@ public class Rechka {
     public var isMapsRoutesAvailable : Bool!
     public var returnURL =  "riverexample://main/riverPaymentSuccess"
     public var failURL =  "riverexample://main/riverPaymentFailure"
-    public var token: String? = "HF4Unqb0UA6nPb5uFlZQ1HUwzkWSzsQLm4RKXbrwLV4"
+    public var token: String? = "vaL5wHR6NwAbymSgf-g_qnmCu139xBgFl7Ljrjbip44"
     public var refreshToken: String?
     public var clientID: String = ""
     public var clientSecret: String = ""
@@ -155,20 +155,6 @@ extension UIColor {
 }
 
 
-struct Command<T> {
-    
-    private var action: (T) -> Void
-    
-    public init(action: @escaping (T) -> Void) {
-        self.action = action
-    }
-    
-    public func perform(with value: T) {
-        self.action(value)
-    }
-    
-}
-
 
 @IBDesignable
 extension UILabel
@@ -184,5 +170,109 @@ extension UILabel
         get {
             return self.userFontName
         }
+    }
+}
+
+
+extension GradientLabel
+{
+
+    @IBInspectable
+    public var userFontName: String
+    {
+        set (userFont) {
+            self.label.font = Appearance.customFonts[.init(rawValue: userFont) ?? .body]
+        }
+
+        get {
+            return self.userFontName
+        }
+    }
+    
+    @IBInspectable
+    public var userColor1: UIColor
+    {
+        set (userColor1) {
+            self.color1 = userColor1
+        }
+
+        get {
+            return self.color1
+        }
+    }
+    
+    @IBInspectable
+    public var userHexColor1: String
+    {
+        set (userHexColor1) {
+            self.color1 = UIColor.from(hex: userHexColor1)
+        }
+
+        get {
+            return self.color1.description
+        }
+    }
+    
+    @IBInspectable
+    public var userColor2: UIColor
+    {
+        set (userColor2) {
+            self.color2 = userColor2
+        }
+
+        get {
+            return self.color2
+        }
+    }
+    
+    @IBInspectable
+    public var userHexColor2: String
+    {
+        set (userHexColor2) {
+            self.color2 = UIColor.from(hex: userHexColor2)
+        }
+
+        get {
+            return self.color2.description
+        }
+    }
+  
+}
+
+class GradientLabel: UIStackView {
+    
+    
+    lazy var label: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        return label
+    }()
+    
+    var color1: UIColor = .systemBlue
+    var color2: UIColor = .systemRed
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    private func setupView() {
+        axis = .vertical
+        alignment = .center
+        
+        addArrangedSubview(label)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let gradient = UIImage.gradientImage(bounds: label.bounds, colors: [color1, color2])
+        label.textColor = UIColor(patternImage: gradient)
     }
 }

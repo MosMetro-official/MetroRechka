@@ -9,6 +9,7 @@ import UIKit
 import CoreTableView
 
 protocol _TariffSteper: CellData {
+    var serviceInfo: String? { get }
     var tariff: String { get }
     var price: String { get }
     var stepperCount: String { get }
@@ -18,9 +19,7 @@ protocol _TariffSteper: CellData {
 
 extension _TariffSteper {
     
-    var height: CGFloat {
-        return 87
-    }
+   
     
     func hashValues() -> [Int] {
         return [tariff.hashValue,price.hashValue,stepperCount.hashValue]
@@ -40,6 +39,7 @@ extension _TariffSteper {
 
 class TariffSteperCell: UITableViewCell {
     
+    @IBOutlet private weak var serviceLabel: GradientLabel!
     @IBOutlet private weak var stepperView: UIView!
     @IBOutlet private weak var stepperLabel: UILabel!
     @IBOutlet private weak var minusButton: UIButton!
@@ -57,6 +57,8 @@ class TariffSteperCell: UITableViewCell {
     }
     
     public func configure(with data: _TariffSteper) {
+        serviceLabel.isHidden = data.serviceInfo == nil
+        serviceLabel.label.text = data.serviceInfo
         tariffLabel.text = data.tariff
         priceLabel.text = data.price
         stepperLabel.text = data.stepperCount

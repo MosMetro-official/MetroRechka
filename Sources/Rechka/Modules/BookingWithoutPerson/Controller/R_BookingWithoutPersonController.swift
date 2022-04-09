@@ -12,13 +12,13 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     
     let nestedView = R_BookingWithoutPersonView(frame: UIScreen.main.bounds)
     
-    var model: RiverTrip? {
+    var model: R_Trip? {
         didSet {
             createInitialSelectedItems()
         }
     }
  
-    var selectedTarrifs: [RiverTariff: [RiverUser]] = [:] {
+    var selectedTarrifs: [R_Tariff: [R_User]] = [:] {
         didSet {
             Task.detached { [weak self] in
                 guard let selectedTarrifs = await self?.selectedTarrifs,
@@ -50,14 +50,14 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         guard let tarrifs = model?.tarrifs else {
             return
         }
-        var initialSelectedTarrifs: [RiverTariff: [RiverUser]] = [:]
+        var initialSelectedTarrifs: [R_Tariff: [R_User]] = [:]
         tarrifs.forEach {
             initialSelectedTarrifs.updateValue([], forKey: $0)
         }
         self.selectedTarrifs = initialSelectedTarrifs
     }
     
-    private func handleOperation(for tariff: RiverTariff, isMinus: Bool) {
+    private func handleOperation(for tariff: R_Tariff, isMinus: Bool) {
         // check for availabilty
         guard var currentCount = self.selectedTarrifs[tariff] else {
             return
@@ -94,7 +94,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     private func startBooking() {
         guard let tripID = self.model?.id else { return }
         if let _ = Rechka.shared.token {
-            let users: [RiverUser] = self.selectedTarrifs.reduce([]) { partialResult, element in
+            let users: [R_User] = self.selectedTarrifs.reduce([]) { partialResult, element in
                 var result = partialResult
                 result.append(contentsOf: element.value)
                 return result
@@ -109,7 +109,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             
             Task.detached { [weak self] in
                 do {
-                    let order = try await RiverTrip.book(with: users, tripID: tripID)
+                    let order = try await R_Trip.book(with: users, tripID: tripID)
                     await self?.handle(order: order)
                 } catch {
                     
@@ -121,7 +121,14 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
-    private func makeState(with model: [RiverTariff: [RiverUser]]) async -> R_BookingWithoutPersonView.ViewState? {
+    private func showPlaceController(for trip: R_Trip) {
+        let controller = R_PlaceController()
+        self.present(controller, animated: true) {
+            controller.trip = trip
+        }
+    }
+    
+    private func makeState(with model: [R_Tariff: [R_User]]) async -> R_BookingWithoutPersonView.ViewState? {
         guard let mainModel = self.model else { return nil }
         var resultStates = [State]()
         var paidElements = [Element]()
@@ -145,8 +152,11 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                     self?.handleOperation(for: tariff, isMinus: false)
                 })
             }
-        
+            let normalHeight = 72.0
+            let bigHeight = 100.0
             let tariffElement: Element = R_BookingWithoutPersonView.ViewState.TariffSteper(
+                height: tariff.type == .additional ? bigHeight : normalHeight,
+                serviceInfo: tariff.type == .additional ? "ДОПОЛНИТЕЛЬНАЯ УСЛУГА" : nil,
                 tariff: tariff.name,
                 price: price,
                 stepperCount: "\(arrayOfSelection.count)",
@@ -155,11 +165,14 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             ).toElement()
             ticketElemets.append(tariffElement)
             // Если к билету нужно выбрать место
-            if arrayOfSelection.count != 0 {
-                if !tariff.isWithoutPlace {
-                    let choicePlaceElement: Element = R_BookingWithoutPersonView.ViewState.ChoicePlace(onSelect: nil).toElement()
-                    ticketElemets.append(choicePlaceElement)
+            if !tariff.isWithoutPlace {
+                let onSelectPlace = Command { [weak self] in
+                    guard let self = self else { return }
+                    self.showPlaceController(for: mainModel)
                 }
+                
+                let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "aadsasd", onItemSelect: onSelectPlace).toElement()
+                ticketElemets.append(choicePlaceElement)
             }
             // Секция к оплате
             if selectedTarrifs[tariff]?.count != 0 {

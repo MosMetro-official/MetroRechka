@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreTableView
 
 internal final class R_BlurResultController : UIViewController {
     

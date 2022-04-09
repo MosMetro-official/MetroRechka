@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 
 protocol _ChoicePlace: CellData {
-    var onSelect: Command<Void>? { get }
+    var title: String { get }
 }
 
 extension _ChoicePlace {

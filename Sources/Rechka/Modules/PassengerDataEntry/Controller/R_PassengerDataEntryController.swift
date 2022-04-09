@@ -152,7 +152,7 @@ extension R_PassengerDataEntryController {
         return false
     }
     
-    private func createTableState(for user: RiverUser, index: Int) -> [State] {
+    private func createTableState(for user: R_User, index: Int) -> [State] {
         var sections = [State]()
         let titleElement = R_PassengerDataEntryView.ViewState.Header(title: "Личные данные").toElement()
         
@@ -343,7 +343,7 @@ extension R_PassengerDataEntryController {
         guard let isWithoutplace = model?.tarrifs?[index].isWithoutPlace else { return []}
         if !isWithoutplace {
             let onSelect = Command(action: {})
-            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(onSelect: onSelect).toElement()
+            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "", onItemSelect: onSelect).toElement()
             let choiceSec = SectionState(header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])
             sections.append(choiceState)

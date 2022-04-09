@@ -22,8 +22,8 @@ internal final class R_BottomSettingsView: UIView {
         button.setTitle("🗓 Даты", for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        button.tintColor = .white
-        button.backgroundColor = Appearance.colors[.settingsButtonColor]
+        button.tintColor = Appearance.colors[.textPrimary]
+        button.backgroundColor = Appearance.colors[.base]
         return button
     }()
     
@@ -32,8 +32,8 @@ internal final class R_BottomSettingsView: UIView {
         button.setTitle("🙋‍♂️ 1", for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        button.tintColor = .white
-        button.backgroundColor = Appearance.colors[.settingsButtonColor]
+        button.tintColor = Appearance.colors[.textPrimary]
+        button.backgroundColor = Appearance.colors[.base]
         return button
     }()
     
@@ -42,9 +42,9 @@ internal final class R_BottomSettingsView: UIView {
         button.setTitle("🛥️ Причал", for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        button.tintColor = .white
+        button.tintColor = Appearance.colors[.textPrimary]
         button.titleLabel?.textAlignment = .center
-        button.backgroundColor = Appearance.colors[.settingsButtonColor]
+        button.backgroundColor = Appearance.colors[.base]
         return button
     }()
     
@@ -53,8 +53,8 @@ internal final class R_BottomSettingsView: UIView {
         button.setTitle("↓ Категория", for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        button.tintColor = .white
-        button.backgroundColor = Appearance.colors[.settingsButtonColor]
+        button.tintColor = Appearance.colors[.textPrimary]
+        button.backgroundColor = Appearance.colors[.base]
         return button
     }()
     
@@ -63,8 +63,8 @@ internal final class R_BottomSettingsView: UIView {
         button.setTitle("🎚 Фильтры", for: .normal)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        button.tintColor = .white
-        button.backgroundColor = Appearance.colors[.settingsButtonColor]
+        button.tintColor = Appearance.colors[.textPrimary]
+        button.backgroundColor = Appearance.colors[.base]
         return button
     }()
     

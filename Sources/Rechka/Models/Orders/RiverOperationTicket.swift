@@ -42,8 +42,8 @@ struct RiverOperationTicket {
     let price: Double
     let status: Status
     let refund: RiverTicketRefund?
-    let stationStart: RiverStation?
-    let stationEnd: RiverStation?
+    let stationStart: R_Station?
+    let stationEnd: R_Station?
     let place: Int
     let dateTimeStart: Date
     let dateTimeEnd: Date
@@ -61,8 +61,8 @@ struct RiverOperationTicket {
         self.price = data["ticketPrice"].doubleValue
         self.status = status
         self.refund = RiverTicketRefund(data: data["ticketRefund"])
-        self.stationStart = RiverStation(data: data["stationStart"])
-        self.stationEnd = RiverStation(data: data["stationEnd"])
+        self.stationStart = R_Station(data: data["stationStart"])
+        self.stationEnd = R_Station(data: data["stationEnd"])
         self.place = data["position"].intValue
         self.dateTimeStart = dateTimeStart
         self.dateTimeEnd = dateTimeEnd

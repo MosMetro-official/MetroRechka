@@ -19,7 +19,7 @@ protocol _StationCell: CellData {
 extension _StationCell {
     
     var height: CGFloat {
-        return (UIScreen.main.bounds.width - 32) * 0.75
+        return (UIScreen.main.bounds.width - 40) * 0.75
     }
     
     func hashValues() -> [Int] {
@@ -131,6 +131,7 @@ class StationCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupConstrains()
+        backgroundColor = Appearance.colors[.base]
     }
     
     required init?(coder: NSCoder) {

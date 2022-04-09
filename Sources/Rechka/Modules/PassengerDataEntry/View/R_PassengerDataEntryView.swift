@@ -59,7 +59,9 @@ internal final class R_PassengerDataEntryView: UIView {
         }
         
         struct ChoicePlace: _ChoicePlace {
-            let onSelect: Command<Void>?
+            var title: String
+            var onItemSelect: Command<Void>
+           
         }
                 
         static let initial = R_PassengerDataEntryView.ViewState(state: [], dataState: .loading, onReadySelect: nil, validate: false)
