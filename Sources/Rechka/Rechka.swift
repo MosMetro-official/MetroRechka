@@ -15,12 +15,12 @@ public class Rechka {
     public var isMapsRoutesAvailable : Bool!
     public var returnURL =  "riverexample://main/riverPaymentSuccess"
     public var failURL =  "riverexample://main/riverPaymentFailure"
-    public var token: String? = "vaL5wHR6NwAbymSgf-g_qnmCu139xBgFl7Ljrjbip44"
+    public var token: String? = "pktO-SD6I5VGQPUqm_wCLB_u4KirDlGXbYJ1hHuNJQ8"
     public var refreshToken: String?
     public var clientID: String = ""
     public var clientSecret: String = ""
     public var applicationName = ""
-    public var language = ""
+    public var language = "ru_RU"
     
     var deviceUUID: String {
         return UIDevice.current.identifierForVendor?.uuidString ?? ""

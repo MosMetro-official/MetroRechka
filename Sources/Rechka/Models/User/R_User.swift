@@ -28,6 +28,7 @@ struct R_User: Equatable {
     var document: R_Document?
     var gender: Gender?
     var ticket: R_Tariff?
+    var additionServices: [R_AdditionService]?
     
     init(ticket: R_Tariff) {
         self.ticket = ticket
@@ -83,8 +84,24 @@ struct R_User: Equatable {
                 }
             }
         }
-        
-        //resultingList.updateValue([], forKey: "additionService")
+        if let additionServices = additionServices {
+            let grouped = Dictionary(grouping: additionServices, by: { $0 })
+            let additions: [[String:Any]] = grouped.map { key, value in
+                return ["id": key.id,
+                        "name": key.name_ru,
+                        "nameEn": key.name_en,
+                        "type": key.type,
+                        "pricePerOne": key.price,
+                        "count": value.count,
+                        "priceTotal": key.price * Double(value.count)
+                ]
+            }
+            
+            resultingList.updateValue(additions, forKey: "additionService")
+            
+            
+        }
+       
         return resultingList
         
     }

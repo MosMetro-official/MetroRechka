@@ -9,6 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
+import CoreNetwork
 
 internal final class R_OrderDetailsController : UIViewController {
     
@@ -81,6 +82,7 @@ internal final class R_OrderDetailsController : UIViewController {
     private func setListeners() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleSuccessfulPayment), name: .riverPaymentSuccess, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOrderUpdate), name: .riverUpdateOrder, object: nil)
     }
     
     
@@ -96,6 +98,13 @@ internal final class R_OrderDetailsController : UIViewController {
         hidePaymentController {
             // TODO: Показать ошибку
         }
+    }
+    
+    @objc private func handleOrderUpdate() {
+        guard let orderID = orderID else {
+            return
+        }
+        self.orderID = orderID
     }
     
     private func hidePaymentController(onDismiss: @escaping () -> Void) {
@@ -129,9 +138,7 @@ internal final class R_OrderDetailsController : UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let orderID = orderID, !isFirstLoad {
-            self.orderID = orderID
-        }
+       
         
     }
     
@@ -148,6 +155,11 @@ internal final class R_OrderDetailsController : UIViewController {
             state: [],
             onClose: onClose
         )
+        
+        let onCloseToast: () -> () = { [weak self] in
+            guard let self = self else { return }
+            R_Toast.remove(from: self.nestedView)
+        }
         Task.detached { [weak self] in
             guard let self = self else { return }
             await self.set(state: loadingState)
@@ -155,7 +167,29 @@ internal final class R_OrderDetailsController : UIViewController {
                 let order = try await RiverOrder.get(by: id)
                 await self.set(order: order)
             } catch {
+                guard let err = error as? APIError else {
+                    return
+                }
                 
+                var title = "Возникла ошибка при загрузке"
+                if case .genericError(let message) = err {
+                    title = message
+                }
+                
+                let finalTitle = title
+               
+               
+                await MainActor.run { [weak self] in
+                    let onSelect: () -> Void = { [weak self] in
+                        guard let self = self, let orderID = self.orderID else { return }
+                        self.load(with: orderID)
+                    }
+                    
+                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
+                    let errorConfig = R_Toast.Configuration.defaultError(text: finalTitle, subtitle: nil, buttonType: .imageButton(buttonData))
+                    
+                    self?.nestedView.viewState = .init(dataState: .error(errorConfig), state: [], onClose: onClose)
+                }
             }
         }
     }
@@ -312,7 +346,7 @@ internal final class R_OrderDetailsController : UIViewController {
             
             let endBookingDate = order.operation.orderDate + seconds.seconds
             let period = endBookingDate - order.operation.orderDate
-            guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error, state: [], onClose: nil)}
+            guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .loaded, state: [], onClose: nil)}
             let elapsedTime = "\(minute):\(seconds)"
             
             let needToPay = R_OrderDetailsView.ViewState.NeedToPay(onPay: onPay,
@@ -325,7 +359,10 @@ internal final class R_OrderDetailsController : UIViewController {
         }
         
         // tickets
-        let tickets: [State] = order.operation.tickets.map { ticket in
+        var ticketsStates = [State]()
+        
+        order.operation.tickets.forEach { ticket in
+            var resulting = [State]()
             let place: String = {
                 switch ticket.place {
                 case -1:
@@ -356,10 +393,27 @@ internal final class R_OrderDetailsController : UIViewController {
                 buttons: buttonsData)
                 .toElement()
             let section = SectionState(header: nil, footer: nil)
-            return .init(model: section, elements: [element])
+            let ticketState = State(model: section, elements: [element])
+            resulting.append(ticketState)
+            if !ticket.additionServices.isEmpty {
+                var additionElements = [Element]()
+                let additionHeader = R_OrderDetailsView.ViewState.TicketTitle(
+                    title: "Дополнительные услуги"
+                ).toElement()
+                
+                let additions: [Element] = ticket.additionServices.map { service in
+                    return R_OrderDetailsView.ViewState.Addtional(tariffs: "\(service.name) x\(service.count)", price: "\(service.totalPrice) ₽").toElement()
+                }
+                additionElements.append(additionHeader)
+                additionElements.append(contentsOf: additions)
+                
+                let additionsSection = SectionState(header: nil, footer: nil)
+                resulting.append(.init(model: additionsSection, elements: additionElements))
+            }
+            ticketsStates.append(contentsOf: resulting)
         }
         
-        resultigState.append(contentsOf: tickets)
+        resultigState.append(contentsOf: ticketsStates)
         
         // info
         let title = R_OrderDetailsView.ViewState.TicketTitle(
@@ -384,9 +438,13 @@ internal final class R_OrderDetailsController : UIViewController {
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
-        let totalPrice = R_OrderDetailsView.ViewState.TicketInfo(
+        let additionsPrice = order.operation.tickets.reduce(0) { partialResult, ticket in
+            partialResult + ticket.additionServices.reduce(0, { $0 + $1.totalPrice })
+        }
+        let totalPrice = order.operation.totalPrice + additionsPrice
+        let totalPriceData = R_OrderDetailsView.ViewState.TicketInfo(
             title: "Общая цена",
-            descr: "\(order.operation.totalPrice) ₽",
+            descr: "\(totalPrice) ₽",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
@@ -396,7 +454,7 @@ internal final class R_OrderDetailsController : UIViewController {
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
-        let infoBlock = State(model: .init(header: nil, footer: nil), elements: [title,status,bookDate,orderNumber,totalPrice,routeName])
+        let infoBlock = State(model: .init(header: nil, footer: nil), elements: [title,status,bookDate,orderNumber,totalPriceData,routeName])
         
         resultigState.append(infoBlock)
         

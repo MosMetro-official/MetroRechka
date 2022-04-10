@@ -49,8 +49,9 @@ class R_PlaceView: UIView {
     
     var viewState: ViewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать", dataState: .loading, items: []) {
         didSet {
-            self.titleLabel.text = viewState.title
-            self.subtitleLabel.text = viewState.subtitle
+            DispatchQueue.main.async {
+                self.render()
+            }
          
         }
     }

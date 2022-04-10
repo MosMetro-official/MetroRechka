@@ -31,7 +31,7 @@ class R_PlaceCollectionCell: UICollectionViewCell {
     
     func configure(data: _R_PlaceCollectionCell) {
         self.numberLabel.text = data.text
-        self.backView.backgroundColor = data.isSelected ? Appearance.colors[.buttonSecondary] : Appearance.colors[.content]
+        self.backView.backgroundColor = data.isSelected ? Appearance.colors[.buttonSecondary] : Appearance.colors[.base]
         self.numberLabel.textColor = data.isSelected ? Appearance.colors[.textInverted] : Appearance.colors[.textPrimary]
         self.backView.layer.borderColor = data.isSelected ? UIColor.systemBlue.cgColor : UIColor.clear.cgColor
         self.backView.layer.borderWidth = data.isSelected ? 1 : 0

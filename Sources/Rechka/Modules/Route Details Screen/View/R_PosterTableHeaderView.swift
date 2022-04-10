@@ -9,7 +9,12 @@ import UIKit
 
 internal final class R_PosterTableHeaderView : UIView {
     
-    private let gradientView = UIImageView(image: UIImage(named: "Gradient", in: .module, compatibleWith: nil)!)
+    private let gradientView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private let containerView: UIView = {
         let view = UIView()
@@ -34,6 +39,8 @@ internal final class R_PosterTableHeaderView : UIView {
         return label
     }()
     
+    private var gradient: CAGradientLayer?
+    
     private var imageViewHeight = NSLayoutConstraint()
     private var imageViewBottom = NSLayoutConstraint()
     private var containerViewHeight = NSLayoutConstraint()
@@ -45,8 +52,29 @@ internal final class R_PosterTableHeaderView : UIView {
         setViewConstrains()
     }
     
+    private func addGradient() {
+        self.gradient = CAGradientLayer()
+        guard let gradient = gradient else {
+            return
+        }
+        gradient.frame =  CGRect(origin: CGPoint(x: 0, y: self.gradientView.bounds.height / 2), size: .init(width: UIScreen.main.bounds.width, height: self.gradientView.frame.height / 2))
+        let base = Appearance.colors[.base] ?? UIColor.clear
+        
+        gradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
+      
+//        gradient.startPoint = CGPoint(x: 0, y: 1)
+//        gradient.endPoint = CGPoint(x: 1, y: 1)
+        self.gradientView.layer.insertSublayer(gradient, at: 0)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let gradient = gradient else { return }
+        gradient.frame = .init(x: 0, y: self.gradientView.frame.height/2, width: self.gradientView.frame.width, height: self.gradientView.frame.height/2)
     }
     
     public func configurePosterHeader(with title: String?, and image: UIImage?) {
@@ -59,6 +87,7 @@ internal final class R_PosterTableHeaderView : UIView {
         containerView.addSubview(imageView)
         addSubview(titleLabel)
         containerView.addSubview(gradientView)
+        addGradient()
     }
     
     private func setViewConstrains() {

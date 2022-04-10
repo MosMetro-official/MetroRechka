@@ -76,7 +76,8 @@ internal final class R_BookingScreenView : UIView {
         view.layer.isOpaque = false
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = UIScreen.main.displayCornerRadius
+        view.layer.cornerRadius = 10
+        view.layer.cornerCurve = .continuous
         return view
     }()
     

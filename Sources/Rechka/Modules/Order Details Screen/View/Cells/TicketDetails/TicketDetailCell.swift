@@ -122,7 +122,7 @@ class TicketDetailCell: UITableViewCell {
         rightRoundView.roundCorners(.all, radius: 12)
         refundDetailsButton.roundCorners(.all, radius: 8)
         
-        drawDottedLine(start: CGPoint(x: 12, y: 12), end: CGPoint(x: (UIScreen.main.bounds.width - 32 - 12), y: 12), view: separatorView)
+        drawDottedLine(start: CGPoint(x: 12, y: 12), end: CGPoint(x: (UIScreen.main.bounds.width - 40 - 12), y: 12), view: separatorView)
     }
     
     public func configure(with data: _TicketDetail) {

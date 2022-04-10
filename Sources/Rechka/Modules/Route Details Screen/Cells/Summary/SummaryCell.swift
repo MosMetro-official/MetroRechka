@@ -74,7 +74,9 @@ class SummaryCell: UITableViewCell {
             return
         }
         gradient.frame =  CGRect(origin: CGPoint(x: 0, y: 0), size: .init(width: UIScreen.main.bounds.width - 40, height: self.gradientView.frame.height))
-        gradient.colors = [UIColor.clear.cgColor, Appearance.colors[.base]?.cgColor ?? UIColor.clear.cgColor]
+        let base = Appearance.colors[.base] ?? UIColor.clear
+        
+        gradient.colors = [base.withAlphaComponent(0.2).cgColor, base.cgColor]
         gradient.locations = [0.2,0.8]
 //        gradient.startPoint = CGPoint(x: 0, y: 1)
 //        gradient.endPoint = CGPoint(x: 1, y: 1)

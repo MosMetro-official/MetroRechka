@@ -135,7 +135,8 @@ internal final class R_BookingWithPersonView: UIView {
         view.layer.isOpaque = false
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = UIScreen.main.displayCornerRadius
+        view.layer.cornerRadius = 10
+        view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         return view
     }()

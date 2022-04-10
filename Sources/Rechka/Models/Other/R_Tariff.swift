@@ -37,4 +37,8 @@ struct R_Tariff: Hashable {
         self.isWithoutPlace = data["isWithoutPlace"].boolValue
     }
     
+    func toAdditionService() -> R_AdditionService {
+        return .init(id: self.id, name_ru: name, name_en: name, type: type.rawValue, price: price)
+    }
+    
 }

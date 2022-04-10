@@ -25,7 +25,7 @@ class R_HomeView: UIView {
     enum ViewState {
         case loading
         case loaded(LoadedState)
-        case error(String)
+        case error(R_Toast.Configuration)
         
         struct Button {
             let title: String
@@ -41,6 +41,19 @@ class R_HomeView: UIView {
             let tickets: Bool
             let price: String
             let onSelect: (() -> Void)
+        }
+        
+        struct Error: _R_ErrorCell {
+            var image: UIImage
+            
+            var title: String
+            
+            var action: Command<Void>?
+            
+            var buttonTitle: String?
+            
+            var height: CGFloat
+            
         }
         
         struct ListItem {
@@ -130,9 +143,13 @@ extension R_HomeView {
     private func render() {
         switch viewState {
         case .loading:
+            self.effectView.isHidden = true
             self.showBlurLoading()
+            R_Toast.remove(from: self)
         case .loaded(let loadedState):
+            self.effectView.isHidden = false
             self.removeBlurLoading()
+            R_Toast.remove(from: self)
             self.tableView.viewStateInput = loadedState.tableState
             handle(button: categoriesButton, with: loadedState.categoriesButton)
             handle(button: dateButton, with: loadedState.dateButton)
@@ -144,9 +161,10 @@ extension R_HomeView {
             }
             animator.startAnimation()
             
-        case .error(let message):
+        case .error(let config):
+            self.effectView.isHidden = true
             self.removeBlurLoading()
-            R_ErrorView.show(on: self, with: message, bgColor: Appearance.colors[.base] ?? .systemBackground, belowView: effectView)
+            R_Toast.show(on: self, with: config, distanceFromBottom: 24)
         }
     }
     
@@ -155,7 +173,7 @@ extension R_HomeView {
         [dateButton,categoriesButton,stationButton].forEach {
             $0?.roundCorners(.all, radius: 20)
         }
-        effectView.roundCorners(.top, radius: 20)
+        effectView.roundCorners(.top, radius: 10)
     }
     
 }

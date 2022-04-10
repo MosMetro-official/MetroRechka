@@ -56,10 +56,11 @@ internal final class R_BlurRefundController : UIViewController {
         let statusData = R_BlurResultModel.StatusData(title: "Успешно", subtitle: "Средства будут зачислены обратно на вашу карту в течение нескольких дней")
        
         
-        let errorModel: R_BlurResultModel = .success(statusData)
+        let successModel: R_BlurResultModel = .success(statusData)
        
-        controller.model = errorModel
+        controller.model = successModel
         self.navigationController?.pushViewController(controller, animated: true)
+        NotificationCenter.default.post(name: .riverUpdateOrder, object: nil)
     }
     
     private var refund: RiverTicketRefund? {
@@ -121,8 +122,12 @@ extension R_BlurRefundController {
         
         }
         
-        let refundAmount = "Вам вернется \(refund.refundPrice) ₽"
-        
+        var refundAmount = "Вам вернется \(refund.refundPrice) ₽ за билет"
+        if !refund.additionRefunds.isEmpty {
+            let totalAdditionRefund = refund.additionRefunds.reduce(0, { $0 + $1.priceTotalRefund })
+            let additionsStr = refund.additionRefunds.map { "\($0.name) x\($0.count)" }.joined(separator: ",")
+            refundAmount = "\(refundAmount) и \(totalAdditionRefund) ₽ за дополнительные услуги: \(additionsStr)"
+        }
         let comission = ticket.price - refund.refundPrice
         
         let comissionStr: String = {

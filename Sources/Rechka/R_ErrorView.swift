@@ -63,7 +63,7 @@ extension R_ErrorView {
         animator.startAnimation()
     }
     
-    func removeErrorView(from view: UIView) {
+    static func removeErrorView(from view: UIView) {
         view.subviews.forEach { _view in
             if _view.tag == 666 {
                 let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {

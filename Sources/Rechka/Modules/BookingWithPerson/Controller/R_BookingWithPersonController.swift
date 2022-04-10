@@ -81,8 +81,8 @@ internal final class R_BookingWithPersonController: UIViewController {
             let tariff = R_BookingWithPersonView.ViewState.Tariff(tariffs: "\(ticket.ticket?.tariff ?? "") x\(tickets.count)", price: ticket.ticket?.price ?? "", height: 60).toElement()
             tickElements.append(tariff)
         }
-        let commission = R_BookingWithPersonView.ViewState.Commission(commission: "Комиссия сервиса", price: "60 ₽", height: 60).toElement()
-        tickElements.append(commission)
+//        let commission = R_BookingWithPersonView.ViewState.Commission(commission: "Комиссия сервиса", price: "60 ₽", height: 60).toElement()
+//        tickElements.append(commission)
         let tariffSection = SectionState(header: nil, footer: nil)
         let tariffState = State(model: tariffSection, elements: tickElements)
         

@@ -18,6 +18,11 @@ extension _ChoicePlace {
         return 60
     }
     
+    func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
+        guard let cell = cell as? ChoicePlaceCell else { return }
+        cell.configure(with: self)
+    }
+    
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         tableView.register(ChoicePlaceCell.nib, forCellReuseIdentifier: ChoicePlaceCell.identifire)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ChoicePlaceCell.identifire, for: indexPath) as? ChoicePlaceCell else { return .init() }
@@ -31,6 +36,10 @@ class ChoicePlaceCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
+    
+    }
+    
+    func configure(with data: _ChoicePlace) {
+        self.titleLabel.text = data.title
     }
 }

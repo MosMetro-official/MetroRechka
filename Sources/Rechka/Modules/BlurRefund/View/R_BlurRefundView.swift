@@ -87,7 +87,9 @@ internal final class R_BlurRefundView : UIView {
     }
     
     override func awakeFromNib() {
+        super.awakeFromNib()
         cancelButton.layer.borderWidth = 1
+        cancelButton.roundCorners(.all, radius: 8)
         cancelButton.layer.borderColor = UIColor.custom(for: .emptyTicketsLayer).cgColor
     }
 }
