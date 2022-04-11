@@ -34,7 +34,7 @@ internal final class R_BookingWithoutPersonView: UIView {
         
         struct ChoicePlace: _ChoicePlace {
             var title: String
-            var onItemSelect: Command<Void>
+            var onSelect: (() -> Void)
         }
         
         struct TariffHeader: _TariffHeaderCell { }

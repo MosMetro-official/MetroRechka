@@ -165,14 +165,20 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             ).toElement()
             ticketElemets.append(tariffElement)
             // Если к билету нужно выбрать место
-            if !tariff.isWithoutPlace {
-                let onSelectPlace = Command { [weak self] in
-                    guard let self = self else { return }
-                    self.showPlaceController(for: mainModel)
+            if arrayOfSelection.count != 0 {
+                if !tariff.isWithoutPlace {
+//                    let onSelectPlace = Command { [weak self] in
+//                        guard let self = self else { return }
+//                        self.showPlaceController(for: mainModel)
+//                    }
+                    let selectPlace: () -> Void = { [weak self] in
+                        guard let self = self else { return }
+                        self.showPlaceController(for: mainModel)
+                    }
+                    
+                    let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "aadsasd", onSelect: selectPlace).toElement()
+                    ticketElemets.append(choicePlaceElement)
                 }
-                
-                let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "aadsasd", onItemSelect: onSelectPlace).toElement()
-                ticketElemets.append(choicePlaceElement)
             }
             // Секция к оплате
             if selectedTarrifs[tariff]?.count != 0 {

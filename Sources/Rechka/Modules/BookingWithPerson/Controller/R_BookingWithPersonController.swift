@@ -9,17 +9,15 @@ import UIKit
 import CoreTableView
 
 protocol R_BookingWithPersonDelegate: AnyObject {
-    func setupNewUser(with user: RiverUser, and model: RiverTrip)
+    func setupNewUser(with user: R_User, and model: R_Trip)
 }
 
 internal final class R_BookingWithPersonController: UIViewController {
     
     let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
-    
-    var model: RiverTrip?
-    
-    var riverUsers: [RiverUser] = []
-    var isFirstLaunch = true
+        
+    var model: R_Trip?
+    var riverUsers: [R_User] = []
     
     override func loadView() {
         super.loadView()
@@ -29,15 +27,37 @@ internal final class R_BookingWithPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupRiverBackButton()
+        createInitialState()
         title = "Покупка"
-        nestedView.push = {
-            if let model = self.model {
-                self.pushPersonDataEntry(with: model)
-            }
-        }
     }
     
-    private func makeState(from riverUsers: [RiverUser]) {
+    private func createInitialState() {
+        guard let model = model else {
+            return
+        }
+
+        let showPersonDataEntry: Command<Void>? = {
+            return Command { [weak self] in
+                self?.pushPersonDataEntry(with: (model))
+            }
+        }()
+        let showPersonAlert: Command<Void>? = {
+            return Command { [weak self] in
+                self?.setupPersonAlert()
+            }
+        }()
+        let viewState = R_BookingWithPersonView.ViewState(
+            title: "",
+            menuActions: setupPersonMenu(),
+            dataState: .addPersonData,
+            showPersonAlert: showPersonAlert,
+            showPersonDataEntry: showPersonDataEntry,
+            book: nil
+        )
+        nestedView.viewState = viewState
+    }
+    
+    private func makeState(from riverUsers: [R_User]) {
         guard let newModel = model else { return }
         let users = riverUsers.map({$0})
         // passenger header with add button
@@ -45,8 +65,8 @@ internal final class R_BookingWithPersonController: UIViewController {
         let passengerHeaderCell = R_BookingWithPersonView.ViewState.PassengerHeader(
             onAdd: { [weak self] in
                 guard let self = self else { return }
-                if let model = self.model {
-                    self.pushPersonDataEntry(with: model)
+                if riverUsers.count < newModel.buyPlaceCountMax {
+                    self.pushPersonDataEntry(with: newModel)
                 }
             }
         ).toElement()
@@ -72,7 +92,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         tickets.forEach { ticket in
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
                 tariffs: "\(ticket?.name ?? "")",
-                price: "\(ticket?.price ?? 0)"
+                price: "\(Int(ticket?.price ?? 0)) ₽"
             ).toElement()
             tickElements.append(tariff)
         }
@@ -98,7 +118,6 @@ internal final class R_BookingWithPersonController: UIViewController {
         
         let viewState = R_BookingWithPersonView.ViewState(
             title: newModel.name,
-            isUserCacheEmpty: SomeCache.shared.cache["user"]?.isEmpty ?? false,
             menuActions: setupPersonMenu(),
             dataState: .addedPersonData([passengerState, tariffState]),
             showPersonAlert: showPersonAlert,
@@ -133,7 +152,8 @@ internal final class R_BookingWithPersonController: UIViewController {
         guard let newModel = model else { return [] }
         var actions: [UIAction] = []
         guard let users = SomeCache.shared.cache["user"] else { return [] }
-        users.forEach { user in
+        print("🤷‍♂️🤷‍♂️🤷‍♂️ \(users)")
+        for user in users {
             let action = UIAction(
                 title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
                 image: UIImage(systemName: "person")) { [weak self] _ in
@@ -150,7 +170,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         return actions
     }
     
-    private func pushPersonDataEntry(with model: RiverTrip, and user: RiverUser? = nil) {
+    private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil) {
         let passenderDataEntry = R_PassengerDataEntryController()
         passenderDataEntry.delegate = self
         passenderDataEntry.model = model
@@ -164,9 +184,9 @@ internal final class R_BookingWithPersonController: UIViewController {
 }
 
 extension R_BookingWithPersonController: R_BookingWithPersonDelegate {
-    func setupNewUser(with user: RiverUser, and model: RiverTrip) {
+    func setupNewUser(with user: R_User, and model: R_Trip) {
         self.riverUsers.append(user)
         self.model = model
-//      self.makeState(from: riverUsers)
+        self.makeState(from: riverUsers)
     }
 }

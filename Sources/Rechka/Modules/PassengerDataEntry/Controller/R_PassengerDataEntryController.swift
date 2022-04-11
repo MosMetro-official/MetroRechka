@@ -13,16 +13,15 @@ internal final class R_PassengerDataEntryController : UIViewController {
     weak var delegate: R_BookingWithPersonDelegate?
     private let nestedView = R_PassengerDataEntryView(frame: UIScreen.main.bounds)
     
-    var displayRiverUsers: [RiverUser] = [] {
+    var displayRiverUsers: [R_User] = [] {
         didSet {
             makeState()
         }
     }
     
     //var riverUsers: [RiverUser] = []
-            
     
-    var model: RiverTrip? {
+    var model: R_Trip? {
         didSet {
             if displayRiverUsers.isEmpty {
                 firstSetup()
@@ -30,9 +29,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
             makeState()
         }
     }
-    
-    var paymentModel: PaymentModel?
-        
+            
     private var inputStates = [InputView.ViewState]()
     
     override func loadView() {
@@ -47,7 +44,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
     }
     
     private func firstSetup() {
-        let user = RiverUser()
+        let user = R_User()
         displayRiverUsers.append(user)
     }
     
@@ -75,8 +72,8 @@ internal final class R_PassengerDataEntryController : UIViewController {
     
     private func setupReadyButton() {
         let user = displayRiverUsers[0]
-            SomeCache.shared.addToCache(user: user)
-            self.popToBooking()
+        SomeCache.shared.addToCache(user: user)
+        self.popToBooking()
     }
     
     private func setupValidate() -> Bool {
@@ -84,7 +81,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
         let result: Bool = {
             user.name != nil &&
             user.surname != nil &&
-            //user.middleName != nil &&
+            user.middleName != nil &&
             //user.birthday != nil &&
             //user.phoneNumber != nil &&
             //user.gender != nil &&
@@ -100,6 +97,13 @@ internal final class R_PassengerDataEntryController : UIViewController {
         let user = displayRiverUsers[0]
         delegate?.setupNewUser(with: user, and: model)
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func showPlaceController(for trip: R_Trip) {
+        let controller = R_PlaceController()
+        self.present(controller, animated: true) {
+            controller.trip = trip
+        }
     }
 }
 
@@ -153,6 +157,7 @@ extension R_PassengerDataEntryController {
     }
     
     private func createTableState(for user: R_User, index: Int) -> [State] {
+        guard let model = model else { return [] }
         var sections = [State]()
         let titleElement = R_PassengerDataEntryView.ViewState.Header(title: "Личные данные").toElement()
         
@@ -162,9 +167,6 @@ extension R_PassengerDataEntryController {
         let onSurnameEnter: (TextEnterData) -> () = { data in
             if self.passengerFieldExists(for: index) {
                 self.displayRiverUsers[index].surname = data.text.isEmpty ? nil : data.text
-                //self.riverUsers[index].surname = data.text.isEmpty ? nil : data.text
-                //self.paymentModel?.ticket[index].user?.surname = data.text.isEmpty ? nil : data.text
-                //self.displayRiverUser.surname = data.text.isEmpty ? nil : data.text
             }
         }
         
@@ -184,9 +186,6 @@ extension R_PassengerDataEntryController {
         let onNameEnter: (TextEnterData) -> () = { data in
             if self.passengerFieldExists(for: index) {
                 self.displayRiverUsers[index].name = data.text.isEmpty ? nil : data.text
-                //self.riverUsers[index].name = data.text.isEmpty ? nil : data.text
-                //self.paymentModel?.ticket[index].user?.name = data.text.isEmpty ? nil : data.text
-                //self.displayRiverUser.name = data.text.isEmpty ? nil : data.text
             }
         }
         
@@ -206,9 +205,6 @@ extension R_PassengerDataEntryController {
         let onMiddleNameEnter: (TextEnterData) -> () = { data in
             if self.passengerFieldExists(for: index) {
                 self.displayRiverUsers[index].middleName = data.text.isEmpty ? nil : data.text
-                //self.riverUsers[index].middleName = data.text.isEmpty ? nil : data.text
-                //self.paymentModel?.ticket[index].user?.middleName = data.text.isEmpty ? nil : data.text
-                //self.displayRiverUser.middleName = data.text.isEmpty ? nil : data.text
             }
         }
         
@@ -228,9 +224,6 @@ extension R_PassengerDataEntryController {
         let onBirthdayEnter: (TextEnterData) -> () = { data in
             if self.passengerFieldExists(for: index) {
                 self.displayRiverUsers[index].birthday = data.text.isEmpty ? nil : data.text
-                //self.riverUsers[index].birthday = data.text.isEmpty ? nil : data.text
-                //self.paymentModel?.ticket[index].user?.birthday = data.text.isEmpty ? nil : data.text
-                //self.displayRiverUser.birthday = data.text.isEmpty ? nil : data.text
             }
         }
         
@@ -259,9 +252,6 @@ extension R_PassengerDataEntryController {
         let onPhoneEnter: (TextEnterData) -> () = { data in
             if self.passengerFieldExists(for: index) {
                 self.displayRiverUsers[index].phoneNumber = data.text.isEmpty ? nil : data.text
-                //self.riverUsers[index].phoneNumber = data.text.isEmpty ? nil : data.text
-                //self.paymentModel?.ticket[index].user?.phoneNumber = data.text.isEmpty ? nil : data.text
-                //self.displayRiverUser.phoneNumber = data.text.isEmpty ? nil : data.text
             }
         }
         
@@ -288,8 +278,7 @@ extension R_PassengerDataEntryController {
         
         let genderField = R_PassengerDataEntryView.ViewState.GenderCell(gender: user.gender ?? .male, onTap: { gender in
             self.displayRiverUsers[index].gender = gender
-            //self.riverUsers[index].gender = gender
-            //self.paymentModel?.ticket[index].user?.gender = gender
+
         }).toElement()
         personalItems.append(genderField)
         
@@ -321,16 +310,14 @@ extension R_PassengerDataEntryController {
         sections.append(docState)
         
         // tickets
+        guard let tariffs = model.tarrifs else { return [] }
         let tickets = R_PassengerDataEntryView.ViewState.Tickets(
-            ticketList: model?.tarrifs ?? [],
+            ticketList: tariffs,
             onChoice: { ticketIndex in
-                // handle ticket for payment model
                 let choiceTicket = self.model?.tarrifs?[ticketIndex]
                 self.displayRiverUsers[index].ticket = choiceTicket
-                //self.riverUsers[index].ticket = choiceTicket
-                //self.paymentModel?.ticket[index].ticket = choiceTicket
             },
-            isSelectable: true
+            isSelected: true
         ).toElement()
         let ticketsHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
             title: "Тариф",
@@ -340,10 +327,14 @@ extension R_PassengerDataEntryController {
         let ticketsSection = SectionState(header: ticketsHeader, footer: nil)
         let ticketsState = State(model: ticketsSection, elements: [tickets])
         sections.append(ticketsState)
-        guard let isWithoutplace = model?.tarrifs?[index].isWithoutPlace else { return []}
-        if !isWithoutplace {
-            let onSelect = Command(action: {})
-            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "", onItemSelect: onSelect).toElement()
+        guard let isWithoutPlace = model.tarrifs?[index].isWithoutPlace else { return [] }
+        if !isWithoutPlace {
+            //let onSelect = Command(action: {})
+            let onSelect: () -> Void = { [weak self] in
+                guard let self = self else { return }
+                self.showPlaceController(for: model)
+            }
+            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "", onSelect: onSelect).toElement()
             let choiceSec = SectionState(header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])
             sections.append(choiceState)

@@ -9,18 +9,15 @@ import UIKit
 import CoreTableView
 
 internal final class R_BookingWithPersonView: UIView {
-    
-    var push: (() -> Void)?
-    
+        
     struct ViewState {
         
         let title: String
-        let isUserCacheEmpty: Bool
         let menuActions: [UIAction]
         var dataState: DataState
         var showPersonAlert: Command<Void>?
         var showPersonDataEntry: Command<Void>?
-        var showUserFromCache: Command<RiverUser>?
+        var showUserFromCache: Command<R_User>?
         var book: Command<Void>?
         
         enum DataState {
@@ -51,7 +48,6 @@ internal final class R_BookingWithPersonView: UIView {
         
         static let initial = R_BookingWithPersonView.ViewState(
             title: "",
-            isUserCacheEmpty: false,
             menuActions: [],
             dataState: .addPersonData
         )
@@ -60,12 +56,9 @@ internal final class R_BookingWithPersonView: UIView {
     public var viewState: R_BookingWithPersonView.ViewState = .initial {
         didSet {
             updateView()
+            setupAddActions()
         }
     }
-    
-    public var showPersonAlert: (() -> Void)?
-    public var showPersonDataEntry: (() -> Void)?
-    public var showUserFromCache: ((R_User) -> Void)?
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
@@ -164,7 +157,6 @@ internal final class R_BookingWithPersonView: UIView {
         super.init(frame: frame)
         backgroundColor = Appearance.colors[.base]
         setupConstrains()
-        setupAddActions()
         setupBookAction()
     }
     
@@ -173,7 +165,8 @@ internal final class R_BookingWithPersonView: UIView {
     }
     
     private func setupAddActions() {
-        if viewState.isUserCacheEmpty {
+        guard let users = SomeCache.shared.cache["user"] else { return }
+        if !users.isEmpty {
             if #available(iOS 14, *) {
                 addButton.showsMenuAsPrimaryAction = true
                 addButton.menu = UIMenu(title: "Persons", children: viewState.menuActions)
@@ -181,7 +174,7 @@ internal final class R_BookingWithPersonView: UIView {
                 addButton.addTarget(self, action: #selector(preseentPersonAlert), for: .touchUpInside)
             }
         } else {
-            addButton.addTarget(self, action: #selector(pushVC), for: .touchUpInside)
+            addButton.addTarget(self, action: #selector(pushPersonDataEntry), for: .touchUpInside)  
         }
     }
     
@@ -201,10 +194,6 @@ internal final class R_BookingWithPersonView: UIView {
     
     @objc private func pushPersonDataEntry() {
         viewState.showPersonDataEntry?.perform(with: ())
-    }
-    
-    @objc private func pushVC() {
-        push?()
     }
     
     private func updateView() {

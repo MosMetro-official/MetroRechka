@@ -30,7 +30,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="7Cm-uH-4zv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Ogk-3Q-3P0"/>
-                    <constraint firstItem="7Cm-uH-4zv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vN6-FE-o80"/>
+                    <constraint firstItem="7Cm-uH-4zv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="oFO-dn-ePh"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

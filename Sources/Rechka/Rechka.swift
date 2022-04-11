@@ -154,6 +154,20 @@ extension UIColor {
     
 }
 
+struct Command<T> {
+    
+    private var action: (T) -> Void
+    
+    public init(action: @escaping (T) -> Void) {
+        self.action = action
+    }
+    
+    public func perform(with value: T) {
+        self.action(value)
+    }
+    
+}
+
 
 
 @IBDesignable

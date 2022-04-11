@@ -42,6 +42,8 @@ internal final class R_BookingScreenView : UIView {
             var descr : String
         }
         
+        
+        
         struct Cancel : _Cancel {
             var title : String
             var onSelect: (() -> Void)

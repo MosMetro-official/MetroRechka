@@ -306,15 +306,18 @@ extension R_RouteDetailsController {
         
     @MainActor
     private func openBuyTicketsController(with model: R_Trip) {
-        guard let needPersonalData = model.personalDataRequired else { return }
-        if needPersonalData {
-            let bookingWithPerson = R_BookingWithPersonController()
-            bookingWithPerson.model = model
-            navigationController?.pushViewController(bookingWithPerson, animated: true)
-        } else {
-            let bookingWithoutPerson = R_BookingWithoutPersonController()
-            bookingWithoutPerson.model = model
-            navigationController?.pushViewController(bookingWithoutPerson, animated: true)
-        }
+//        guard let needPersonalData = model.personalDataRequired else { return }
+//        if needPersonalData {
+//            let bookingWithPerson = R_BookingWithPersonController()
+//            bookingWithPerson.model = model
+//            navigationController?.pushViewController(bookingWithPerson, animated: true)
+//        } else {
+//            let bookingWithoutPerson = R_BookingWithoutPersonController()
+//            bookingWithoutPerson.model = model
+//            navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+//        }
+        let bookingWithPerson = R_BookingWithPersonController()
+        bookingWithPerson.model = model
+        navigationController?.pushViewController(bookingWithPerson, animated: true)
     }
 }
