@@ -34,6 +34,32 @@ struct RiverOrder {
 
 extension RiverOrder {
     
+    func cancelBooking() async throws {
+        if case .booked = self.operation.status {
+            let client = APIClient.authorizedClient
+            do {
+                let response = try await client.send(
+                    .POST(path: "/api/orders/v1/\(self.id)/cancel",
+                          body: nil,
+                          contentType: .json)
+                )
+                let json = CoreNetwork.JSON(response.data)
+                if let success = json["success"].bool, success {
+                    print("successfully cancelled order")
+                } else {
+                    throw APIError.genericError("Произошила ошибка при отмене бронирования")
+                }
+            } catch {
+                guard let err = error as? APIError else { throw error }
+                print(err)
+                throw err
+            }
+            
+            
+        } else {
+            throw APIError.genericError("Вы не можете произвести отмену этого бронирования")
+        }
+    }
     
     static func get(by id: Int) async throws -> RiverOrder {
         let client = APIClient.authorizedClient

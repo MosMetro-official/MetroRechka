@@ -19,7 +19,7 @@ internal final class SecureApiClientDelegate : APIClientDelegate {
     private var attempts = 0
     
     func client(_ client: APIClient, willSendRequest request: inout URLRequest) {
-        request.appendBasicHeaders()
+        request.appendAuthHeaders()
         
     }
     

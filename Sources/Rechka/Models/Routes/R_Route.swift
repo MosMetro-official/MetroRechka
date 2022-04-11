@@ -9,13 +9,7 @@ import Foundation
 import CoreNetwork
 import SwiftDate
 
-extension APIClient {
-    
-    public static var unauthorizedClient : APIClient {
-        return APIClient(host: "river.brndev.ru")
-    }
-    
-}
+
 
 
 struct R_RouteResponse {

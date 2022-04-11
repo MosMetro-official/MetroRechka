@@ -30,7 +30,7 @@ internal final class R_BookingScreenView : UIView {
         enum DataState {
             case loading
             case loaded
-            case error
+            case error(R_Toast.Configuration)
         }
         
         struct Title : _Title {
@@ -57,11 +57,14 @@ internal final class R_BookingScreenView : UIView {
     private func render() {
         switch self.viewState.dataState {
         case .loading:
+            R_Toast.remove(from: self)
             self.showBlurLoading()
         case .loaded:
+            R_Toast.remove(from: self)
             self.removeBlurLoading()
-        case .error:
+        case .error(let config):
             self.removeBlurLoading()
+            R_Toast.show(on: self, with: config, distanceFromBottom: self.bgBlurView.frame.height)
         }
         self.paySumm.text = self.viewState.totalPrice
         self.payButton.alpha = self.viewState.onPay == nil ? 0.3 : 1
@@ -177,7 +180,7 @@ internal final class R_BookingScreenView : UIView {
             payTitle.heightAnchor.constraint(equalToConstant: 13),
             
             paySumm.topAnchor.constraint(equalTo: payTitle.bottomAnchor, constant: 4),
-            paySumm.leadingAnchor.constraint(equalTo: payView.leadingAnchor, constant: 23),
+            paySumm.leadingAnchor.constraint(equalTo: payView.leadingAnchor, constant: 20),
             paySumm.heightAnchor.constraint(equalToConstant: 23),
             
             payButton.topAnchor.constraint(equalTo: payView.topAnchor, constant: 30),

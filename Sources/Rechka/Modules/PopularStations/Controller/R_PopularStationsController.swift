@@ -65,7 +65,7 @@ internal final class R_PopularStationsController : UIViewController {
             isNeedToShowLoading = false
         }
         self.isLoading = true
-        Task.detached(priority: .high) { [weak self] in
+        Task.detached { [weak self] in
             guard let self = self else { return }
             do {
                 var routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
@@ -119,8 +119,6 @@ internal final class R_PopularStationsController : UIViewController {
         ]
         title = "Популярное"
         load(page: 1, size: 10, stationID: nil, tags: [], date: nil)
-        
-        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 129])
     }
     
     @MainActor

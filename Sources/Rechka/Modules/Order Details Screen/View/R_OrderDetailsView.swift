@@ -22,14 +22,12 @@ internal final class R_OrderDetailsView: UIView {
     private func render() {
         switch viewState.dataState {
         case .loading:
-            R_Toast.remove(from: self)
             self.showBlurLoading(on: self)
         case .loaded:
-            R_Toast.remove(from: self)
+            
             self.removeBlurLoading(from: self)
-        case .error(let toastData):
+        case .error:
             self.removeBlurLoading(from: self)
-            R_Toast.show(on: self, with: toastData, distanceFromBottom: closeView.frame.height + 24)
         }
         self.tableView.viewStateInput = viewState.state
     }
@@ -39,7 +37,7 @@ internal final class R_OrderDetailsView: UIView {
         enum DataState {
             case loading
             case loaded
-            case error(R_Toast.Configuration)
+            case error
         }
         
         let dataState: DataState
@@ -52,8 +50,22 @@ internal final class R_OrderDetailsView: UIView {
             var number: String
             var passenger: String
             var buttons: TicketDetailCell.Buttons
+            var status: String
         }
         
+        struct Error: _R_ErrorCell {
+            var image: UIImage
+            
+            var title: String
+            
+            var action: Command<Void>?
+            
+            var buttonTitle: String?
+            
+            var height: CGFloat
+            
+        }
+ 
         struct TicketStatus : _TicketStatus {
             var title: String
             var statusImage: UIImage

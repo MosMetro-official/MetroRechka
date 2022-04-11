@@ -14,6 +14,7 @@ protocol _TicketDetail : CellData {
     var place : String { get }
     var number : String { get }
     var passenger : String { get }
+    var status: String { get }
     var buttons: TicketDetailCell.Buttons { get }
 }
 
@@ -137,7 +138,7 @@ class TicketDetailCell: UITableViewCell {
         self.onDownload = data.buttons.onDownload?.onSelect
         self.onRefund = data.buttons.onRefund?.onSelect
         self.onRefundDetails = data.buttons.onRefundDetails?.onSelect
-        
+        self.statusLabel.text = data.status
     }
     
     private func drawDottedLine(start p0: CGPoint, end p1: CGPoint, view: UIView) {

@@ -177,18 +177,24 @@ internal final class R_OrderDetailsController : UIViewController {
                 }
                 
                 let finalTitle = title
-               
+                
                
                 await MainActor.run { [weak self] in
-                    let onSelect: () -> Void = { [weak self] in
+                    let onSelect = Command { [weak self] in
                         guard let self = self, let orderID = self.orderID else { return }
                         self.load(with: orderID)
+                        
                     }
+                    let err = R_OrderDetailsView.ViewState.Error(
+                        image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
+                        title: finalTitle,
+                        action: onSelect,
+                        buttonTitle: "Загрузить еще раз",
+                        height: UIScreen.main.bounds.height / 2)
+                        .toElement()
+                    let state = State(model: .init(header: nil, footer: nil), elements: [err])
                     
-                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
-                    let errorConfig = R_Toast.Configuration.defaultError(text: finalTitle, subtitle: nil, buttonType: .imageButton(buttonData))
-                    
-                    self?.nestedView.viewState = .init(dataState: .error(errorConfig), state: [], onClose: onClose)
+                    self?.nestedView.viewState = .init(dataState: .error, state: [state], onClose: onClose)
                 }
             }
         }
@@ -385,12 +391,25 @@ internal final class R_OrderDetailsController : UIViewController {
                 }
             }()
             
+            let status: String = {
+                switch ticket.status {
+                    
+                case .payed:
+                    return "Оплачен"
+                case .returned, .returnedByAgent, .returnedByCarrier:
+                    return "Возвращен"
+                case .booked:
+                    return "Забронирован"
+                }
+            }()
+            
             let element = R_OrderDetailsView.ViewState.Ticket(
                 price: "\(Int(ticket.price)) ₽",
                 place: place,
                 number: "\(ticket.id)",
                 passenger: "",
-                buttons: buttonsData)
+                buttons: buttonsData,
+                status: status)
                 .toElement()
             let section = SectionState(header: nil, footer: nil)
             let ticketState = State(model: section, elements: [element])

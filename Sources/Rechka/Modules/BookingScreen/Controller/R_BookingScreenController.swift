@@ -9,6 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
+import CoreNetwork
 
 
 internal final class R_BookingScreenController : UIViewController {
@@ -127,6 +128,46 @@ internal final class R_BookingScreenController : UIViewController {
         self.nestedView.viewState = state
     }
     
+    @MainActor
+    private func showCancelSuccess() {
+        self.nestedView.viewState.dataState = .loaded
+        let controller = R_CancelBookingController()
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        controller.onClose = Command(action: { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+            
+        })
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    
+    private func startCancel() {
+        guard let model = model else { return }
+        self.nestedView.viewState.dataState = .loading
+        Task.detached { [weak self] in
+            guard let self = self else { return }
+            do {
+                try await model.cancelBooking()
+                await self.showCancelSuccess()
+            } catch {
+                guard let err = error as? APIError else { return }
+                await MainActor.run { [weak self] in
+                    guard let self = self else { return }
+                    let onSelect: () -> Void = { [weak self] in
+                        guard let self = self else { return }
+                        self.nestedView.viewState.dataState = .loaded
+                    }
+                    
+                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
+                    let errorConfig = R_Toast.Configuration.defaultError(text: err.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
+                    self.nestedView.viewState.dataState = .error(errorConfig)
+                }
+            }
+            
+        }
+    }
+    
     private func showPaymentController(with url: String) {
         guard let paymentURL = URL(string: url) else { return }
         self.paymentController = SFSafariViewController(url: paymentURL)
@@ -134,13 +175,24 @@ internal final class R_BookingScreenController : UIViewController {
     }
     
     private func makeState() async -> R_BookingScreenView.ViewState {
+        let onSelect: () -> Void = { [weak self] in
+            guard let self = self else { return }
+            self.nestedView.viewState.dataState = .loaded
+        }
+        
+        let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
+        let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка", subtitle: nil, buttonType: .imageButton(buttonData))
+        
         guard let model = model else {
-            return .init(dataState: .error, states: [], totalPrice: "")
+            return .init(dataState: .error(errorConfig), states: [], totalPrice: "")
         }
         let endBookingDate = model.operation.orderDate + seconds.seconds
         let period = endBookingDate - model.operation.orderDate
-        guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error, states: [], totalPrice: "")}
-        let elapsedTime = "\(minute):\(seconds)"
+        guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error(errorConfig), states: [], totalPrice: "")}
+        let minuteStr = minute < 10 ? "0\(minute)" : "\(minute)"
+        let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        
+        let elapsedTime = "\(minuteStr):\(secondsStr)"
         var topElements = [Element]()
         let title = R_BookingScreenView.ViewState.Title(
             title: "Билеты забронированы"
@@ -156,12 +208,7 @@ internal final class R_BookingScreenController : UIViewController {
             title: "Отменить бронирование",
             onSelect: { [weak self] in
                 guard let self = self else { return }
-                DispatchQueue.main.async {
-                    let controller = R_CancelBookingController()
-                    controller.modalTransitionStyle = .crossDissolve
-                    controller.modalPresentationStyle = .fullScreen
-                    self.present(controller, animated: true, completion: nil)
-                }
+                self.startCancel()
             }
         ).toElement()
         cancelElements.append(cancel)
