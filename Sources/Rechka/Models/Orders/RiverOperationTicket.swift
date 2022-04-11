@@ -14,6 +14,7 @@ struct RiverTicketRefund {
     let refundPrice: Double
     let refundDate: Date? // MSK timezone
     let totalPriceRefund: Double
+    let additionRefunds: [R_OperationAdditionServiceRefund]
     
     init?(data: CoreNetwork.JSON) {
         guard let ticketID = data["id"].int else { return nil }
@@ -22,8 +23,56 @@ struct RiverTicketRefund {
         self.refundPrice = data["ticketPriceRefund"].doubleValue
         self.refundDate  = data["dateTimeRefund"].stringValue.toDate()?.date
         self.totalPriceRefund = data["totalPriceRefund"].doubleValue
+        self.additionRefunds = data["additionServicesRefund"].arrayValue.compactMap { R_OperationAdditionServiceRefund(data: $0) }
     }
     
+}
+
+struct R_OperationAdditionServiceRefund {
+    let id: String
+    let name: String
+    let nameEn: String
+    let type: Int
+    let pricePerOne: Double
+    let count: Int
+    let priceTotal: Double
+    let pricePerOneRefund: Double
+    let priceTotalRefund: Double
+    let date: Date?
+    
+    init?(data: CoreNetwork.JSON) {
+        guard let id = data["id"].string else { return nil }
+        self.id = id
+        self.name = data["name"].stringValue
+        self.nameEn = data["nameEn"].stringValue
+        self.type = data["type"].intValue
+        self.pricePerOne = data["pricePerOne"].doubleValue
+        self.count = data["count"].intValue
+        self.priceTotal = data["priceTotal"].doubleValue
+        self.pricePerOneRefund = data["pricePerOneRefund"].doubleValue
+        self.priceTotalRefund = data["priceTotalRefund"].doubleValue
+        self.date = data["dateTimeRefund"].stringValue.toDate()?.date
+    }
+    
+}
+
+struct R_OperationAdditionService {
+    let id: String
+    let pricePerOne: Double
+    let name: String
+    let count: Int
+    let totalPrice: Double
+    let type: Int
+    
+    init?(data: CoreNetwork.JSON) {
+        guard let id = data["id"].string else { return nil }
+        self.id = id
+        self.pricePerOne = data["pricePerOne"].doubleValue
+        self.name = data["name"].stringValue
+        self.count = data["count"].intValue
+        self.totalPrice = data["priceTotal"].doubleValue
+        self.type = data["type"].intValue
+    }
 }
 
 struct RiverOperationTicket {
@@ -48,6 +97,7 @@ struct RiverOperationTicket {
     let dateTimeStart: Date
     let dateTimeEnd: Date
     let operationHash: String
+    let additionServices: [R_OperationAdditionService]
     
     
     init?(data: CoreNetwork.JSON, parentOrderID: Int) {
@@ -67,6 +117,7 @@ struct RiverOperationTicket {
         self.dateTimeStart = dateTimeStart
         self.dateTimeEnd = dateTimeEnd
         self.operationHash = data["operationHash"].stringValue
+        self.additionServices = data["additionServices"].arrayValue.compactMap { R_OperationAdditionService(data: $0) }
     }
     
     
@@ -78,7 +129,7 @@ extension RiverOperationTicket {
         do {
             let client = APIClient.authorizedClient
             let _ = try await client.send(
-                .POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)",
+                .POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refund",
                       body: nil,
                       contentType: .json)
             )

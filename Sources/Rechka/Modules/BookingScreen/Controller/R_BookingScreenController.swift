@@ -107,7 +107,8 @@ internal final class R_BookingScreenController : UIViewController {
             guard let self = self else { return }
             self.seconds -= 1
         })
-        RunLoop.current.add(timer!, forMode: .default)
+        RunLoop.current.add(timer!, forMode: .common)
+        
         self.needToSetTimer = false
     }
     
@@ -173,7 +174,12 @@ internal final class R_BookingScreenController : UIViewController {
                 self.showPaymentController(with: model.url)
             }
         }
+        let additionsPrice = model.operation.tickets.reduce(0) { partialResult, ticket in
+            partialResult + ticket.additionServices.reduce(0, { $0 + $1.totalPrice })
+        }
+        let totalPrice = model.operation.totalPrice + additionsPrice
         
-        return .init(dataState: .loaded, states: [topState, cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(model.operation.totalPrice)) ₽")
+        return .init(dataState: .loaded, states: [topState, cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(totalPrice)) ₽")
+
     }
 }

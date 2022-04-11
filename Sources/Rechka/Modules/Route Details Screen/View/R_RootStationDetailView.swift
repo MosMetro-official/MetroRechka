@@ -71,7 +71,8 @@ internal final class R_RootDetailStationView: UIView {
         view.backgroundColor = .clear
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = UIScreen.main.displayCornerRadius
+        view.layer.cornerRadius = 10
+        view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         return view
     }()

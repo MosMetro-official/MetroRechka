@@ -54,12 +54,12 @@ internal final class R_PopularStationsController : UIViewController {
     private var searchModel: SearchModel = .init(selectedTags: [], date: nil, station: nil) {
         didSet {
             self.isNeedToShowLoading = true
-            self.load(page: 1, size: 10, stationID: searchModel.station?.id, tags: searchModel.selectedTags)
+            self.load(page: 1, size: 10, stationID: searchModel.station?.id, tags: searchModel.selectedTags, date: searchModel.date)
         }
     }
     
     
-    private func load(page: Int, size: Int, stationID: Int?, tags: [String]) {
+    private func load(page: Int, size: Int, stationID: Int?, tags: [String], date: Date?) {
         if isNeedToShowLoading {
             self.nestedView.viewState = .loading
             isNeedToShowLoading = false
@@ -68,15 +68,36 @@ internal final class R_PopularStationsController : UIViewController {
         Task.detached(priority: .high) { [weak self] in
             guard let self = self else { return }
             do {
-                let routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
+                var routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
                 let newTags = try await self.service.getTags()
+                if let date = date {
+                    let filteredRoutes = routeResponse.items.filter { route in
+                        route.shortTrips.contains(where: { trip in
+                            trip.dateStart.day == date.day && trip.dateStart.month == date.month && trip.dateStart.year == date.year
+                        })
+                    }
+                    
+                    routeResponse = R_RouteResponse(items: filteredRoutes, page: routeResponse.page, totalPages: routeResponse.totalPages, totalElements: routeResponse.totalElements)
+                }
+                let finalResponse = routeResponse
                 try await Task.sleep(nanoseconds: 0_300_000_000)
                 await MainActor.run(body: { [weak self] in
-                    self?.searchResponse = routeResponse
+                    self?.searchResponse = finalResponse
                     self?.tags = newTags
+                    self?.isLoading = false
                 })
             } catch {
-                print("shiiiet")
+                guard let err = error as? APIError else { return }
+                await MainActor.run(body: {
+                    let onSelect: () -> Void = { [weak self] in
+                        guard let self = self else { return }
+                        self.load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
+                    }
+                    
+                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
+                    let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка при загрузке", subtitle: nil, buttonType: .imageButton(buttonData))
+                    self.nestedView.viewState = .error(errorConfig)
+                })
             }
         }
     }
@@ -97,9 +118,9 @@ internal final class R_PopularStationsController : UIViewController {
             .font: UIFont.customFont(forTextStyle: .title1)
         ]
         title = "Популярное"
-        load(page: 1, size: 10, stationID: nil, tags: [])
+        load(page: 1, size: 10, stationID: nil, tags: [], date: nil)
         
-        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 74])
+        NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": 129])
     }
     
     @MainActor
@@ -129,35 +150,50 @@ internal final class R_PopularStationsController : UIViewController {
         var states = [State]()
         
         if searchResponse.items.isEmpty {
-            await MainActor.run { [weak self] in
-                self?.nestedView.viewState = .error("Мы не смогли найти экскурсии по таким параметрам.\nПопробуйте поменять фильтры")
+            
+            let clearAction = Command { [weak self] in
+                self?.searchModel = .init(selectedTags: [], date: nil, station: nil)
             }
+            
+            let notFoundErr = R_HomeView.ViewState.Error(
+                image: UIImage(systemName: "magnifyingglass") ?? UIImage(),
+                title: "Мы не нашли экскурсий с такими параметрами",
+                action: clearAction,
+                buttonTitle: "Сбросить фильтры",
+                height: UIScreen.main.bounds.height / 2)
+                .toElement()
+            let section = SectionState(header: nil, footer: nil)
+            let errorState = State(model: section, elements: [notFoundErr])
+            states.append(errorState)
+            
+        } else {
+            let elements: [Element] = searchResponse.items.map { route in
+                let firstStation = route.stations.first?.name ?? ""
+                let onPay: () -> () = { [weak self] in
+                    self?.pushDetail(with: route.id)
+                }
+                let routeData = R_HomeView.ViewState.Station(
+                    title: route.name,
+                    jetty: firstStation,
+                    time: "\(route.time) мин.",
+                    tickets: false,
+                    price: "\(route.minPrice) ₽",
+                    onSelect: onPay
+                ).toElement()
+                return routeData
+            }
+            let section = SectionState(header: nil, footer: nil)
+            let state = State(model: section, elements: elements)
+            states.append(state)
         }
         
-        let elements: [Element] = searchResponse.items.map { route in
-            let firstStation = route.stations.first?.name ?? ""
-            let onPay: () -> () = { [weak self] in
-                self?.pushDetail(with: route.id)
-            }
-            let routeData = R_HomeView.ViewState.Station(
-                title: route.name,
-                jetty: firstStation,
-                time: "\(route.time) mins",
-                tickets: false,
-                price: "\(route.minPrice) ₽",
-                onSelect: onPay
-            ).toElement()
-            return routeData
-        }
-        let section = SectionState(header: nil, footer: nil)
-        let state = State(model: section, elements: elements)
-        states.append(state)
+        
         let dateTitle: String = {
             return searchModel.date == nil ? "Дата" : searchModel.date!.toFormat("d MMMM", locale: Locales.russian)
         }()
         
         let onDateSelect = Command { [weak self] in
-            
+            self?.showDatePicker()
         }
         
         let dateButton = R_HomeView.ViewState.Button(
@@ -214,26 +250,26 @@ internal final class R_PopularStationsController : UIViewController {
         if searchResponse.items.count < searchResponse.totalElements {
             let onLoad = Command { [weak self] in
                 guard let self = self else { return }
-                self.load(page: searchResponse.page + 1, size: 10, stationID: self.searchModel.station?.id, tags: self.searchModel.selectedTags)
+                self.load(page: searchResponse.page + 1, size: 10, stationID: self.searchModel.station?.id, tags: self.searchModel.selectedTags, date: self.searchModel.date)
             }
             let loadMore = R_HomeView.ViewState.LoadMore(onLoad: isLoading ? nil : onLoad).toElement()
             states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
         }
         
-        
-        
-        await MainActor.run(body: { [weak self] in
-            var clearButton: R_HomeView.ViewState.Button? = nil
-            if searchModel.station != nil || !searchModel.selectedTags.isEmpty || searchModel.date != nil {
-                let onSelect = Command { [weak self] in
-                    guard let self = self else { return }
-                    self.searchModel = .init(selectedTags: [], date: nil, station: nil)
-                }
-                
-                clearButton = .init(title: "Сбросить фильтры", isDataSetted: true, onSelect: onSelect, listData: nil)
+        var clearButton: R_HomeView.ViewState.Button? = nil
+        if searchModel.station != nil || !searchModel.selectedTags.isEmpty || searchModel.date != nil {
+            let onSelect = Command { [weak self] in
+                guard let self = self else { return }
+                self.searchModel = .init(selectedTags: [], date: nil, station: nil)
             }
             
-            self?.nestedView.viewState = .loaded(.init(dateButton: dateButton, stationButton: stationsButton, categoriesButton: categoriesButton, clearButton: clearButton, tableState: [state]))
+            clearButton = .init(title: "Сбросить фильтры", isDataSetted: true, onSelect: onSelect, listData: nil)
+        }
+        
+        let state: R_HomeView.ViewState = .loaded(.init(dateButton: dateButton, stationButton: stationsButton, categoriesButton: categoriesButton, clearButton: clearButton, tableState: states))
+        
+        await MainActor.run(body: { [weak self] in
+            self?.nestedView.viewState = state
         })
     }
     
@@ -246,6 +282,38 @@ internal final class R_PopularStationsController : UIViewController {
     @MainActor
     func setState(_ state: R_HomeView.ViewState) {
         self.nestedView.viewState = state
+    }
+    
+    private func showDatePicker() {
+        let myDatePicker: UIDatePicker = UIDatePicker()
+        myDatePicker.timeZone = .current
+        myDatePicker.datePickerMode = .date
+        myDatePicker.minimumDate = Date()
+        myDatePicker.locale = Locale(identifier: "ru_RU")
+        if #available(iOS 13.4, *) {
+            myDatePicker.preferredDatePickerStyle = .wheels
+        }
+        myDatePicker.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
+        let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n\n\n", message: nil, preferredStyle: .actionSheet)
+        
+        alertController.view.addSubview(myDatePicker)
+        let selectAction = UIAlertAction(title: "Выбрать", style: .default, handler: { [weak self] _ in
+            self?.searchModel.date = myDatePicker.date
+        })
+        var clearAction: UIAlertAction? = nil
+        if let _ = searchModel.date {
+            clearAction = UIAlertAction(title: "Сбросить дату", style: .destructive, handler: { [weak self] _ in
+                self?.searchModel.date = nil
+            })
+        }
+        
+        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        alertController.addAction(selectAction)
+        if let clearAction = clearAction {
+            alertController.addAction(clearAction)
+        }
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
     }
     
 //    private func setupSettingsActions() {

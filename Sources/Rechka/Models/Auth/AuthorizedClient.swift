@@ -16,7 +16,7 @@ extension APIClient {
 
 internal final class SecureApiClientDelegate : APIClientDelegate {
     
-    
+    private var attempts = 0
     
     func client(_ client: APIClient, willSendRequest request: inout URLRequest) {
         request.appendBasicHeaders()
@@ -30,6 +30,11 @@ internal final class SecureApiClientDelegate : APIClientDelegate {
             }
 
             if try await networkDelegate.refreshToken() {
+                attempts += 1
+                if attempts > 2 {
+                    attempts = 0
+                    throw APIError.genericError("Что-то пошло не так")
+                }
                 return try await client.send(initialRequest)
             } else {
                 throw APIError.badRequest
@@ -39,8 +44,8 @@ internal final class SecureApiClientDelegate : APIClientDelegate {
             if let data = data {
                 let json = CoreNetwork.JSON(data)
                 print("🥰 ERROR - \(json)")
-                //throw APIError.cabinetError(.init(json: json["error"]))
-                throw APIError.badRequest
+                let message = json["error"]["message"].stringValue
+                throw APIError.genericError(message)
             }
             throw APIError.unacceptableStatusCode(response.statusCode)
         }

@@ -19,7 +19,7 @@ protocol _StationCell: CellData {
 extension _StationCell {
     
     var height: CGFloat {
-        return (UIScreen.main.bounds.width - 40) * 0.75
+        return (UIScreen.main.bounds.width - 40) * 0.65
     }
     
     func hashValues() -> [Int] {

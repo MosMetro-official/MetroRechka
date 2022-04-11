@@ -126,6 +126,7 @@ extension R_Route {
                   let page = json["data"]["page"].int,
                   let totalPages = json["data"]["totalPages"].int,
                   let totalElements = json["data"]["totalElements"].int else { throw APIError.noHTTPResponse }
+            print("😀 total elements array: \(routesArray.count)")
             let routes = routesArray.map { R_Route(data: $0) }
             return .init(items: routes, page: page, totalPages: totalPages, totalElements: totalElements)
         } catch {

@@ -54,7 +54,8 @@ internal final class R_PopularStationsView: UIView {
         let view = R_BottomSettingsView()
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = UIScreen.main.displayCornerRadius
+        view.layer.cornerRadius = 10
+        view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         return view
     }()

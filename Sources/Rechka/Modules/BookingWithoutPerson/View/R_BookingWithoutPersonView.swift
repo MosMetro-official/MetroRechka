@@ -20,6 +20,7 @@ internal final class R_BookingWithoutPersonView: UIView {
         enum DataState {
             case loading
             case loaded
+            case error(R_Toast.Configuration)
         }
         
         struct TariffSteper: _TariffSteper {
@@ -35,6 +36,10 @@ internal final class R_BookingWithoutPersonView: UIView {
         struct ChoicePlace: _ChoicePlace {
             var title: String
             var onSelect: (() -> Void)
+        }
+        
+        struct DateHeader: _TripsDateHeader {
+            var title: String
         }
         
         struct TariffHeader: _TariffHeaderCell { }
@@ -87,7 +92,8 @@ internal final class R_BookingWithoutPersonView: UIView {
         view.backgroundColor = .custom(for: .settingsPanel)
         view.layer.isOpaque = false
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = UIScreen.main.displayCornerRadius
+        view.layer.cornerRadius = 10
+        view.layer.cornerCurve = .continuous
         view.clipsToBounds = true
         return view
     }()
@@ -124,9 +130,17 @@ internal final class R_BookingWithoutPersonView: UIView {
             self.bookButton.isUserInteractionEnabled = self.viewState.onBooking == nil ? false : true
             switch self.viewState.dataState {
             case .loading:
+                self.buttonView.isHidden = true
                 self.showBlurLoading()
+                R_Toast.remove(from: self)
             case .loaded:
+                self.buttonView.isHidden = false
+                R_Toast.remove(from: self)
                 self.removeBlurLoading()
+            case .error(let toastConfiguration):
+                self.buttonView.isHidden = true
+                self.removeBlurLoading()
+                R_Toast.show(on: self, with: toastConfiguration, distanceFromBottom: 24)
             }
         }
     }

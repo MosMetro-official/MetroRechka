@@ -19,7 +19,7 @@ class R_PlaceController: UIViewController {
 //        }
 //    }
     
-    //var onSeatSelect: ((BusSeat) -> ())?
+    var onPlaceSelect: Command<Int>?
     
     var trip: R_Trip? {
         didSet {
@@ -30,17 +30,31 @@ class R_PlaceController: UIViewController {
     
     var places: [Int] = [] {
         didSet {
+            shouldPerformFirstSet = true
             Task.detached { [weak self] in
                 await self?.makeState()
             }
         }
     }
+    /// Говорит о том, что если уже было выбрано место и мы открываем контроллер с этим местом, то не трогать стейт
+    var shouldPerformFirstSet = true
     
     var selectedPlace: Int? {
         didSet {
-            Task.detached { [weak self] in
-                await self?.makeState()
+            if shouldPerformFirstSet {
+                Task.detached { [weak self] in
+                    await self?.makeState()
+                    try await Task.sleep(nanoseconds: 0_100_000_000)
+                    await MainActor.run { [weak self] in
+                        guard let self = self, let selectedPlace = self.selectedPlace else { return }
+                        self.onPlaceSelect?.perform(with: selectedPlace)
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                }
+                shouldPerformFirstSet = false
             }
+            
+            
         }
     }
     

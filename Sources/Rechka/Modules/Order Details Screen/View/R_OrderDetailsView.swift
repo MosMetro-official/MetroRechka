@@ -22,11 +22,14 @@ internal final class R_OrderDetailsView: UIView {
     private func render() {
         switch viewState.dataState {
         case .loading:
+            R_Toast.remove(from: self)
             self.showBlurLoading(on: self)
         case .loaded:
+            R_Toast.remove(from: self)
             self.removeBlurLoading(from: self)
-        case .error:
+        case .error(let toastData):
             self.removeBlurLoading(from: self)
+            R_Toast.show(on: self, with: toastData, distanceFromBottom: closeView.frame.height + 24)
         }
         self.tableView.viewStateInput = viewState.state
     }
@@ -36,7 +39,7 @@ internal final class R_OrderDetailsView: UIView {
         enum DataState {
             case loading
             case loaded
-            case error
+            case error(R_Toast.Configuration)
         }
         
         let dataState: DataState
@@ -67,6 +70,11 @@ internal final class R_OrderDetailsView: UIView {
             var title : String
         }
         
+        struct Addtional: _Tariff {
+            let tariffs: String
+            let price: String
+        }
+        
         struct NeedToPay: _R_OrderPaymentTableViewCell {
             var onPay: Command<Void>
             var time: String
@@ -78,7 +86,8 @@ internal final class R_OrderDetailsView: UIView {
     @IBOutlet private weak var tableView : BaseTableView!
     
     override func awakeFromNib() {
-        closeView.layer.cornerRadius = UIScreen.main.displayCornerRadius
+        closeView.layer.cornerRadius = 10
+        closeView.layer.cornerCurve = .continuous
         closeView.layer.masksToBounds = true
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 115, right: 0)
         tableView.shouldUseReload = true

@@ -12,4 +12,5 @@ public extension Notification.Name {
     static let riverPaymentSuccess = Notification.Name("riverPaymentSuccess")
     static let riverPaymentFailure = Notification.Name("riverPaymentFailure")
     static let riverShowOrder = Notification.Name("riverShowOrder")
+    static let riverUpdateOrder = Notification.Name("riverUpdateOrder")
 }
