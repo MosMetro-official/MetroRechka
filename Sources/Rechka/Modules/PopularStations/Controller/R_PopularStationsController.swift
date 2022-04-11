@@ -117,8 +117,14 @@ internal final class R_PopularStationsController : UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.customFont(forTextStyle: .title1)
         ]
+        let barButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+        navigationController?.navigationItem.rightBarButtonItem = barButtonItem
         title = "Популярное"
         load(page: 1, size: 10, stationID: nil, tags: [], date: nil)
+    }
+    
+    @objc private func close() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @MainActor
