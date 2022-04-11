@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="MoscowSans-Bold.otf">
+            <string>MoscowSans-Bold</string>
+        </array>
+        <array key="MoscowSans-Regular.otf">
+            <string>MoscowSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="R_BlurResultView" customModule="Rechka">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBd-Vs-aT6">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="frB-x7-bzy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="result_error" translatesAutoresizingMaskIntoConstraints="NO" id="A5d-9B-DhA">
+                                <rect key="frame" x="159" y="400" width="96" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="96" id="NeV-TW-282"/>
+                                    <constraint firstAttribute="width" constant="96" id="sKi-1O-i98"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAc-X1-LJT">
+                                <rect key="frame" x="16" y="546" width="382" height="26"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Bold" family="Moscow Sans" pointSize="22"/>
+                                <color key="textColor" name="textPrimary"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aO7-EF-huX">
+                                <rect key="frame" x="16" y="583" width="382" height="17.5"/>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                <color key="textColor" name="textSecondary"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CIP-CL-p6C">
+                                <rect key="frame" x="16" y="788" width="382" height="50"/>
+                                <color key="backgroundColor" name="buttonSecondary"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="md1-r1-npv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Закрыть">
+                                    <color key="titleColor" name="textInverted"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onCloseSelect" destination="iN0-l3-epB" eventType="touchUpInside" id="ds7-er-56F"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1n6-jX-cpt">
+                                <rect key="frame" x="16" y="726" width="382" height="50"/>
+                                <color key="backgroundColor" name="buttonSecondary"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="f3W-eM-CJt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Попробовать ещё раз">
+                                    <color key="titleColor" name="textInverted"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onRetrySelect" destination="iN0-l3-epB" eventType="touchUpInside" id="IeE-aA-khL"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="oBQ-lF-dMD"/>
+                        <constraints>
+                            <constraint firstItem="A5d-9B-DhA" firstAttribute="centerY" secondItem="frB-x7-bzy" secondAttribute="centerY" id="1sl-k4-5fh"/>
+                            <constraint firstItem="aO7-EF-huX" firstAttribute="top" secondItem="nAc-X1-LJT" secondAttribute="bottom" constant="11" id="3q0-50-tfI"/>
+                            <constraint firstItem="A5d-9B-DhA" firstAttribute="centerX" secondItem="frB-x7-bzy" secondAttribute="centerX" id="74F-k1-Zmw"/>
+                            <constraint firstItem="aO7-EF-huX" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="Dzz-1n-QXe"/>
+                            <constraint firstAttribute="trailing" secondItem="nAc-X1-LJT" secondAttribute="trailing" constant="16" id="E0d-iy-1Gg"/>
+                            <constraint firstItem="CIP-CL-p6C" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="Q8R-ka-bro"/>
+                            <constraint firstItem="CIP-CL-p6C" firstAttribute="top" secondItem="1n6-jX-cpt" secondAttribute="bottom" constant="12" id="TnY-8v-ux7"/>
+                            <constraint firstAttribute="trailing" secondItem="aO7-EF-huX" secondAttribute="trailing" constant="16" id="V3Z-Ku-V0A"/>
+                            <constraint firstItem="nAc-X1-LJT" firstAttribute="top" secondItem="A5d-9B-DhA" secondAttribute="bottom" constant="50" id="aBv-II-DaM"/>
+                            <constraint firstItem="1n6-jX-cpt" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="dnu-T1-zyV"/>
+                            <constraint firstAttribute="trailing" secondItem="1n6-jX-cpt" secondAttribute="trailing" constant="16" id="fHX-Gz-ita"/>
+                            <constraint firstItem="oBQ-lF-dMD" firstAttribute="bottom" secondItem="CIP-CL-p6C" secondAttribute="bottom" constant="24" id="hFz-Mm-Lru"/>
+                            <constraint firstAttribute="trailing" secondItem="CIP-CL-p6C" secondAttribute="trailing" constant="16" id="i23-P5-vfF"/>
+                            <constraint firstItem="nAc-X1-LJT" firstAttribute="leading" secondItem="frB-x7-bzy" secondAttribute="leading" constant="16" id="oZ0-Cl-YKY"/>
+                        </constraints>
+                    </view>
+                    <blurEffect style="systemMaterial"/>
+                </visualEffectView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="cBd-Vs-aT6" secondAttribute="bottom" id="b7w-Gq-qBy"/>
+                <constraint firstItem="cBd-Vs-aT6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="seq-Ju-nSz"/>
+                <constraint firstItem="cBd-Vs-aT6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="tt0-fm-fsp"/>
+                <constraint firstItem="cBd-Vs-aT6" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="yO6-pp-BZn"/>
+            </constraints>
+            <connections>
+                <outlet property="closeButton" destination="CIP-CL-p6C" id="777-rN-KEn"/>
+                <outlet property="descr" destination="aO7-EF-huX" id="jHz-wN-byY"/>
+                <outlet property="resultImage" destination="A5d-9B-DhA" id="UHg-ZH-Pb9"/>
+                <outlet property="retryButton" destination="1n6-jX-cpt" id="tQY-Sq-Dse"/>
+                <outlet property="title" destination="nAc-X1-LJT" id="9I8-rU-p8z"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="124.55357142857142"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="result_error" width="96" height="96"/>
+        <namedColor name="buttonSecondary">
+            <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textInverted">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textPrimary">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textSecondary">
+            <color red="0.45490196078431372" green="0.4823529411764706" blue="0.51764705882352946" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

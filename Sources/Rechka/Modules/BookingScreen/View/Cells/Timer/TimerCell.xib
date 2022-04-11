@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="MoscowSans-Bold.otf">
+            <string>MoscowSans-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="203" id="KGk-i7-Jjw" customClass="TimerCell" customModule="Rechka">
+            <rect key="frame" x="0.0" y="0.0" width="457" height="203"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="457" height="203"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19:62" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="az9-Lg-MkC">
+                        <rect key="frame" x="20" y="75" width="417" height="62"/>
+                        <fontDescription key="fontDescription" name="MoscowSans-Bold" family="Moscow Sans" pointSize="62"/>
+                        <color key="textColor" name="textPrimary"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Осталось времени для оплаты" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfr-jc-sbK">
+                        <rect key="frame" x="0.0" y="145" width="457" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" name="textPrimary"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="body"/>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" name="base"/>
+                <constraints>
+                    <constraint firstItem="az9-Lg-MkC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="64" id="6Lk-3o-ts8"/>
+                    <constraint firstItem="Tfr-jc-sbK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KP9-ht-c6x"/>
+                    <constraint firstItem="Tfr-jc-sbK" firstAttribute="top" secondItem="az9-Lg-MkC" secondAttribute="bottom" constant="8" id="eKn-2O-f5x"/>
+                    <constraint firstAttribute="trailing" secondItem="Tfr-jc-sbK" secondAttribute="trailing" id="k6Y-lW-fVn"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="az9-Lg-MkC" secondAttribute="trailing" id="pBI-ze-kW7"/>
+                    <constraint firstItem="az9-Lg-MkC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="rig-RL-QeV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" name="base"/>
+            <connections>
+                <outlet property="descr" destination="Tfr-jc-sbK" id="W4K-9s-b86"/>
+                <outlet property="timer" destination="az9-Lg-MkC" id="VNo-ID-s3b"/>
+            </connections>
+            <point key="canvasLocation" x="236.95652173913047" y="177.79017857142856"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="base">
+            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="textPrimary">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

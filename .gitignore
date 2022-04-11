@@ -1,7 +1,6 @@
-# OS X
+
 .DS_Store
 
-# Xcode
 build/
 *.pbxuser
 !default.pbxuser
@@ -19,4 +18,9 @@ DerivedData
 Templates
 *.hmap
 *.xccheckout
+*.xcworkspace
 *.xcworkspacedata
+
+#Example
+Example/Pods
+Example/Podfile.lock
