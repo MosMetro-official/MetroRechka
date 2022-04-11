@@ -99,7 +99,6 @@ internal final class R_PassengerDataEntryView: UIView {
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
-        table.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .systemGray
         table.clipsToBounds = true

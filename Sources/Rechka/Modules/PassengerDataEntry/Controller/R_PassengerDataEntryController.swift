@@ -19,7 +19,14 @@ internal final class R_PassengerDataEntryController : UIViewController {
         }
     }
     
-    //var riverUsers: [RiverUser] = []
+    var selectedTariff: R_Tariff?
+    var selectedUser: R_User?
+    
+    var serialDocument: String? {
+        didSet {
+            makeState()
+        }
+    }
     
     var model: R_Trip? {
         didSet {
@@ -34,6 +41,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
     
     override func loadView() {
         super.loadView()
+        view.backgroundColor = .custom(for: .base)
         view = nestedView
     }
     
@@ -128,8 +136,8 @@ extension R_PassengerDataEntryController {
             isFirst = first.id == index
         }
         let passengersCount = self.displayRiverUsers.count
-        
-        let isLast = ((passengersCount - 1) * 10 + 5) == index
+        let serialIsOnScreen = serialDocument == nil ? 5 : 6
+        let isLast = ((passengersCount - 1) * 10 + serialIsOnScreen) == index
         
         let nextEndImage = UIImage(named: "addPlus", in: .module, with: nil)
         let nextImage = UIImage(named: "backButton", in: .module, with: nil)
@@ -285,28 +293,75 @@ extension R_PassengerDataEntryController {
         let personalDataSectionState = SectionState(header: nil, footer: nil)
         sections.append(State(model: personalDataSectionState, elements: personalItems))
                 
-        let onCountrySelect: () -> () = {
-            // select country
+        let onCountrySelect: () -> Void = { [weak self] in
+            let citizenshipController = R_CitizenshipController()
+            citizenshipController.onCitizenshipSelect = Command<R_Citizenship> { [weak self] citizenship in
+                self?.displayRiverUsers[index].citizenShip = citizenship
+            }
+            citizenshipController.modalPresentationStyle = .fullScreen
+            self?.present(citizenshipController, animated: true)
         }
+            
         let countryTitle = R_PassengerDataEntryView.ViewState.Header(title: "Гражданство").toElement()
-        let countrySelection = R_PassengerDataEntryView.ViewState.SelectField(title: "Указать гражданство") {
-            // open citizenship list
-        }.toElement()
+        let cTitle = displayRiverUsers[index].citizenShip == nil ? "Указать гражданство" : displayRiverUsers[index].citizenShip!.name
+        let countrySelection = R_PassengerDataEntryView.ViewState.SelectField(
+            title: cTitle,
+            onSelect: onCountrySelect
+        ).toElement()
         let countrySection = SectionState(header: nil, footer: nil)
         let countryState = State(model: countrySection, elements: [countryTitle, countrySelection])
         sections.append(countryState)
         
         // documents
-        let onDocSelect: () -> () = {
-            // select document
+        var documentElements: [Element] = []
+        let onDocSelect: () -> Void = { [weak self] in
+            let documentController = R_DocumentController()
+            documentController.tripId = model.id
+            documentController.onDocumentSelect = Command<R_Document> { [weak self] document in
+                self?.displayRiverUsers[index].document = document
+            }
+            self?.present(documentController, animated: true)
         }
         
         let docTitle = R_PassengerDataEntryView.ViewState.Header(title: "Документ").toElement()
-        let docSelection = R_PassengerDataEntryView.ViewState.SelectField(title: "Выбрать документ") {
-            // open document list
-        }.toElement()
+        documentElements.append(docTitle)
+        let dTitle = displayRiverUsers[index].document == nil ? "Выбрать документ" : displayRiverUsers[index].document!.name
+        let docSelection = R_PassengerDataEntryView.ViewState.SelectField(
+            title: dTitle,
+            onSelect: onDocSelect
+        ).toElement()
+        documentElements.append(docSelection)
         let docSection = SectionState(header: nil, footer: nil)
-        let docState = State(model: docSection, elements: [docTitle, docSelection])
+        if displayRiverUsers[index].document != nil {
+            // show serial field
+            let onSerialEnter: (TextEnterData) -> () = { data in
+                if self.passengerFieldExists(for: index) {
+                    self.serialDocument = data.text.isEmpty ? nil : data.text
+                }
+            }
+            
+            let serailValidation: (TextValidationData) -> Bool = { [weak self] data in
+                guard let validationData = self?.serialValidation(text: data.text, replacement: data.replacementString) else { return true }
+                data.textField.text = validationData.0
+                return validationData.1
+            }
+            
+            let serialState = self.createInputField(index: (index * 10) + 6,
+                                                    text: serialDocument == nil ? "" : serialDocument!,
+                                                    desc: "Телефон",
+                                                    placeholder: "0000 000000",
+                                                    keyboardType: .numberPad,
+                                                    onTextEnter: onSerialEnter,
+                                                    validation: serailValidation)
+            
+            self.inputStates.append(serialState)
+            
+            let serailField = R_PassengerDataEntryView.ViewState.Filed(text: serialDocument == nil ? "Введите серию и номер паспорта" : serialDocument!) {
+                self.nestedView.showInput(with: serialState)
+            }.toElement()
+            documentElements.append(serailField)
+        }
+        let docState = State(model: docSection, elements: documentElements)
         sections.append(docState)
         
         // tickets
@@ -329,8 +384,7 @@ extension R_PassengerDataEntryController {
         sections.append(ticketsState)
         guard let isWithoutPlace = model.tarrifs?[index].isWithoutPlace else { return [] }
         if !isWithoutPlace {
-            //let onSelect = Command(action: {})
-            let onSelect: () -> Void = { [weak self] in
+            let onSelect: Command<Void> = Command { [weak self] in
                 guard let self = self else { return }
                 self.showPlaceController(for: model)
             }
@@ -340,6 +394,23 @@ extension R_PassengerDataEntryController {
             sections.append(choiceState)
         }
         return sections
+    }
+    
+    private func serialValidation(text: String, replacement: String) -> (String, Bool) {
+        if replacement == "" {
+            return (text, true)
+        }
+        
+        var _text = text
+        if _text.count == 4 {
+            _text.append(" ")
+        }
+        
+        if _text.count >= 11 {
+            return (_text, false)
+        }
+        
+        return (_text, true)
     }
     
     private func birtdayValidation(text: String, replacement: String) -> (String,Bool) {

@@ -250,7 +250,6 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             ticketElemets.append(tariffElement)
             // Если к билету нужно выбрать место
             if !tariff.isWithoutPlace {
-                
                 let placesElements: [Element] = arrayOfSelection.enumerated().map { (index,user) in
                     let onSelectPlace = Command { [weak self] in
                         guard let self = self else { return }
@@ -262,7 +261,10 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                         self.showPlaceController(for: mainModel, selectedPlace: user.ticket?.place, onPlaceSelect: onPlaceSelect)
                     }
                     let title = user.ticket?.place == nil ? "Выберите место" : "Пассажир \(index+1) – место \(user.ticket!.place!)"
-                    let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: title, onItemSelect: onSelectPlace).toElement()
+                    let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(
+                        title: title,
+                        onSelect: onSelectPlace
+                    ).toElement()
                     return choicePlaceElement
                 }
                 

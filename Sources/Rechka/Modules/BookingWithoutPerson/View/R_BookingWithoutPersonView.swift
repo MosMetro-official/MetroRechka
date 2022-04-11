@@ -35,7 +35,7 @@ internal final class R_BookingWithoutPersonView: UIView {
         
         struct ChoicePlace: _ChoicePlace {
             var title: String
-            var onSelect: (() -> Void)
+            var onSelect: Command<Void>
         }
         
         struct DateHeader: _TripsDateHeader {

@@ -46,7 +46,6 @@ class TicketsCell: UITableViewCell {
         }
     }
     private var choiceTicket: ((Int) -> ())?
-    private var isSelect: Bool?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -58,7 +57,6 @@ class TicketsCell: UITableViewCell {
   
     public func configure(with data: _Tickets) {
         model = data.ticketList
-        isSelect = data.isSelected
         choiceTicket = data.onChoice
     }
 }
@@ -83,7 +81,7 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
                 return cell
             default:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return .init() }
-                cell.configure(with: ticket, and: isSelect!)
+                cell.configure(with: ticket)
                 return cell
             }
         }
@@ -91,16 +89,7 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch model?.count {
-        case 0:
-            break
-        default:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return }
-            cell.isSelected = isSelect!
-            //cell.isSelected = isSelect!
-            //isSelect?.toggle()
-            choiceTicket?(indexPath.row)
-        }
+        choiceTicket?(indexPath.item)
     }
 }
 

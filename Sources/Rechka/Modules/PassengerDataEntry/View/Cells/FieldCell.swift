@@ -45,6 +45,5 @@ class FieldCell: UITableViewCell {
     
     public func configure(with data: _Field) {
         mainTextLabel.text = data.text
-        
     }
 }

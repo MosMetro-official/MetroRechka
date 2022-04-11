@@ -46,10 +46,10 @@ class TicketCell: UICollectionViewCell {
         self.layer.addSublayer(gradient)
     }
     
-    public func configure(with data: R_Tariff, and select: Bool) {
+    public func configure(with data: R_Tariff) {
         self.priceLabel.text = "\(Int(data.price)) P"
         self.tarifLabel.text = data.name
-        selectedImage.image = select ? UIImage(named: "select", in: .module, with: nil) : UIImage(named: "unselect", in: .module, with: nil)
-        gradient?.isHidden = select ? false : true
+//        selectedImage.image = data.isSelect ? UIImage(named: "select", in: .module, with: nil) : UIImage(named: "unselect", in: .module, with: nil)
+//        gradient?.isHidden = data.isSelect ? false : true
     }
 }
