@@ -42,7 +42,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     await self?.setRoute(route)
                 } catch {
                     guard let err = error as? APIError else { throw error }
-                    await setErrorState(with: err)
+                    await self?.setErrorState(with: err)
                 }
             }
         }
@@ -66,8 +66,8 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         let finalTitle = title
         
         let onSelect = Command { [weak self] in
-            guard let self = self, let routeId = self.routeID else { return }
-            self.routeID = routeID
+            guard let self = self, let _routeId = self.routeID else { return }
+            self.routeID = _routeId
             
         }
         let err = R_OrderDetailsView.ViewState.Error(
