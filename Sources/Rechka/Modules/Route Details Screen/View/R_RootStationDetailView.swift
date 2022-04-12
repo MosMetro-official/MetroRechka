@@ -16,7 +16,7 @@ internal final class R_RootDetailStationView: UIView {
         let onChoice: Command<Void>?
         let onClose: Command<Void>?
         let posterTitle: String
-        let posterImage: UIImage?
+        let posterImageURL: String?
         
         enum DataState {
             case loading
@@ -49,7 +49,19 @@ internal final class R_RootDetailStationView: UIView {
             var onSelect: (() -> Void)
         }
         
-        static let initial = R_RootDetailStationView.ViewState(state: [], dataState: .loading, onChoice: nil, onClose: nil, posterTitle: "", posterImage: nil)
+        struct Error: _R_ErrorCell {
+            var image: UIImage
+            
+            var title: String
+            
+            var action: Command<Void>?
+            
+            var buttonTitle: String?
+            
+            var height: CGFloat
+        }
+        
+        static let initial = R_RootDetailStationView.ViewState(state: [], dataState: .loading, onChoice: nil, onClose: nil, posterTitle: "", posterImageURL: nil)
     }
     
     var viewState: ViewState = .initial {
@@ -170,13 +182,16 @@ internal final class R_RootDetailStationView: UIView {
         DispatchQueue.main.async {
             switch self.viewState.dataState {
             case .loading:
+                self.buttonView.isHidden = true
                 self.showBlurLoading()
             case .loaded:
+                self.buttonView.isHidden = false
                 self.removeBlurLoading()
             case .error:
+                self.buttonView.isHidden = true
                 self.removeBlurLoading()
             }
-            self.posterHeaderView?.configurePosterHeader(with: self.viewState.posterTitle, and: self.viewState.posterImage)
+            self.posterHeaderView?.configurePosterHeader(with: self.viewState.posterTitle, and: self.viewState.posterImageURL)
             self.choiceTicketButton.alpha = self.viewState.onChoice == nil ? 0.4 : 1
             self.choiceTicketButton.isUserInteractionEnabled = self.viewState.onChoice == nil ? false : true
             self.tableView.viewStateInput = self.viewState.state

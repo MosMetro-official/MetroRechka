@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 internal final class R_PosterTableHeaderView : UIView {
     
@@ -45,12 +46,22 @@ internal final class R_PosterTableHeaderView : UIView {
     private var imageViewBottom = NSLayoutConstraint()
     private var containerViewHeight = NSLayoutConstraint()
     
+    private var imageURL: String? {
+        didSet {
+            if let imageURL = imageURL {
+                guard let photoURL = URL(string: imageURL) else { return }
+                imageView.sd_setImage(with: photoURL, completed: nil)
+            }
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         gradientView.frame = frame
         createViews()
         setViewConstrains()
     }
+    
     
     private func addGradient() {
         self.gradient = CAGradientLayer()
@@ -77,9 +88,10 @@ internal final class R_PosterTableHeaderView : UIView {
         gradient.frame = .init(x: 0, y: self.gradientView.frame.height/2, width: self.gradientView.frame.width, height: self.gradientView.frame.height/2)
     }
     
-    public func configurePosterHeader(with title: String?, and image: UIImage?) {
+    public func configurePosterHeader(with title: String?, and imageURL: String?) {
         titleLabel.text = title
-        imageView.image = image ?? UIImage(named: "poster", in: .module, with: nil)
+        imageView.image = UIImage(named: "poster", in: .module, with: nil)
+        self.imageURL = imageURL
     }
     
     private func createViews() {
