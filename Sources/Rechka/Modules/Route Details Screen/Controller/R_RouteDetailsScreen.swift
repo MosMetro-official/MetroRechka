@@ -41,6 +41,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     try await Task.sleep(nanoseconds: 0_300_000_000)
                     await self?.setRoute(route)
                 } catch {
+                    R_ReportService.shared.report(error: .stateError, message: error.localizedDescription, parameters: ["screen": String(describing: self)])
                     guard let err = error as? APIError else { throw error }
                     await self?.setErrorState(with: err)
                 }
@@ -133,9 +134,9 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
     
     @MainActor
     private func setRoute(_ route: R_Route) {
-        if let first = route.shortTrips.first {
-            self.selectedTripId = first.id
-        }
+//        if let first = route.shortTrips.first {
+//            self.selectedTripId = first.id
+//        }
         self.route = route
     }
     
@@ -254,12 +255,16 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         let infoSectionState = State(model: infoSection, elements: main)
         let dict = Dictionary.init(grouping: model.shortTrips, by: { element -> DateComponents in
             //let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
+            
             let date = Calendar.current.dateComponents([.day, .month, .year], from: (element.dateStart.dateAt(.startOfDay).date))
             return date
         })
         resultSections.append(infoSectionState)
         
         let sorted = dict.sorted(by: { $0.key < $1.key })
+        
+        R_ReportService.shared.report(event: "river.sortedDict", parameters: ["keys": dict.keys.map { $0.description }, "values": dict.values.map { $0.count } ])
+        
         for item in sorted {
             print("=======================")
             print("KEY: \(item.key)\n")
@@ -281,7 +286,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                         case 1...3:
                             return "🔥 Осталось мало мест"
                         default:
-                            return "\(trip.freePlaceCount)"
+                            return "Мест: \(trip.freePlaceCount)"
                         }
                     }()
                     
@@ -318,7 +323,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                 imageURL = firstURL
             }
         }
-        
+        R_ReportService.shared.report(event: "river.detailscreen.stateCreated", parameters: ["resultSections": "\(resultSections.count)", "modelTripsCount": model.shortTrips.count])
         return .init(
             state: resultSections,
             dataState: .loaded,
