@@ -32,8 +32,10 @@ internal final class BasicApiClientDelegate : APIClientDelegate {
             let json = CoreNetwork.JSON(data)
             print("🥰 ERROR - \(json)")
             let message = json["error"]["message"].stringValue
+            R_ReportService.shared.report(error: .networkError, message: message, parameters: [:])
             throw APIError.genericError(message)
         }
+        R_ReportService.shared.report(error: .networkError, message: "Статус код \(response.statusCode)", parameters: [:])
         throw APIError.unacceptableStatusCode(response.statusCode)
         
     }
