@@ -13,20 +13,18 @@ struct RiverOrder {
     /// payment url
     let url: String
     
-    /// important – UTC time
-    let createdDate: Date
     let operation: RiverOperation
     
     init?(data: CoreNetwork.JSON) {
         guard
             let id = data["id"].int,
             let url = data["formUrl"].string,
-            let operation = RiverOperation(data: data["operation"], internalOrderID: id),
-            let createdDate = data["createdDate"].stringValue.toDate()?.date else { return nil }
+            let operation = RiverOperation(data: data["operation"], internalOrderID: id)
+            else { return nil }
         self.id = id
         self.url = url
         self.operation = operation
-        self.createdDate = createdDate
+        
     }
 }
 

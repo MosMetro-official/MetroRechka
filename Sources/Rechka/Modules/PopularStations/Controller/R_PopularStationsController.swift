@@ -177,7 +177,18 @@ internal final class R_PopularStationsController : UIViewController {
                 let onPay: () -> () = { [weak self] in
                     self?.pushDetail(with: route.id)
                 }
+                
+                var imageURL: String? = nil
+                if let routeFirstGallery = route.galleries.first, let firstURL = routeFirstGallery.urls.first {
+                    imageURL = firstURL
+                } else {
+                    if let firstStation = route.stations.first, let firstURL = firstStation.galleries.first?.urls.first {
+                        imageURL = firstURL
+                    }
+                }
+                
                 let routeData = R_HomeView.ViewState.Station(
+                    imageURL: imageURL,
                     title: route.name,
                     jetty: firstStation,
                     time: "\(route.time) мин.",

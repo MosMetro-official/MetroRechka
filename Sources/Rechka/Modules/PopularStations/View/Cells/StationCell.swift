@@ -7,8 +7,10 @@
 
 import UIKit
 import CoreTableView
+import SDWebImage
 
 protocol _StationCell: CellData {
+    var imageURL: String? { get }
     var title: String { get }
     var jetty: String { get }
     var time: String { get }
@@ -77,6 +79,15 @@ class StationCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private var imageURL: String? {
+        didSet {
+            if let imageURL = imageURL {
+                guard let photoURL = URL(string: imageURL) else { return }
+                posterImage.sd_setImage(with: photoURL, completed: nil)
+            }
+        }
+    }
     
     private let jettyLabel: UILabel = {
         let label = UILabel()
@@ -158,6 +169,7 @@ class StationCell: UITableViewCell {
         priceButton.setTitle("От \(data.price)", for: .normal)
         priceButton.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
         onSelect = data.onSelect
+        self.imageURL = data.imageURL
     }
     
     public func earaseData() {

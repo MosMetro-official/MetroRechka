@@ -35,6 +35,7 @@ class R_HomeView: UIView {
         }
         
         struct Station: _StationCell {
+            var imageURL: String?
             let title: String
             let jetty: String
             let time: String
