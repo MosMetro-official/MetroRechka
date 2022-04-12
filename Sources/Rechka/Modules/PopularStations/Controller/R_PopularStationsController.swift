@@ -121,7 +121,7 @@ internal final class R_PopularStationsController : UIViewController {
         let barButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         navigationController?.navigationBar.topItem?.rightBarButtonItem = barButtonItem
         title = "Популярное"
-        load(page: 1, size: 10, stationID: nil, tags: [], date: nil)
+        load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
     }
     
     @objc private func close() {
