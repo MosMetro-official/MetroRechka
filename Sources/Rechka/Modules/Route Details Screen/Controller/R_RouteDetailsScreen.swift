@@ -42,6 +42,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     await self?.setRoute(route)
                 } catch {
                     guard let err = error as? APIError else { throw error }
+                    await setErrorState(with: err)
                 }
             }
         }
@@ -54,6 +55,36 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         }
     }
     
+    @MainActor
+    private func setErrorState(with error: APIError) {
+        
+        var title = "Возникла ошибка при загрузке"
+        if case .genericError(let message) = error {
+            title = message
+        }
+        
+        let finalTitle = title
+        
+        let onSelect = Command { [weak self] in
+            guard let self = self, let routeId = self.routeID else { return }
+            self.routeID = routeID
+            
+        }
+        let err = R_OrderDetailsView.ViewState.Error(
+            image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
+            title: finalTitle,
+            action: onSelect,
+            buttonTitle: "Загрузить еще раз",
+            height: UIScreen.main.bounds.height / 2)
+            .toElement()
+        let state = State(model: .init(header: nil, footer: nil), elements: [err])
+        self.nestedView.viewState = .init(state: [state],
+                                          dataState: .error,
+                                          onChoice: nil,
+                                          onClose: self.nestedView.viewState.onClose,
+                                          posterTitle: self.nestedView.viewState.posterTitle,
+                                          posterImageURL: self.nestedView.viewState.posterImageURL)
+    }
     
     private var isTextCollapsed = true {
         didSet {
@@ -87,7 +118,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        self.nestedView.viewState = .init(state: [], dataState: .loading, onChoice: nil, onClose: nil, posterTitle: "", posterImage: nil)
+        self.nestedView.viewState = .init(state: [], dataState: .loading, onChoice: nil, onClose: nil, posterTitle: "", posterImageURL: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,7 +154,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             onChoice: self.nestedView.viewState.onChoice,
             onClose: self.nestedView.viewState.onClose,
             posterTitle: "",
-            posterImage: nil
+            posterImageURL: self.nestedView.viewState.posterImageURL
         )
         self.nestedView.viewState = loadingState
         Task.detached { [weak self] in
@@ -135,7 +166,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     onChoice: loadingState.onChoice,
                     onClose: loadingState.onClose,
                     posterTitle: "",
-                    posterImage: nil
+                    posterImageURL: loadingState.posterImageURL
                 )
                 await self?.setState(loadedState)
                 await self?.openBuyTicketsController(with: trip)
@@ -279,13 +310,22 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
         }
+        var imageURL: String? = nil
+        if let routeFirstGallery = model.galleries.first, let firstURL = routeFirstGallery.urls.first {
+            imageURL = firstURL
+        } else {
+            if let firstStation = model.stations.first, let firstURL = firstStation.galleries.first?.urls.first {
+                imageURL = firstURL
+            }
+        }
+        
         return .init(
             state: resultSections,
             dataState: .loaded,
             onChoice: onChoice,
             onClose: onClose,
             posterTitle: model.name,
-            posterImage: nil
+            posterImageURL: imageURL
         )
     }
     

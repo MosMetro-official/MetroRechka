@@ -32,7 +32,10 @@ internal final class R_UnauthorizedController: UIViewController {
         }
         
         let onLogin = Command { [weak self] in
-            
+            guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else {
+                return
+            }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
         
         self.nestedView.viewState = .init(onMore: onMore, onClose: onClose, onLogin: onLogin)

@@ -15,11 +15,8 @@ public class Rechka {
     public var isMapsRoutesAvailable : Bool!
     public var returnURL =  "riverexample://main/riverPaymentSuccess"
     public var failURL =  "riverexample://main/riverPaymentFailure"
-    
+    public var openAuthDeeplink = ""
     public var token: String?
-    public var refreshToken: String?
-    public var clientID: String = ""
-    public var clientSecret: String = ""
     public var applicationName = ""
     public var language = "ru_RU"
     
