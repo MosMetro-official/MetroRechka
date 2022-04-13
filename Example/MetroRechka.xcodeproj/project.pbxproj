@@ -118,11 +118,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 952BEF3827D53AAD00299639 /* Build configuration list for PBXNativeTarget "MetroRechka" */;
 			buildPhases = (
-				16F3B1159F5F56A6F037918C /* [CP] Check Pods Manifest.lock */,
+				1723B78DE5F21468BE4A411B /* [CP] Check Pods Manifest.lock */,
+				16F3B1159F5F56A6F037918C /* [CP] Copy Pods Resources */,
 				952BEF2027D53AAD00299639 /* Sources */,
 				952BEF2127D53AAD00299639 /* Frameworks */,
 				952BEF2227D53AAD00299639 /* Resources */,
-				1723B78DE5F21468BE4A411B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -162,7 +162,7 @@
 			mainGroup = 952BEF1B27D53AAD00299639;
 			packageReferences = (
 				9562CB6327DA188D009A1DEF /* XCRemoteSwiftPackageReference "CoreTableView" */,
-				9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork" */,
+				9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork.git" */,
 			);
 			productRefGroup = 952BEF2527D53AAD00299639 /* Products */;
 			projectDirPath = "";
@@ -187,7 +187,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		16F3B1159F5F56A6F037918C /* [CP] Check Pods Manifest.lock */ = {
+		16F3B1159F5F56A6F037918C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -204,7 +204,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetroRechka/Pods-MetroRechka-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1723B78DE5F21468BE4A411B /* [CP] Copy Pods Resources */ = {
+		1723B78DE5F21468BE4A411B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -463,7 +463,7 @@
 				minimumVersion = 0.0.2;
 			};
 		};
-		9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork" */ = {
+		9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MosMetro-official/CoreNetwork.git";
 			requirement = {
