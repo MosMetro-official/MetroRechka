@@ -86,6 +86,7 @@ internal final class R_BookingWithPersonController: UIViewController {
                 }
             }
         } else {
+            self.nestedView.removeBlurLoading()
             let unauthorizedVC = R_UnauthorizedController()
             self.present(unauthorizedVC, animated: true, completion: nil)
         }
