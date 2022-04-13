@@ -39,7 +39,7 @@ class R_DocumentController: UIViewController {
     }
     
     private func loadDocuments(by id: Int) {
-        nestedView.viewState = .init(dataState: .loading, state: [])
+        nestedView.viewState = .init(dataState: .loading, state: [], onClose: nil)
         Task.detached { [weak self] in
             do {
                 let availableDocuments = try await self?.network.getDocs(by: id)
@@ -63,10 +63,17 @@ class R_DocumentController: UIViewController {
             }
             return R_DocumentView.ViewState.Document(title: document.name, onSelect: onSelect).toElement()
         }
+        let onClose = Command { [weak self] in
+            self?.dismiss(animated: true)
+        }
         let sec = SectionState(header: nil, footer: nil)
         let state = State(model: sec, elements: elements)
         await MainActor.run { [weak self] in
-            let viewState = R_DocumentView.ViewState(dataState: .loaded, state: [state])
+            let viewState = R_DocumentView.ViewState(
+                dataState: .loaded,
+                state: [state],
+                onClose: onClose
+            )
             self?.nestedView.viewState = viewState
         }
     }

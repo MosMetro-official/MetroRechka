@@ -11,10 +11,12 @@ import CoreTableView
 class R_DocumentView: UIView {
 
     @IBOutlet weak var tableView: BaseTableView!
+    @IBOutlet weak var closeButton: UIButton!
     
     struct ViewState {
         let dataState: DataState
         let state: [State]
+        let onClose: Command<Void>?
         
         enum DataState {
             case loading
@@ -27,7 +29,7 @@ class R_DocumentView: UIView {
             let onSelect: () -> Void
         }
         
-        static let initial = R_DocumentView.ViewState(dataState: .loading, state: [])
+        static let initial = R_DocumentView.ViewState(dataState: .loading, state: [], onClose: nil)
     }
     
     var viewState: ViewState = .initial {
@@ -42,6 +44,11 @@ class R_DocumentView: UIView {
         super.awakeFromNib()
         backgroundColor = .custom(for: .base)
         tableView.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 20, right: 0)
+        closeButton.titleLabel?.font = .customFont(forTextStyle: .body)
+    }
+    
+    @IBAction func tapOnClose() {
+        viewState.onClose?.perform(with: ())
     }
     
     private func render() {

@@ -32,6 +32,7 @@ internal final class R_BookingWithPersonView: UIView {
         struct Passenger: _Passenger {
             let name: String
             let tariff: String
+            let onSelect: () -> Void
         }
         
         struct TariffHeader: _TariffHeaderCell {}
@@ -158,7 +159,6 @@ internal final class R_BookingWithPersonView: UIView {
         super.init(frame: frame)
         backgroundColor = Appearance.colors[.base]
         setupConstrains()
-        setupBookAction()
     }
     
     required init?(coder: NSCoder) {
@@ -175,12 +175,7 @@ internal final class R_BookingWithPersonView: UIView {
                 addButton.addTarget(self, action: #selector(preseentPersonAlert), for: .touchUpInside)
             }
         } else {
-            addButton.addTarget(self, action: #selector(pushPersonDataEntry), for: .touchUpInside)  
-        }
-    }
-    
-    private func setupBookAction() {
-        if viewState.book != nil {
+            addButton.addTarget(self, action: #selector(pushPersonDataEntry), for: .touchUpInside)
             bookButton.addTarget(self, action: #selector(book), for: .touchUpInside)
         }
     }

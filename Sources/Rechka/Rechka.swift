@@ -150,25 +150,7 @@ extension UIColor {
             alpha: CGFloat(1.0)
         )
     }
-    
-    
 }
-
-struct Command<T> {
-    
-    private var action: (T) -> Void
-    
-    public init(action: @escaping (T) -> Void) {
-        self.action = action
-    }
-    
-    public func perform(with value: T) {
-        self.action(value)
-    }
-    
-}
-
-
 
 @IBDesignable
 extension UILabel
@@ -255,7 +237,6 @@ extension GradientLabel
 
 class GradientLabel: UIStackView {
     
-    
     lazy var label: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -279,7 +260,6 @@ class GradientLabel: UIStackView {
     private func setupView() {
         axis = .vertical
         alignment = .center
-        
         addArrangedSubview(label)
     }
     

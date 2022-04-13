@@ -10,6 +10,7 @@ import CoreTableView
 
 protocol _ChoicePlace: CellData {
     var title: String { get }
+    var onItemSelect: Command<Void> { get }
 }
 
 extension _ChoicePlace {

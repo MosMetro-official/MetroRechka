@@ -7,9 +7,11 @@
 
 import UIKit
 import CoreTableView
+import CoreNetwork
 
 protocol R_BookingWithPersonDelegate: AnyObject {
     func setupNewUser(with user: R_User, and model: R_Trip)
+    func setupOldUser(for replaceUser: R_User, at index: Int, with model: R_Trip)
 }
 
 internal final class R_BookingWithPersonController: UIViewController {
@@ -38,7 +40,7 @@ internal final class R_BookingWithPersonController: UIViewController {
 
         let showPersonDataEntry: Command<Void>? = {
             return Command { [weak self] in
-                self?.pushPersonDataEntry(with: (model))
+                self?.pushPersonDataEntry(with: model)
             }
         }()
         let showPersonAlert: Command<Void>? = {
@@ -57,6 +59,38 @@ internal final class R_BookingWithPersonController: UIViewController {
         nestedView.viewState = viewState
     }
     
+    @MainActor
+    private func handle(order: RiverOrder) {
+        self.nestedView.removeBlurLoading()
+        let bookingController = R_BookingScreenController()
+        self.present(bookingController, animated: true) {
+            bookingController.model = order
+            bookingController.onDismiss = { [weak self] in
+                self?.navigationController?.popToRootViewController(animated: false)
+                NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+            }
+        }
+    }
+    
+    private func startBooking() {
+        self.nestedView.showBlurLoading()
+        guard let tripID = self.model?.id else { return }
+        if let _ = Rechka.shared.token {
+            let finalUsers = riverUsers
+            Task.detached { [weak self] in
+                do {
+                    let order = try await R_Trip.book(with: finalUsers, tripID: tripID)
+                    await self?.handle(order: order)
+                } catch {
+                    
+                }
+            }
+        } else {
+            let unauthorizedVC = R_UnauthorizedController()
+            self.present(unauthorizedVC, animated: true, completion: nil)
+        }
+    }
+    
     private func makeState(from riverUsers: [R_User]) {
         guard let newModel = model else { return }
         let users = riverUsers.map({$0})
@@ -72,10 +106,14 @@ internal final class R_BookingWithPersonController: UIViewController {
         ).toElement()
         passElements.append(passengerHeaderCell)
         
-        users.forEach { user in
+        for (index, user) in users.enumerated() {
+            let onSelect: () -> Void = { [weak self] in
+                self?.pushPersonDataEntry(with: newModel, and: user, for: index)
+            }
             let passenger = R_BookingWithPersonView.ViewState.Passenger(
                 name: "\(user.surname ?? "") \(user.name ?? "")",
-                tariff: user.ticket?.name ?? ""
+                tariff: user.ticket?.name ?? "",
+                onSelect: onSelect
             ).toElement()
             if !passElements.contains(passenger) {
                 passElements.append(passenger)
@@ -88,16 +126,28 @@ internal final class R_BookingWithPersonController: UIViewController {
         var tickElements: [Element] = []
         let tariffHeader = R_BookingWithPersonView.ViewState.TariffHeader().toElement()
         tickElements.append(tariffHeader)
-        let tickets = riverUsers.map({$0.ticket})
+        let tickets = users.compactMap { $0.ticket }
         tickets.forEach { ticket in
+            let price = Int(ticket.price)
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
-                tariffs: "\(ticket?.name ?? "")",
-                price: "\(Int(ticket?.price ?? 0)) ₽"
+                tariffs: ticket.name,
+                price: "\(price) ₽"
+            ).toElement()
+            tickElements.append(tariff)
+//            if !tickElements.contains(tariff) {
+//                tickElements.append(tariff)
+//            }
+        }
+        let additionalService = users.compactMap { $0.additionServices }.flatMap { $0 }
+        additionalService.forEach { service in
+            let price = Int(service.price)
+            let tariff = R_BookingWithPersonView.ViewState.Tariff(
+                tariffs: service.name_ru,
+                price: "\(price) ₽"
             ).toElement()
             tickElements.append(tariff)
         }
-        let commission = R_BookingWithPersonView.ViewState.Commission(commission: "Комиссия сервиса", price: "60 ₽").toElement()
-        tickElements.append(commission)
+        
         let tariffSection = SectionState(header: nil, footer: nil)
         let tariffState = State(model: tariffSection, elements: tickElements)
         let showPersonAlert: Command<Void>? = {
@@ -110,9 +160,10 @@ internal final class R_BookingWithPersonController: UIViewController {
                 self?.pushPersonDataEntry(with: newModel)
             }
         }()
+        
         let book: Command<Void>? = {
             return Command { [weak self] in
-                //self?.startBooking()
+                self?.startBooking()
             }
         }()
         
@@ -152,7 +203,6 @@ internal final class R_BookingWithPersonController: UIViewController {
         guard let newModel = model else { return [] }
         var actions: [UIAction] = []
         guard let users = SomeCache.shared.cache["user"] else { return [] }
-        print("🤷‍♂️🤷‍♂️🤷‍♂️ \(users)")
         for user in users {
             let action = UIAction(
                 title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
@@ -170,12 +220,13 @@ internal final class R_BookingWithPersonController: UIViewController {
         return actions
     }
     
-    private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil) {
+    private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil, for index: Int? = nil) {
         let passenderDataEntry = R_PassengerDataEntryController()
         passenderDataEntry.delegate = self
         passenderDataEntry.model = model
         if user != nil {
-            passenderDataEntry.displayRiverUsers.append(user!)
+            passenderDataEntry.displayRiverUsers = [user!]
+            passenderDataEntry.index = index
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         } else {
             navigationController?.pushViewController(passenderDataEntry, animated: true)
@@ -185,7 +236,13 @@ internal final class R_BookingWithPersonController: UIViewController {
 
 extension R_BookingWithPersonController: R_BookingWithPersonDelegate {
     func setupNewUser(with user: R_User, and model: R_Trip) {
+        self.model = model
         self.riverUsers.append(user)
+        self.makeState(from: riverUsers)
+    }
+    
+    func setupOldUser(for replaceUser: R_User, at index: Int, with model: R_Trip) {
+        self.riverUsers[index] = replaceUser
         self.model = model
         self.makeState(from: riverUsers)
     }

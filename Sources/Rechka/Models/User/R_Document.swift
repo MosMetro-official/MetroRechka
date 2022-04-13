@@ -17,6 +17,7 @@ struct R_Document: Equatable {
     let nationalityUse: Int
     let pictureIndex: Int
     let exampleNumber: String
+    var cardIdentityNumber: String?
     
     init?(data: CoreNetwork.JSON) {
         guard

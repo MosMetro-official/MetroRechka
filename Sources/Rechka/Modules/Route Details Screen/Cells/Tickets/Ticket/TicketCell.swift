@@ -38,18 +38,19 @@ class TicketCell: UICollectionViewCell {
         
         let shape = CAShapeLayer()
         shape.lineWidth = 1.5
-        shape.path =  UIBezierPath(roundedRect: CGRect(origin: .zero, size: gradient.frame.size).insetBy(dx: 1.5, dy: 1.5), cornerRadius: 12).cgPath
+        shape.path =  UIBezierPath(roundedRect: CGRect(origin: .zero, size: gradient.frame.size).insetBy(dx: 0.5, dy: 1.5), cornerRadius: 12).cgPath
         shape.strokeColor = UIColor.black.cgColor
         shape.fillColor = UIColor.clear.cgColor
         gradient.mask = shape
         
-        self.layer.addSublayer(gradient)
+        contentView.layer.addSublayer(gradient)
     }
     
-    public func configure(with data: R_Tariff) {
+    public func configure(with data: R_Tariff, isSelect: Bool) {
         self.priceLabel.text = "\(Int(data.price)) P"
         self.tarifLabel.text = data.name
-//        selectedImage.image = data.isSelect ? UIImage(named: "select", in: .module, with: nil) : UIImage(named: "unselect", in: .module, with: nil)
-//        gradient?.isHidden = data.isSelect ? false : true
+        selectedImage.image = isSelect ? UIImage(named: "select", in: .module, with: nil) : UIImage(named: "unselect", in: .module, with: nil)
+        gradient?.isHidden = isSelect ? false : true
+        contentView.layer.borderWidth = isSelect ? 0 : 1.5
     }
 }

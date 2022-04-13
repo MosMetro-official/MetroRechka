@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -22,8 +22,8 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Uhy-Ec-AS0" customClass="BaseTableView" customModule="CoreTableView">
-                    <rect key="frame" x="0.0" y="90" width="414" height="772"/>
-                    <color key="backgroundColor" name="content"/>
+                    <rect key="frame" x="0.0" y="114" width="414" height="682"/>
+                    <color key="backgroundColor" name="base"/>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Укажите гражданство" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YN1-L0-YHO">
                     <rect key="frame" x="20" y="64" width="374" height="26"/>
@@ -34,27 +34,75 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="title2"/>
                     </userDefinedRuntimeAttributes>
                 </label>
+                <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e2j-9m-4lC">
+                    <rect key="frame" x="0.0" y="796" width="414" height="100"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Россия" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZTE-CX-e1f">
+                            <rect key="frame" x="20" y="10" width="304" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="2QM-B3-dwP"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ye6-fb-GQA">
+                            <rect key="frame" x="344" y="10" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="gFu-Ss-tdZ"/>
+                                <constraint firstAttribute="width" constant="50" id="hLR-nE-0ic"/>
+                            </constraints>
+                            <color key="tintColor" name="textPrimary"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="backButton"/>
+                            <connections>
+                                <action selector="onCloseTap" destination="iN0-l3-epB" eventType="touchUpInside" id="mnw-RL-o0M"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="settingsPanel"/>
+                    <constraints>
+                        <constraint firstItem="ZTE-CX-e1f" firstAttribute="leading" secondItem="e2j-9m-4lC" secondAttribute="leading" constant="20" id="0uS-dI-DlZ"/>
+                        <constraint firstItem="ye6-fb-GQA" firstAttribute="leading" secondItem="ZTE-CX-e1f" secondAttribute="trailing" constant="20" id="F9B-OQ-Qg9"/>
+                        <constraint firstAttribute="trailing" secondItem="ye6-fb-GQA" secondAttribute="trailing" constant="20" id="IqP-6v-jbt"/>
+                        <constraint firstItem="ye6-fb-GQA" firstAttribute="centerY" secondItem="ZTE-CX-e1f" secondAttribute="centerY" id="JLX-G6-9aq"/>
+                        <constraint firstAttribute="height" constant="100" id="gbO-Xu-VNy"/>
+                        <constraint firstItem="ZTE-CX-e1f" firstAttribute="top" secondItem="e2j-9m-4lC" secondAttribute="top" constant="10" id="yxY-Mj-cKO"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="e2j-9m-4lC" secondAttribute="bottom" id="1ZE-sM-J6V"/>
                 <constraint firstItem="YN1-L0-YHO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="1nl-9p-PIa"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Uhy-Ec-AS0" secondAttribute="bottom" id="7zB-8d-v1R"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="e2j-9m-4lC" secondAttribute="trailing" id="6qh-0T-LOx"/>
                 <constraint firstItem="YN1-L0-YHO" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="CDf-oq-1Rx"/>
-                <constraint firstItem="Uhy-Ec-AS0" firstAttribute="top" secondItem="YN1-L0-YHO" secondAttribute="bottom" id="MqQ-YY-cXo"/>
+                <constraint firstItem="Uhy-Ec-AS0" firstAttribute="top" secondItem="YN1-L0-YHO" secondAttribute="bottom" constant="24" id="IP8-iH-C1g"/>
+                <constraint firstItem="e2j-9m-4lC" firstAttribute="top" secondItem="Uhy-Ec-AS0" secondAttribute="bottom" id="Ibb-X9-tkb"/>
+                <constraint firstItem="e2j-9m-4lC" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Omx-nI-DW8"/>
                 <constraint firstItem="Uhy-Ec-AS0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="lNK-Ux-dh3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="YN1-L0-YHO" secondAttribute="trailing" constant="20" id="m6k-zC-rpk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Uhy-Ec-AS0" secondAttribute="trailing" id="zUg-Ru-dPc"/>
             </constraints>
             <connections>
+                <outlet property="searchViewToBottom" destination="1ZE-sM-J6V" id="TzS-FD-2yd"/>
                 <outlet property="tableView" destination="Uhy-Ec-AS0" id="AFu-tE-7Za"/>
             </connections>
-            <point key="canvasLocation" x="139" y="74"/>
+            <point key="canvasLocation" x="137.68115942028987" y="73.660714285714278"/>
         </view>
     </objects>
     <resources>
-        <namedColor name="content">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <image name="backButton" width="33" height="33"/>
+        <namedColor name="base">
+            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="settingsPanel">
+            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textPrimary">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

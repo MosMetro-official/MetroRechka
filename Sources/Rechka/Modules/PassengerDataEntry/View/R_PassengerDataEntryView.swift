@@ -55,7 +55,7 @@ internal final class R_PassengerDataEntryView: UIView {
         struct Tickets: _Tickets {
             let ticketList: [R_Tariff]
             let onChoice: ((Int) -> ())?
-            let isSelected: Bool
+            let selectedTicket: R_Tariff?
         }
         
         struct ChoicePlace: _ChoicePlace {

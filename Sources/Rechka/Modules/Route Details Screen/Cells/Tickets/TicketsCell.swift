@@ -11,10 +11,11 @@ import CoreTableView
 protocol _Tickets: CellData {
     var ticketList: [R_Tariff] { get }
     var onChoice: ((Int) -> ())? { get }
-    var isSelected: Bool { get }
+    var selectedTicket: R_Tariff? { get }
 }
 
 extension _Tickets {
+    var selectedTicket: R_Tariff? { return nil }
     var onChoice: ((Int) -> ())? { return nil }
     
     var height: CGFloat {
@@ -22,7 +23,7 @@ extension _Tickets {
     }
     
     func hashValues() -> [Int] {
-        return [isSelected.hashValue]
+        return [selectedTicket.hashValue]
     }
     
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
@@ -46,6 +47,7 @@ class TicketsCell: UITableViewCell {
         }
     }
     private var choiceTicket: ((Int) -> ())?
+    private var selectedTicket: R_Tariff?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -58,6 +60,7 @@ class TicketsCell: UITableViewCell {
     public func configure(with data: _Tickets) {
         model = data.ticketList
         choiceTicket = data.onChoice
+        selectedTicket = data.selectedTicket
     }
 }
 
@@ -74,14 +77,15 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let ticket = model?[indexPath.row] {
+        if let ticket = model?[indexPath.item] {
             switch model?.count {
             case 0:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyTicketCell.identifire, for: indexPath) as? EmptyTicketCell else { return .init() }
                 return cell
             default:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return .init() }
-                cell.configure(with: ticket)
+                let isSelect = ticket == selectedTicket
+                cell.configure(with: ticket, isSelect: isSelect)
                 return cell
             }
         }

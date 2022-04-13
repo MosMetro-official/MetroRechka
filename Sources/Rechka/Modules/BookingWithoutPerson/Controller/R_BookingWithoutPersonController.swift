@@ -257,13 +257,12 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                             guard let self = self, let  _ = self.selectedTarrifs.selectedTarrifs[tariff]?[safe: index]?.ticket else { return }
                             self.selectedTarrifs.selectedTarrifs[tariff]![index].ticket!.place = place
                         }
-                        
                         self.showPlaceController(for: mainModel, selectedPlace: user.ticket?.place, onPlaceSelect: onPlaceSelect)
                     }
                     let title = user.ticket?.place == nil ? "Выберите место" : "Пассажир \(index+1) – место \(user.ticket!.place!)"
                     let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(
                         title: title,
-                        onSelect: onSelectPlace
+                        onItemSelect: onSelectPlace
                     ).toElement()
                     return choicePlaceElement
                 }
