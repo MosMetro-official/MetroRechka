@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Rechka.shared.isMapsAvailable = true
         Rechka.shared.isMapsRoutesAvailable = true
         Rechka.shared.delegate = self
-        Rechka.shared.networkDelegate = self
+       
         
             
             
@@ -46,14 +46,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-extension SceneDelegate : RechkaMapDelegate, RechkaNetworkDelegate {
+extension SceneDelegate : RechkaMapDelegate {
     
     func getRechkaMapController() -> RechkaMapController {
         return MapViewController(nibName: "MapViewController", bundle: nil)
     }
     
-    func refreshToken() async throws -> Bool {
-        Rechka.shared.refreshToken = Rechka.shared.token
-        return true
-    }
 }

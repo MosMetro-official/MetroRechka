@@ -31,14 +31,18 @@ extension URLRequest {
         static var apiVariant = apiVariantHeader.rawValue
     }
     
-    mutating func appendBasicHeaders() {
-        self.setValue(Rechka.shared.deviceUUID, forHTTPHeaderField: Headers.deviceHeader.rawValue)
-        self.setValue(Rechka.shared.deviceUserAgent, forHTTPHeaderField: Headers.userAgentHeader.rawValue)
-        self.setValue(Rechka.shared.language, forHTTPHeaderField: Headers.languageHeader.rawValue)
+    mutating func appendAuthHeaders() {
+        appendBasicHeaders()
         if let authToken = Rechka.shared.token {
             self.setValue("Bearer \(authToken)", forHTTPHeaderField: Headers.applicationHeader.rawValue)
             self.setValue("Bearer \(authToken)", forHTTPHeaderField: Headers.authorizationHeader.rawValue)
         }
+    }
+    
+    mutating func appendBasicHeaders() {
+        self.setValue(Rechka.shared.deviceUUID, forHTTPHeaderField: Headers.deviceHeader.rawValue)
+        self.setValue(Rechka.shared.deviceUserAgent, forHTTPHeaderField: Headers.userAgentHeader.rawValue)
+        self.setValue(Rechka.shared.language, forHTTPHeaderField: Headers.languageHeader.rawValue)
     }
     
 }

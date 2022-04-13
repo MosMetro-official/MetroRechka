@@ -35,7 +35,7 @@ struct RechkaShortOrder {
     init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
               let status = RechkaOrderStatus(rawValue: data["status"].intValue),
-              let createdDate = data["createdDate"].stringValue.toDate()?.date else { return nil }
+              let createdDate = data["createdDate"].stringValue.toISODate(nil, region: nil)?.date else { return nil }
         self.id = id
         self.status = status
         self.routeName = data["routeName"].stringValue

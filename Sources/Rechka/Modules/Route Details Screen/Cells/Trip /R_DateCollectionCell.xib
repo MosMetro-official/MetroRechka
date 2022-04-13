@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="R_DateCollectionCell" customModule="Rechka">
+            <rect key="frame" x="0.0" y="0.0" width="182" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="182" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rsn-on-E7c">
+                        <rect key="frame" x="0.0" y="0.0" width="182" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBL-65-BzT">
+                                <rect key="frame" x="0.0" y="0.0" width="182" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" name="textPrimary"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="button1"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="bBL-65-BzT" firstAttribute="top" secondItem="Rsn-on-E7c" secondAttribute="top" id="2Ao-nP-laD"/>
+                            <constraint firstItem="bBL-65-BzT" firstAttribute="leading" secondItem="Rsn-on-E7c" secondAttribute="leading" id="YE4-u6-ePG"/>
+                            <constraint firstAttribute="bottom" secondItem="bBL-65-BzT" secondAttribute="bottom" id="bNo-7Z-SJg"/>
+                            <constraint firstAttribute="trailing" secondItem="bBL-65-BzT" secondAttribute="trailing" id="wkL-yI-fH3"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="Rsn-on-E7c" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="08d-rz-aEp"/>
+                <constraint firstAttribute="bottom" secondItem="Rsn-on-E7c" secondAttribute="bottom" id="HAy-ww-bGs"/>
+                <constraint firstAttribute="trailing" secondItem="Rsn-on-E7c" secondAttribute="trailing" id="mhq-C8-5zD"/>
+                <constraint firstItem="Rsn-on-E7c" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="nka-Cf-lsW"/>
+            </constraints>
+            <size key="customSize" width="182" height="50"/>
+            <connections>
+                <outlet property="cardView" destination="Rsn-on-E7c" id="yee-9V-F48"/>
+                <outlet property="timeLabel" destination="bBL-65-BzT" id="Fgc-ZO-68C"/>
+            </connections>
+            <point key="canvasLocation" x="233.33333333333334" y="125.89285714285714"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="textPrimary">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

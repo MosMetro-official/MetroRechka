@@ -16,7 +16,7 @@ protocol _TerminalCell : CellData {
 extension _TerminalCell {
     
     var height : CGFloat {
-        return 61
+        return 80
     }
     
     func hashValues() -> [Int] {

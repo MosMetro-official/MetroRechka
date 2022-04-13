@@ -31,6 +31,8 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
+    private var unautorizedVC: R_UnauthorizedController?
+    
     override func loadView() {
         super.loadView()
         view = nestedView
@@ -39,7 +41,23 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
+<<<<<<< HEAD
         setupRiverBackButton()
+=======
+        NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            if let unautorizedVC = self.unautorizedVC {
+                unautorizedVC.dismiss(animated: true) { [weak self] in
+                    self?.unautorizedVC = nil
+                    self?.startBooking()
+                }
+            } else {
+                self.startBooking()
+            }
+            
+        }
+        
+>>>>>>> main
     }
     
     @MainActor
@@ -193,8 +211,8 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 }
             }
         } else {
-            let unauthorizedVC = R_UnauthorizedController()
-            self.present(unauthorizedVC, animated: true, completion: nil)
+            self.unautorizedVC = R_UnauthorizedController()
+            self.present(self.unautorizedVC!, animated: true, completion: nil)
         }
     }
     

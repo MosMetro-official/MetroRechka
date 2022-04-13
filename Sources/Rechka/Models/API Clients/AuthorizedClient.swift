@@ -19,7 +19,7 @@ internal final class SecureApiClientDelegate : APIClientDelegate {
     private var attempts = 0
     
     func client(_ client: APIClient, willSendRequest request: inout URLRequest) {
-        request.appendBasicHeaders()
+        request.appendAuthHeaders()
         
     }
     
@@ -33,6 +33,7 @@ internal final class SecureApiClientDelegate : APIClientDelegate {
                 attempts += 1
                 if attempts > 2 {
                     attempts = 0
+                    R_ReportService.shared.report(error: .networkError, message: "Не удалось обновить токен", parameters: [:])
                     throw APIError.genericError("Что-то пошло не так")
                 }
                 return try await client.send(initialRequest)
@@ -45,8 +46,10 @@ internal final class SecureApiClientDelegate : APIClientDelegate {
                 let json = CoreNetwork.JSON(data)
                 print("🥰 ERROR - \(json)")
                 let message = json["error"]["message"].stringValue
+                R_ReportService.shared.report(error: .networkError, message: message, parameters: [:])
                 throw APIError.genericError(message)
             }
+            R_ReportService.shared.report(error: .networkError, message: "Статус код \(response.statusCode)", parameters: [:])
             throw APIError.unacceptableStatusCode(response.statusCode)
         }
     }

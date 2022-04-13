@@ -41,7 +41,9 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     try await Task.sleep(nanoseconds: 0_300_000_000)
                     await self?.setRoute(route)
                 } catch {
+                    R_ReportService.shared.report(error: .stateError, message: error.localizedDescription, parameters: ["screen": String(describing: self)])
                     guard let err = error as? APIError else { throw error }
+                    await self?.setErrorState(with: err)
                 }
             }
         }
@@ -54,6 +56,36 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         }
     }
     
+    @MainActor
+    private func setErrorState(with error: APIError) {
+        
+        var title = "Возникла ошибка при загрузке"
+        if case .genericError(let message) = error {
+            title = message
+        }
+        
+        let finalTitle = title
+        
+        let onSelect = Command { [weak self] in
+            guard let self = self, let _routeId = self.routeID else { return }
+            self.routeID = _routeId
+            
+        }
+        let err = R_OrderDetailsView.ViewState.Error(
+            image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
+            title: finalTitle,
+            action: onSelect,
+            buttonTitle: "Загрузить еще раз",
+            height: UIScreen.main.bounds.height / 2)
+            .toElement()
+        let state = State(model: .init(header: nil, footer: nil), elements: [err])
+        self.nestedView.viewState = .init(state: [state],
+                                          dataState: .error,
+                                          onChoice: nil,
+                                          onClose: self.nestedView.viewState.onClose,
+                                          posterTitle: self.nestedView.viewState.posterTitle,
+                                          posterImageURL: self.nestedView.viewState.posterImageURL)
+    }
     
     private var isTextCollapsed = true {
         didSet {
@@ -87,7 +119,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        self.nestedView.viewState = .init(state: [], dataState: .loading, onChoice: nil, onClose: nil, posterTitle: "", posterImage: nil)
+        self.nestedView.viewState = .init(state: [], dataState: .loading, onChoice: nil, onClose: nil, posterTitle: "", posterImageURL: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,9 +134,9 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
     
     @MainActor
     private func setRoute(_ route: R_Route) {
-        if let first = route.shortTrips.first {
-            self.selectedTripId = first.id
-        }
+//        if let first = route.shortTrips.first {
+//            self.selectedTripId = first.id
+//        }
         self.route = route
     }
     
@@ -123,7 +155,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             onChoice: self.nestedView.viewState.onChoice,
             onClose: self.nestedView.viewState.onClose,
             posterTitle: "",
-            posterImage: nil
+            posterImageURL: self.nestedView.viewState.posterImageURL
         )
         self.nestedView.viewState = loadingState
         Task.detached { [weak self] in
@@ -135,7 +167,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     onChoice: loadingState.onChoice,
                     onClose: loadingState.onClose,
                     posterTitle: "",
-                    posterImage: nil
+                    posterImageURL: loadingState.posterImageURL
                 )
                 await self?.setState(loadedState)
                 await self?.openBuyTicketsController(with: trip)
@@ -223,54 +255,58 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         let infoSectionState = State(model: infoSection, elements: main)
         let dict = Dictionary.init(grouping: model.shortTrips, by: { element -> DateComponents in
             //let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
+            
             let date = Calendar.current.dateComponents([.day, .month, .year], from: (element.dateStart.dateAt(.startOfDay).date))
             return date
         })
         resultSections.append(infoSectionState)
         
         let sorted = dict.sorted(by: { $0.key < $1.key })
+        
+        R_ReportService.shared.report(event: "river.sortedDict", parameters: ["keys": dict.keys.map { $0.description }, "values": dict.values.map { $0.count } ])
+        
         for item in sorted {
             print("=======================")
             print("KEY: \(item.key)\n")
             print("Values: \(item.value)")
         }
         
-        let tripsSections: [State]  = sorted.compactMap { (key, value) in
+        let tripsTest: [Element] = sorted.compactMap { (key, value) in
             if let first = value.first {
-                let sortedTrips: [Element] = value.sorted(by: { $0.dateStart < $1.dateStart}).map { trip in
-                    let onSelect: () -> () = { [weak self] in
+                
+                // creating trips on this day
+                let tripsOnThisDay: [_R_DateCollectionCell] = value.sorted(by: { $0.dateStart < $1.dateStart}).map { trip in
+                    let onSelect = Command {  [weak self] in
                         guard let self = self else { return }
                         self.selectedTripId = trip.id
                     }
                     
-                    let seats: String = {
-                        switch trip.freePlaceCount {
-                        case 0:
-                            return "Мест не осталось"
-                        case 1...3:
-                            return "🔥 Осталось мало мест"
-                        default:
-                            return "\(trip.freePlaceCount)"
-                        }
-                    }()
+                    let isSelected = trip.id == self.selectedTripId
+                    let primaryText = Appearance.colors[.textPrimary] ?? .label
+                    let tint = Appearance.colors[.buttonSecondary] ?? .label
+                    let invertedText = Appearance.colors[.textInverted] ?? .systemBackground
                     
-                    return R_RootDetailStationView.ViewState.ShortTripInfo(
-                        date: trip.dateStart.toFormat("d MMMM yyyy HH:mm", locale: Locales.russian),
-                        isSelected: trip.id == self.selectedTripId ,
-                        price: "\(trip.price) ₽",
-                        seats: seats,
-                        onSelect: onSelect
-                    ).toElement()
+                    return R_RootDetailStationView.ViewState.TripTime(
+                        time: trip.dateStart.toFormat("HH:mm", locale: Locales.russian),
+                        textColor: isSelected ? invertedText : primaryText,
+                        bgColor: isSelected ? tint : UIColor.clear,
+                        borderColor: isSelected ? tint : primaryText,
+                        onSelect: onSelect)
                 }
-                
-                let sectionTitle = first.dateStart.toFormat("d MMMM", locale: Locales.russianRussia)
-                let headerData = R_RootDetailStationView.ViewState.DateHeader(title: sectionTitle)
-                let sectionData = SectionState(header: headerData, footer: nil)
-                return State(model: sectionData, elements: sortedTrips)
+                let shouldScrollToInitial = value.contains(where: {  $0.id == self.selectedTripId })
+                let dayTitle = first.dateStart.toFormat("d MMM", locale: Locales.russianRussia)
+                return R_RootDetailStationView.ViewState.Trips(
+                    day: dayTitle,
+                    items: tripsOnThisDay,
+                    shouldScrollToInitial: shouldScrollToInitial)
+                    .toElement()
             }
             return nil
         }
-        resultSections.append(contentsOf: tripsSections)
+
+        let tripsHeaderData = R_RootDetailStationView.ViewState.DateHeader(title: "Когда поедем?")
+        let tripsSection = SectionState(header: tripsHeaderData, footer: nil)
+        resultSections.append(.init(model: tripsSection, elements: tripsTest))
         let onChoice = Command { [weak self] in
             guard let self = self else { return }
             self.handleChoice()
@@ -279,13 +315,22 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             guard let self = self else { return }
             self.navigationController?.popViewController(animated: true)
         }
+        var imageURL: String? = nil
+        if let routeFirstGallery = model.galleries.first, let firstURL = routeFirstGallery.urls.first {
+            imageURL = firstURL
+        } else {
+            if let firstStation = model.stations.first, let firstURL = firstStation.galleries.first?.urls.first {
+                imageURL = firstURL
+            }
+        }
+        R_ReportService.shared.report(event: "river.detailscreen.stateCreated", parameters: ["resultSections": "\(resultSections.count)", "modelTripsCount": model.shortTrips.count])
         return .init(
             state: resultSections,
             dataState: .loaded,
-            onChoice: onChoice,
+            onChoice: self.selectedTripId == nil ? nil : onChoice,
             onClose: onClose,
             posterTitle: model.name,
-            posterImage: nil
+            posterImageURL: imageURL
         )
     }
     
