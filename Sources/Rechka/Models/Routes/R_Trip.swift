@@ -26,8 +26,8 @@ struct R_Trip {
     init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
               let name = data["routeName"].string,
-              let startDate = data["dateTimeStart"].stringValue.toDate()?.date,
-              let endDate = data["dateTimeEnd"].stringValue.toDate()?.date
+              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: nil)?.date,
+              let endDate = data["dateTimeEnd"].stringValue.toISODate(nil, region: nil)?.date
         else { return nil }
         
         self.id = id
@@ -69,6 +69,7 @@ extension R_Trip {
     }
     
     static func book(with users: [R_User], tripID: Int) async throws -> RiverOrder {
+        
         let tickets: [[String:Any]] = users.map { user in
             return user.createBodyItem()
         }

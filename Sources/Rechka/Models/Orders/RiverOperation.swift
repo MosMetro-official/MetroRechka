@@ -40,7 +40,7 @@ struct RiverOperation {
         guard
             let id = data["id"].int,
             let status = RechkaOrderStatus(rawValue: data["status"].intValue),
-            let orderDate = data["dateTimeOrder"].stringValue.toDate()?.date,
+            let orderDate = data["dateTimeOrder"].stringValue.toISODate(nil, region: nil)?.date,
             let tickets = data["tickets"].array else { return nil }
         self.id = id
         self.internalOrderID = internalOrderID
