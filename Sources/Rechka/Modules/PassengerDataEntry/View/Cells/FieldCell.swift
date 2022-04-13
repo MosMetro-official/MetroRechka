@@ -8,6 +8,7 @@
 import UIKit
 import CoreTableView
 
+// TODO: Сделать плейсхолдер и опциональным текст. Если текст == nil то менять цвет с серого на основой текст
 protocol _Field: CellData {
     var text: String { get }
     var onSelect: () -> () { get }
@@ -43,7 +44,9 @@ class FieldCell: UITableViewCell {
         super.awakeFromNib()
     }
     
+    
     public func configure(with data: _Field) {
         mainTextLabel.text = data.text
+        
     }
 }

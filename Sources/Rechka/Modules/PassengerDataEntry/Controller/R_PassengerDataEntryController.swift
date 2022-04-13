@@ -15,6 +15,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
     private var isWithoutPlace: Bool?
     private var inputStates = [InputView.ViewState]()
     private var avaliableTariffs: [R_Tariff] = []
+    
     private var additionalService : [R_Tariff: Int] = [:] {
         didSet {
             makeState()
@@ -29,7 +30,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
             }
         }
     }
-    
+    // TODO: Сделать одного юзера и переписать методы создания стейта
     var displayRiverUsers: [R_User]? {
         didSet {
             makeState()
@@ -74,11 +75,16 @@ internal final class R_PassengerDataEntryController : UIViewController {
         guard let users = displayRiverUsers else { return }
         self.inputStates.removeAll()
         var finalState = [State]()
+        /// Все гораздо проще, не нужно итерировать по юзерам.
+        /// На этом экране мы заполняем только одного юзера всегда и все
         for (index, user) in users.enumerated() {
             self.inputStates.removeAll()
             let tableState = createTableState(for: user, index: index)
             finalState.append(contentsOf: tableState)
         }
+        
+        // TODO: Поправить
+        // Почему опциональная кнопка, если здесь нет намека на нее?
         let onReadySelect: Command<Void>? = {
             return Command { [weak self] in
                 self?.setupReadyButton()
@@ -100,6 +106,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
         self.popToBooking()
     }
     
+    // TODO: Проверки сделать по всем полям
     private func setupValidate() -> Bool {
         guard let user = displayRiverUsers?[0] else { return false }
         let result: Bool = {
@@ -115,6 +122,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
         }()
         return result
     }
+    
     
     private func popToBooking() {
         guard
@@ -133,6 +141,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
             user.additionServices = selectedServices
         }
         if index != nil {
+            // TODO: Кажется тут проще обойтись замыканием с этого экрана
             delegate?.setupOldUser(for: user, at: index!, with: model)
         } else {
             delegate?.setupNewUser(with: user, and: model)
@@ -470,6 +479,8 @@ extension R_PassengerDataEntryController {
             let additionalState = State(model: additionalSection, elements: additionElements)
             sections.append(additionalState)
         }
+        
+        // TODO: тут надо проверять выбранный тариф юзера, а не переменную. Ты же стейт делаешь для конкретного юзера
         if !(self.isWithoutPlace ?? true) {
             let onSelect: Command<Void> = Command { [weak self] in
                 guard let self = self else { return }

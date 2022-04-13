@@ -43,6 +43,13 @@ internal final class R_BookingWithPersonController: UIViewController {
                 self?.pushPersonDataEntry(with: model)
             }
         }()
+        
+        
+        // TODO: можно писать так:
+        /// let showPersonAlert = Command { [weak self] in
+        ///          self?.setupPersonAlert()
+        ///    }
+    
         let showPersonAlert: Command<Void>? = {
             return Command { [weak self] in
                 self?.setupPersonAlert()

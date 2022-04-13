@@ -34,7 +34,7 @@ extension _Static {
         return cell
     }
 }
-
+// TODO: Нейминг ячейки не поясняет шо це
 class StaticCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
