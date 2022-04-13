@@ -271,42 +271,42 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             print("Values: \(item.value)")
         }
         
-        let tripsSections: [State]  = sorted.compactMap { (key, value) in
+        let tripsTest: [Element] = sorted.compactMap { (key, value) in
             if let first = value.first {
-                let sortedTrips: [Element] = value.sorted(by: { $0.dateStart < $1.dateStart}).map { trip in
-                    let onSelect: () -> () = { [weak self] in
+                
+                // creating trips on this day
+                let tripsOnThisDay: [_R_DateCollectionCell] = value.sorted(by: { $0.dateStart < $1.dateStart}).map { trip in
+                    let onSelect = Command {  [weak self] in
                         guard let self = self else { return }
                         self.selectedTripId = trip.id
                     }
                     
-                    let seats: String = {
-                        switch trip.freePlaceCount {
-                        case 0:
-                            return "Мест не осталось"
-                        case 1...3:
-                            return "🔥 Осталось мало мест"
-                        default:
-                            return "Мест: \(trip.freePlaceCount)"
-                        }
-                    }()
+                    let isSelected = trip.id == self.selectedTripId
+                    let primaryText = Appearance.colors[.textPrimary] ?? .label
+                    let tint = Appearance.colors[.buttonSecondary] ?? .label
+                    let invertedText = Appearance.colors[.textInverted] ?? .systemBackground
                     
-                    return R_RootDetailStationView.ViewState.ShortTripInfo(
-                        date: trip.dateStart.toFormat("d MMMM yyyy HH:mm", locale: Locales.russian),
-                        isSelected: trip.id == self.selectedTripId ,
-                        price: "\(trip.price) ₽",
-                        seats: seats,
-                        onSelect: onSelect
-                    ).toElement()
+                    return R_RootDetailStationView.ViewState.TripTime(
+                        time: trip.dateStart.toFormat("HH:mm", locale: Locales.russian),
+                        textColor: isSelected ? invertedText : primaryText,
+                        bgColor: isSelected ? tint : UIColor.clear,
+                        borderColor: isSelected ? tint : primaryText,
+                        onSelect: onSelect)
                 }
-                
-                let sectionTitle = first.dateStart.toFormat("d MMMM", locale: Locales.russianRussia)
-                let headerData = R_RootDetailStationView.ViewState.DateHeader(title: sectionTitle)
-                let sectionData = SectionState(header: headerData, footer: nil)
-                return State(model: sectionData, elements: sortedTrips)
+                let shouldScrollToInitial = value.contains(where: {  $0.id == self.selectedTripId })
+                let dayTitle = first.dateStart.toFormat("d MMM", locale: Locales.russianRussia)
+                return R_RootDetailStationView.ViewState.Trips(
+                    day: dayTitle,
+                    items: tripsOnThisDay,
+                    shouldScrollToInitial: shouldScrollToInitial)
+                    .toElement()
             }
             return nil
         }
-        resultSections.append(contentsOf: tripsSections)
+
+        let tripsHeaderData = R_RootDetailStationView.ViewState.DateHeader(title: "Когда поедем?")
+        let tripsSection = SectionState(header: tripsHeaderData, footer: nil)
+        resultSections.append(.init(model: tripsSection, elements: tripsTest))
         let onChoice = Command { [weak self] in
             guard let self = self else { return }
             self.handleChoice()
@@ -327,7 +327,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         return .init(
             state: resultSections,
             dataState: .loaded,
-            onChoice: onChoice,
+            onChoice: self.selectedTripId == nil ? nil : onChoice,
             onClose: onClose,
             posterTitle: model.name,
             posterImageURL: imageURL

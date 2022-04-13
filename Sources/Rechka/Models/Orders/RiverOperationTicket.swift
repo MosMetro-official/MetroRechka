@@ -21,7 +21,7 @@ struct RiverTicketRefund {
         self.ticketID = ticketID
         
         self.refundPrice = data["ticketPriceRefund"].doubleValue
-        self.refundDate  = data["dateTimeRefund"].stringValue.toDate()?.date
+        self.refundDate  = data["dateTimeRefund"].stringValue.toISODate(nil, region: nil)?.date
         self.totalPriceRefund = data["totalPriceRefund"].doubleValue
         self.additionRefunds = data["additionServicesRefund"].arrayValue.compactMap { R_OperationAdditionServiceRefund(data: $0) }
     }
@@ -51,7 +51,7 @@ struct R_OperationAdditionServiceRefund {
         self.priceTotal = data["priceTotal"].doubleValue
         self.pricePerOneRefund = data["pricePerOneRefund"].doubleValue
         self.priceTotalRefund = data["priceTotalRefund"].doubleValue
-        self.date = data["dateTimeRefund"].stringValue.toDate()?.date
+        self.date = data["dateTimeRefund"].stringValue.toISODate(nil, region: nil)?.date
     }
     
 }
@@ -102,8 +102,8 @@ struct RiverOperationTicket {
     
     init?(data: CoreNetwork.JSON, parentOrderID: Int) {
         guard let id = data["id"].int,
-              let dateTimeStart = data["dateTimeStart"].stringValue.toDate()?.date,
-              let dateTimeEnd = data["dateTimeEnd"].stringValue.toDate()?.date,
+              let dateTimeStart = data["dateTimeStart"].stringValue.toISODate(nil, region: nil)?.date,
+              let dateTimeEnd = data["dateTimeEnd"].stringValue.toISODate(nil, region: nil)?.date,
         let status = Status(rawValue: data["status"].intValue) else { return nil }
         self.id = id
         self.parentOrderID = parentOrderID

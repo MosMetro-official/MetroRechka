@@ -41,12 +41,27 @@ internal final class R_RootDetailStationView: UIView {
             var title: String
         }
         
-        struct ShortTripInfo: _ShortTripTableCell {
-            var date: String
-            var isSelected: Bool
-            var price: String
-            var seats: String
-            var onSelect: (() -> Void)
+        
+        struct Trips: _TripSelectionCell {
+            
+            var day: String
+            
+            var items: [_R_DateCollectionCell]
+            
+            var shouldScrollToInitial: Bool
+        }
+        
+        struct TripTime: _R_DateCollectionCell {
+            var time: String
+            
+            var textColor: UIColor
+            
+            var bgColor: UIColor
+            
+            var borderColor: UIColor
+            
+            var onSelect: Command<Void>
+        
         }
         
         struct Error: _R_ErrorCell {
