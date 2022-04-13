@@ -41,9 +41,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
-<<<<<<< HEAD
         setupRiverBackButton()
-=======
         NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] notification in
             guard let self = self else { return }
             if let unautorizedVC = self.unautorizedVC {
@@ -55,9 +53,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 self.startBooking()
             }
             
-        }
-        
->>>>>>> main
+        }        
     }
     
     @MainActor
