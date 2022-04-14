@@ -68,23 +68,25 @@ internal final class R_PopularStationsController : UIViewController {
         Task.detached { [weak self] in
             guard let self = self else { return }
             do {
-                var routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
+                async let routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
                 let serv = R_Service()
-                let newTags = try await serv.getTags()
+                async let newTags = try await serv.getTags()
+                var tempResponse = try await routeResponse
                 if let date = date {
-                    let filteredRoutes = routeResponse.items.filter { route in
+                    let filteredRoutes = tempResponse.items.filter { route in
                         route.shortTrips.contains(where: { trip in
                             trip.dateStart.day == date.day && trip.dateStart.month == date.month && trip.dateStart.year == date.year
                         })
                     }
                     
-                    routeResponse = R_RouteResponse(items: filteredRoutes, page: routeResponse.page, totalPages: routeResponse.totalPages, totalElements: routeResponse.totalElements)
+                    tempResponse = try await R_RouteResponse(items: filteredRoutes, page: routeResponse.page, totalPages: routeResponse.totalPages, totalElements: routeResponse.totalElements)
                 }
-                let finalResponse = routeResponse
+                let finalResponse = tempResponse
+                let finalTags = try await newTags
                 try await Task.sleep(nanoseconds: 0_300_000_000)
                 await MainActor.run(body: { [weak self] in
                     self?.searchResponse = finalResponse
-                    self?.tags = newTags
+                    self?.tags = finalTags
                     self?.isLoading = false
                 })
             } catch {
