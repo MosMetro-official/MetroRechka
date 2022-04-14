@@ -12,6 +12,7 @@ import CoreNetwork
 actor R_Service {
     
     func getTags() async throws -> [String] {
+        print("🔥🔥🔥 Started fetching tags")
         let client = APIClient.unauthorizedClient
         do {
             let response = try await client.send(
