@@ -69,7 +69,8 @@ internal final class R_PopularStationsController : UIViewController {
             guard let self = self else { return }
             do {
                 var routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
-                let newTags = try await self.service.getTags()
+                let serv = R_Service()
+                let newTags = try await serv.getTags()
                 if let date = date {
                     let filteredRoutes = routeResponse.items.filter { route in
                         route.shortTrips.contains(where: { trip in
