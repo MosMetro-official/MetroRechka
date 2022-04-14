@@ -35,6 +35,7 @@ internal final class R_BookingScreenView : UIView {
         
         struct Title : _Title {
             var title : String
+            var height: CGFloat
         }
         
         struct Timer : _Timer {

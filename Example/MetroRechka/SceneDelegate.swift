@@ -8,9 +8,20 @@
 import UIKit
 import Rechka
 
+
+class Dummy: RechkaNetworkDelegate {
+    
+    func refreshToken() async throws -> Bool {
+        return true
+    }
+    
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    
+    let dummy = Dummy()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -20,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Rechka.shared.isMapsAvailable = true
         Rechka.shared.isMapsRoutesAvailable = true
         Rechka.shared.delegate = self
-       
+        Rechka.shared.networkDelegate = dummy
         
             
             

@@ -194,8 +194,11 @@ internal final class R_BookingScreenController : UIViewController {
         
         let elapsedTime = "\(minuteStr):\(secondsStr)"
         var topElements = [Element]()
+        
+        let titleHeigght = "Билеты забронированы".height(withConstrainedWidth: UIScreen.main.bounds.width - 40, font: Appearance.customFonts[.largeTitle] ?? UIFont.systemFont(ofSize: 30, weight: .bold))
         let title = R_BookingScreenView.ViewState.Title(
-            title: "Билеты забронированы"
+            title: "Билеты забронированы",
+            height: titleHeigght
         ).toElement()
         topElements.append(title)
         let timer = R_BookingScreenView.ViewState.Timer(

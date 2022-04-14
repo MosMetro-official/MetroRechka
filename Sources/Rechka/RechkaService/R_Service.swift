@@ -9,7 +9,7 @@ import Foundation
 import CoreNetwork
 
 
-class R_Service {
+actor R_Service {
     
     func getTags() async throws -> [String] {
         let client = APIClient.unauthorizedClient
