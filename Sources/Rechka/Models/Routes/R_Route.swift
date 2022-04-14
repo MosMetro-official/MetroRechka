@@ -76,57 +76,57 @@ struct R_Route {
 
 extension R_Route {
     
-    static func getRoute(by id: Int) async throws -> R_Route {
+    static func getRoute(by id: Int, completion: @escaping (Result<R_Route,APIError>) -> Void) {
         let client = APIClient.unauthorizedClient
-        do {
-            let response = try await client.send(
-                .GET(
-                    path: "/api/routes/v1/\(id)",
-                    query: nil)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            let route = R_Route(data: json["data"])
-            return route
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
+        client.send(.GET(path: "/api/routes/v1/\(id)",query: nil)) { result in
+            switch result {
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                let route = R_Route(data: json["data"])
+                completion(.success(route))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
         }
     }
     
-    static func getRoutes(page: Int, size: Int, stationID: Int? = nil, tags: [String]) async throws -> R_RouteResponse {
+    static func getRoutes(page: Int, size: Int, stationID: Int? = nil, tags: [String], completion: @escaping (Result<R_RouteResponse,APIError>) -> Void) {
         let client = APIClient.unauthorizedClient
-        do {
-            var query: [String: String] = [
-                "size": "\(size)",
-                "page": "\(page)"
-            ]
-            
-            if let stationID = stationID {
-                query.updateValue("\(stationID)", forKey: "stationId")
+        var query: [String: String] = [
+            "size": "\(size)",
+            "page": "\(page)"
+        ]
+        
+        if let stationID = stationID {
+            query.updateValue("\(stationID)", forKey: "stationId")
+        }
+        
+        if !tags.isEmpty {
+            query.updateValue(tags.joined(separator: ","), forKey: "tags")
+        }
+        
+        client.send(.GET(path: "/api/routes/v1", query: query)) { result in
+            switch result {
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let routesArray = json["data"]["items"].array,
+                      let page = json["data"]["page"].int,
+                      let totalPages = json["data"]["totalPages"].int,
+                      let totalElements = json["data"]["totalElements"].int else {
+                          completion(.failure(.badMapping))
+                          return
+                      }
+                print("😀 total elements array: \(routesArray.count)")
+                let routes = routesArray.map { R_Route(data: $0) }
+                let routeResponse = R_RouteResponse(items: routes, page: page, totalPages: totalPages, totalElements: totalElements)
+                completion(.success(routeResponse))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
             }
-            
-            if !tags.isEmpty {
-                query.updateValue(tags.joined(separator: ","), forKey: "tags")
-            }
-            
-            let response = try await client.send(
-                .GET(
-                    path: "/api/routes/v1",
-                    query: query)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            guard let routesArray = json["data"]["items"].array,
-                  let page = json["data"]["page"].int,
-                  let totalPages = json["data"]["totalPages"].int,
-                  let totalElements = json["data"]["totalElements"].int else { throw APIError.noHTTPResponse }
-            print("😀 total elements array: \(routesArray.count)")
-            let routes = routesArray.map { R_Route(data: $0) }
-            return .init(items: routes, page: page, totalPages: totalPages, totalElements: totalElements)
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
         }
         
     }

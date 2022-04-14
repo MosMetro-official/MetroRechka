@@ -64,13 +64,13 @@ internal final class R_TicketsHistoryController: UIViewController {
         
     }
     
-    @MainActor
+    
     private func set(response: RechkaHistoryResponse) {
         self.model = response
         self.isLoading = false
     }
     
-    @MainActor
+    
     private func set(state: R_TicketsHistoryView.ViewState) {
         self.nestedView.viewState = state
     }
@@ -81,21 +81,20 @@ internal final class R_TicketsHistoryController: UIViewController {
             isNeedToShowLoading = false
         }
         self.isLoading = true
-        Task.detached { [weak self] in
+        RechkaShortOrder.getOrders(size: size, page: page) { [weak self] result in
             guard let self = self else { return }
-            do {
-                let orderResponse = try await RechkaShortOrder.getOrders(size: size, page: page)
-                try await Task.sleep(nanoseconds: 0_300_000_000)
-                await self.set(response: orderResponse)
-            } catch {
+            switch result {
+            case .success(let ordersResponse):
+                self.isLoading = false
+                self.model = ordersResponse
+            case .failure(let error):
                 print(error)
-                // handle error here
             }
         }
     }
     
     
-    @MainActor
+    
     private func showDetails(for order: RechkaShortOrder) {
         let orderController = R_OrderDetailsController()
         self.present(orderController, animated: true) {

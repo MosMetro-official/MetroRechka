@@ -68,7 +68,7 @@ internal final class R_BookingScreenController : UIViewController {
         super.viewWillDisappear(animated)
     }
     
-    @MainActor
+    
     private func removeTimer() {
         guard let timer = timer else {
             return
@@ -123,12 +123,12 @@ internal final class R_BookingScreenController : UIViewController {
         
     }
     
-    @MainActor
+    
     private func set(state: R_BookingScreenView.ViewState) {
         self.nestedView.viewState = state
     }
     
-    @MainActor
+    
     private func showCancelSuccess() {
         self.nestedView.viewState.dataState = .loaded
         let controller = R_CancelBookingController()
@@ -145,15 +145,14 @@ internal final class R_BookingScreenController : UIViewController {
     private func startCancel() {
         guard let model = model else { return }
         self.nestedView.viewState.dataState = .loading
-        Task.detached { [weak self] in
-            guard let self = self else { return }
-            do {
-                try await model.cancelBooking()
-                await self.showCancelSuccess()
-            } catch {
-                guard let err = error as? APIError else { return }
-                await MainActor.run { [weak self] in
-                    guard let self = self else { return }
+        model.cancelBooking { result in
+            switch result {
+            case .success():
+                DispatchQueue.main.async {
+                    self.showCancelSuccess()
+                }
+            case .failure(let err):
+                DispatchQueue.main.async {
                     let onSelect: () -> Void = { [weak self] in
                         guard let self = self else { return }
                         self.nestedView.viewState.dataState = .loaded
@@ -164,7 +163,6 @@ internal final class R_BookingScreenController : UIViewController {
                     self.nestedView.viewState.dataState = .error(errorConfig)
                 }
             }
-            
         }
     }
     
@@ -195,7 +193,7 @@ internal final class R_BookingScreenController : UIViewController {
         let elapsedTime = "\(minuteStr):\(secondsStr)"
         var topElements = [Element]()
         
-        let titleHeigght = "Билеты забронированы".height(withConstrainedWidth: UIScreen.main.bounds.width - 40, font: Appearance.customFonts[.largeTitle] ?? UIFont.systemFont(ofSize: 30, weight: .bold))
+        let titleHeigght = "Билеты забронированы".height(withConstrainedWidth: UIScreen.main.bounds.width - 40, font: Appearance.customFonts[.largeTitle] ?? UIFont.systemFont(ofSize: 30, weight: .bold)) + 20
         let title = R_BookingScreenView.ViewState.Title(
             title: "Билеты забронированы",
             height: titleHeigght

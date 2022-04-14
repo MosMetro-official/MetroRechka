@@ -39,7 +39,7 @@ internal final class R_OrderDetailsController : UIViewController {
     private var needToSetTimer = true
     private var isFirstLoad = true
     
-    @MainActor
+    
     private func set(seconds: Int) {
         self.seconds = seconds
     }
@@ -69,7 +69,7 @@ internal final class R_OrderDetailsController : UIViewController {
     }
     
     
-    @MainActor
+    
     private func removeTimer() {
         guard let timer = timer else {
             return
@@ -138,14 +138,14 @@ internal final class R_OrderDetailsController : UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-       
+        
         
     }
     
     public init() {
         super.init(nibName: nil, bundle: nil)
     }
-      
+    
     private func load(with id: Int) {
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
@@ -160,26 +160,21 @@ internal final class R_OrderDetailsController : UIViewController {
             guard let self = self else { return }
             R_Toast.remove(from: self.nestedView)
         }
-        Task.detached { [weak self] in
+        self.set(state: loadingState)
+        RiverOrder.get(by: id) { [weak self] result in
             guard let self = self else { return }
-            await self.set(state: loadingState)
-            do {
-                let order = try await RiverOrder.get(by: id)
-                await self.set(order: order)
-            } catch {
-                guard let err = error as? APIError else {
-                    return
-                }
-                
+            switch result {
+            case .success(let order):
+                self.isFirstLoad = true
+                self.order = order
+            case .failure(let error):
                 var title = "Возникла ошибка при загрузке"
-                if case .genericError(let message) = err {
+                if case .genericError(let message) = error {
                     title = message
                 }
                 
                 let finalTitle = title
-                
-               
-                await MainActor.run { [weak self] in
+                DispatchQueue.main.async {
                     let onSelect = Command { [weak self] in
                         guard let self = self, let orderID = self.orderID else { return }
                         self.load(with: orderID)
@@ -194,13 +189,14 @@ internal final class R_OrderDetailsController : UIViewController {
                         .toElement()
                     let state = State(model: .init(header: nil, footer: nil), elements: [err])
                     
-                    self?.nestedView.viewState = .init(dataState: .error, state: [state], onClose: onClose)
+                    self.nestedView.viewState = .init(dataState: .error, state: [state], onClose: onClose)
                 }
+                
             }
         }
     }
     
-    @MainActor
+    
     private func showPDF(for ticket: RiverOperationTicket) {
         let controller = PDFDocumentController()
         self.present(controller, animated: true) {
@@ -208,7 +204,7 @@ internal final class R_OrderDetailsController : UIViewController {
         }
     }
     
-    @MainActor
+    
     private func showRefundCalculation(for ticket: RiverOperationTicket) {
         let controller = R_BlurRefundController()
         let nav = UINavigationController(rootViewController: controller)
@@ -282,7 +278,7 @@ internal final class R_OrderDetailsController : UIViewController {
     }
     
     private func buttonStateForBooked(ticket: RiverOperationTicket) -> TicketDetailCell.Buttons {
-       
+        
         
         return .init(onRefund: nil,
                      onDownload: nil,
@@ -290,13 +286,13 @@ internal final class R_OrderDetailsController : UIViewController {
                      info: .init(title: "Билет забронирован, ожидаем оплаты", onSelect: nil))
     }
     
-    @MainActor
+    
     private func startPayment() {
         guard let order = order else {
             return
         }
         self.showPaymentController(with: order.url)
-
+        
     }
     
     private func makeState(for order: RiverOrder) async -> R_OrderDetailsView.ViewState {
@@ -484,12 +480,12 @@ internal final class R_OrderDetailsController : UIViewController {
         
     }
     
-    @MainActor
+    
     private func set(state: R_OrderDetailsView.ViewState) {
         self.nestedView.viewState = state
     }
     
-    @MainActor
+    
     private func set(order: RiverOrder) {
         isFirstLoad = false
         self.order = order
@@ -510,5 +506,5 @@ internal final class R_OrderDetailsController : UIViewController {
         self.setListeners()
     }
     
-
+    
 }

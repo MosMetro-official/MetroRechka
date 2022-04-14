@@ -47,27 +47,25 @@ struct RechkaShortOrder {
 
 extension RechkaShortOrder {
     
-    static func getOrders(size: Int = 10, page: Int = 0) async throws -> RechkaHistoryResponse {
+    static func getOrders(size: Int = 10, page: Int = 0, completion: @escaping (Result<RechkaHistoryResponse,APIError>) -> Void) {
         let client = APIClient.authorizedClient
-        do {
-            let query: [String: String] = ["size": "\(size)",
-                          "page": "\(page)"]
-            
-            
-            let response = try await client.send(
-                .GET(
-                    path: "/api/orders/v1/",
-                    query: query)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            guard let response = RechkaHistoryResponse(data: json["data"]) else {
-                throw APIError.badData
+        let query: [String: String] = ["size": "\(size)",
+                      "page": "\(page)"]
+        client.send(.GET(path: "/api/orders/v1/", query: query)) { result in
+            switch result {
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let response = RechkaHistoryResponse(data: json["data"]) else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                completion(.success(response))
+                return
+                
+            case .failure(let err):
+                completion(.failure(err))
+                return
             }
-            return response
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
         }
     }
     

@@ -10,10 +10,12 @@ import Rechka
 
 
 class Dummy: RechkaNetworkDelegate {
-    
-    func refreshToken() async throws -> Bool {
-        return true
+    func refreshToken(completion: @escaping (Bool) -> Void) {
+        completion(false)
     }
+    
+    
+  
     
 }
 

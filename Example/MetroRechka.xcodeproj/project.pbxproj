@@ -162,7 +162,7 @@
 			mainGroup = 952BEF1B27D53AAD00299639;
 			packageReferences = (
 				9562CB6327DA188D009A1DEF /* XCRemoteSwiftPackageReference "CoreTableView" */,
-				9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork.git" */,
+				9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork" */,
 			);
 			productRefGroup = 952BEF2527D53AAD00299639 /* Products */;
 			projectDirPath = "";
@@ -463,12 +463,12 @@
 				minimumVersion = 0.0.2;
 			};
 		};
-		9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork.git" */ = {
+		9562CB6627DA189A009A1DEF /* XCRemoteSwiftPackageReference "CoreNetwork" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MosMetro-official/CoreNetwork.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.1;
+				branch = callbacks;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
