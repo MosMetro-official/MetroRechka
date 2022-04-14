@@ -124,22 +124,25 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     
     
     private func handle(order: RiverOrder) {
-        let newState: R_BookingWithoutPersonView.ViewState = .init(
-            title: self.nestedView.viewState.title,
-            state: self.nestedView.viewState.state,
-            dataState: .loaded,
-            onBooking: self.nestedView.viewState.onBooking
-        )
-        self.set(state: newState)
-        
-        let bookingController = R_BookingScreenController()
-        self.present(bookingController, animated: true) {
-            bookingController.model = order
-            bookingController.onDismiss = { [weak self] in
-                self?.navigationController?.popToRootViewController(animated: false)
-                NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+        DispatchQueue.main.async {
+            let newState: R_BookingWithoutPersonView.ViewState = .init(
+                title: self.nestedView.viewState.title,
+                state: self.nestedView.viewState.state,
+                dataState: .loaded,
+                onBooking: self.nestedView.viewState.onBooking
+            )
+            self.set(state: newState)
+            
+            let bookingController = R_BookingScreenController()
+            self.present(bookingController, animated: true) {
+                bookingController.model = order
+                bookingController.onDismiss = { [weak self] in
+                    self?.navigationController?.popToRootViewController(animated: false)
+                    NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+                }
             }
         }
+        
     }
     
     private func startBooking() {
