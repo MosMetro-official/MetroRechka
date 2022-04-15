@@ -82,12 +82,12 @@ internal final class R_BookingScreenController : UIViewController {
 
     
     private func removeTimer() {
-        guard let timer = timer else {
-            return
+        if self.timer != nil {
+            self.timer?.invalidate()
+            self.timer = nil
+            self.needToSetTimer = true
         }
-        timer.invalidate()
-        self.timer = nil
-        self.needToSetTimer = true
+        
     }
     
     private func setListeners() {
