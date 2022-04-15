@@ -15,6 +15,10 @@
 		952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BEF2927D53AAD00299639 /* SceneDelegate.swift */; };
 		952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3027D53AAD00299639 /* Assets.xcassets */; };
 		952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952BEF3227D53AAD00299639 /* LaunchScreen.storyboard */; };
+		D802FC8128097C9600276857 /* RouteMapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D802FC7F28097C9600276857 /* RouteMapController.swift */; };
+		D802FC8228097C9600276857 /* RouteMapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D802FC8028097C9600276857 /* RouteMapController.xib */; };
+		D802FC85280985D700276857 /* RiverStationPinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D802FC83280985D600276857 /* RiverStationPinView.xib */; };
+		D802FC86280985D700276857 /* RiverStationPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D802FC84280985D600276857 /* RiverStationPinView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +33,10 @@
 		952BEF3027D53AAD00299639 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952BEF3327D53AAD00299639 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		952BEF3527D53AAD00299639 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D802FC7F28097C9600276857 /* RouteMapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMapController.swift; sourceTree = "<group>"; };
+		D802FC8028097C9600276857 /* RouteMapController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteMapController.xib; sourceTree = "<group>"; };
+		D802FC83280985D600276857 /* RiverStationPinView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RiverStationPinView.xib; sourceTree = "<group>"; };
+		D802FC84280985D600276857 /* RiverStationPinView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiverStationPinView.swift; sourceTree = "<group>"; };
 		E47C794261F07B3884B525B7 /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,8 +64,12 @@
 		6DEFF8A527E09EED0070E498 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				D802FC84280985D600276857 /* RiverStationPinView.swift */,
+				D802FC83280985D600276857 /* RiverStationPinView.xib */,
 				6DEFF8AA27E0A0870070E498 /* MapViewController.swift */,
 				6DEFF8AB27E0A0880070E498 /* MapViewController.xib */,
+				D802FC7F28097C9600276857 /* RouteMapController.swift */,
+				D802FC8028097C9600276857 /* RouteMapController.xib */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -118,11 +130,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 952BEF3827D53AAD00299639 /* Build configuration list for PBXNativeTarget "MetroRechka" */;
 			buildPhases = (
-				16F3B1159F5F56A6F037918C /* [CP] Check Pods Manifest.lock */,
+				1723B78DE5F21468BE4A411B /* [CP] Check Pods Manifest.lock */,
+				16F3B1159F5F56A6F037918C /* [CP] Copy Pods Resources */,
 				952BEF2027D53AAD00299639 /* Sources */,
 				952BEF2127D53AAD00299639 /* Frameworks */,
 				952BEF2227D53AAD00299639 /* Resources */,
-				1723B78DE5F21468BE4A411B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,7 +190,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D802FC8228097C9600276857 /* RouteMapController.xib in Resources */,
 				952BEF3427D53AAD00299639 /* LaunchScreen.storyboard in Resources */,
+				D802FC85280985D700276857 /* RiverStationPinView.xib in Resources */,
 				6DEFF8AD27E0A0880070E498 /* MapViewController.xib in Resources */,
 				952BEF3127D53AAD00299639 /* Assets.xcassets in Resources */,
 			);
@@ -187,7 +201,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		16F3B1159F5F56A6F037918C /* [CP] Check Pods Manifest.lock */ = {
+		16F3B1159F5F56A6F037918C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -204,7 +218,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetroRechka/Pods-MetroRechka-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1723B78DE5F21468BE4A411B /* [CP] Copy Pods Resources */ = {
+		1723B78DE5F21468BE4A411B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -233,7 +247,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D802FC8128097C9600276857 /* RouteMapController.swift in Sources */,
 				952BEF2827D53AAD00299639 /* AppDelegate.swift in Sources */,
+				D802FC86280985D700276857 /* RiverStationPinView.swift in Sources */,
 				6DEFF8AC27E0A0880070E498 /* MapViewController.swift in Sources */,
 				952BEF2A27D53AAD00299639 /* SceneDelegate.swift in Sources */,
 			);
@@ -467,8 +483,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MosMetro-official/CoreNetwork.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.1;
+				branch = callbacks;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

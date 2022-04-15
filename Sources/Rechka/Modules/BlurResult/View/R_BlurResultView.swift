@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 
-enum Result {
+enum R_Result {
     case success
     case failure
 }
@@ -16,7 +16,7 @@ enum Result {
 protocol _BlurResult {
     var title : String { get }
     var descr : String { get }
-    var result : Result { get }
+    var result : R_Result { get }
     var onClose : (() -> Void) { get }
     var onRetry : (() -> Void) { get }
 }

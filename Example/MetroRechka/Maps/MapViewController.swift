@@ -9,25 +9,21 @@ import UIKit
 import Rechka
 import YandexMapsMobile
 
-class MapViewController : UIViewController, YMKMapObjectTapListener {
+class MapViewController : UIViewController, YMKMapObjectTapListener, R_StationsController {
     
-    private class TerminalUserData {
-        let terminal: _RiverStation
-        
-        init(terminal: _RiverStation) {
-            self.terminal = terminal
-        }
+    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
+        print("do smth")
+        return true
     }
     
-    var delegate: RechkaMapReverceDelegate?
+
     
-    public var terminals = [_RiverStation]()
+    var onStationSelect: ((R_Station) -> Void)?
     
-    public var terminalsImages = [UIImage]() {
-        didSet {
-            self.showTerminalsOnMap(from: terminalsImages, and: terminals)
-        }
-    }
+    var stations: [R_Station] = []
+    
+    
+
     
     public var shouldShowTerminalsButton = false
     
@@ -38,35 +34,35 @@ class MapViewController : UIViewController, YMKMapObjectTapListener {
     @IBOutlet weak var terminalsButton : UIButton!
     
     @IBAction func onBackSelect() {
-        delegate?.onMapBackSelect()
+        
     }
     
     @IBAction func onTerminalsSelect() {
-        delegate?.onTerminalsListSelect()
+        
     }
     
     // типо координаты москвы
     var initialLatitude : Double = 55.7522200
     var initialLongitude : Double = 37.6155600
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        terminalsButton.titleLabel?.font = UIFont.customFont(forTextStyle: .body)
-        mapView.mapWindow.map.move(
-            with: YMKCameraPosition(
-                target: YMKPoint(latitude: initialLatitude, longitude: initialLongitude),
-                zoom: 15,
-                azimuth: 0,
-                tilt: 0
-            ),
-            animationType: YMKAnimation(type: YMKAnimationType.smooth, duration: 1),
-            cameraCallback: nil
-        )
-        showTerminalsOnMap(from: terminalsImages, and: terminals)
-        if shouldShowTerminalsButton {
-            self.showTerminalListButton()
-        }
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        terminalsButton.titleLabel?.font = UIFont.customFont(forTextStyle: .body)
+//        mapView.mapWindow.map.move(
+//            with: YMKCameraPosition(
+//                target: YMKPoint(latitude: initialLatitude, longitude: initialLongitude),
+//                zoom: 15,
+//                azimuth: 0,
+//                tilt: 0
+//            ),
+//            animationType: YMKAnimation(type: YMKAnimationType.smooth, duration: 1),
+//            cameraCallback: nil
+//        )
+//        showTerminalsOnMap(from: terminalsImages, and: terminals)
+//        if shouldShowTerminalsButton {
+//            self.showTerminalListButton()
+//        }
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -79,7 +75,9 @@ class MapViewController : UIViewController, YMKMapObjectTapListener {
     }
 }
 
-extension MapViewController : RechkaMapController {
+extension MapViewController  {
+   
+    
     
     func showTerminalListButton() {
         self.terminalsButton.isHidden = false
@@ -94,25 +92,25 @@ extension MapViewController : RechkaMapController {
         return point
     }
     
-    func showTerminalsOnMap(from images: [UIImage], and terminals: [_RiverStation]) {
-        DispatchQueue.main.async {
-            guard
-                images.count == terminals.count
-            else { fatalError() }
-            for (image, terminal) in zip(images, terminals) {
-                let point = self.createNewPoint(with: terminal)
-                let mapObjects = self.mapView.mapWindow.map.mapObjects
-                let teminalObject = mapObjects.addPlacemark(with: point, image: image, style: YMKIconStyle())
-                teminalObject.userData = TerminalUserData(terminal: terminal)
-                teminalObject.addTapListener(with: self)
-            }
-        }
-    }
-    
-    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
-        if let data = mapObject.userData as? TerminalUserData {
-            data.terminal.onSelect()
-        }
-        return true
-    }
+//    func showTerminalsOnMap(from images: [UIImage], and terminals: [_RiverStation]) {
+//        DispatchQueue.main.async {
+//            guard
+//                images.count == terminals.count
+//            else { fatalError() }
+//            for (image, terminal) in zip(images, terminals) {
+//                let point = self.createNewPoint(with: terminal)
+//                let mapObjects = self.mapView.mapWindow.map.mapObjects
+//                let teminalObject = mapObjects.addPlacemark(with: point, image: image, style: YMKIconStyle())
+//                teminalObject.userData = TerminalUserData(terminal: terminal)
+//                teminalObject.addTapListener(with: self)
+//            }
+//        }
+//    }
+//
+//    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
+//        if let data = mapObject.userData as? TerminalUserData {
+//            data.terminal.onSelect()
+//        }
+//        return true
+//    }
 }

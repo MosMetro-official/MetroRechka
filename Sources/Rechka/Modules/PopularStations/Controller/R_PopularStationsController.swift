@@ -15,8 +15,6 @@ internal final class R_PopularStationsController : UIViewController {
     
     var delegate : RechkaMapDelegate?
     
-    var reverceDelegate : RechkaMapReverceDelegate?
-    
     var terminals = [R_Station]()
     
     struct SearchModel {
@@ -32,20 +30,13 @@ internal final class R_PopularStationsController : UIViewController {
     
     private var searchResponse: R_RouteResponse? {
         didSet {
-            Task.detached { [weak self] in
-                guard let self = self else { return}
-                await self.makeState()
-            }
+            self.makeState()
         }
     }
     
     private var isLoading = false {
         didSet {
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                await self.makeState()
-             
-            }
+            self.makeState()
         }
     }
     
@@ -65,30 +56,27 @@ internal final class R_PopularStationsController : UIViewController {
             isNeedToShowLoading = false
         }
         self.isLoading = true
-        Task.detached { [weak self] in
+        R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags) { [weak self] result in
             guard let self = self else { return }
-            do {
-                var routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
-                let newTags = try await self.service.getTags()
+            switch result {
+            case .success(var routesResponse):
                 if let date = date {
-                    let filteredRoutes = routeResponse.items.filter { route in
+                    let filteredRoutes = routesResponse.items.filter { route in
                         route.shortTrips.contains(where: { trip in
                             trip.dateStart.day == date.day && trip.dateStart.month == date.month && trip.dateStart.year == date.year
                         })
                     }
                     
-                    routeResponse = R_RouteResponse(items: filteredRoutes, page: routeResponse.page, totalPages: routeResponse.totalPages, totalElements: routeResponse.totalElements)
+                    routesResponse = R_RouteResponse(items: filteredRoutes, page: routesResponse.page, totalPages: routesResponse.totalPages, totalElements: routesResponse.totalElements)
                 }
-                let finalResponse = routeResponse
-                try await Task.sleep(nanoseconds: 0_300_000_000)
-                await MainActor.run(body: { [weak self] in
-                    self?.searchResponse = finalResponse
-                    self?.tags = newTags
-                    self?.isLoading = false
-                })
-            } catch {
-                guard let err = error as? APIError else { return }
-                await MainActor.run(body: {
+                self.searchResponse = routesResponse
+                self.tags = []
+                self.isLoading = false
+                
+                
+                
+            case .failure(let error):
+                DispatchQueue.main.async {
                     let onSelect: () -> Void = { [weak self] in
                         guard let self = self else { return }
                         self.load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
@@ -97,9 +85,48 @@ internal final class R_PopularStationsController : UIViewController {
                     let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
                     let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка при загрузке", subtitle: nil, buttonType: .imageButton(buttonData))
                     self.nestedView.viewState = .error(errorConfig)
-                })
+                }
             }
         }
+        
+//        Task.detached { [weak self] in
+//            guard let self = self else { return }
+//            do {
+//                async let routeResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags)
+//                let serv = R_Service()
+//                async let newTags = try await serv.getTags()
+//                var tempResponse = try await routeResponse
+//                if let date = date {
+//                    let filteredRoutes = tempResponse.items.filter { route in
+//                        route.shortTrips.contains(where: { trip in
+//                            trip.dateStart.day == date.day && trip.dateStart.month == date.month && trip.dateStart.year == date.year
+//                        })
+//                    }
+//
+//                    tempResponse = try await R_RouteResponse(items: filteredRoutes, page: routeResponse.page, totalPages: routeResponse.totalPages, totalElements: routeResponse.totalElements)
+//                }
+//                let finalResponse = tempResponse
+//                let finalTags = try await newTags
+//                try await Task.sleep(nanoseconds: 0_300_000_000)
+//                await MainActor.run(body: { [weak self] in
+//                    self?.searchResponse = finalResponse
+//                    self?.tags = finalTags
+//                    self?.isLoading = false
+//                })
+//            } catch {
+//                guard let err = error as? APIError else { return }
+//                await MainActor.run(body: {
+//                    let onSelect: () -> Void = { [weak self] in
+//                        guard let self = self else { return }
+//                        self.load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
+//                    }
+//
+//                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
+//                    let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка при загрузке", subtitle: nil, buttonType: .imageButton(buttonData))
+//                    self.nestedView.viewState = .error(errorConfig)
+//                })
+//            }
+//        }
     }
     
     let nestedView = R_HomeView.loadFromNib()
@@ -128,7 +155,7 @@ internal final class R_PopularStationsController : UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @MainActor
+    
     private func setResponse(_ response: R_RouteResponse) async {
         self.searchResponse = response
     }
@@ -147,7 +174,7 @@ internal final class R_PopularStationsController : UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showOrder(from:)), name: .riverShowOrder, object: nil)
     }
     
-    private func makeState() async {
+    private func makeState()  {
         guard let searchResponse = searchResponse else {
             return
         }
@@ -205,7 +232,9 @@ internal final class R_PopularStationsController : UIViewController {
         
         
         let dateTitle: String = {
-            return searchModel.date == nil ? "Дата" : searchModel.date!.toFormat("d MMMM", locale: Locales.russian)
+            let moscow  = Region(calendar: Calendars.gregorian, zone: Zones.europeMoscow, locale: Locales.russian)
+            
+            return searchModel.date == nil ? "Дата" : searchModel.date!.convertTo(region: moscow).toFormat("d MMMM", locale: Locales.russian)
         }()
         
         let onDateSelect = Command { [weak self] in
@@ -283,10 +312,9 @@ internal final class R_PopularStationsController : UIViewController {
         }
         
         let state: R_HomeView.ViewState = .loaded(.init(dateButton: dateButton, stationButton: stationsButton, categoriesButton: categoriesButton, clearButton: clearButton, tableState: states))
-        
-        await MainActor.run(body: { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             self?.nestedView.viewState = state
-        })
+        }
     }
     
     private func pushDetail(with routeID: Int) {
@@ -295,7 +323,7 @@ internal final class R_PopularStationsController : UIViewController {
         detail.routeID = routeID
     }
     
-    @MainActor
+    
     func setState(_ state: R_HomeView.ViewState) {
         self.nestedView.viewState = state
     }
@@ -418,65 +446,51 @@ internal final class R_PopularStationsController : UIViewController {
     private func handle(_ persons: Int) { }
     
     private func openTerminalsTable() {
-        self.onTerminalsListSelect()
+   
     }
     
     private func openMapController() {
-        let controller = delegate?.getRechkaMapController()
         guard
-            let controller = controller,
+            let controller = delegate?.rechkaStationsController(),
             let navigation = navigationController
         else { fatalError() }
-        controller.delegate = self
-        controller.shouldShowTerminalsButton = true
         navigation.pushViewController(controller, animated: true)
-        Task {
-            var points = [UIImage]()
-            let client = APIClient.unauthorizedClient
-            do {
-                let resp1 = try await client.send(
-                    .GET(
-                        path: "/api/references/v1/stationsFrom",
-                        query: nil
-                    ), schouldPrint: true
-                )
-                let json1 = JSON(resp1.data)
-                self.terminals = json1["data"].arrayValue.map({
-                    var station = R_Station.init(data: $0)
-                    station.onSelect = { [weak self] in
-                        guard
-                            let self = self,
-                            let navigation = self.navigationController,
-                            let controller = navigation.viewControllers.first
-                        else { return }
-                        
-                        navigation.popToViewController(controller, animated: true)
-                        self.searchModel.station = station
-                    }
-                    return station
-                })
-                for terminal in terminals {
-                    print(terminal)
-                    points.append(Appearance.makeRechkaTerminalImage(from: terminal))
-                }
-                controller.terminals = terminals
-                controller.terminalsImages = points
-            } catch {
-                print("😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫")
-            }
-        }
+//        Task {
+//            var points = [UIImage]()
+//            let client = APIClient.unauthorizedClient
+//            do {
+//                let resp1 = try await client.send(
+//                    .GET(
+//                        path: "/api/references/v1/stationsFrom",
+//                        query: nil
+//                    ), schouldPrint: true
+//                )
+//                let json1 = JSON(resp1.data)
+//                self.terminals = json1["data"].arrayValue.map({
+//                    var station = R_Station.init(data: $0)
+//                    station.onSelect = { [weak self] in
+//                        guard
+//                            let self = self,
+//                            let navigation = self.navigationController,
+//                            let controller = navigation.viewControllers.first
+//                        else { return }
+//
+//                        navigation.popToViewController(controller, animated: true)
+//                        self.searchModel.station = station
+//                    }
+//                    return station
+//                })
+//                for terminal in terminals {
+//                    print(terminal)
+//                    points.append(Appearance.makeRechkaTerminalImage(from: terminal))
+//                }
+//                controller.terminals = terminals
+//                controller.terminalsImages = points
+//            } catch {
+//                print("😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫")
+//            }
+//        }
     }
 }
 
-extension R_PopularStationsController : RechkaMapReverceDelegate {
-    
-    public func onMapBackSelect() {
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-    
-    public func onTerminalsListSelect() {
-        let controller = R_StationsListController()
-        controller.terminals = terminals
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-}
+

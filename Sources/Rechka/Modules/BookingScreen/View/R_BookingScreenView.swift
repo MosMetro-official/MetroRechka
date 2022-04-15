@@ -35,6 +35,7 @@ internal final class R_BookingScreenView : UIView {
         
         struct Title : _Title {
             var title : String
+            var height: CGFloat
         }
         
         struct Timer : _Timer {
@@ -52,7 +53,9 @@ internal final class R_BookingScreenView : UIView {
     
     public var viewState = ViewState(dataState: .loading, states: [], onClose: nil, onPay: nil, totalPrice: "") {
         didSet {
-            render()
+            DispatchQueue.main.async {
+                self.render()
+            }
         }
     }
     
