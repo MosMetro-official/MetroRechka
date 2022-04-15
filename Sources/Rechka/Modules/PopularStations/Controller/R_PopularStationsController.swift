@@ -32,20 +32,13 @@ internal final class R_PopularStationsController : UIViewController {
     
     private var searchResponse: R_RouteResponse? {
         didSet {
-            Task.detached { [weak self] in
-                guard let self = self else { return}
-                await self.makeState()
-            }
+            self.makeState()
         }
     }
     
     private var isLoading = false {
         didSet {
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                await self.makeState()
-             
-            }
+            self.makeState()
         }
     }
     
@@ -183,7 +176,7 @@ internal final class R_PopularStationsController : UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showOrder(from:)), name: .riverShowOrder, object: nil)
     }
     
-    private func makeState() async {
+    private func makeState()  {
         guard let searchResponse = searchResponse else {
             return
         }
@@ -241,7 +234,9 @@ internal final class R_PopularStationsController : UIViewController {
         
         
         let dateTitle: String = {
-            return searchModel.date == nil ? "Дата" : searchModel.date!.toFormat("d MMMM", locale: Locales.russian)
+            let moscow  = Region(calendar: Calendars.gregorian, zone: Zones.europeMoscow, locale: Locales.russian)
+            
+            return searchModel.date == nil ? "Дата" : searchModel.date!.convertTo(region: moscow).toFormat("d MMMM", locale: Locales.russian)
         }()
         
         let onDateSelect = Command { [weak self] in
@@ -319,10 +314,9 @@ internal final class R_PopularStationsController : UIViewController {
         }
         
         let state: R_HomeView.ViewState = .loaded(.init(dateButton: dateButton, stationButton: stationsButton, categoriesButton: categoriesButton, clearButton: clearButton, tableState: states))
-        
-        await MainActor.run(body: { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             self?.nestedView.viewState = state
-        })
+        }
     }
     
     private func pushDetail(with routeID: Int) {

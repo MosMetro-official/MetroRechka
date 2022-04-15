@@ -54,7 +54,7 @@ internal final class R_BookingScreenController : UIViewController {
                 self.setTimer()
             }
             
-            if seconds > 0 {
+            if seconds >= 0 {
                 self.makeState()
             } else {
                 self.removeTimer()
