@@ -38,4 +38,24 @@ struct R_Document: Equatable {
         self.pictureIndex = pictureIndex
         self.exampleNumber = exampleNumber
     }
+    
+    static func getDocs(by id: Int, completion: @escaping (Result<[R_Document], APIError>) -> Void) {
+        let client = APIClient.unauthorizedClient
+        client.send(.GET(path: "/api/references/v1/idCards/\(id)")) { result in
+            switch result {
+            case .success(let repsonse):
+                let json = CoreNetwork.JSON(repsonse.data)
+                guard let array = json["data"].array else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                let docs = array.compactMap { R_Document(data: $0) }
+                completion(.success(docs))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
+        }
+    }
 }

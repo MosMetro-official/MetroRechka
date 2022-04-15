@@ -66,7 +66,8 @@ class R_PlaceController: UIViewController {
                 self?.places = places
             case .failure(let error):
                 print(error)
-        
+            }
+        }
     }
     
     override func loadView() {

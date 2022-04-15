@@ -84,12 +84,12 @@ internal final class R_BookingWithPersonController: UIViewController {
         guard let tripID = self.model?.id else { return }
         if let _ = Rechka.shared.token {
             let finalUsers = riverUsers
-            Task.detached { [weak self] in
-                do {
-                    let order = try await R_Trip.book(with: finalUsers, tripID: tripID)
-                    await self?.handle(order: order)
-                } catch {
-                    
+            R_Trip.book(with: finalUsers, tripID: tripID) { result in
+                switch result {
+                case .success(let order):
+                    self.handle(order: order)
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
             }
         } else {
@@ -101,7 +101,7 @@ internal final class R_BookingWithPersonController: UIViewController {
     
     private func makeState(from riverUsers: [R_User]) {
         guard let newModel = model else { return }
-        let users = riverUsers.map({$0})
+        let users = riverUsers.map { $0 }
         // passenger header with add button
         var passElements = [Element]()
         let passengerHeaderCell = R_BookingWithPersonView.ViewState.PassengerHeader(

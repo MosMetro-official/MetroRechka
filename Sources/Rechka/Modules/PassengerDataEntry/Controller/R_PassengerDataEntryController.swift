@@ -481,7 +481,7 @@ extension R_PassengerDataEntryController {
         }
         
         // TODO: тут надо проверять выбранный тариф юзера, а не переменную. Ты же стейт делаешь для конкретного юзера
-        if !(self.isWithoutPlace ?? true) {
+        if !(displayRiverUsers?[index].ticket?.isWithoutPlace ?? true) {
             let onSelect: Command<Void> = Command { [weak self] in
                 guard let self = self else { return }
                 self.showPlaceController(for: model)

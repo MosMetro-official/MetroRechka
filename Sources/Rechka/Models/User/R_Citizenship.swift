@@ -26,4 +26,24 @@ struct R_Citizenship: Equatable {
         self.isonumeric = isonumeric
         self.isoalpha2 = isoalpha2
     }
+    
+    static func getCitizenships(completion: @escaping (Result<[R_Citizenship], APIError>) -> Void) {
+        let client = APIClient.unauthorizedClient
+        client.send(.GET(path: "/api/references/v1/citizenship")) { result in
+            switch result {
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let array = json["data"].array else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                let citizenships = array.compactMap { R_Citizenship(data: $0) }
+                completion(.success(citizenships))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
+        }
+    }
 }

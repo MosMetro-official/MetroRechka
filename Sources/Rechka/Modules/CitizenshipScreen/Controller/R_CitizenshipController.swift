@@ -16,9 +16,7 @@ class R_CitizenshipController: UIViewController {
     var onCitizenshipSelect: Command<R_Citizenship>?
     var citizenships: [R_Citizenship] = [] {
         didSet {
-            Task.detached { [weak self] in
-                await self?.makeState()
-            }
+            makeState()
         }
     }
     
@@ -30,29 +28,22 @@ class R_CitizenshipController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCitizenships()
-        self.view.backgroundColor = Appearance.colors[.content]
-        
+        loadCitizenships()        
     }
     
     private func loadCitizenships() {
         nestedView.viewState = .init(dataState: .loading, state: [])
-        Task.detached { [weak self] in
-            do {
-                let citizenships = try await self?.network.getCitizenships()
-                try await Task.sleep(nanoseconds: 0_300_000_000)
-                await MainActor.run { [weak self] in
-                    if let citizenships = citizenships {
-                        self?.citizenships = citizenships
-                    }
-                }
-            } catch {
-                
+        R_Citizenship.getCitizenships { result in
+            switch result {
+            case .success(let citizenships):
+                self.citizenships = citizenships
+            case .failure(let error):
+                print(error)
             }
         }
     }
     
-    private func makeState() async {
+    private func makeState() {
         let elements: [Element] = citizenships.map { citizen in
             let onSelect: () -> Void = { [weak self] in
                 self?.onCitizenshipSelect?.perform(with: citizen)
@@ -62,10 +53,7 @@ class R_CitizenshipController: UIViewController {
         }
         let sec = SectionState(header: nil, footer: nil)
         let state = State(model: sec, elements: elements)
-        await MainActor.run { [weak self] in
-            let viewState = R_CitizenshipView.ViewState(dataState: .loaded, state: [state])
-            self?.nestedView.viewState = viewState
-        }
+        let viewState = R_CitizenshipView.ViewState(dataState: .loaded, state: [state])
+        self.nestedView.viewState = viewState
     }
-    
 }

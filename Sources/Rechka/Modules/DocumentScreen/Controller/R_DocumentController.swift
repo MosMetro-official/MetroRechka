@@ -11,7 +11,6 @@ import CoreTableView
 class R_DocumentController: UIViewController {
 
     let nestedView = R_DocumentView.loadFromNib()
-    let network = R_Service()
     
     var onDocumentSelect: Command<R_Document>?
     var tripId: Int? {
@@ -22,9 +21,7 @@ class R_DocumentController: UIViewController {
     }
     var documents: [R_Document] = [] {
         didSet {
-            Task.detached { [weak self] in
-                await self?.makeState()
-            }
+            makeState()
         }
     }
     
@@ -40,42 +37,35 @@ class R_DocumentController: UIViewController {
     
     private func loadDocuments(by id: Int) {
         nestedView.viewState = .init(dataState: .loading, state: [], onClose: nil)
-        Task.detached { [weak self] in
-            do {
-                let availableDocuments = try await self?.network.getDocs(by: id)
-                try await Task.sleep(nanoseconds: 0_300_000_000)
-                await MainActor.run { [weak self] in
-                    if let documents = availableDocuments {
-                        self?.documents = documents
-                    }
-                }
-            } catch {
-                
+        R_Document.getDocs(by: id) { result in
+            switch result {
+            case .success(let doc):
+                self.documents = doc
+            case .failure(let error):
+                print(error)
             }
         }
     }
     
-    private func makeState() async {
+    private func makeState() {
         let elements: [Element] = documents.map { document in
-            let onSelect: () -> Void = { [weak self] in
+            let onSelect = Command { [weak self] in
                 self?.onDocumentSelect?.perform(with: document)
                 self?.dismiss(animated: true)
             }
-            return R_DocumentView.ViewState.Document(title: document.name, onSelect: onSelect).toElement()
+            return R_DocumentView.ViewState.Document(title: document.name, onItemSelect: onSelect).toElement()
         }
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true)
         }
         let sec = SectionState(header: nil, footer: nil)
         let state = State(model: sec, elements: elements)
-        await MainActor.run { [weak self] in
-            let viewState = R_DocumentView.ViewState(
-                dataState: .loaded,
-                state: [state],
-                onClose: onClose
-            )
-            self?.nestedView.viewState = viewState
-        }
+        let viewState = R_DocumentView.ViewState(
+            dataState: .loaded,
+            state: [state],
+            onClose: onClose
+        )
+        self.nestedView.viewState = viewState
     }
 
 }

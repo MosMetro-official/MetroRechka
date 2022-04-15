@@ -26,7 +26,7 @@ class R_DocumentView: UIView {
         
         struct Document: _Document {            
             let title: String
-            let onSelect: () -> Void
+            let onItemSelect: Command<Void>
         }
         
         static let initial = R_DocumentView.ViewState(dataState: .loading, state: [], onClose: nil)
