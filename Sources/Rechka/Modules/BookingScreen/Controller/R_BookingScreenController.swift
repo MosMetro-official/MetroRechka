@@ -21,6 +21,24 @@ internal final class R_BookingScreenController : UIViewController {
     
     var nestedView = R_BookingScreenView(frame: UIScreen.main.bounds)
     
+    
+    var orderID: Int? {
+        didSet {
+            guard let orderID = orderID else {
+                return
+            }
+            RiverOrder.get(by: orderID) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let order):
+                    self.model = order
+                case .failure(let error):
+                    print("error")
+                }
+            }
+        }
+    }
+    
     var model: RiverOrder? {
         didSet {
             guard let model = model else {
@@ -37,17 +55,10 @@ internal final class R_BookingScreenController : UIViewController {
             }
             
             if seconds > 0 {
-                Task.detached { [weak self] in
-                    guard let self = self else { return }
-                    let state = await self.makeState()
-                    await self.set(state: state)
-                }
+                self.makeState()
             } else {
                 self.removeTimer()
             }
-            
-           
-            
         }
     }
     
@@ -68,6 +79,7 @@ internal final class R_BookingScreenController : UIViewController {
         super.viewWillDisappear(animated)
     }
     
+
     
     private func removeTimer() {
         guard let timer = timer else {
@@ -81,6 +93,17 @@ internal final class R_BookingScreenController : UIViewController {
     private func setListeners() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleSuccessfulPayment), name: .riverPaymentSuccess, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
+        NotificationCenter.default.addObserver(forName: .riverAppDidBecomeActive, object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            guard let model = model else { return }
+            /// reload data from server
+            self.orderID = model.id
+        }
+        NotificationCenter.default.addObserver(forName: .riverAppDidEnterBackground, object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            self.removeTimer()
+        }
+        
     }
     
     
@@ -172,7 +195,7 @@ internal final class R_BookingScreenController : UIViewController {
         self.present(self.paymentController!, animated: true, completion: nil)
     }
     
-    private func makeState() async -> R_BookingScreenView.ViewState {
+    private func makeState() {
         let onSelect: () -> Void = { [weak self] in
             guard let self = self else { return }
             self.nestedView.viewState.dataState = .loaded
@@ -236,8 +259,7 @@ internal final class R_BookingScreenController : UIViewController {
             partialResult + ticket.additionServices.reduce(0, { $0 + $1.totalPrice })
         }
         let totalPrice = model.operation.totalPrice + additionsPrice
-        
-        return .init(dataState: .loaded, states: [topState, cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(totalPrice)) ₽")
+        self.nestedView.viewState = .init(dataState: .loaded, states: [topState,cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(totalPrice)) ₽")
 
     }
 
