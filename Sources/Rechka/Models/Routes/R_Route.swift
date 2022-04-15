@@ -12,17 +12,17 @@ import SwiftDate
 
 
 
-struct R_RouteResponse {
+public struct R_RouteResponse {
     let items: [R_Route]
     let page: Int
     let totalPages: Int
     let totalElements: Int
 }
 
-struct R_Point {
-    let latitude: Double
-    let longitude: Double
-    let position: Int
+public struct R_Point {
+    public let latitude: Double
+    public let longitude: Double
+    public let position: Int
     
     init(data: CoreNetwork.JSON) {
         self.latitude = data["lat"].doubleValue
@@ -31,28 +31,28 @@ struct R_Point {
     }
 }
 
-struct R_Route {
-    let id: Int
-    let name: String
-    let minPrice: Int
-    let time: Int
-    let distance: Int
+public struct R_Route {
+    public let id: Int
+    public let name: String
+    public let minPrice: Int
+    public let time: Int
+    public let distance: Int
     
     // tags
-    let tags: [String]
-    let schedule: [Date]
+    public let tags: [String]
+    public let schedule: [Date]
     
     // polyline
-    let polyline: [R_Point]
+    public let polyline: [R_Point]
     
     // stations
-    let stations: [R_Station]
+    public let stations: [R_Station]
     
     // galleries
-    let galleries: [R_Gallery]
+    public let galleries: [R_Gallery]
     
     // trips short
-    let shortTrips: [R_ShortTrip]
+    public let shortTrips: [R_ShortTrip]
     
     
     

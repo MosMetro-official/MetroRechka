@@ -15,8 +15,6 @@ internal final class R_PopularStationsController : UIViewController {
     
     var delegate : RechkaMapDelegate?
     
-    var reverceDelegate : RechkaMapReverceDelegate?
-    
     var terminals = [R_Station]()
     
     struct SearchModel {
@@ -448,17 +446,14 @@ internal final class R_PopularStationsController : UIViewController {
     private func handle(_ persons: Int) { }
     
     private func openTerminalsTable() {
-        self.onTerminalsListSelect()
+   
     }
     
     private func openMapController() {
-        let controller = delegate?.getRechkaMapController()
         guard
-            let controller = controller,
+            let controller = delegate?.rechkaStationsController(),
             let navigation = navigationController
         else { fatalError() }
-        controller.delegate = self
-        controller.shouldShowTerminalsButton = true
         navigation.pushViewController(controller, animated: true)
 //        Task {
 //            var points = [UIImage]()
@@ -498,15 +493,4 @@ internal final class R_PopularStationsController : UIViewController {
     }
 }
 
-extension R_PopularStationsController : RechkaMapReverceDelegate {
-    
-    public func onMapBackSelect() {
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-    
-    public func onTerminalsListSelect() {
-        let controller = R_StationsListController()
-        controller.terminals = terminals
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-}
+

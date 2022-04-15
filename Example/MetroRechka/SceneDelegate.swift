@@ -14,10 +14,9 @@ class Dummy: RechkaNetworkDelegate {
         completion(false)
     }
     
-    
-  
-    
 }
+
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -61,8 +60,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate : RechkaMapDelegate {
     
-    func getRechkaMapController() -> RechkaMapController {
-        return MapViewController(nibName: "MapViewController", bundle: nil)
+    func rechkaRouteController(with route: R_Route) -> R_RouteLineController {
+        return RouteMapController(route: route)
     }
+    
+    func rechkaStationsController() -> R_StationsController {
+        return MapViewController()
+    }
+    
+    
+ 
     
 }

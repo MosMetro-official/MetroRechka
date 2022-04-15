@@ -10,7 +10,7 @@ import CoreTableView
 import CoreNetwork
 import SwiftDate
 
-internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDelegate {
+internal class R_RouteDetailsController: UIViewController {
       
     func onMapBackSelect() {
         self.navigationController?.popViewController(animated: true)
@@ -245,7 +245,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         }
         
         
-        if Rechka.shared.isMapsRoutesAvailable {
+        if Rechka.shared.isMapsRoutesAvailable && !model.polyline.isEmpty {
             let mapView = R_RootDetailStationView.ViewState.MapView(
                 onButtonSelect: { [weak self] in
                     guard let self = self else { return }
@@ -339,13 +339,12 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
     
     private func showRouteOnMap() {
         self.delegate = Rechka.shared.delegate
-        let controller = delegate?.getRechkaMapController()
         guard
-            let controller = controller,
+            let route = route,
+            let controller = delegate?.rechkaRouteController(with: route),
             let navigation = navigationController
         else { fatalError() }
-        controller.delegate = self
-        controller.shouldShowTerminalsButton = false
+        controller.route = route
         navigation.pushViewController(controller, animated: true)
     }
 }

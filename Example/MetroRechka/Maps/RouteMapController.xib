@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RouteMapController" customModule="MetroRechka" customModuleProvider="target">
+            <connections>
+                <outlet property="mainTitleLabel" destination="XfP-qE-Y9P" id="YoQ-nh-F3D"/>
+                <outlet property="mapView" destination="glJ-WS-LOc" id="IJW-vV-IYv"/>
+                <outlet property="titleLabelTopAnchor" destination="gLi-Yv-KtE" id="fq1-rt-ey2"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glJ-WS-LOc" customClass="YMKMapView">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Маршрут" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XfP-qE-Y9P" customClass="UIOutlinedLabel" customModule="MetroRechka" customModuleProvider="target">
+                    <rect key="frame" x="170" y="40" width="74" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="title2"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="glJ-WS-LOc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QSU-6U-LIu"/>
+                <constraint firstItem="XfP-qE-Y9P" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="SwF-up-ach"/>
+                <constraint firstItem="glJ-WS-LOc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cEZ-Ee-xMs"/>
+                <constraint firstAttribute="bottom" secondItem="glJ-WS-LOc" secondAttribute="bottom" id="cqO-e8-GN6"/>
+                <constraint firstAttribute="trailing" secondItem="glJ-WS-LOc" secondAttribute="trailing" id="fKZ-qK-j35"/>
+                <constraint firstItem="XfP-qE-Y9P" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="gLi-Yv-KtE"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="126"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="XfP-qE-Y9P">
+            <size key="intrinsicContentSize" width="74" height="20.5"/>
+        </designable>
+    </designables>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
