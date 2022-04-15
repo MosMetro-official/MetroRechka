@@ -60,17 +60,15 @@ class R_PlaceController: UIViewController {
     
     private func loadPlaces(for trip: R_Trip) {
         self.mainView.viewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать", dataState: .loading, items: [])
-        Task.detached { [weak self] in
-            do {
-                let freePlaces = try await trip.getFreePlaces()
-                try await Task.sleep(nanoseconds: 0_300_000_000)
-                await MainActor.run { [weak self] in
-                    self?.places = freePlaces
-                }
-            } catch {
-                
+        trip.getFreePlaces { [weak self] result in
+            switch result {
+            case .success(let places):
+                self?.places = places
+            case .failure(let error):
+                print(error)
             }
         }
+        
         
     }
     

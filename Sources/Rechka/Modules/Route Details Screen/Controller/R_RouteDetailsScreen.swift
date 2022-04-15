@@ -10,7 +10,7 @@ import CoreTableView
 import CoreNetwork
 import SwiftDate
 
-internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDelegate {
+internal class R_RouteDetailsController: UIViewController {
       
     func onMapBackSelect() {
         self.navigationController?.popViewController(animated: true)
@@ -35,15 +35,14 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             guard let routeID = routeID else {
                 return
             }
-            Task.detached { [weak self] in
-                do {
-                    let route = try await R_Route.getRoute(by: routeID)
-                    try await Task.sleep(nanoseconds: 0_300_000_000)
-                    await self?.setRoute(route)
-                } catch {
-                    R_ReportService.shared.report(error: .stateError, message: error.localizedDescription, parameters: ["screen": String(describing: self)])
-                    guard let err = error as? APIError else { throw error }
-                    await self?.setErrorState(with: err)
+            R_Route.getRoute(by: routeID) { [weak self] result in
+                switch result {
+                case .success(let route):
+                    self?.route = route
+                    return
+                case .failure(let error):
+                    self?.setErrorState(with: error)
+                    return
                 }
             }
         }
@@ -56,7 +55,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         }
     }
     
-    @MainActor
+    
     private func setErrorState(with error: APIError) {
         
         var title = "Возникла ошибка при загрузке"
@@ -132,7 +131,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    @MainActor
+    
     private func setRoute(_ route: R_Route) {
 //        if let first = route.shortTrips.first {
 //            self.selectedTripId = first.id
@@ -140,7 +139,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         self.route = route
     }
     
-    @MainActor
+    
     private func setState(_ state: R_RootDetailStationView.ViewState) {
         self.nestedView.viewState = state
     }
@@ -158,9 +157,9 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
             posterImageURL: self.nestedView.viewState.posterImageURL
         )
         self.nestedView.viewState = loadingState
-        Task.detached { [weak self] in
-            do {
-                let trip = try await R_Trip.get(by: selectedTripId)
+        R_Trip.get(by: selectedTripId) { [weak self] result in
+            switch result {
+            case .success(let trip):
                 let loadedState = R_RootDetailStationView.ViewState(
                     state: loadingState.state,
                     dataState: .loaded,
@@ -169,12 +168,16 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
                     posterTitle: "",
                     posterImageURL: loadingState.posterImageURL
                 )
-                await self?.setState(loadedState)
-                await self?.openBuyTicketsController(with: trip)
-            } catch {
-                
+                self?.setState(loadedState)
+                self?.openBuyTicketsController(with: trip)
+                return
+            case .failure(let error):
+                print(error)
+                return
             }
         }
+        
+      
     }
     
     
@@ -242,7 +245,7 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
         }
         
         
-        if Rechka.shared.isMapsRoutesAvailable {
+        if Rechka.shared.isMapsRoutesAvailable && !model.polyline.isEmpty {
             let mapView = R_RootDetailStationView.ViewState.MapView(
                 onButtonSelect: { [weak self] in
                     guard let self = self else { return }
@@ -336,30 +339,32 @@ internal class R_RouteDetailsController: UIViewController, RechkaMapReverceDeleg
     
     private func showRouteOnMap() {
         self.delegate = Rechka.shared.delegate
-        let controller = delegate?.getRechkaMapController()
         guard
-            let controller = controller,
+            let route = route,
+            let controller = delegate?.rechkaRouteController(with: route),
             let navigation = navigationController
         else { fatalError() }
-        controller.delegate = self
-        controller.shouldShowTerminalsButton = false
+        controller.route = route
         navigation.pushViewController(controller, animated: true)
     }
 }
 
 extension R_RouteDetailsController {
         
-    @MainActor
+    
     private func openBuyTicketsController(with model: R_Trip) {
-        guard let needPersonalData = model.personalDataRequired else { return }
-        if needPersonalData {
-//            let bookingWithPerson = R_BookingWithPersonController()
-//            bookingWithPerson.model = model
-//            navigationController?.pushViewController(bookingWithPerson, animated: true)
-        } else {
-            let bookingWithoutPerson = R_BookingWithoutPersonController()
-            bookingWithoutPerson.model = model
-            navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, let needPersonalData = model.personalDataRequired else { return }
+            if needPersonalData {
+    //            let bookingWithPerson = R_BookingWithPersonController()
+    //            bookingWithPerson.model = model
+    //            navigationController?.pushViewController(bookingWithPerson, animated: true)
+            } else {
+                let bookingWithoutPerson = R_BookingWithoutPersonController()
+                bookingWithoutPerson.model = model
+                self.navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+            }
         }
+
     }
 }

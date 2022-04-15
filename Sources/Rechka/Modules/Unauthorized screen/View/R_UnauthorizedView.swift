@@ -15,6 +15,8 @@ internal final class R_UnauthorizedView: UIView {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     
+    @IBOutlet weak var effectView: UIVisualEffectView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     struct ViewState {
         let onMore: Command<Void>?
@@ -40,6 +42,11 @@ internal final class R_UnauthorizedView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.loginButton.roundCorners(.all, radius: 8)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.effectView.frame.height, right: 0)
     }
     
 }

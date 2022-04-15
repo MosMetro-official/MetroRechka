@@ -14,4 +14,6 @@ public extension Notification.Name {
     static let riverShowOrder = Notification.Name("riverShowOrder")
     static let riverUpdateOrder = Notification.Name("riverUpdateOrder")
     static let riverSuccessfulAuth = Notification.Name("riverSuccessfulAuth")
+    static let riverAppDidBecomeActive = Notification.Name("riverAppDidBecomeActive")
+    static let riverAppDidEnterBackground = Notification.Name("riverAppDidEnterForeground")
 }

@@ -33,16 +33,13 @@ class PDFDocumentController: UIViewController {
     var ticket: RiverOperationTicket? {
         didSet {
             guard let ticket = ticket else { return }
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                do {
-                    let filePath = try await ticket.getDocumentURL()
-                    await self.set(filePath: filePath)
-                } catch {
-                    print("Error: \(error)")
-                    // handle error
+            ticket.getDocumentURL { result in
+                switch result {
+                case .success(let fileURL):
+                    self.filePath = fileURL
+                case .failure(let error):
+                    print(error)
                 }
-              
             }
         }
     }
@@ -60,12 +57,12 @@ class PDFDocumentController: UIViewController {
 
 extension PDFDocumentController {
     
-    @MainActor
+    
     private func set(state: R_PDFDocView.ViewState) {
         self.pdfView.viewState = state
     }
     
-    @MainActor
+    
     private func set(filePath: URL) {
         self.filePath = filePath
     }

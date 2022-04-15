@@ -52,7 +52,7 @@ public final class Appearance: _Appearance {
         return bubble.asImage()
     }
     
-    static var customFonts: [FontTextStyle: UIFont] = [
+    public static var customFonts: [FontTextStyle: UIFont] = [
         .largeTitle: UIFont(name: "MoscowSans-Bold", size: 30) ?? UIFont.systemFont(ofSize: 30, weight: .bold),
         .title1: UIFont(name: "MoscowSans-Bold", size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .bold),
         .title2: UIFont(name: "MoscowSans-Medium", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .medium),
@@ -68,7 +68,7 @@ public final class Appearance: _Appearance {
         
     ]
     
-    static var colors: [Colors : UIColor] = [
+    public static var colors: [Colors : UIColor] = [
         .base: UIColor(named: Colors.base.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
         .content: UIColor(named: Colors.content.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
         .priceLayer: UIColor(named: Colors.priceLayer.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),

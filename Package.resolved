@@ -5,9 +5,9 @@
         "package": "CoreNetwork",
         "repositoryURL": "https://github.com/MosMetro-official/CoreNetwork",
         "state": {
-          "branch": null,
+          "branch": "callbacks",
           "revision": "e48055ae187b2280a99832a9a5fe68815b27f70f",
-          "version": "0.0.2"
+          "version": null
         }
       },
       {

@@ -56,7 +56,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         
     }
     
-    @MainActor
+    
     private func set(state: R_BookingWithoutPersonView.ViewState) {
         self.nestedView.viewState = state
     }
@@ -122,24 +122,27 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     }
     
     
-    @MainActor
+    
     private func handle(order: RiverOrder) {
-        let newState: R_BookingWithoutPersonView.ViewState = .init(
-            title: self.nestedView.viewState.title,
-            state: self.nestedView.viewState.state,
-            dataState: .loaded,
-            onBooking: self.nestedView.viewState.onBooking
-        )
-        self.set(state: newState)
-        
-        let bookingController = R_BookingScreenController()
-        self.present(bookingController, animated: true) {
-            bookingController.model = order
-            bookingController.onDismiss = { [weak self] in
-                self?.navigationController?.popToRootViewController(animated: false)
-                NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+        DispatchQueue.main.async {
+            let newState: R_BookingWithoutPersonView.ViewState = .init(
+                title: self.nestedView.viewState.title,
+                state: self.nestedView.viewState.state,
+                dataState: .loaded,
+                onBooking: self.nestedView.viewState.onBooking
+            )
+            self.set(state: newState)
+            
+            let bookingController = R_BookingScreenController()
+            self.present(bookingController, animated: true) {
+                bookingController.model = order
+                bookingController.onDismiss = { [weak self] in
+                    self?.navigationController?.popToRootViewController(animated: false)
+                    NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+                }
             }
         }
+        
     }
     
     private func startBooking() {
@@ -175,14 +178,14 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             self.set(state: newState)
             let finalUsers = users
             
-            Task.detached { [weak self] in
-                do {
-                    let order = try await R_Trip.book(with: finalUsers, tripID: tripID)
-                    await self?.handle(order: order)
-                } catch {
-                    guard let err = error as? APIError else { return }
-                    await MainActor.run { [weak self] in
-                        guard let self = self else { return }
+            R_Trip.book(with: finalUsers, tripID: tripID) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let order):
+                    self.handle(order: order)
+                    return
+                case .failure(let error):
+                    DispatchQueue.main.async {
                         let onSelect: () -> Void = { [weak self] in
                             guard let self = self else { return }
                             R_Toast.remove(from: self.nestedView)
@@ -191,7 +194,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                         
                         let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
                         
-                        let config = R_Toast.Configuration.defaultError(text: err.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
+                        let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
                         let newErrorState: R_BookingWithoutPersonView.ViewState = .init(
                             title: self.nestedView.viewState.title,
                             state: self.nestedView.viewState.state,
@@ -199,13 +202,11 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                             onBooking: self.nestedView.viewState.onBooking
                         )
                         
-                        
                         self.nestedView.viewState = newErrorState
                     }
-                    
-                    
                 }
             }
+            
         } else {
             self.unautorizedVC = R_UnauthorizedController()
             self.present(self.unautorizedVC!, animated: true, completion: nil)

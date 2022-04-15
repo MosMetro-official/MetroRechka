@@ -9,11 +9,11 @@ import Foundation
 import CoreNetwork
 import SwiftDate
 
-struct R_ShortTrip {
-    let id: Int
-    let freePlaceCount: Int
-    let price: Double
-    let dateStart: Date
+public struct R_ShortTrip {
+    public let id: Int
+    public let freePlaceCount: Int
+    public let price: Double
+    public let dateStart: Date
     
     init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,

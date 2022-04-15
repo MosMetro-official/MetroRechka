@@ -21,6 +21,24 @@ internal final class R_BookingScreenController : UIViewController {
     
     var nestedView = R_BookingScreenView(frame: UIScreen.main.bounds)
     
+    
+    var orderID: Int? {
+        didSet {
+            guard let orderID = orderID else {
+                return
+            }
+            RiverOrder.get(by: orderID) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let order):
+                    self.model = order
+                case .failure(let error):
+                    print("error")
+                }
+            }
+        }
+    }
+    
     var model: RiverOrder? {
         didSet {
             guard let model = model else {
@@ -36,18 +54,11 @@ internal final class R_BookingScreenController : UIViewController {
                 self.setTimer()
             }
             
-            if seconds > 0 {
-                Task.detached { [weak self] in
-                    guard let self = self else { return }
-                    let state = await self.makeState()
-                    await self.set(state: state)
-                }
+            if seconds >= 0 {
+                self.makeState()
             } else {
                 self.removeTimer()
             }
-            
-           
-            
         }
     }
     
@@ -68,19 +79,27 @@ internal final class R_BookingScreenController : UIViewController {
         super.viewWillDisappear(animated)
     }
     
-    @MainActor
+
+    
     private func removeTimer() {
-        guard let timer = timer else {
-            return
+        if self.timer != nil {
+            self.timer?.invalidate()
+            self.timer = nil
+            self.needToSetTimer = true
         }
-        timer.invalidate()
-        self.timer = nil
-        self.needToSetTimer = true
+        
     }
     
     private func setListeners() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleSuccessfulPayment), name: .riverPaymentSuccess, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
+        NotificationCenter.default.addObserver(forName: .riverAppDidBecomeActive, object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            guard let model = self.model else { return }
+            /// reload data from server
+            self.orderID = model.id
+        }
+        
     }
     
     
@@ -117,18 +136,17 @@ internal final class R_BookingScreenController : UIViewController {
             self.seconds -= 1
         })
         RunLoop.current.add(timer!, forMode: .common)
-        
         self.needToSetTimer = false
         
         
     }
     
-    @MainActor
+    
     private func set(state: R_BookingScreenView.ViewState) {
         self.nestedView.viewState = state
     }
     
-    @MainActor
+    
     private func showCancelSuccess() {
         self.nestedView.viewState.dataState = .loaded
         let controller = R_CancelBookingController()
@@ -145,15 +163,14 @@ internal final class R_BookingScreenController : UIViewController {
     private func startCancel() {
         guard let model = model else { return }
         self.nestedView.viewState.dataState = .loading
-        Task.detached { [weak self] in
-            guard let self = self else { return }
-            do {
-                try await model.cancelBooking()
-                await self.showCancelSuccess()
-            } catch {
-                guard let err = error as? APIError else { return }
-                await MainActor.run { [weak self] in
-                    guard let self = self else { return }
+        model.cancelBooking { result in
+            switch result {
+            case .success():
+                DispatchQueue.main.async {
+                    self.showCancelSuccess()
+                }
+            case .failure(let err):
+                DispatchQueue.main.async {
                     let onSelect: () -> Void = { [weak self] in
                         guard let self = self else { return }
                         self.nestedView.viewState.dataState = .loaded
@@ -164,7 +181,6 @@ internal final class R_BookingScreenController : UIViewController {
                     self.nestedView.viewState.dataState = .error(errorConfig)
                 }
             }
-            
         }
     }
     
@@ -174,7 +190,7 @@ internal final class R_BookingScreenController : UIViewController {
         self.present(self.paymentController!, animated: true, completion: nil)
     }
     
-    private func makeState() async -> R_BookingScreenView.ViewState {
+    private func makeState() {
         let onSelect: () -> Void = { [weak self] in
             guard let self = self else { return }
             self.nestedView.viewState.dataState = .loaded
@@ -184,18 +200,21 @@ internal final class R_BookingScreenController : UIViewController {
         let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка", subtitle: nil, buttonType: .imageButton(buttonData))
         
         guard let model = model else {
-            return .init(dataState: .error(errorConfig), states: [], totalPrice: "")
+            return
         }
         let endBookingDate = model.operation.orderDate + seconds.seconds
         let period = endBookingDate - model.operation.orderDate
-        guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error(errorConfig), states: [], totalPrice: "")}
+        guard let minute = period.minute, let seconds = period.second else { return }
         let minuteStr = minute < 10 ? "0\(minute)" : "\(minute)"
         let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
         
         let elapsedTime = "\(minuteStr):\(secondsStr)"
         var topElements = [Element]()
+        
+        let titleHeigght = "Билеты забронированы".height(withConstrainedWidth: UIScreen.main.bounds.width - 40, font: Appearance.customFonts[.largeTitle] ?? UIFont.systemFont(ofSize: 30, weight: .bold)) + 20
         let title = R_BookingScreenView.ViewState.Title(
-            title: "Билеты забронированы"
+            title: "Билеты забронированы",
+            height: titleHeigght
         ).toElement()
         topElements.append(title)
         let timer = R_BookingScreenView.ViewState.Timer(
@@ -235,8 +254,7 @@ internal final class R_BookingScreenController : UIViewController {
             partialResult + ticket.additionServices.reduce(0, { $0 + $1.totalPrice })
         }
         let totalPrice = model.operation.totalPrice + additionsPrice
-        
-        return .init(dataState: .loaded, states: [topState, cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(totalPrice)) ₽")
+        self.nestedView.viewState = .init(dataState: .loaded, states: [topState,cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(totalPrice)) ₽")
 
     }
 

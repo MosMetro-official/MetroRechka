@@ -125,37 +125,44 @@ struct RiverOperationTicket {
 
 extension RiverOperationTicket {
     
-    public func confirmRefund() async throws {
-        do {
-            let client = APIClient.authorizedClient
-            let _ = try await client.send(
-                .POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refund",
-                      body: nil,
-                      contentType: .json)
-            )
-            return
-        } catch {
-            throw error
+    public func confirmRefund(completion: @escaping (Result<Void, APIError>) -> Void) {
+        
+        let client = APIClient.authorizedClient
+        client.send(.POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refund",
+                          body: nil,
+                          contentType: .json)) { result in
+            switch result {
+                
+            case .success(_):
+                completion(.success(()))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
         }
+       
     }
     
-    public func calculateRefund() async throws -> RiverTicketRefund {
-        do {
-            let client = APIClient.authorizedClient
-            let response = try await client.send(
-                .GET(
-                    path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refundAmount",
-                    query: nil)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            guard let refund = RiverTicketRefund(data: json["data"]) else {
-                throw APIError.badData
+    public func calculateRefund(completion: @escaping (Result<RiverTicketRefund,APIError>) -> Void) {
+        let client = APIClient.authorizedClient
+        let path = "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refundAmount"
+        client.send(.GET(path: path, query: nil)) { result in
+            switch result {
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let refund = RiverTicketRefund(data: json["data"]) else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                completion(.success(refund))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
             }
-            return refund
-            
-        } catch {
-            throw error
         }
+
     }
     
     private func documentExist(path: String) -> URL? {
@@ -175,42 +182,46 @@ extension RiverOperationTicket {
         }
     }
     
-    private func saveDocument(path: String, data: Data) throws -> URL {
+    private func saveDocument(path: String, data: Data) -> URL? {
         let fileManager = FileManager.default
-        do {
-            let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-            let fileURL = documentDirectory.appendingPathComponent(path)
-            fileManager.createFile(atPath: fileURL.path, contents: data)
-            
-            return fileURL
-        } catch {
-            throw error
-        }
+        guard let documentDirectory = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false) else { return nil }
+        let fileURL = documentDirectory.appendingPathComponent(path)
+        fileManager.createFile(atPath: fileURL.path, contents: data)
+        
+        return fileURL
+        
+        
     }
     
     func docPath() -> String {
         return "Маршрутная квитанция электронного билета" + " \(dateTimeStart.toFormat("d MMMM HH:mm", locale: Locales.russian))" + " \(id)" + ".pdf"
     }
     
-    public func getDocumentURL() async throws -> URL {
+    public func getDocumentURL(completion: @escaping (Result<URL,APIError>) -> Void) {
         if let filePath = documentExist(path: self.docPath()) {
-            return filePath
+            completion(.success(filePath))
+            return
         } else {
-            do {
-                let client = APIClient.authorizedClient
-                let response = try await client.send(
-                    .GET(
-                        path: "/api/tickets/v1/\(self.id)/blank",
-                        query: ["operationHash": self.operationHash])
-                )
-                guard let data = response.data as? Data else {
-                    throw APIError.badData
+            let client = APIClient.authorizedClient
+            let path = "/api/tickets/v1/\(self.id)/blank"
+            let query = ["operationHash": self.operationHash]
+            client.send(.GET(path: path, query: query)) { result in
+                switch result {
+                case .success(let response):
+                    guard let data = response.data as? Data else {
+                        completion(.failure(.badData))
+                        return
+                    }
+                    guard let fileURL = saveDocument(path: self.docPath(), data: data) else {
+                        completion(.failure(.badData))
+                        return
+                    }
+                    completion(.success(fileURL))
+                    return
+                case .failure(let error):
+                    completion(.failure(error))
+                    return
                 }
-                let fileURL = try saveDocument(path: self.docPath(), data: data)
-                return fileURL
-                
-            } catch {
-                throw error
             }
         }
     }

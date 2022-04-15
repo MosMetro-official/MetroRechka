@@ -48,27 +48,27 @@ struct R_Trip {
 
 extension R_Trip {
     
-    func getFreePlaces() async throws -> [Int] {
+    func getFreePlaces(completion: @escaping (Result<[Int],APIError>) -> Void) {
         let client = APIClient.unauthorizedClient
-        do {
-            let response = try await client.send(
-                .GET(
-                    path: "/api/trips/v1/\(id)/placesAvailability",
-                    query: nil)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            guard let array = json["data"].array else {
-                throw APIError.badData
+        client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
+            switch result {
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let array = json["data"].array else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                let places = array.compactMap { $0.int }
+                completion(.success(places))
+                return
+            case .failure(let err):
+                completion(.failure(err))
+                return
             }
-            return array.compactMap { $0.int }
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
         }
     }
     
-    static func book(with users: [R_User], tripID: Int) async throws -> RiverOrder {
+    static func book(with users: [R_User], tripID: Int, completion: @escaping (Result<RiverOrder, APIError>) -> Void) {
         
         let tickets: [[String:Any]] = users.map { user in
             return user.createBodyItem()
@@ -81,45 +81,47 @@ extension R_Trip {
             "tickets": tickets
         ]
         let client = APIClient.authorizedClient
-    
         
-        do {
-            let bookingResponse = try await client.send(.POST(
-                path: "/api/orders/v1/booking",
-                body: body,
-                contentType: .json)
-            )
-            let json = CoreNetwork.JSON(bookingResponse.data)
-            guard let order = RiverOrder(data: json["data"]) else {
-                throw APIError.badData
+        client.send(.POST(path: "/api/orders/v1/booking", body: body, contentType: .json)) { result in
+            switch result {
+                
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let order = RiverOrder(data: json["data"]) else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                completion(.success(order))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
             }
-            print(order)
-            return order
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
         }
+        
     }
     
-    static func get(by id: Int) async throws -> R_Trip {
+    static func get(by id: Int, completion: @escaping (Result<R_Trip,APIError>) -> Void)  {
         let client = APIClient.unauthorizedClient
-        do {
-            let response = try await client.send(
-                .GET(
-                    path: "/api/trips/v1/\(id)",
-                    query: nil)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            guard let trip = R_Trip(data: json["data"]) else {
-                throw APIError.badData
+        client.send(.GET(
+            path: "/api/trips/v1/\(id)",
+            query: nil)) { result in
+                switch result {
+                case .success(let response):
+                    let json = CoreNetwork.JSON(response.data)
+                    guard let trip = R_Trip(data: json["data"]) else {
+                        completion(.failure(.badMapping))
+                        return
+                    }
+                    completion(.success(trip))
+                    return
+                case .failure(let error):
+                    completion(.failure(error))
+                    return
+                }
+                
+                
             }
-            return trip
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
-        }
     }
     
 }

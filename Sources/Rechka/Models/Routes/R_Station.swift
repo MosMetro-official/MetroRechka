@@ -9,17 +9,17 @@ import Foundation
 import CoreNetwork
 
 // MARK: - Station
-struct R_Station : _RiverStation {
-    let id: Int
-    let name: String
-    let cityID: Int
-    let cityName, regionName: String
-    let countryID: Int
-    let countryName, countryISO: String
-    let latitude, longitude: Double
-    let position: Int?
-    let galleries: [R_Gallery]
-    var onSelect : (() -> Void)
+public struct R_Station : _RiverStation {
+    public  let id: Int
+    public let name: String
+    public let cityID: Int
+    public let cityName, regionName: String
+    public let countryID: Int
+    public let countryName, countryISO: String
+    public let latitude, longitude: Double
+    public let position: Int?
+    public let galleries: [R_Gallery]
+    public var onSelect : (() -> Void)
     
     
     init(data: CoreNetwork.JSON) {

@@ -20,47 +20,46 @@ internal final class R_BlurRefundController : UIViewController {
     }
     
     private func startLoad(for ticket: RiverOperationTicket) {
-        Task.detached { [weak self] in
-            guard let self = self else { return }
-            do {
-                let refund = try await ticket.calculateRefund()
-                try await Task.sleep(nanoseconds: 0_300_000_000)
-                await MainActor.run { [weak self] in
-                    self?.refund = refund
-                }
-            } catch {
-                await MainActor.run {
-                    self.handle(error: error)
-                }
+        ticket.calculateRefund { [weak self] result in
+            switch result {
+            case .success(let refund):
+                self?.refund = refund
+            case .failure(let error):
+                self?.handle(error: error)
             }
         }
     }
     
-    @MainActor
-    private func handle(error: Error) {
-
-        let controller = R_BlurResultController()
-        let statusData = R_BlurResultModel.StatusData(title: "Что-то пошло не так", subtitle: error.localizedDescription)
-       
+    
+    private func handle(error: APIError) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let controller = R_BlurResultController()
+            let statusData = R_BlurResultModel.StatusData(title: "Что-то пошло не так", subtitle: error.localizedDescription)
+           
+            
+            let errorModel: R_BlurResultModel = .failure(statusData)
+           
+            controller.model = errorModel
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
         
-        let errorModel: R_BlurResultModel = .failure(statusData)
-       
-        controller.model = errorModel
-        self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    @MainActor
     private func handleSuccessRefund() {
-
-        let controller = R_BlurResultController()
-        let statusData = R_BlurResultModel.StatusData(title: "Успешно", subtitle: "Средства будут зачислены обратно на вашу карту в течение нескольких дней")
-       
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let controller = R_BlurResultController()
+            let statusData = R_BlurResultModel.StatusData(title: "Успешно", subtitle: "Средства будут зачислены обратно на вашу карту в течение нескольких дней")
+           
+            
+            let successModel: R_BlurResultModel = .success(statusData)
+           
+            controller.model = successModel
+            self.navigationController?.pushViewController(controller, animated: true)
+            NotificationCenter.default.post(name: .riverUpdateOrder, object: nil)
+        }
         
-        let successModel: R_BlurResultModel = .success(statusData)
-       
-        controller.model = successModel
-        self.navigationController?.pushViewController(controller, animated: true)
-        NotificationCenter.default.post(name: .riverUpdateOrder, object: nil)
     }
     
     private var refund: RiverTicketRefund? {
@@ -98,15 +97,16 @@ extension R_BlurRefundController {
     private func startRefundConfirm() {
         self.nestedView.viewState = .loading(.init(title: "Возвращаем билет", descr: "Немного подождите"))
         guard let ticket = ticket else { return }
-        Task.detached { [weak self] in
-            do  {
-                try await ticket.confirmRefund()
-                await self?.handleSuccessRefund()
-            } catch {
-                await self?.handle(error: error)
+        ticket.confirmRefund { [weak self] result in
+            switch result {
+            case .success():
+                self?.handleSuccessRefund()
+            case .failure(let error):
+                self?.handle(error: error)
             }
-            
         }
+        
+     
     }
     
     private func makeState(for refund: RiverTicketRefund, ticket: RiverOperationTicket) async {

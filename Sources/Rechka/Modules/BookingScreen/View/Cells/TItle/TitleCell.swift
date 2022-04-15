@@ -14,9 +14,7 @@ protocol _Title : CellData {
 
 extension _Title {
     
-    var height : CGFloat {
-        return 70
-    }
+    
     
     func hashValues() -> [Int] {
         return [

@@ -7,29 +7,29 @@
 
 import UIKit
 
-public protocol RechkaMapController : UIViewController {
+
+public protocol R_StationsController: UIViewController {
     
-    var delegate : RechkaMapReverceDelegate? { get set }
+    var onStationSelect: ((R_Station) -> Void)? { get set }
     
-    var terminals : [_RiverStation] { get set }
+    var stations: [R_Station] { get set }
     
-    var terminalsImages : [UIImage] { get set }
-    
-    var shouldShowTerminalsButton : Bool { get set }
-    
-    func showTerminalListButton()
-    
-    func showTerminalsOnMap(from images: [UIImage], and for: [_RiverStation])
 }
+
+public protocol R_RouteLineController: UIViewController {
+    
+    var route: R_Route? { get set }
+    
+}
+
+
 
 public protocol RechkaMapDelegate : AnyObject {
-        
-    func getRechkaMapController() -> RechkaMapController
+    
+    
+    func rechkaRouteController(with route: R_Route) -> R_RouteLineController
+    
+    func rechkaStationsController() -> R_StationsController
 }
 
-public protocol RechkaMapReverceDelegate : AnyObject {
-        
-    func onMapBackSelect()
-    
-    func onTerminalsListSelect()
-}
+

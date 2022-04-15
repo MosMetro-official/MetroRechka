@@ -282,7 +282,9 @@
             </constraints>
             <connections>
                 <outlet property="closeButton" destination="fCp-HV-plc" id="r45-8f-SFs"/>
+                <outlet property="effectView" destination="xaR-Z2-aqr" id="Sg6-Th-e5W"/>
                 <outlet property="loginButton" destination="1lj-bl-1AI" id="QA4-hj-R6P"/>
+                <outlet property="scrollView" destination="qZk-ls-xfh" id="7V2-2T-ZeA"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="93.75"/>
         </view>

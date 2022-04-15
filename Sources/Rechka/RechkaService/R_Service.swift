@@ -9,28 +9,29 @@ import Foundation
 import CoreNetwork
 
 
-class R_Service {
+actor R_Service {
     
-    func getTags() async throws -> [String] {
+    func getTags(completion: @escaping (Result<[String],APIError>) -> Void)  {
+        print("🔥🔥🔥 Started fetching tags")
         let client = APIClient.unauthorizedClient
-        do {
-            let response = try await client.send(
-                .GET(
-                    path: "/api/routes/v1/tags",
-                    query: nil)
-            )
-            let json = CoreNetwork.JSON(response.data)
-            guard let array = json["data"].array else {
-                throw APIError.badData
-            }
+        client.send(.GET(path: "/api/routes/v1/tags", query: nil)) { result in
+            switch result {
                 
-            let tags = array.compactMap { $0.string }
-            return tags
-        } catch {
-            guard let err = error as? APIError else { throw error }
-            print(err)
-            throw err
+            case .success(let response):
+                let json = CoreNetwork.JSON(response.data)
+                guard let array = json["data"].array else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                let tags = array.compactMap { $0.string }
+                completion(.success(tags))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
         }
+        
     }
     
 }

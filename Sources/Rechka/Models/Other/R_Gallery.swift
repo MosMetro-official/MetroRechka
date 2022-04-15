@@ -9,7 +9,7 @@ import Foundation
 import CoreNetwork
 
 // MARK: - Gallery
-struct R_Gallery {
+public struct R_Gallery {
     let id: Int
     let title: String
     let galleryDescription: String?
