@@ -140,7 +140,7 @@ internal final class R_BookingScreenController : UIViewController {
             self.seconds -= 1
         })
         RunLoop.current.add(timer!, forMode: .common)
-        
+        self.timer!.fire()
         self.needToSetTimer = false
         
         
