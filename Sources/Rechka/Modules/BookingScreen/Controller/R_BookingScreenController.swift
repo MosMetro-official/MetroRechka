@@ -95,7 +95,7 @@ internal final class R_BookingScreenController : UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handlePaymentFailure), name: .riverPaymentFailure, object: nil)
         NotificationCenter.default.addObserver(forName: .riverAppDidBecomeActive, object: nil, queue: nil) { [weak self] notification in
             guard let self = self else { return }
-            guard let model = model else { return }
+            guard let model = self.model else { return }
             /// reload data from server
             self.orderID = model.id
         }
@@ -205,11 +205,11 @@ internal final class R_BookingScreenController : UIViewController {
         let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка", subtitle: nil, buttonType: .imageButton(buttonData))
         
         guard let model = model else {
-            return .init(dataState: .error(errorConfig), states: [], totalPrice: "")
+            return
         }
         let endBookingDate = model.operation.orderDate + seconds.seconds
         let period = endBookingDate - model.operation.orderDate
-        guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .error(errorConfig), states: [], totalPrice: "")}
+        guard let minute = period.minute, let seconds = period.second else { return }
         let minuteStr = minute < 10 ? "0\(minute)" : "\(minute)"
         let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
         
