@@ -42,7 +42,7 @@ public struct R_Station : _RiverStation {
 
 extension R_Station {
     
-    static func getStations(completion: @escaping (Result<[R_Station],APIError>) -> Void) {
+    public static func getStations(completion: @escaping (Result<[R_Station],APIError>) -> Void) {
         let client = APIClient.unauthorizedClient
         client.send(.GET(path: "/api/references/v1/stationsFrom", query: nil)) { result in
             switch result {
