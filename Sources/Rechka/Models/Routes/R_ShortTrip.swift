@@ -11,19 +11,13 @@ import SwiftDate
 
 public struct R_ShortTrip {
     public let id: Int
-    public let freePlaceCount: Int
-    public let price: Double
     public let dateStart: Date
     
     init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
-              let freePlaceCount = data["freePlaceCount"].int,
-              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: nil)?.date,
-              let price = data["ticketPrice"].double
+              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: nil)?.date
         else { return nil }
         self.id = id
-        self.freePlaceCount = freePlaceCount
-        self.price = price
         self.dateStart = startDate.date
     }
     

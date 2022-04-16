@@ -455,6 +455,10 @@ internal final class R_PopularStationsController : UIViewController {
             let navigation = navigationController
         else { fatalError() }
         navigation.pushViewController(controller, animated: true)
+        controller.onStationSelect = { [weak self] station in
+            guard let self = self else { return }
+            self.searchModel.station = station
+        }
 //        Task {
 //            var points = [UIImage]()
 //            let client = APIClient.unauthorizedClient
