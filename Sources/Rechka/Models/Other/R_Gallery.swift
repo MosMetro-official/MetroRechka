@@ -10,10 +10,10 @@ import CoreNetwork
 
 // MARK: - Gallery
 public struct R_Gallery {
-    let id: Int
-    let title: String
-    let galleryDescription: String?
-    let urls: [String]
+    public let id: Int
+    public let title: String
+    public let galleryDescription: String?
+    public let urls: [String]
     
     init(data: CoreNetwork.JSON) {
         self.id = data["id"].intValue
