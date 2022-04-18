@@ -14,7 +14,9 @@ protocol _BlurLoading {
 
 internal final class R_BlurLoadingView : UIView {
     
-    public func configure(with data: _BlurLoading) {
+    @MainActor
+    public func configure(with data: _BlurLoading?) {
+        guard let data = data else { return }
         title.text = data.title
         descr.text = data.descr
     }
@@ -29,10 +31,11 @@ internal final class R_BlurLoadingView : UIView {
 
 extension UIView {
     
-    func showBlurLoading(on view: UIView) {
+    func showBlurLoading(on view: UIView, data: _BlurLoading? = nil) {
         let blurView = R_BlurLoadingView.loadFromNib()
         blurView.tag = 777
         blurView.frame = view.frame
+        blurView.configure(with: data)
         let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {
             view.addSubview(blurView)
         }
@@ -52,7 +55,7 @@ extension UIView {
     
     
     func showBlurLoading() {
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         let blurView = R_BlurLoadingView.loadFromNib()
         blurView.tag = 777
         blurView.frame = window.frame
@@ -64,7 +67,7 @@ extension UIView {
     }
     
     func removeBlurLoading() {
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         window.subviews.forEach { view in
             if view.tag == 777 {
                 let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {

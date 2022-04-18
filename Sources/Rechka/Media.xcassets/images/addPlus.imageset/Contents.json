@@ -1,16 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "addPlus.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
+      "filename" : "Plus, Add.pdf",
       "idiom" : "universal"
     }
   ],

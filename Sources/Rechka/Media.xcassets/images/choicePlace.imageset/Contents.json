@@ -1,16 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "choicePlace.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
+      "filename" : "Grid, Layout, Delite.pdf",
       "idiom" : "universal"
     }
   ],
@@ -19,6 +10,6 @@
     "version" : 1
   },
   "properties" : {
-    "template-rendering-intent" : "original"
+    "template-rendering-intent" : "template"
   }
 }
