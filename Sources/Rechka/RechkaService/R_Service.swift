@@ -9,7 +9,7 @@ import Foundation
 import CoreNetwork
 
 
-actor R_Service {
+final class R_Service {
     
     func getTags(completion: @escaping (Result<[String],APIError>) -> Void)  {
         print("🔥🔥🔥 Started fetching tags")

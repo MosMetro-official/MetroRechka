@@ -59,6 +59,7 @@ class R_HomeView: UIView {
         
         struct ListItem {
             let title: String
+            let isSelected: Bool
             let onSelect: Command<Void>
         }
         
@@ -130,9 +131,11 @@ extension R_HomeView {
             if #available(iOS 14.0, *) {
                 button.showsMenuAsPrimaryAction = true
                 let items: [UIAction] = listItems.map { menuItem in
-                    return UIAction(title: menuItem.title, image: nil, handler: { _ in
+                    let action = UIAction(title: menuItem.title, image: nil, handler: { _ in
                         menuItem.onSelect.perform(with: ())
                     })
+                    action.state = menuItem.isSelected ? .on : .off
+                    return action
                 }
                 
                 let menu = UIMenu(title: "\(state.title)", image: nil, identifier: nil, children: items)
