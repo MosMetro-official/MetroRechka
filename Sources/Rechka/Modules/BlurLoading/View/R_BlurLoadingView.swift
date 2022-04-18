@@ -52,7 +52,7 @@ extension UIView {
     
     
     func showBlurLoading() {
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
         let blurView = R_BlurLoadingView.loadFromNib()
         blurView.tag = 777
         blurView.frame = window.frame
@@ -64,7 +64,7 @@ extension UIView {
     }
     
     func removeBlurLoading() {
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
         window.subviews.forEach { view in
             if view.tag == 777 {
                 let animator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut) {
