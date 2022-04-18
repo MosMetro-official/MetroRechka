@@ -31,7 +31,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
-    private var unautorizedVC: R_UnauthorizedController?
+    
     
     override func loadView() {
         super.loadView()
@@ -41,17 +41,9 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
-        NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] notification in
+        NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] _ in
             guard let self = self else { return }
-            if let unautorizedVC = self.unautorizedVC {
-                unautorizedVC.dismiss(animated: true) { [weak self] in
-                    self?.unautorizedVC = nil
-                    self?.startBooking()
-                }
-            } else {
-                self.startBooking()
-            }
-            
+            self.startBooking()
         }
         
     }
@@ -208,8 +200,15 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             }
             
         } else {
-            self.unautorizedVC = R_UnauthorizedController()
-            self.present(self.unautorizedVC!, animated: true, completion: nil)
+            let vc = R_UnauthorizedController()
+            vc.onLogin = Command(action: { [weak self] in
+                guard let self = self else { return }
+                guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else {
+                    return
+                }
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            })
+            self.present(vc, animated: true, completion: nil)
         }
     }
     
