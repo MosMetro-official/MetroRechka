@@ -206,7 +206,10 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else {
                     return
                 }
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                })
+                
             })
             self.present(vc, animated: true, completion: nil)
         }
