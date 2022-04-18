@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "Group.pdf",
       "idiom" : "universal"
     },
     {
@@ -10,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "user_profile.png",
+      "filename" : "Group-1.pdf",
       "idiom" : "universal"
     }
   ],

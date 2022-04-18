@@ -22,12 +22,12 @@ internal final class R_PassengerDataEntryView: UIView {
             case loaded
         }
         
-        struct Header: _Static {
+        struct Header: _HeaderCell {
             let title: String
         }
         
         struct Filed: _Field {
-            let text: String
+            let text: String?
             let onSelect: () -> ()
         }
         
@@ -38,11 +38,11 @@ internal final class R_PassengerDataEntryView: UIView {
         
         struct SelectField: _SelectCell {
             let title: String
-            let onSelect: () -> ()
+            let onItemSelect: Command<Void>
         }
         
         struct DocumentField: _Field {
-            let text: String
+            let text: String?
             let onSelect: () -> ()
         }
         

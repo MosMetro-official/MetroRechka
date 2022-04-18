@@ -9,11 +9,6 @@ import UIKit
 import CoreTableView
 import CoreNetwork
 
-protocol R_BookingWithPersonDelegate: AnyObject {
-    func setupNewUser(with user: R_User, and model: R_Trip)
-    func setupOldUser(for replaceUser: R_User, at index: Int, with model: R_Trip)
-}
-
 internal final class R_BookingWithPersonController: UIViewController {
     
     let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
@@ -38,23 +33,14 @@ internal final class R_BookingWithPersonController: UIViewController {
             return
         }
 
-        let showPersonDataEntry: Command<Void>? = {
-            return Command { [weak self] in
-                self?.pushPersonDataEntry(with: model)
-            }
-        }()
+        let showPersonDataEntry = Command { [weak self] in
+            self?.pushPersonDataEntry(with: model)
+        }
         
+        let showPersonAlert = Command { [weak self] in
+            self?.setupPersonAlert()
+        }
         
-        // TODO: можно писать так:
-        /// let showPersonAlert = Command { [weak self] in
-        ///          self?.setupPersonAlert()
-        ///    }
-    
-        let showPersonAlert: Command<Void>? = {
-            return Command { [weak self] in
-                self?.setupPersonAlert()
-            }
-        }()
         let viewState = R_BookingWithPersonView.ViewState(
             title: "",
             menuActions: setupPersonMenu(),
@@ -66,7 +52,6 @@ internal final class R_BookingWithPersonController: UIViewController {
         nestedView.viewState = viewState
     }
     
-    @MainActor
     private func handle(order: RiverOrder) {
         self.nestedView.removeBlurLoading()
         let bookingController = R_BookingScreenController()
@@ -228,30 +213,32 @@ internal final class R_BookingWithPersonController: UIViewController {
         return actions
     }
     
+    private func setupNewUser() {
+        let passenderDataEntry = R_PassengerDataEntryController()
+        passenderDataEntry.setupUser = { [weak self] user, index, model in
+            guard let self = self else { return }
+            if index != nil {
+                self.riverUsers[index!] = user
+                self.model = model
+                self.makeState(from: self.riverUsers)
+            } else {
+                self.model = model
+                self.riverUsers.append(user)
+                self.makeState(from: self.riverUsers)
+            }
+        }
+    }
+    
     private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil, for index: Int? = nil) {
         let passenderDataEntry = R_PassengerDataEntryController()
-        passenderDataEntry.delegate = self
         passenderDataEntry.model = model
         if user != nil {
-            passenderDataEntry.displayRiverUsers = [user!]
+            passenderDataEntry.displayRiverUser = user!
             passenderDataEntry.index = index
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         } else {
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         }
-    }
-}
-
-extension R_BookingWithPersonController: R_BookingWithPersonDelegate {
-    func setupNewUser(with user: R_User, and model: R_Trip) {
-        self.model = model
-        self.riverUsers.append(user)
-        self.makeState(from: riverUsers)
-    }
-    
-    func setupOldUser(for replaceUser: R_User, at index: Int, with model: R_Trip) {
-        self.riverUsers[index] = replaceUser
-        self.model = model
-        self.makeState(from: riverUsers)
+        setupNewUser()
     }
 }

@@ -103,7 +103,7 @@ internal final class R_BookingWithPersonView: UIView {
         label.text = "Персональные данные"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .custom(for: .textPrimary)
         return label
     }()
     
@@ -114,7 +114,7 @@ internal final class R_BookingWithPersonView: UIView {
         label.textAlignment = .center
         label.text = "На данном рейсе необходимо указать персональные данные пассажиров"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .systemGray
+        label.textColor = .custom(for: .textSecondary)
         return label
     }()
     
@@ -123,7 +123,8 @@ internal final class R_BookingWithPersonView: UIView {
         button.clipsToBounds = true
         button.layer.cornerRadius = 10
         button.tintColor = .black
-        button.backgroundColor = .white
+        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
+        button.backgroundColor = .custom(for: .buttonSecondary)
         button.setTitle("Добавить", for: .normal)
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 17)
         button.translatesAutoresizingMaskIntoConstraints = false
