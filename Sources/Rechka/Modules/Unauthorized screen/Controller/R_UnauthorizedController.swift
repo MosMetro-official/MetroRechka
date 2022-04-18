@@ -14,6 +14,8 @@ internal final class R_UnauthorizedController: UIViewController {
     
     let nestedView = R_UnauthorizedView.loadFromNib()
     
+    var onLogin: Command<Void>?
+    
     override func loadView() {
         super.loadView()
         self.view = nestedView
@@ -32,10 +34,9 @@ internal final class R_UnauthorizedController: UIViewController {
         }
         
         let onLogin = Command { [weak self] in
-            guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else {
-                return
-            }
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            self?.dismiss(animated: true, completion: { [weak self] in
+                self?.onLogin?.perform(with: ())
+            })
         }
         
         self.nestedView.viewState = .init(onMore: onMore, onClose: onClose, onLogin: onLogin)

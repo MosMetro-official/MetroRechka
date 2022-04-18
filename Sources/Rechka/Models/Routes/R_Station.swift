@@ -39,3 +39,28 @@ public struct R_Station : _RiverStation {
     }
     
 }
+
+extension R_Station {
+    
+    public static func getStations(completion: @escaping (Result<[R_Station],APIError>) -> Void) {
+        let client = APIClient.unauthorizedClient
+        client.send(.GET(path: "/api/references/v1/stationsFrom", query: nil)) { result in
+            switch result {
+            case .success(let response):
+                let json = JSON(response.data)
+                guard let jsonArray = json["data"].array else {
+                    completion(.failure(.badMapping))
+                    return
+                }
+                let stations = jsonArray.map { R_Station(data: $0) }
+                completion(.success(stations))
+                return
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
+        }
+    }
+    
+    
+}
