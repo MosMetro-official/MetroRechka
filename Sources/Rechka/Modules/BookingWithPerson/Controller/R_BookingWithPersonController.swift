@@ -116,7 +116,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         let passengerState = State(model: passengerSection, elements: passElements)
         
         // tickets
-        var tickElements: [Element] = []
+        var tickElements : [Element] = []
         let tariffHeader = R_BookingWithPersonView.ViewState.TariffHeader().toElement()
         tickElements.append(tariffHeader)
         let tickets = users.compactMap { $0.ticket }
@@ -127,11 +127,8 @@ internal final class R_BookingWithPersonController: UIViewController {
                 price: "\(price) ₽"
             ).toElement()
             tickElements.append(tariff)
-//            if !tickElements.contains(tariff) {
-//                tickElements.append(tariff)
-//            }
         }
-        let additionalService = users.compactMap { $0.additionServices }.flatMap { $0 }
+        let additionalService = users.compactMap { $0.additionServices }.filter { !$0.isEmpty }.flatMap { $0 }
         additionalService.forEach { service in
             let price = Int(service.price)
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
