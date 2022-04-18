@@ -98,6 +98,11 @@ public class Rechka {
         return UINavigationController(rootViewController: controller)
     }
     
+    public func showHistory() -> UIViewController {
+        let controller = R_TicketsHistoryController()
+        return controller
+    }
+    
     /// Need to call in AppDelegate or SceneDelegate to register custom fonts from package
     public static func registerFonts() {
         _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Bold", fontExtension: "otf")

@@ -41,7 +41,10 @@ internal final class R_TicketsHistoryView: UIView {
     
     public var viewState: R_TicketsHistoryView.ViewState = .initial {
         didSet {
-            render()
+            DispatchQueue.main.async { [weak self] in
+                self?.render()
+            }
+            
         }
     }
     
