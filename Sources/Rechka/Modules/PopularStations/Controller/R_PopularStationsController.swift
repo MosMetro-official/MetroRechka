@@ -15,7 +15,7 @@ internal final class R_PopularStationsController : UIViewController {
     
     var delegate : RechkaMapDelegate?
     
-    var terminals = [R_Station]()
+    
     
     struct SearchModel {
         var selectedTags: [String]
@@ -24,57 +24,100 @@ internal final class R_PopularStationsController : UIViewController {
     }
     
     
-    private var isNeedToShowLoading = true
+
     
     private let service = R_Service()
     
     private var searchResponse: R_RouteResponse? {
         didSet {
-            self.makeState()
+            guard let searchResponse = searchResponse else { return }
+            self.routes.append(contentsOf: searchResponse.items)
+
         }
     }
     
-    private var isLoading = false {
+    private var routes: [R_Route] = [] {
         didSet {
-            self.makeState()
+            if isNeedToUpdateState {
+                filter(routes: routes) { [weak self] filteredRoutes in
+
+                    self?.dataModel = .loaded(filteredRoutes)
+                }
+            }
+            
         }
     }
+    
+    
+    var dataModel: DataModel = .loading {
+        didSet {
+            
+                self.makeState()
+            
+            
+        }
+    }
+    
+    enum DataModel {
+        case loading
+        case loadingNewPage([R_Route])
+        case loaded([R_Route])
+    }
+    
+    private var isFiltering = false
+    private var isNeedToUpdateState = true
+    
+//    private var isLoading = false {
+//        didSet {
+//            if !isFiltering {
+//                self.makeState()
+//            }
+//
+//        }
+//    }
     
     private var tags = [String]()
     
     private var searchModel: SearchModel = .init(selectedTags: [], date: nil, station: nil) {
         didSet {
-            self.isNeedToShowLoading = true
-            self.load(page: 1, size: 10, stationID: searchModel.station?.id, tags: searchModel.selectedTags, date: searchModel.date)
+            self.dataModel = .loading
+            self.isNeedToUpdateState = false
+            self.routes = []
+            self.isNeedToUpdateState = true
+            self.load(page: 0, size: 10, stationID: searchModel.station?.id, tags: searchModel.selectedTags, date: searchModel.date)
         }
     }
     
+    private func filter(routes: [R_Route], completion: @escaping ([R_Route]) -> Void) {
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let self = self else { return }
+            if let date = self.searchModel.date {
+                let filteredRoutes = routes.filter { route in
+                    route.shortTrips.contains(where: { trip in
+                        trip.dateStart.day == date.day && trip.dateStart.month == date.month && trip.dateStart.year == date.year
+                    })
+                }
+                completion(filteredRoutes)
+                return
+            } else {
+                completion(routes)
+                return
+            }
+        }
+        
+    }
     
     private func load(page: Int, size: Int, stationID: Int?, tags: [String], date: Date?) {
-        if isNeedToShowLoading {
-            self.nestedView.viewState = .loading
-            isNeedToShowLoading = false
-        }
-        self.isLoading = true
+       
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
         R_Route.getRoutes(page: page, size: size, stationID: stationID, tags: tags) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(var routesResponse):
-                if let date = date {
-                    let filteredRoutes = routesResponse.items.filter { route in
-                        route.shortTrips.contains(where: { trip in
-                            trip.dateStart.day == date.day && trip.dateStart.month == date.month && trip.dateStart.year == date.year
-                        })
-                    }
-                    
-                    routesResponse = R_RouteResponse(items: filteredRoutes, page: routesResponse.page, totalPages: routesResponse.totalPages, totalElements: routesResponse.totalElements)
-                }
+            case .success(let routesResponse):
                 self.searchResponse = routesResponse
-                self.tags = []
-                self.isLoading = false
-                
-                
-                
+                dispatchGroup.leave()
             case .failure(let error):
                 DispatchQueue.main.async {
                     let onSelect: () -> Void = { [weak self] in
@@ -86,7 +129,22 @@ internal final class R_PopularStationsController : UIViewController {
                     let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка при загрузке", subtitle: nil, buttonType: .imageButton(buttonData))
                     self.nestedView.viewState = .error(errorConfig)
                 }
+                dispatchGroup.leave()
             }
+        }
+        dispatchGroup.enter()
+        service.getTags { result in
+            switch result {
+            case .success(let tags):
+                self.tags = tags
+                dispatchGroup.leave()
+            case .failure(let err):
+                print(err)
+                dispatchGroup.leave()
+            }
+        }
+        dispatchGroup.notify(queue: .main) {
+            print("All tasks finished")
         }
         
 //        Task.detached { [weak self] in
@@ -148,6 +206,7 @@ internal final class R_PopularStationsController : UIViewController {
         let barButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         navigationController?.navigationBar.topItem?.rightBarButtonItem = barButtonItem
         title = "Популярное"
+        self.dataModel = .loading
         load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
     }
     
@@ -174,61 +233,39 @@ internal final class R_PopularStationsController : UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showOrder(from:)), name: .riverShowOrder, object: nil)
     }
     
-    private func makeState()  {
-        guard let searchResponse = searchResponse else {
-            return
-        }
-        
-        var states = [State]()
-        
-        if searchResponse.items.isEmpty {
-            
-            let clearAction = Command { [weak self] in
-                self?.searchModel = .init(selectedTags: [], date: nil, station: nil)
+    private func createState(for routes: [R_Route]) -> State {
+        let elements: [Element] = routes.map { route in
+            let firstStation = route.stations.first?.name ?? ""
+            let onPay: () -> () = { [weak self] in
+                self?.pushDetail(with: route.id)
             }
             
-            let notFoundErr = R_HomeView.ViewState.Error(
-                image: UIImage(systemName: "magnifyingglass") ?? UIImage(),
-                title: "Мы не нашли экскурсий с такими параметрами",
-                action: clearAction,
-                buttonTitle: "Сбросить фильтры",
-                height: UIScreen.main.bounds.height / 2)
-                .toElement()
-            let section = SectionState(header: nil, footer: nil)
-            let errorState = State(model: section, elements: [notFoundErr])
-            states.append(errorState)
-            
-        } else {
-            let elements: [Element] = searchResponse.items.map { route in
-                let firstStation = route.stations.first?.name ?? ""
-                let onPay: () -> () = { [weak self] in
-                    self?.pushDetail(with: route.id)
-                }
-                
-                var imageURL: String? = nil
-                if let routeFirstGallery = route.galleries.first, let firstURL = routeFirstGallery.urls.first {
+            var imageURL: String? = nil
+            if let routeFirstGallery = route.galleries.first, let firstURL = routeFirstGallery.urls.first {
+                imageURL = firstURL
+            } else {
+                if let firstStation = route.stations.first, let firstURL = firstStation.galleries.first?.urls.first {
                     imageURL = firstURL
-                } else {
-                    if let firstStation = route.stations.first, let firstURL = firstStation.galleries.first?.urls.first {
-                        imageURL = firstURL
-                    }
                 }
-                
-                let routeData = R_HomeView.ViewState.Station(
-                    imageURL: imageURL,
-                    title: route.name,
-                    jetty: firstStation,
-                    time: "\(route.time) мин.",
-                    tickets: false,
-                    price: "\(route.minPrice) ₽",
-                    onSelect: onPay
-                ).toElement()
-                return routeData
             }
-            let section = SectionState(header: nil, footer: nil)
-            let state = State(model: section, elements: elements)
-            states.append(state)
+            
+            let routeData = R_HomeView.ViewState.Station(
+                imageURL: imageURL,
+                title: route.name,
+                jetty: firstStation,
+                time: "\(route.time) мин.",
+                tickets: false,
+                price: "\(route.minPrice) ₽",
+                onSelect: onPay
+            ).toElement()
+            return routeData
         }
+        let section = SectionState(header: nil, footer: nil)
+        let routesState = State(model: section, elements: elements)
+        return routesState
+    }
+    
+    private func stateForLoaded(tableState: [State]) -> R_HomeView.ViewState {
         
         
         let dateTitle: String = {
@@ -260,12 +297,43 @@ internal final class R_PopularStationsController : UIViewController {
                         self.searchModel.selectedTags.append(routeTag)
                     }
                 }
-                return .init(title: routeTag, onSelect: onSelect)
+                let isSelected = self.searchModel.selectedTags.contains(routeTag)
+                
+                return .init(title: routeTag.capitalizingFirstLetter(), isSelected: isSelected, onSelect: onSelect)
             }
         }
         
         let onCategorySelect = Command { [weak self] in
-            
+            guard let self = self else { return }
+            if #available(iOS 14.0, *) { } else {
+                let alert = UIAlertController(title: "Категории", message: nil, preferredStyle: .actionSheet)
+                var actions: [UIAlertAction] = self.tags.map { routeTag in
+                    let isSelected = self.searchModel.selectedTags.contains(routeTag)
+                    let action =  UIAlertAction(title: routeTag.capitalizingFirstLetter(), style: .default) { [weak self] action in
+                        guard let self = self else { return }
+                        if self.searchModel.selectedTags.contains(routeTag) {
+                            self.searchModel.selectedTags.removeAll { tagToRemove in
+                                tagToRemove == routeTag
+                            }
+                        } else {
+                            self.searchModel.selectedTags.append(routeTag)
+                        }
+                    }
+                    action.setValue(isSelected ? UIColor.systemBlue : UIColor.label, forKey: "titleTextColor")
+                    return action
+                }
+                
+                actions.append(.init(title: "Закрыть", style: .cancel, handler: { _ in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                actions.forEach {
+                    alert.addAction($0)
+                }
+                
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
             
         }
         let categoriesTitle: String = {
@@ -292,29 +360,88 @@ internal final class R_PopularStationsController : UIViewController {
             onSelect: onStationSelect,
             listData: nil)
         
-        if searchResponse.items.count < searchResponse.totalElements {
-            let onLoad = Command { [weak self] in
-                guard let self = self else { return }
-                self.load(page: searchResponse.page + 1, size: 10, stationID: self.searchModel.station?.id, tags: self.searchModel.selectedTags, date: self.searchModel.date)
-            }
-            let loadMore = R_HomeView.ViewState.LoadMore(onLoad: isLoading ? nil : onLoad).toElement()
-            states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
-        }
         
         var clearButton: R_HomeView.ViewState.Button? = nil
         if searchModel.station != nil || !searchModel.selectedTags.isEmpty || searchModel.date != nil {
             let onSelect = Command { [weak self] in
                 guard let self = self else { return }
+                //self.routes = []
                 self.searchModel = .init(selectedTags: [], date: nil, station: nil)
             }
             
             clearButton = .init(title: "Сбросить фильтры", isDataSetted: true, onSelect: onSelect, listData: nil)
         }
+        let state: R_HomeView.ViewState = .loaded(.init(dateButton: dateButton, stationButton: stationsButton, categoriesButton: categoriesButton, clearButton: clearButton, tableState: tableState))
+        return state
         
-        let state: R_HomeView.ViewState = .loaded(.init(dateButton: dateButton, stationButton: stationsButton, categoriesButton: categoriesButton, clearButton: clearButton, tableState: states))
-        DispatchQueue.main.async { [weak self] in
-            self?.nestedView.viewState = state
+    }
+    
+    
+    private func makeState()  {
+        guard let searchResponse = searchResponse else {
+            return
         }
+        var states = [State]()
+        
+        switch dataModel {
+        case .loading:
+            self.nestedView.viewState = .loading
+        case .loadingNewPage(let routes):
+            let routesState = createState(for: routes)
+            states.append(routesState)
+            let loadMore = R_HomeView.ViewState.LoadMore(onLoad: nil).toElement()
+            states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+            
+            let state = stateForLoaded(tableState: states)
+            DispatchQueue.main.async { [weak self] in
+                self?.nestedView.viewState = state
+            }
+            
+        case .loaded(let routes):
+            
+            
+            if routes.isEmpty {
+                let clearAction = Command { [weak self] in
+                    self?.searchModel = .init(selectedTags: [], date: nil, station: nil)
+                }
+                
+                let notFoundErr = R_HomeView.ViewState.Error(
+                    image: UIImage(systemName: "magnifyingglass") ?? UIImage(),
+                    title: "Мы не нашли экскурсий с такими параметрами",
+                    action: clearAction,
+                    buttonTitle: "Сбросить фильтры",
+                    height: UIScreen.main.bounds.height / 2)
+                    .toElement()
+                let section = SectionState(header: nil, footer: nil)
+                let errorState = State(model: section, elements: [notFoundErr])
+                states.append(errorState)
+            } else {
+                let routesState = createState(for: routes)
+                states.append(routesState)
+                if routes.count < searchResponse.totalElements {
+                    let onLoad = Command { [weak self] in
+                        guard let self = self else { return }
+                        self.dataModel = .loadingNewPage(routes)
+                        self.load(page: searchResponse.page + 1, size: 10, stationID: self.searchModel.station?.id, tags: self.searchModel.selectedTags, date: self.searchModel.date)
+                    }
+                    let loadMore = R_HomeView.ViewState.LoadMore(onLoad: onLoad).toElement()
+                    states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+                }
+            }
+            
+            
+            let state = stateForLoaded(tableState: states)
+            DispatchQueue.main.async { [weak self] in
+                self?.nestedView.viewState = state
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
     }
     
     private func pushDetail(with routeID: Int) {

@@ -31,8 +31,6 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
-    
-    
     override func loadView() {
         super.loadView()
         view = nestedView
@@ -41,6 +39,8 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
+        // TODO: - Коммент
+//        self.setupRiverBackButton()
         NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] _ in
             guard let self = self else { return }
             self.startBooking()
