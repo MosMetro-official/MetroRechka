@@ -34,8 +34,9 @@ internal final class R_UnauthorizedController: UIViewController {
         }
         
         let onLogin = Command { [weak self] in
-            self?.onLogin?.perform(with: ())
-            self?.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true, completion: { [weak self] in
+                self?.onLogin?.perform(with: ())
+            })
         }
         
         self.nestedView.viewState = .init(onMore: onMore, onClose: onClose, onLogin: onLogin)
