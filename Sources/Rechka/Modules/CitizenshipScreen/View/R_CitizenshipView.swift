@@ -12,8 +12,12 @@ class R_CitizenshipView: UIView {
     
     @IBOutlet weak var tableView: BaseTableView!
     @IBOutlet weak var searchViewToBottom: NSLayoutConstraint!
+    @IBOutlet weak var textField: UITextField!
+    var handleSearhText: ((String) -> Void)?
+    var isSearching: Bool = false
     
     struct ViewState {
+        let onClose: Command<Void>?
         let dataState: DataState
         let state: [State]
         
@@ -28,7 +32,7 @@ class R_CitizenshipView: UIView {
             let onSelect: () -> Void
         }
         
-        static let initial = R_CitizenshipView.ViewState(dataState: .loading, state: [])
+        static let initial = R_CitizenshipView.ViewState(onClose: nil, dataState: .loading, state: [])
     }
     
     var viewState: ViewState = .initial {
@@ -41,10 +45,19 @@ class R_CitizenshipView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     @IBAction func onCloseTap() {
-        
+        viewState.onClose?.perform(with: ())
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        handleSearhText?(text)
+        isSearching = text == "" ? false : true
+        print("📄📄📄 \(text)")
+        print(isSearching)
     }
     
     private func render() {
@@ -57,10 +70,12 @@ class R_CitizenshipView: UIView {
             self.removeBlurLoading(from: self)
         }
         self.tableView.viewStateInput = viewState.state
-        NotificationCenter.default.addObserver(self,
-               selector: #selector(self.keyboardNotification(notification:)),
-               name: UIResponder.keyboardWillChangeFrameNotification,
-               object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardNotification(notification:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil)
     }
     
     @objc func keyboardNotification(notification: NSNotification) {
@@ -81,6 +96,15 @@ class R_CitizenshipView: UIView {
             self.searchViewToBottom.constant = endFrameHeight - 25
             tableView.setContentOffset(tableView.contentOffset, animated:false)
         }
+        tableView.onScroll = { [weak self] scrollView in
+            guard let self = self else { return }
+            if scrollView.contentOffset.y > 5 {
+                // scrolling down
+                self.searchViewToBottom.constant = 0
+                self.textField.resignFirstResponder()
+            }
+        }
+        
         print("END FRAME - \(endFrame), endFrameY - \(endFrameY)")
         UIView.animate(
             withDuration: duration,

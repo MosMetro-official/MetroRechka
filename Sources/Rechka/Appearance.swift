@@ -61,6 +61,7 @@ public final class Appearance: _Appearance {
         .title1: UIFont(name: "MoscowSans-Bold", size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .bold),
         .title2: UIFont(name: "MoscowSans-Medium", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .medium),
         .title3: UIFont(name: "MoscowSans-Bold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold),
+        .title4: UIFont(name: "MoscowSans-Bold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .bold),
         .headline: UIFont(name: "MoscowSans-Medium", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium),
         .body: UIFont(name: "MoscowSans-Regular", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .regular),
         .subhead: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular),

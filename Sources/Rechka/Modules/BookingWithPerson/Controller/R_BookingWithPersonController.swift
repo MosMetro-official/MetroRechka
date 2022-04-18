@@ -42,7 +42,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         }
         
         let viewState = R_BookingWithPersonView.ViewState(
-            title: "",
+            title: model.name,
             menuActions: setupPersonMenu(),
             dataState: .addPersonData,
             showPersonAlert: showPersonAlert,
@@ -213,8 +213,16 @@ internal final class R_BookingWithPersonController: UIViewController {
         return actions
     }
     
-    private func setupNewUser() {
+    private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil, for index: Int? = nil) {
         let passenderDataEntry = R_PassengerDataEntryController()
+        passenderDataEntry.model = model
+        if user != nil {
+            passenderDataEntry.displayRiverUser = user!
+            passenderDataEntry.index = index
+            navigationController?.pushViewController(passenderDataEntry, animated: true)
+        } else {
+            navigationController?.pushViewController(passenderDataEntry, animated: true)
+        }
         passenderDataEntry.setupUser = { [weak self] user, index, model in
             guard let self = self else { return }
             if index != nil {
@@ -227,18 +235,5 @@ internal final class R_BookingWithPersonController: UIViewController {
                 self.makeState(from: self.riverUsers)
             }
         }
-    }
-    
-    private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil, for index: Int? = nil) {
-        let passenderDataEntry = R_PassengerDataEntryController()
-        passenderDataEntry.model = model
-        if user != nil {
-            passenderDataEntry.displayRiverUser = user!
-            passenderDataEntry.index = index
-            navigationController?.pushViewController(passenderDataEntry, animated: true)
-        } else {
-            navigationController?.pushViewController(passenderDataEntry, animated: true)
-        }
-        setupNewUser()
     }
 }

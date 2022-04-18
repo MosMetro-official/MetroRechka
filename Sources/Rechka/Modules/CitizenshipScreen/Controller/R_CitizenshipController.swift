@@ -10,16 +10,19 @@ import CoreTableView
 
 class R_CitizenshipController: UIViewController {
     
-    let nestedView = R_CitizenshipView.loadFromNib()
-    let network = R_Service()
-    
+    private let nestedView = R_CitizenshipView.loadFromNib()
     var onCitizenshipSelect: Command<R_Citizenship>?
-    var citizenships: [R_Citizenship] = [] {
+    private var citizenships: [R_Citizenship] = [] {
         didSet {
             makeState()
         }
     }
-    
+    private var filter: [R_Citizenship] = [] {
+        didSet {
+            makeState()
+        }
+    }
+  
     override func loadView() {
         super.loadView()
         self.view = nestedView
@@ -28,11 +31,15 @@ class R_CitizenshipController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCitizenships()        
+        loadCitizenships()
+        nestedView.handleSearhText = { [weak self] text in
+            guard let self = self else { return }
+            self.filter = self.citizenships.filter { $0.name.contains(text) }
+        }
     }
-    
+ 
     private func loadCitizenships() {
-        nestedView.viewState = .init(dataState: .loading, state: [])
+        nestedView.viewState = .init(onClose: nil, dataState: .loading, state: [])
         R_Citizenship.getCitizenships { result in
             switch result {
             case .success(let citizenships):
@@ -44,16 +51,24 @@ class R_CitizenshipController: UIViewController {
     }
     
     private func makeState() {
-        let elements: [Element] = citizenships.map { citizen in
+        let currentList = filter.isEmpty ? citizenships : filter
+        let elements: [Element] = currentList.map { citizen in
             let onSelect: () -> Void = { [weak self] in
                 self?.onCitizenshipSelect?.perform(with: citizen)
                 self?.dismiss(animated: true)
             }
             return R_CitizenshipView.ViewState.Citizenship(title: citizen.name, onSelect: onSelect).toElement()
         }
+        let onClose = Command { [weak self] in
+            self?.dismiss(animated: true)
+        }
         let sec = SectionState(header: nil, footer: nil)
         let state = State(model: sec, elements: elements)
-        let viewState = R_CitizenshipView.ViewState(dataState: .loaded, state: [state])
+        let viewState = R_CitizenshipView.ViewState(
+            onClose: onClose,
+            dataState: .loaded,
+            state: [state]
+        )
         self.nestedView.viewState = viewState
     }
 }

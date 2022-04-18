@@ -92,6 +92,7 @@
             <connections>
                 <outlet property="searchViewToBottom" destination="1ZE-sM-J6V" id="TzS-FD-2yd"/>
                 <outlet property="tableView" destination="Uhy-Ec-AS0" id="AFu-tE-7Za"/>
+                <outlet property="textField" destination="ZTE-CX-e1f" id="K8t-6V-0fX"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="73.660714285714278"/>
         </view>

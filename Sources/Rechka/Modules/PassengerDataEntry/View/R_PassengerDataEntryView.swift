@@ -27,7 +27,8 @@ internal final class R_PassengerDataEntryView: UIView {
         }
         
         struct Filed: _Field {
-            let text: String?
+            let text: String
+            let textColor: UIColor
             let onSelect: () -> ()
         }
         
@@ -42,7 +43,8 @@ internal final class R_PassengerDataEntryView: UIView {
         }
         
         struct DocumentField: _Field {
-            let text: String?
+            let text: String
+            let textColor: UIColor
             let onSelect: () -> ()
         }
         

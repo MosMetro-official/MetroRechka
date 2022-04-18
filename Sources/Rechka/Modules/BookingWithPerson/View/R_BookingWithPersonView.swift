@@ -83,10 +83,10 @@ internal final class R_BookingWithPersonView: UIView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "MoscowSans-Bold", size: 22)
+        label.font = .customFont(forTextStyle: .title4)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .custom(for: .textPrimary)
         return label
     }()
     
@@ -195,6 +195,7 @@ internal final class R_BookingWithPersonView: UIView {
     
     private func updateView() {
         DispatchQueue.main.async {
+            self.titleLabel.text = self.viewState.title
             switch self.viewState.dataState {
             case .addPersonData:
                 self.tableView.isHidden = true
@@ -203,7 +204,6 @@ internal final class R_BookingWithPersonView: UIView {
                 self.tableView.isHidden = false
                 self.buttonView.isHidden = false
                 self.tableView.viewStateInput = viewState
-                self.titleLabel.text = self.viewState.title
             }
         }
     }
@@ -232,8 +232,8 @@ extension R_BookingWithPersonView {
                                 
                 userProfileImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 56),
                 userProfileImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                userProfileImage.heightAnchor.constraint(equalToConstant: 96),
-                userProfileImage.widthAnchor.constraint(equalToConstant: 96),
+                userProfileImage.heightAnchor.constraint(equalToConstant: 68),
+                userProfileImage.widthAnchor.constraint(equalToConstant: 80),
                 
                 summaryLabel.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 39),
                 summaryLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),

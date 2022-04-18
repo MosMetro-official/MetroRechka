@@ -209,7 +209,9 @@ extension R_PassengerDataEntryController {
                                                  onTextEnter: onSurnameEnter)
         self.inputStates.append(surnameState)
         
-        let surnameField = R_PassengerDataEntryView.ViewState.Filed(text: user.surname == nil ? "Фамилия" : user.surname!) {
+        let surnameField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.surname == nil ? "Фамилия" : user.surname!,
+            textColor: user.surname == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: surnameState)
         }.toElement()
         
@@ -226,7 +228,9 @@ extension R_PassengerDataEntryController {
                                               onTextEnter: onNameEnter)
         self.inputStates.append(nameState)
         
-        let nameField = R_PassengerDataEntryView.ViewState.Filed(text: user.name == nil ? "Имя" : user.name!) {
+        let nameField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.name == nil ? "Имя" : user.name!,
+            textColor: user.name == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: nameState)
         }.toElement()
         
@@ -243,7 +247,9 @@ extension R_PassengerDataEntryController {
                                                     onTextEnter: onMiddleNameEnter)
         self.inputStates.append(middleNameState)
         
-        let middleNameField = R_PassengerDataEntryView.ViewState.Filed(text: user.middleName == nil ? "Отчество" : user.middleName!) {
+        let middleNameField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.middleName == nil ? "Отчество" : user.middleName!,
+            textColor: user.middleName == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: middleNameState)
         }.toElement()
         
@@ -268,7 +274,9 @@ extension R_PassengerDataEntryController {
         
         self.inputStates.append(birthdayState)
         
-        let birthdayField = R_PassengerDataEntryView.ViewState.Filed(text: user.birthday == nil ? "День рождения" : user.birthday!) {
+        let birthdayField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.birthday == nil ? "День рождения" : user.birthday!,
+            textColor: user.birthday == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: birthdayState)
         }.toElement()
         personalItems.append(birthdayField)
@@ -294,7 +302,9 @@ extension R_PassengerDataEntryController {
         
         self.inputStates.append(phoneState)
         
-        let phoneField = R_PassengerDataEntryView.ViewState.Filed(text: user.phoneNumber == nil ? "Телефон" : user.phoneNumber!) {
+        let phoneField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.phoneNumber == nil ? "Телефон" : user.phoneNumber!,
+            textColor: user.phoneNumber == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: phoneState)
         }.toElement()
         personalItems.append(phoneField)
@@ -369,7 +379,9 @@ extension R_PassengerDataEntryController {
             
             self.inputStates.append(serialState)
             let serail = displayRiverUser?.document?.cardIdentityNumber
-            let serailField = R_PassengerDataEntryView.ViewState.Filed(text: serail == nil ? "Введите данные" : serail!) {
+            let serailField = R_PassengerDataEntryView.ViewState.Filed(
+                text: serail == nil ? "Введите данные" : serail!,
+                textColor: user.document?.cardIdentityNumber == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
                 self.nestedView.showInput(with: serialState)
             }.toElement()
             documentElements.append(serailField)

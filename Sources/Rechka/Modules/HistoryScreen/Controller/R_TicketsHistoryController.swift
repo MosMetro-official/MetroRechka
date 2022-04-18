@@ -10,7 +10,7 @@ import CoreTableView
 import SwiftDate
 
 internal final class R_TicketsHistoryController: UIViewController {
-        
+    
     let nestedView = R_TicketsHistoryView(frame: UIScreen.main.bounds)
     
     var model: RechkaHistoryResponse? {
@@ -46,12 +46,10 @@ internal final class R_TicketsHistoryController: UIViewController {
         self.loadHistory(page: 0, size: 5)
     }
     
-    
     private func set(response: RechkaHistoryResponse) {
         self.model = response
         self.isLoading = false
     }
-    
     
     private func set(state: R_TicketsHistoryView.ViewState) {
         self.nestedView.viewState = state
@@ -75,8 +73,6 @@ internal final class R_TicketsHistoryController: UIViewController {
         }
     }
     
-    
-    
     private func showDetails(for order: RechkaShortOrder) {
         let orderController = R_OrderDetailsController()
         self.present(orderController, animated: true) {
@@ -95,14 +91,13 @@ internal final class R_TicketsHistoryController: UIViewController {
                 return date
             })
             let sorted = dict.sorted(by: { $0.key > $1.key })
-            let ordersSections: [State]  = sorted.compactMap { (key, value) in
+            let ordersSections: [State] = sorted.compactMap { (key, value) in
                 if let first = value.first {
                     let sortedTrips: [Element] = value.sorted(by: { $0.createdDate > $1.createdDate}).map { order in
                         let onSelect: () -> () = { [weak self] in
                             guard let self = self else { return }
                             self.showDetails(for: order)
                         }
-                        
                         let descr: String = {
                             switch order.status {
                             case .success:
@@ -113,39 +108,30 @@ internal final class R_TicketsHistoryController: UIViewController {
                                 return "Ожидает оплаты"
                             }
                         }()
-                        
-                        
-                        
-                        
                         return R_TicketsHistoryView.ViewState.HistoryTicket(
                             title: order.routeName,
                             descr: descr,
                             price: "\(order.totalPrice) ₽",
                             onSelect: onSelect
-                        )
-                            .toElement()
-                        
+                        ).toElement()
+            
                     }
                     let sectionTitle: String = {
                         if first.createdDate.isToday {
                             return "Сегодня"
                         }
-                        
                         if first.createdDate.isYesterday {
                             return "Вчера"
                         }
-                        
                         if first.createdDate.isTomorrow {
                             return "Завтра"
                         }
                         return first.createdDate.toFormat("d MMMM", locale: Locales.russianRussia)
-                        
                     }()
                     
                     let headerData = R_TicketsHistoryView.ViewState.DateHeader(title: sectionTitle)
                     let sectionData = SectionState(header: headerData, footer: nil)
                     return State(model: sectionData, elements: sortedTrips)
-                    
                 }
                 return nil
             }
@@ -165,6 +151,5 @@ internal final class R_TicketsHistoryController: UIViewController {
                 self.nestedView.viewState = .init(state: states, dataState: .loaded)
             }
         }
-        return .init(state: states, dataState: .loaded)
     }
 }

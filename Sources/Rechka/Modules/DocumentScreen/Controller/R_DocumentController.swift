@@ -10,8 +10,7 @@ import CoreTableView
 
 class R_DocumentController: UIViewController {
 
-    let nestedView = R_DocumentView.loadFromNib()
-    
+    private let nestedView = R_DocumentView.loadFromNib()
     var onDocumentSelect: Command<R_Document>?
     var tripId: Int? {
         didSet {
@@ -19,7 +18,7 @@ class R_DocumentController: UIViewController {
             loadDocuments(by: id)
         }
     }
-    var documents: [R_Document] = [] {
+    private var documents: [R_Document] = [] {
         didSet {
             makeState()
         }

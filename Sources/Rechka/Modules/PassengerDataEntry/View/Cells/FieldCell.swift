@@ -10,7 +10,8 @@ import CoreTableView
 
 
 protocol _Field: CellData {
-    var text: String? { get }
+    var text: String { get }
+    var textColor: UIColor { get }
     var onSelect: () -> () { get }
 }
 
@@ -47,6 +48,6 @@ class FieldCell: UITableViewCell {
     
     public func configure(with data: _Field) {
         mainTextLabel.text = data.text
-        mainTextLabel.textColor = data.text == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)
+        mainTextLabel.textColor = data.textColor
     }
 }
