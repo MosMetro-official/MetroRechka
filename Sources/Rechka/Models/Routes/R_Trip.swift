@@ -80,6 +80,7 @@ extension R_Trip {
             "failUrl": Rechka.shared.failURL,
             "tickets": tickets
         ]
+        print(body)
         let client = APIClient.authorizedClient
         
         client.send(.POST(path: "/api/orders/v1/booking", body: body, contentType: .json)) { result in
