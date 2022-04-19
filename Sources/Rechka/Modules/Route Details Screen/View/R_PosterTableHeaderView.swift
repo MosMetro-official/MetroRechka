@@ -47,7 +47,7 @@ internal final class R_PosterTableHeaderView : UIView {
         return label
     }()
     
-    private var gradient: CAGradientLayer?
+    private var gradient : CAGradientLayer?
     
     private var imageViewHeight = NSLayoutConstraint()
     
@@ -83,8 +83,15 @@ internal final class R_PosterTableHeaderView : UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        let base = Appearance.colors[.base] ?? UIColor.clear
         guard let gradient = gradient else { return }
+        gradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
         gradient.frame = .init(x: 0, y: self.gradientView.frame.height/2, width: self.gradientView.frame.width, height: self.gradientView.frame.height/2)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setNeedsLayout()
+        setNeedsDisplay()
     }
     
     public func configurePosterHeader(with title: String?, and imageURL: String?) {

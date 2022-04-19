@@ -11,8 +11,13 @@ import CoreTableView
 class R_CitizenshipView: UIView {
     
     @IBOutlet weak var tableView: BaseTableView!
+    
     @IBOutlet weak var searchViewToBottom: NSLayoutConstraint!
+    
     @IBOutlet weak var textField: UITextField!
+    
+    @IBOutlet weak private var fieldView : UIView!
+    
     var handleSearhText: ((String) -> Void)?
     
     struct ViewState {
@@ -44,6 +49,10 @@ class R_CitizenshipView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        fieldView.roundCorners(.top, radius: 16)
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 60))
+        textField.leftView = view
+        textField.leftViewMode = .always
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     

@@ -323,7 +323,7 @@ extension R_PassengerDataEntryController {
             citizenshipController.onCitizenshipSelect = Command<R_Citizenship> { [weak self] citizenship in
                 self?.displayRiverUser?.citizenShip = citizenship
             }
-            citizenshipController.modalPresentationStyle = .fullScreen
+            citizenshipController.modalPresentationStyle = .popover
             self?.present(citizenshipController, animated: true)
         }
             

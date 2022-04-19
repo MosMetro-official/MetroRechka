@@ -7,14 +7,17 @@
 
 import UIKit
 
-class TicketCell: UICollectionViewCell {
-    
-    @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var tarifLabel: UILabel!
-    @IBOutlet weak var selectedImage: UIImageView!
-    @IBOutlet weak var cardView: UIView!
+class TicketCell : UICollectionViewCell {
     
     private var gradient: CAGradientLayer?
+    
+    @IBOutlet private weak var priceLabel: UILabel!
+    
+    @IBOutlet private weak var tarifLabel: UILabel!
+    
+    @IBOutlet private weak var selectedImage: UIImageView!
+    
+    @IBOutlet private weak var cardView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

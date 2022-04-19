@@ -18,16 +18,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="KGX-fG-G7m">
-                        <rect key="frame" x="10" y="11" width="26" height="24.5"/>
-                        <color key="tintColor" name="textPrimary"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="26" id="XzH-Q3-M6M"/>
-                            <constraint firstAttribute="width" constant="26" id="tLb-tS-kbf"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gaR-CJ-rX2">
-                        <rect key="frame" x="46" y="13" width="264" height="20.5"/>
+                        <rect key="frame" x="16" y="13" width="294" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" name="textPrimary"/>
                         <nil key="highlightedColor"/>
@@ -36,16 +28,15 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                 </subviews>
+                <color key="backgroundColor" name="base"/>
                 <constraints>
-                    <constraint firstItem="gaR-CJ-rX2" firstAttribute="leading" secondItem="KGX-fG-G7m" secondAttribute="trailing" constant="10" id="A4i-M2-5gH"/>
-                    <constraint firstItem="KGX-fG-G7m" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="QOO-LZ-pz6"/>
-                    <constraint firstItem="KGX-fG-G7m" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ekl-GF-S9N"/>
+                    <constraint firstItem="gaR-CJ-rX2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="dHv-Yi-lgU"/>
                     <constraint firstAttribute="trailing" secondItem="gaR-CJ-rX2" secondAttribute="trailing" constant="10" id="sGA-Kx-p3Y"/>
                     <constraint firstItem="gaR-CJ-rX2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vCt-0w-LZW"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" name="settingsPanel"/>
+            <color key="backgroundColor" name="base"/>
             <connections>
                 <outlet property="citizenshipLabel" destination="gaR-CJ-rX2" id="0Cz-ba-U0D"/>
             </connections>
@@ -53,9 +44,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="location" catalog="system" width="128" height="118"/>
-        <namedColor name="settingsPanel">
-            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="base">
+            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textPrimary">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

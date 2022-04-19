@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 
-class R_CitizenshipController: UIViewController {
+class R_CitizenshipController : UIViewController {
     
     private let nestedView = R_CitizenshipView.loadFromNib()
     var onCitizenshipSelect: Command<R_Citizenship>?
@@ -26,7 +26,7 @@ class R_CitizenshipController: UIViewController {
     override func loadView() {
         super.loadView()
         self.view = nestedView
-        nestedView.backgroundColor = Appearance.colors[.content]
+        nestedView.backgroundColor = Appearance.colors[.base]
     }
     
     override func viewDidLoad() {

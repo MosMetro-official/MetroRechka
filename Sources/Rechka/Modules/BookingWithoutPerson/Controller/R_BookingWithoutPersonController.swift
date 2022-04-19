@@ -101,16 +101,8 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 currentCount += 1
             }
             self.selectedTarrifs.additionServices.updateValue(currentCount, forKey: tariff)
-            
         }
-        
-        
-        
-        
-         
     }
-    
-    
     
     private func handle(order: RiverOrder) {
         DispatchQueue.main.async {

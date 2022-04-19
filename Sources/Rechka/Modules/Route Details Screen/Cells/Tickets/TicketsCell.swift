@@ -98,6 +98,7 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
 }
 
 extension TicketsCell: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch model?.count {
         case 0:

@@ -6,12 +6,14 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="MoscowSans-Bold.otf">
             <string>MoscowSans-Bold</string>
+        </array>
+        <array key="MoscowSans-Regular.otf">
+            <string>MoscowSans-Regular</string>
         </array>
     </customFonts>
     <objects>
@@ -22,11 +24,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Uhy-Ec-AS0" customClass="BaseTableView" customModule="CoreTableView">
-                    <rect key="frame" x="0.0" y="114" width="414" height="682"/>
+                    <rect key="frame" x="0.0" y="110" width="414" height="686"/>
                     <color key="backgroundColor" name="base"/>
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Укажите гражданство" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YN1-L0-YHO">
-                    <rect key="frame" x="20" y="64" width="374" height="26"/>
+                    <rect key="frame" x="20" y="64" width="374" height="22"/>
                     <fontDescription key="fontDescription" name="MoscowSans-Bold" family="Moscow Sans" pointSize="22"/>
                     <color key="textColor" name="textPrimary"/>
                     <nil key="highlightedColor"/>
@@ -37,16 +39,22 @@
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e2j-9m-4lC">
                     <rect key="frame" x="0.0" y="796" width="414" height="100"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Россия" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZTE-CX-e1f">
-                            <rect key="frame" x="20" y="10" width="304" height="50"/>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Россия" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZTE-CX-e1f">
+                            <rect key="frame" x="20" y="16" width="304" height="50"/>
+                            <color key="backgroundColor" name="content"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="2QM-B3-dwP"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" name="MoscowSans-Regular" family="Moscow Sans" pointSize="17"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ye6-fb-GQA">
-                            <rect key="frame" x="344" y="10" width="50" height="50"/>
+                            <rect key="frame" x="344" y="16" width="50" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="gFu-Ss-tdZ"/>
                                 <constraint firstAttribute="width" constant="50" id="hLR-nE-0ic"/>
@@ -54,6 +62,11 @@
                             <color key="tintColor" name="textPrimary"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="backButton"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.transform.rotation.z">
+                                    <real key="value" value="-1.585"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="onCloseTap" destination="iN0-l3-epB" eventType="touchUpInside" id="mnw-RL-o0M"/>
                             </connections>
@@ -66,7 +79,7 @@
                         <constraint firstAttribute="trailing" secondItem="ye6-fb-GQA" secondAttribute="trailing" constant="20" id="IqP-6v-jbt"/>
                         <constraint firstItem="ye6-fb-GQA" firstAttribute="centerY" secondItem="ZTE-CX-e1f" secondAttribute="centerY" id="JLX-G6-9aq"/>
                         <constraint firstAttribute="height" constant="100" id="gbO-Xu-VNy"/>
-                        <constraint firstItem="ZTE-CX-e1f" firstAttribute="top" secondItem="e2j-9m-4lC" secondAttribute="top" constant="10" id="yxY-Mj-cKO"/>
+                        <constraint firstItem="ZTE-CX-e1f" firstAttribute="top" secondItem="e2j-9m-4lC" secondAttribute="top" constant="16" id="yxY-Mj-cKO"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -76,7 +89,7 @@
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" name="base"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="e2j-9m-4lC" secondAttribute="bottom" id="1ZE-sM-J6V"/>
                 <constraint firstItem="YN1-L0-YHO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="1nl-9p-PIa"/>
@@ -90,6 +103,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Uhy-Ec-AS0" secondAttribute="trailing" id="zUg-Ru-dPc"/>
             </constraints>
             <connections>
+                <outlet property="fieldView" destination="e2j-9m-4lC" id="Zpn-LL-8Dl"/>
                 <outlet property="searchViewToBottom" destination="1ZE-sM-J6V" id="TzS-FD-2yd"/>
                 <outlet property="tableView" destination="Uhy-Ec-AS0" id="AFu-tE-7Za"/>
                 <outlet property="textField" destination="ZTE-CX-e1f" id="K8t-6V-0fX"/>
@@ -102,14 +116,14 @@
         <namedColor name="base">
             <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <namedColor name="content">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="settingsPanel">
             <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textPrimary">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

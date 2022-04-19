@@ -92,6 +92,7 @@ internal final class R_BookingWithPersonView: UIView {
     
     private let userProfileImage: UIImageView = {
         let imageView = UIImageView()
+        imageView.tintColor = UIColor.custom(for: .textPrimary)
         imageView.image = UIImage(named: "user_profile", in: .module, with: nil)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -220,8 +221,7 @@ extension R_BookingWithPersonView {
         [userProfileImage, summaryLabel, descriptionLabel, addButton].forEach { view in
             containerView.addSubview(view)
         }
-        NSLayoutConstraint.activate(
-            [
+        NSLayoutConstraint.activate([
                 titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
                 titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
                 titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
@@ -263,8 +263,6 @@ extension R_BookingWithPersonView {
                 tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor)
-            ]
-        )
+            ])
     }
-
 }

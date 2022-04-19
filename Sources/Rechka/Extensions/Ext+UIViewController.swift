@@ -11,7 +11,7 @@ extension UIViewController {
     func setupRiverBackButton() {
         navigationItem.hidesBackButton = true
         let backItem = UIBarButtonItem(
-            image: UIImage(named: "chevronLeft", in: .module, compatibleWith: nil)!,
+            image: UIImage(named: "backButton", in: .module, compatibleWith: nil)!,
             style: .plain,
             target: self,
             action: #selector(riverBackButtonPressed)

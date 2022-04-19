@@ -32,26 +32,34 @@ extension _Summary {
     }
 }
 
-class SummaryCell: UITableViewCell {
-
-    @IBOutlet weak var mainTextLabel: UILabel!
-    private var gradient: CAGradientLayer?
-    
-    @IBOutlet weak var moreButton: UIButton!
-    @IBOutlet weak var gradientView: UIView!
+class SummaryCell : UITableViewCell {
     
     private var onMore: Command<Void>?
     
+    private var gradient: CAGradientLayer?
+    
+    @IBOutlet private weak var mainTextLabel: UILabel!
+    
+    @IBOutlet private weak var moreButton: UIButton!
+    
+    @IBOutlet private weak var gradientView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        addGradient()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-       
+        let base = Appearance.colors[.base] ?? UIColor.clear
+        guard let gradient = gradient else { return }
+        gradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
+        gradient.frame = .init(x: 0, y: self.gradientView.frame.height / 2, width: UIScreen.main.bounds.width, height: self.gradientView.frame.height)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setNeedsLayout()
+        setNeedsDisplay()
+    }
     
     @IBAction func handleMore(_ sender: Any) {
         onMore?.perform(with: ())
@@ -60,12 +68,19 @@ class SummaryCell: UITableViewCell {
     public func configure(with data: _Summary) {
         mainTextLabel.attributedText = data.text
         self.onMore = data.onMore
+        addGradient()
         guard let gradient = gradient else { return }
         gradientView.isHidden = data.onMore == nil
     
         var gradientFrame = gradient.frame
-        gradientFrame.size.height = data.height - 24
+        gradientFrame.size.height = data.height
         self.gradient!.frame = gradientFrame
+        
+        let base = Appearance.colors[.base] ?? UIColor.clear
+        gradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
+        gradient.frame = .init(x: 0, y: self.gradientView.frame.height / 2, width: UIScreen.main.bounds.width, height: self.gradientView.frame.height)
+        setNeedsLayout()
+        setNeedsDisplay()
     }
     
     private func addGradient() {
@@ -73,14 +88,13 @@ class SummaryCell: UITableViewCell {
         guard let gradient = gradient else {
             return
         }
-        gradient.frame =  CGRect(origin: CGPoint(x: 0, y: 0), size: .init(width: UIScreen.main.bounds.width - 40, height: self.gradientView.frame.height))
+        gradient.frame = .init(x: 0, y: self.gradientView.frame.height / 2, width: UIScreen.main.bounds.width, height: self.gradientView.frame.height)
         let base = Appearance.colors[.base] ?? UIColor.clear
         
-        gradient.colors = [base.withAlphaComponent(0.2).cgColor, base.cgColor]
-        gradient.locations = [0.2,0.8]
-//        gradient.startPoint = CGPoint(x: 0, y: 1)
-//        gradient.endPoint = CGPoint(x: 1, y: 1)
+        gradient.colors = [base.cgColor, base.cgColor]
+        gradient.locations = [0, 0.6]
+        gradient.endPoint = CGPoint(x: 0, y: 1)
+        gradient.startPoint = CGPoint(x: 0, y: 0)
         self.gradientView.layer.insertSublayer(gradient, at: 0)
     }
-    
 }
