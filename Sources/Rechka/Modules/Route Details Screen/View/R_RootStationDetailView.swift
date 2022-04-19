@@ -21,7 +21,7 @@ internal final class R_RootDetailStationView: UIView {
         enum DataState {
             case loading
             case loaded
-            case error
+            case error(R_Toast.Configuration)
         }
         
         struct Summary: _Summary {
@@ -81,7 +81,9 @@ internal final class R_RootDetailStationView: UIView {
     
     var viewState: ViewState = .initial {
         didSet {
-            render()
+            DispatchQueue.main.async { [weak self] in
+                self?.render()
+            }
         }
     }
     
@@ -198,13 +200,16 @@ internal final class R_RootDetailStationView: UIView {
             switch self.viewState.dataState {
             case .loading:
                 self.buttonView.isHidden = true
+                R_Toast.remove(from: self)
                 self.showBlurLoading()
             case .loaded:
                 self.buttonView.isHidden = false
+                R_Toast.remove(from: self)
                 self.removeBlurLoading()
-            case .error:
+            case .error(let config):
                 self.buttonView.isHidden = true
                 self.removeBlurLoading()
+                R_Toast.show(on: self, with: config)
             }
             self.posterHeaderView?.configurePosterHeader(with: self.viewState.posterTitle, and: self.viewState.posterImageURL)
             self.choiceTicketButton.alpha = self.viewState.onChoice == nil ? 0.4 : 1

@@ -8,6 +8,7 @@
 import UIKit
 import CoreTableView
 import SwiftDate
+import CoreNetwork
 
 internal final class R_TicketsHistoryController: UIViewController {
     
@@ -80,11 +81,23 @@ internal final class R_TicketsHistoryController: UIViewController {
             case .success(let ordersResponse):
                 self.model = ordersResponse
             case .failure(let error):
-                print(error)
+                self.makeErrorState(with: error)
             }
         }
     }
     
+    private func makeErrorState(with error: APIError) {
+        let onSelect: () -> Void = { [weak self] in
+            self?.loadHistory(page: 0, size: 5)
+        }
+        
+        let button = R_Toast.Configuration.Button(
+            image: UIImage(systemName: "arrow.triangle.2.circlepath"),
+            title: nil,
+            onSelect: onSelect)
+        let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(button))
+        self.nestedView.viewState = .init(state: [], dataState: .error(config))
+    }
     
     
     private func showDetails(for order: RechkaShortOrder) {
