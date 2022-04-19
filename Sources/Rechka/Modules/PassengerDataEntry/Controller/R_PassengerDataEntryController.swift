@@ -292,10 +292,9 @@ extension R_PassengerDataEntryController {
         }
         
         let phoneValidation: (TextValidationData) -> Bool = { [weak self] data in
-//            guard let validationData = self?.phoneValidation(text: data.text, replacement: data.replacementString) else { return true }
-//            data.textField.text = validationData.0
-//            return validationData.1
-            return true
+            guard let validationData = self?.phoneValidation(text: data.text, replacement: data.replacementString) else { return true }
+            data.textField.text = validationData.0
+            return validationData.1
         }
         
         let phoneState = self.createInputField(index: 5,
@@ -370,10 +369,9 @@ extension R_PassengerDataEntryController {
             }
             
             let serailValidation: (TextValidationData) -> Bool = { [weak self] data in
-//                guard let validationData = self?.serialValidation(text: data.text, replacement: data.replacementString) else { return true }
-//                data.textField.text = validationData.0
-//                return validationData.1
-                return true
+                guard let validationData = self?.serialValidation(text: data.text, replacement: data.replacementString) else { return true }
+                data.textField.text = validationData.0
+                return validationData.1
             }
             let keyboardType: UIKeyboardType = user.document?.useNumpadOnly ?? false ? .numberPad : .default
             let serialState = self.createInputField(index: 6,
@@ -468,22 +466,22 @@ extension R_PassengerDataEntryController {
         return sections
     }
     
-//    private func serialValidation(text: String, replacement: String) -> (String, Bool) {
-//        if replacement == "" {
-//            return (text, true)
-//        }
-//
-//        var _text = text
-//        if _text.count == 4 {
-//            _text.append(" ")
-//        }
-//
-//        if _text.count >= 11 {
-//            return (_text, false)
-//        }
-//
-//        return (_text, true)
-//    }
+    private func serialValidation(text: String, replacement: String) -> (String, Bool) {
+        if replacement == "" {
+            return (text, true)
+        }
+
+        var _text = text
+        if _text.count == 4 {
+            _text.append(" ")
+        }
+
+        if _text.count >= 11 {
+            return (_text, false)
+        }
+
+        return (_text, true)
+    }
     
     private func birtdayValidation(text: String, replacement: String) -> (String,Bool) {
         
@@ -503,23 +501,23 @@ extension R_PassengerDataEntryController {
         return (_text,true)
     }
     
-//    private func phoneValidation(text: String, replacement: String) -> (String,Bool) {
-//        if replacement == "" {
-//            if text == "+7" {
-//                return (text,false)
-//            }
-//            return (text,true)
-//        }
-//
-//        var _text = text
-//        if _text.count == 2 || _text.count == 6 || _text.count == 10 || _text.count == 13 {
-//            _text.append(" ")
-//        }
-//
-//        if _text.count >= 16 {
-//            return (_text,false)
-//        }
-//
-//        return (_text,true)
-//    }
+    private func phoneValidation(text: String, replacement: String) -> (String,Bool) {
+        if replacement == "" {
+            if text == "+7" {
+                return (text,false)
+            }
+            return (text,true)
+        }
+
+        var _text = text
+        if _text.count == 2 || _text.count == 6 || _text.count == 10 || _text.count == 13 {
+            _text.append(" ")
+        }
+
+        if _text.count >= 16 {
+            return (_text,false)
+        }
+
+        return (_text,true)
+    }
 }
