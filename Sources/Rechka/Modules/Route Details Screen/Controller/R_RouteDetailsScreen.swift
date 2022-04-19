@@ -11,7 +11,7 @@ import CoreNetwork
 import SwiftDate
 
 internal class R_RouteDetailsController: UIViewController {
-      
+    
     func onMapBackSelect() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -57,7 +57,6 @@ internal class R_RouteDetailsController: UIViewController {
     
     
     private func setErrorState(with error: APIError) {
-        
         var title = "Возникла ошибка при загрузке"
         if case .genericError(let message) = error {
             title = message
@@ -68,7 +67,6 @@ internal class R_RouteDetailsController: UIViewController {
         let onSelect = Command { [weak self] in
             guard let self = self, let _routeId = self.routeID else { return }
             self.routeID = _routeId
-            
         }
         let err = R_OrderDetailsView.ViewState.Error(
             image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
@@ -133,9 +131,9 @@ internal class R_RouteDetailsController: UIViewController {
     
     
     private func setRoute(_ route: R_Route) {
-//        if let first = route.shortTrips.first {
-//            self.selectedTripId = first.id
-//        }
+        //        if let first = route.shortTrips.first {
+        //            self.selectedTripId = first.id
+        //        }
         self.route = route
     }
     
@@ -172,14 +170,11 @@ internal class R_RouteDetailsController: UIViewController {
                 self?.openBuyTicketsController(with: trip)
                 return
             case .failure(let error):
-                print(error)
+                self?.setErrorState(with: error)
                 return
             }
         }
-        
-      
     }
-    
     
     func prepareText(for description: String) -> NSMutableAttributedString? {
         let attributedString = NSMutableAttributedString(string: description)
@@ -193,17 +188,17 @@ internal class R_RouteDetailsController: UIViewController {
         paragraphStyle.lineSpacing = 4
         attributedString.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle], range: range)
         return attributedString
-//        if size.height > 60 {
-//            // надо урезать размер и добавить кнопку еще
-//            let moreStr = NSAttributedString(string: "...еще", attributes: [NSAttributedString.Key.font: Appearance.customFonts[.body], NSAttributedString.Key.foregroundColor: UIColor.systemBlue])
-//            attributedString.append(moreStr)
-//
-//
-//
-//        } else {
-//
-//        }
-//        return attributedString
+        //        if size.height > 60 {
+        //            // надо урезать размер и добавить кнопку еще
+        //            let moreStr = NSAttributedString(string: "...еще", attributes: [NSAttributedString.Key.font: Appearance.customFonts[.body], NSAttributedString.Key.foregroundColor: UIColor.systemBlue])
+        //            attributedString.append(moreStr)
+        //
+        //
+        //
+        //        } else {
+        //
+        //        }
+        //        return attributedString
         
     }
     
@@ -302,11 +297,11 @@ internal class R_RouteDetailsController: UIViewController {
                     day: dayTitle,
                     items: tripsOnThisDay,
                     shouldScrollToInitial: shouldScrollToInitial)
-                    .toElement()
+                .toElement()
             }
             return nil
         }
-
+        
         let tripsHeaderData = R_RootDetailStationView.ViewState.DateHeader(title: "Когда поедем?")
         let tripsSection = SectionState(header: tripsHeaderData, footer: nil)
         resultSections.append(.init(model: tripsSection, elements: tripsTest))
@@ -350,26 +345,20 @@ internal class R_RouteDetailsController: UIViewController {
 }
 
 extension R_RouteDetailsController {
-        
+    
     
     private func openBuyTicketsController(with model: R_Trip) {
-//        DispatchQueue.main.async { [weak self] in
-//            guard let self = self, let needPersonalData = model.personalDataRequired else { return }
-//            if needPersonalData {
-//    //            let bookingWithPerson = R_BookingWithPersonController()
-//    //            bookingWithPerson.model = model
-//    //            navigationController?.pushViewController(bookingWithPerson, animated: true)
-//            } else {
-//                let bookingWithoutPerson = R_BookingWithoutPersonController()
-//                bookingWithoutPerson.model = model
-//                self.navigationController?.pushViewController(bookingWithoutPerson, animated: true)
-//            }
-//        }
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            let bookingWithPerson = R_BookingWithPersonController()
-            bookingWithPerson.model = model
-            self.navigationController?.pushViewController(bookingWithPerson, animated: true)
+            guard let self = self, let needPersonalData = model.personalDataRequired else { return }
+            if needPersonalData {
+                let bookingWithPerson = R_BookingWithPersonController()
+                bookingWithPerson.model = model
+                self.navigationController?.pushViewController(bookingWithPerson, animated: true)
+            } else {
+                let bookingWithoutPerson = R_BookingWithoutPersonController()
+                bookingWithoutPerson.model = model
+                self.navigationController?.pushViewController(bookingWithoutPerson, animated: true)
+            }
         }
     }
 }
