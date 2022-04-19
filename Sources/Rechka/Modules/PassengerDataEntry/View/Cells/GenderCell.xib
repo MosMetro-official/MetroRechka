@@ -41,7 +41,6 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                 </subviews>
-                <color key="backgroundColor" name="settingsPanel"/>
                 <constraints>
                     <constraint firstItem="1q6-bC-3gs" firstAttribute="leading" secondItem="REI-qT-1rF" secondAttribute="trailing" constant="110" id="2ck-VC-b8W"/>
                     <constraint firstItem="REI-qT-1rF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Dl0-Hf-CGx"/>
@@ -53,7 +52,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" name="settingsPanel"/>
+            <color key="backgroundColor" name="content"/>
             <connections>
                 <outlet property="segmentControll" destination="1q6-bC-3gs" id="VqG-1p-4eF"/>
                 <outlet property="titleLabel" destination="REI-qT-1rF" id="bgr-ro-Vie"/>
@@ -62,8 +61,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="settingsPanel">
-            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="content">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

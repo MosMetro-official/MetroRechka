@@ -29,6 +29,14 @@ class R_DocumentView: UIView {
             let onItemSelect: Command<Void>
         }
         
+        struct Error: _R_ErrorCell {
+            let image: UIImage
+            let title: String
+            let action: Command<Void>?
+            let buttonTitle: String?
+            let height: CGFloat
+        }
+        
         static let initial = R_DocumentView.ViewState(dataState: .loading, state: [], onClose: nil)
     }
     

@@ -39,13 +39,33 @@ class R_CitizenshipController : UIViewController {
     }
     
     private func loadCitizenships() {
-        nestedView.viewState = .init(onClose: nil, dataState: .loading, state: [])
+        nestedView.viewState = .init(onClose: nil, dataState: .loading, state: [], enableTextField: false)
         R_Citizenship.getCitizenships { result in
             switch result {
             case .success(let citizenships):
                 self.citizenships = citizenships
             case .failure(let error):
                 print(error)
+                let actionReload = Command { [weak self] in
+                    self?.loadCitizenships()
+                }
+                let onClose = Command { [weak self] in
+                    self?.dismiss(animated: true)
+                }
+                let error = R_CitizenshipView.ViewState.Error(
+                    image: UIImage(named: "result_error", in: .module, with: nil) ?? UIImage(),
+                    title: "ЧТО-ТО ПОШЛО НЕ ТАК 😢",
+                    action: actionReload,
+                    buttonTitle: "Повторить",
+                    height: UIScreen.main.bounds.height / 2
+                ).toElement()
+                let errorState = R_CitizenshipView.ViewState(
+                    onClose: onClose,
+                    dataState: .error,
+                    state: [State(model: .init(header: nil, footer: nil), elements: [error])],
+                    enableTextField: false
+                )
+                self.nestedView.viewState = errorState
             }
         }
     }
@@ -67,7 +87,8 @@ class R_CitizenshipController : UIViewController {
         let viewState = R_CitizenshipView.ViewState(
             onClose: onClose,
             dataState: .loaded,
-            state: [state]
+            state: [state],
+            enableTextField: true
         )
         self.nestedView.viewState = viewState
     }

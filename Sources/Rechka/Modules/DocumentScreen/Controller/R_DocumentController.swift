@@ -42,6 +42,25 @@ class R_DocumentController: UIViewController {
                 self.documents = doc
             case .failure(let error):
                 print(error)
+                let actionReload = Command { [weak self] in
+                    self?.loadDocuments(by: id)
+                }
+                let onClose = Command { [weak self] in
+                    self?.dismiss(animated: true)
+                }
+                let error = R_DocumentView.ViewState.Error(
+                    image: UIImage(named: "result_error", in: .module, with: nil) ?? UIImage(),
+                    title: "ЧТО-ТО ПОШЛО НЕ ТАК 😢",
+                    action: actionReload,
+                    buttonTitle: "Повторить",
+                    height: UIScreen.main.bounds.height / 2
+                ).toElement()
+                let errorState = R_DocumentView.ViewState(
+                    dataState: .error,
+                    state: [State(model: .init(header: nil, footer: nil), elements: [error])],
+                    onClose: onClose
+                )
+                self.nestedView.viewState = errorState
             }
         }
     }

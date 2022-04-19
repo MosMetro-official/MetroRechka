@@ -14,6 +14,7 @@ internal final class R_BookingWithPersonView: UIView {
         let title : String
         let menuActions : [UIAction]
         var dataState : DataState
+        let state: [State]
         var showPersonAlert : Command<Void>?
         var showPersonDataEntry : Command<Void>?
         var showUserFromCache : Command<R_User>?
@@ -21,7 +22,9 @@ internal final class R_BookingWithPersonView: UIView {
         
         enum DataState {
             case addPersonData
-            case addedPersonData([State])
+            case addedPersonData
+            case laoding
+            case error(R_Toast.Configuration)
         }
         
         struct PassengerHeader : _PassengerHeaderCell {
@@ -49,7 +52,8 @@ internal final class R_BookingWithPersonView: UIView {
         static let initial = R_BookingWithPersonView.ViewState(
             title: "",
             menuActions: [],
-            dataState: .addPersonData
+            dataState: .addPersonData,
+            state: []
         )
     }
     
@@ -203,11 +207,21 @@ internal final class R_BookingWithPersonView: UIView {
             switch self.viewState.dataState {
             case .addPersonData:
                 self.tableView.isHidden = true
-            case .addedPersonData(let viewState):
+            case .addedPersonData:
+                R_Toast.remove(from: self)
                 self.containerView.isHidden = true
                 self.tableView.isHidden = false
                 self.buttonView.isHidden = false
-                self.tableView.viewStateInput = viewState
+                self.tableView.viewStateInput = self.viewState.state
+            case .laoding:
+                R_Toast.remove(from: self)
+                self.showBlurLoading()
+            case .error(let config):
+                self.removeBlurLoading()
+                self.tableView.isHidden = false
+                self.buttonView.isHidden = true
+                self.tableView.viewStateInput = self.viewState.state
+                R_Toast.show(on: self, with: config, distanceFromBottom: 24)
             }
         }
     }

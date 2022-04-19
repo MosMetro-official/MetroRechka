@@ -45,6 +45,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             title: model.name,
             menuActions: setupPersonMenu(),
             dataState: .addPersonData,
+            state: [],
             showPersonAlert: showPersonAlert,
             showPersonDataEntry: showPersonDataEntry,
             book: nil
@@ -72,7 +73,26 @@ internal final class R_BookingWithPersonController: UIViewController {
                 case .success(let order):
                     self.handle(order: order)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print(error)
+                    DispatchQueue.main.async {
+                        let onSelect: () -> Void = { [weak self] in
+                            guard let self = self else { return }
+                            R_Toast.remove(from: self.nestedView)
+                            self.nestedView.viewState.dataState = .addedPersonData
+                        }
+                        
+                        let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
+                        
+                        let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
+                        let newErrorState: R_BookingWithPersonView.ViewState = .init(
+                            title: self.nestedView.viewState.title,
+                            menuActions: self.nestedView.viewState.menuActions,
+                            dataState: .error(config),
+                            state: self.nestedView.viewState.state,
+                            book: self.nestedView.viewState.book
+                        )
+                        self.nestedView.viewState = newErrorState
+                    }
                 }
             }
         } else {
@@ -169,7 +189,8 @@ internal final class R_BookingWithPersonController: UIViewController {
         let viewState = R_BookingWithPersonView.ViewState(
             title: newModel.name,
             menuActions: setupPersonMenu(),
-            dataState: .addedPersonData([passengerState, tariffState]),
+            dataState: .addedPersonData,
+            state: [passengerState, tariffState],
             showPersonAlert: showPersonAlert,
             showPersonDataEntry: showPersonDataEntry,
             book: book
@@ -180,7 +201,7 @@ internal final class R_BookingWithPersonController: UIViewController {
     private func setupPersonAlert() {
         guard let newModel = model else { return }
         guard let users = SomeCache.shared.cache["user"] else { return }
-        let personAlert = UIAlertController(title: "Persons", message: "", preferredStyle: .actionSheet)
+        let personAlert = UIAlertController(title: "Пассажиры", message: "", preferredStyle: .actionSheet)
         let addAction = UIAlertAction(title: "Новый пассажир", style: .default) { [weak self] _ in
             guard let self = self else { return }
             self.pushPersonDataEntry(with: newModel)
@@ -193,7 +214,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             }
             personAlert.addAction(action)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
         personAlert.addAction(cancelAction)
         self.present(personAlert, animated: true)
     }

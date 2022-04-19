@@ -30,14 +30,14 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ILH-yd-GkQ" customClass="BaseTableView" customModule="CoreTableView">
-                    <rect key="frame" x="0.0" y="126" width="414" height="645"/>
+                    <rect key="frame" x="0.0" y="126" width="414" height="655"/>
                     <color key="backgroundColor" name="base"/>
                 </tableView>
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zYg-72-1du">
-                    <rect key="frame" x="0.0" y="771" width="414" height="125"/>
+                    <rect key="frame" x="0.0" y="781" width="414" height="115"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iuN-Vh-Qbv">
-                            <rect key="frame" x="16" y="36.5" width="382" height="52"/>
+                            <rect key="frame" x="16" y="31.5" width="382" height="52"/>
                             <color key="backgroundColor" name="content"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="GMc-Cn-go6"/>
@@ -61,7 +61,7 @@
                         <constraint firstItem="iuN-Vh-Qbv" firstAttribute="leading" secondItem="zYg-72-1du" secondAttribute="leading" constant="16" id="MG6-mk-zk1"/>
                         <constraint firstItem="iuN-Vh-Qbv" firstAttribute="centerY" secondItem="zYg-72-1du" secondAttribute="centerY" id="a7E-jF-hKI"/>
                         <constraint firstAttribute="trailing" secondItem="iuN-Vh-Qbv" secondAttribute="trailing" constant="16" id="h3y-Po-SSt"/>
-                        <constraint firstAttribute="height" constant="125" id="oHZ-Xi-vrq"/>
+                        <constraint firstAttribute="height" constant="115" id="oHZ-Xi-vrq"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -99,7 +99,7 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="settingsPanel">
-            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textPrimary">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

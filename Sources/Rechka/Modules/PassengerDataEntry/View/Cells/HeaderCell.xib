@@ -34,7 +34,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" name="settingsPanel"/>
+            <color key="backgroundColor" name="content"/>
             <connections>
                 <outlet property="titleLabel" destination="7Cm-uH-4zv" id="mtp-IM-lKu"/>
             </connections>
@@ -42,8 +42,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="settingsPanel">
-            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="content">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

@@ -28,7 +28,6 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                 </subviews>
-                <color key="backgroundColor" name="base"/>
                 <constraints>
                     <constraint firstItem="gaR-CJ-rX2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="dHv-Yi-lgU"/>
                     <constraint firstAttribute="trailing" secondItem="gaR-CJ-rX2" secondAttribute="trailing" constant="10" id="sGA-Kx-p3Y"/>
@@ -36,7 +35,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" name="base"/>
+            <color key="backgroundColor" name="content"/>
             <connections>
                 <outlet property="citizenshipLabel" destination="gaR-CJ-rX2" id="0Cz-ba-U0D"/>
             </connections>
@@ -44,8 +43,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="base">
-            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="content">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textPrimary">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

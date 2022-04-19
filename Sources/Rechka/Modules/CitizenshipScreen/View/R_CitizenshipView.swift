@@ -24,6 +24,7 @@ class R_CitizenshipView: UIView {
         let onClose: Command<Void>?
         let dataState: DataState
         let state: [State]
+        let enableTextField: Bool
         
         enum DataState {
             case loading
@@ -36,7 +37,15 @@ class R_CitizenshipView: UIView {
             let onItemSelect: Command<Void>
         }
         
-        static let initial = R_CitizenshipView.ViewState(onClose: nil, dataState: .loading, state: [])
+        struct Error: _R_ErrorCell {
+            let image: UIImage
+            let title: String
+            let action: Command<Void>?
+            let buttonTitle: String?
+            let height: CGFloat
+        }
+        
+        static let initial = R_CitizenshipView.ViewState(onClose: nil, dataState: .loading, state: [], enableTextField: true)
     }
     
     var viewState: ViewState = .initial {
@@ -76,7 +85,7 @@ class R_CitizenshipView: UIView {
             self.removeBlurLoading(from: self)
         }
         self.tableView.viewStateInput = viewState.state
-        
+        self.textField.isEnabled = viewState.enableTextField
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.keyboardNotification(notification:)),
