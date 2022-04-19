@@ -432,7 +432,7 @@ internal final class R_OrderDetailsController : UIViewController {
         
         // info
         let title = R_OrderDetailsView.ViewState.TicketTitle(
-            title: "Информэйшон:"
+            title: "Информация:"
         ).toElement()
         
         let status = R_OrderDetailsView.ViewState.TicketInfo(
