@@ -127,10 +127,15 @@ internal final class R_PassengerDataEntryController : UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private func showPlaceController(for trip: R_Trip) {
+    private func showPlaceController(for trip: R_Trip, selectedPlace: Int?, onPlaceSelect: Command<Int>) {
         let controller = R_PlaceController()
         self.present(controller, animated: true) {
+            if let selectedPlace = selectedPlace {
+                controller.shouldPerformFirstSet = false
+                controller.selectedPlace = selectedPlace
+            }
             controller.trip = trip
+            controller.onPlaceSelect = onPlaceSelect
         }
     }
     
@@ -364,16 +369,17 @@ extension R_PassengerDataEntryController {
             }
             
             let serailValidation: (TextValidationData) -> Bool = { [weak self] data in
-                guard let validationData = self?.serialValidation(text: data.text, replacement: data.replacementString) else { return true }
-                data.textField.text = validationData.0
-                return validationData.1
+//                guard let validationData = self?.serialValidation(text: data.text, replacement: data.replacementString) else { return true }
+//                data.textField.text = validationData.0
+//                return validationData.1
+                return true
             }
-            
+            let keyboardType: UIKeyboardType = user.document?.useNumpadOnly ?? false ? .numberPad : .default
             let serialState = self.createInputField(index: 6,
                                                     text: user.document?.cardIdentityNumber == nil ? "" : user.document?.cardIdentityNumber,
                                                     desc: "Серия и номер",
                                                     placeholder: user.document?.exampleNumber ?? "",
-                                                    keyboardType: .numberPad,
+                                                    keyboardType: keyboardType,
                                                     onTextEnter: onSerialEnter,
                                                     validation: serailValidation)
             
@@ -444,11 +450,16 @@ extension R_PassengerDataEntryController {
             sections.append(additionalState)
         }
         if !(displayRiverUser?.ticket?.isWithoutPlace ?? true) {
-            let onSelect = Command { [weak self] in
+            let onSelectPlace = Command { [weak self] in
                 guard let self = self else { return }
-                self.showPlaceController(for: model)
+                let onPlaceSelect: Command<Int> = Command { [weak self] place in
+                    guard let self = self else { return }
+                    self.displayRiverUser?.ticket?.place = place
+                }
+                self.showPlaceController(for: model, selectedPlace: user.ticket?.place, onPlaceSelect: onPlaceSelect)
             }
-            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "Выберите место", onItemSelect: onSelect).toElement()
+            let title = user.ticket?.place == nil ? "Выберите место" : "Место \(user.ticket!.place!)"
+            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: title, onItemSelect: onSelectPlace).toElement()
             let choiceSec = SectionState(header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])
             sections.append(choiceState)
@@ -456,22 +467,22 @@ extension R_PassengerDataEntryController {
         return sections
     }
     
-    private func serialValidation(text: String, replacement: String) -> (String, Bool) {
-        if replacement == "" {
-            return (text, true)
-        }
-        
-        var _text = text
-        if _text.count == 4 {
-            _text.append(" ")
-        }
-        
-        if _text.count >= 11 {
-            return (_text, false)
-        }
-        
-        return (_text, true)
-    }
+//    private func serialValidation(text: String, replacement: String) -> (String, Bool) {
+//        if replacement == "" {
+//            return (text, true)
+//        }
+//
+//        var _text = text
+//        if _text.count == 4 {
+//            _text.append(" ")
+//        }
+//
+//        if _text.count >= 11 {
+//            return (_text, false)
+//        }
+//
+//        return (_text, true)
+//    }
     
     private func birtdayValidation(text: String, replacement: String) -> (String,Bool) {
         

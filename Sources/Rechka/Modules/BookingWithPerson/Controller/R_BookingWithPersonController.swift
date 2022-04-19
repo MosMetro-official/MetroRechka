@@ -14,7 +14,7 @@ internal final class R_BookingWithPersonController: UIViewController {
     let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
     
     var model: R_Trip?
-    var riverUsers: [R_User] = []
+    private var riverUsers: [R_User] = []
     
     override func loadView() {
         super.loadView()
@@ -65,7 +65,6 @@ internal final class R_BookingWithPersonController: UIViewController {
     }
     
     private func startBooking() {
-        self.nestedView.showBlurLoading()
         guard let tripID = self.model?.id else { return }
         if let _ = Rechka.shared.token {
             R_Trip.book(with: riverUsers, tripID: tripID) { result in
@@ -77,9 +76,15 @@ internal final class R_BookingWithPersonController: UIViewController {
                 }
             }
         } else {
-            self.nestedView.removeBlurLoading()
-            let unauthorizedVC = R_UnauthorizedController()
-            self.present(unauthorizedVC, animated: true, completion: nil)
+            let vc = R_UnauthorizedController()
+            vc.onLogin = Command(action: { [weak self] in
+                guard let self = self else { return }
+                guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else { return }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                })
+            })
+            self.present(vc, animated: true, completion: nil)
         }
     }
     
