@@ -10,94 +10,145 @@ import CoreTableView
 
 internal final class R_PassengerDataEntryController : UIViewController {
     
-    weak var delegate: R_BookingWithPersonDelegate?
     private let nestedView = R_PassengerDataEntryView(frame: UIScreen.main.bounds)
-    
-    var displayUser: R_User! {
+    private var inputStates = [InputView.ViewState]()
+    private var avaliableTariffs: [R_Tariff] = []
+    private var additionalService : [R_Tariff: Int] = [:] {
         didSet {
             makeState()
         }
     }
-        
-    var model: FakeModel! {
+    
+    var setupUser: ((R_User, Int?, R_Trip) -> Void)?
+    var model: R_Trip? {
         didSet {
-            if paymentModel == nil {
+            setupTariffType()
+            if displayRiverUser == nil {
                 firstSetup()
             }
+        }
+    }
+
+    var displayRiverUser: R_User? {
+        didSet {
             makeState()
         }
     }
     
-    var paymentModel: PaymentModel? {
-        didSet {
-            setupValidate()
-        }
-    }
-        
-    private var inputStates = [InputView.ViewState]()
-    
+    var index: Int?
+            
     override func loadView() {
         super.loadView()
+        view.backgroundColor = .custom(for: .base)
         view = nestedView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupReadyButton()
+        setupRiverBackButton()
         title = "Пассажир"
     }
     
+    private func setupTariffType() {
+        guard let tariffs = model?.tarrifs else { return }
+        tariffs.forEach { tariff in
+            switch tariff.type {
+            case .base, .default:
+                avaliableTariffs.append(tariff)
+            case .luggage, .good, .additional:
+                additionalService.updateValue(0, forKey: tariff)
+            }
+        }
+    }
+    
     private func firstSetup() {
-        let user = R_User()
-        displayUser = user
-        let ticket = FakeTickets(price: "100500", tariff: "ЕдиныЙ")
-        self.paymentModel = PaymentModel(ticket: [Ticket(user: user, ticket: ticket)])
+        var user = R_User()
+        user.gender = .male
+        displayRiverUser = user
     }
     
     private func makeState() {
+        guard let user = displayRiverUser else { return }
         self.inputStates.removeAll()
-        if let model = paymentModel {
-            var finalState = [State]()
-            let users = model.ticket.compactMap({ $0.user })
-            self.inputStates.removeAll()
-            for (index, user) in users.enumerated() {
-                let tableState = createTableState(for: user, index: index)
-                finalState.append(contentsOf: tableState)
-            }
-            self.nestedView.viewState = R_PassengerDataEntryView.ViewState(state: finalState, dataState: .loaded, onSave: {} )
+        let tableState = createTableState(for: user)
+        let onReadySelect = Command { [weak self] in
+            self?.setupReadyButton()
         }
+        let viewState = R_PassengerDataEntryView.ViewState(
+            state: tableState,
+            dataState: .loaded,
+            onReadySelect: onReadySelect,
+            validate: setupValidate()
+        )
+        self.nestedView.viewState = viewState
     }
     
     private func setupReadyButton() {
-        nestedView.onReadySelect = { [weak self] in
-            guard let self = self else { return }
-            guard let users = self.paymentModel?.ticket.map( {$0.user} ) else { return }
-            for user in users {
-                if let user = user {
-                    SomeCache.shared.addToCache(user: user)
-                }
-            }
-            self.popToBooking()
-        }
+        guard var user = displayRiverUser else { return }
+        user.ticket = nil
+        SomeCache.shared.addToCache(user: user)
+        self.popToBooking()
     }
     
-    private func setupValidate() {
-        nestedView.validate = {
-            guard let users = self.paymentModel?.ticket.compactMap( {$0.user }) else { return false }
-            var result = false
-            for user in users {
-                if user.surname != nil {
-                    result = true
-                }
-            }
-            return result
-        }
+    private func setupValidate() -> Bool {
+        guard let user = displayRiverUser else { return false }
+        let result: Bool = {
+            user.name != nil &&
+            user.surname != nil &&
+            user.middleName != nil &&
+            user.birthday != nil &&
+            user.phoneNumber != nil &&
+            user.gender != nil &&
+            user.citizenShip != nil &&
+            user.document != nil &&
+            user.document?.cardIdentityNumber != nil &&
+            user.ticket != nil
+        }()
+        return result
     }
     
     private func popToBooking() {
-        guard let paymentModel = paymentModel else { return }
-        delegate?.setupNewUser(for: paymentModel, and: model)
+        guard
+            let model = model,
+            var user = displayRiverUser else { return }
+        let additionalServicesCount = self.additionalService.reduce(0, { $0 + $1.value })
+        
+        if additionalServicesCount > 0 {
+            var selectedServices: [R_AdditionService] = []
+            for (service, itemsCount) in self.additionalService {
+                if itemsCount > 0 {
+                    let array = Array.init(repeating: service.toAdditionService(), count: itemsCount)
+                    selectedServices.append(contentsOf: array)
+                }
+            }
+            user.additionServices = selectedServices
+        }
+        setupUser?(user, index, model)
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func showPlaceController(for trip: R_Trip) {
+        let controller = R_PlaceController()
+        self.present(controller, animated: true) {
+            controller.trip = trip
+        }
+    }
+    
+    private func handleOperation(for tariff: R_Tariff, isMinus: Bool) {
+        switch tariff.type {
+        case .base, .default:
+            break
+        case .luggage, .good, .additional:
+            guard var currentCount = self.additionalService[tariff] else {
+                return
+            }
+            if isMinus {
+                currentCount -= 1
+            } else {
+                currentCount += 1
+            }
+            self.additionalService.updateValue(currentCount, forKey: tariff)
+        }
     }
 }
 
@@ -111,7 +162,6 @@ extension R_PassengerDataEntryController {
                 self.nestedView.hideInput()
             }
         }
-        
         let onBack: () -> () = {
             if let current = self.inputStates.firstIndex(where: {  $0.id == index }), let prevous = self.inputStates[safe: current - 1] {
                 self.nestedView.showInput(with: prevous)
@@ -121,9 +171,8 @@ extension R_PassengerDataEntryController {
         if let first = self.inputStates.first {
             isFirst = first.id == index
         }
-        let passengersCount = self.paymentModel?.ticket.compactMap( { $0.user} ).count ?? 0
-        
-        let isLast = ((passengersCount - 1) * 10 + 5) == index
+        let serialIsOnScreen = self.displayRiverUser?.document == nil ? 5 : 6
+        let isLast = serialIsOnScreen == index
         
         let nextEndImage = UIImage(named: "addPlus", in: .module, with: nil)
         let nextImage = UIImage(named: "backButton", in: .module, with: nil)
@@ -143,28 +192,16 @@ extension R_PassengerDataEntryController {
         )
     }
     
-    private func passengerFieldExists(for index: Int) -> Bool {
-        if let _ = self.paymentModel?.ticket.compactMap( { $0.user} )[safe: index] {
-            return true
-        }
-        return false
-    }
-    
-    private func createTableState(for user: R_User, index: Int) -> [State] {
+    private func createTableState(for user: R_User) -> [State] {
+        guard let model = model else { return [] }
         var sections = [State]()
-        let titleElement = R_PassengerDataEntryView.ViewState.Header(title: "Личные данные", height: 50).toElement()
-        
+        let titleElement = R_PassengerDataEntryView.ViewState.Header(title: "Личные данные").toElement()
         var personalItems = [Element]()
         personalItems.append(titleElement)
-
         let onSurnameEnter: (TextEnterData) -> () = { data in
-            if self.passengerFieldExists(for: index) {
-                self.paymentModel?.ticket[index].user?.surname = data.text.isEmpty ? nil : data.text
-                self.displayUser.surname = data.text.isEmpty ? nil : data.text
-            }
+            self.displayRiverUser?.surname = data.text.isEmpty ? nil : data.text
         }
-        
-        let surnameState = self.createInputField(index: (index * 10) + 2,
+        let surnameState = self.createInputField(index: 1,
                                                  text: user.surname,
                                                  desc: "Фамилия",
                                                  placeholder: "Иванов",
@@ -172,19 +209,18 @@ extension R_PassengerDataEntryController {
                                                  onTextEnter: onSurnameEnter)
         self.inputStates.append(surnameState)
         
-        let surnameField = R_PassengerDataEntryView.ViewState.Filed(text: user.surname == nil ? "Фамилия" : user.surname!, height: 50) {
+        let surnameField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.surname == nil ? "Фамилия" : user.surname!,
+            textColor: user.surname == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: surnameState)
         }.toElement()
         
         // name
         let onNameEnter: (TextEnterData) -> () = { data in
-            if self.passengerFieldExists(for: index) {
-                self.paymentModel?.ticket[index].user?.name = data.text.isEmpty ? nil : data.text
-                self.displayUser.name = data.text.isEmpty ? nil : data.text
-            }
+            self.displayRiverUser?.name = data.text.isEmpty ? nil : data.text
         }
         
-        let nameState = self.createInputField(index: (index * 10) + 1,
+        let nameState = self.createInputField(index: 2,
                                               text: user.name,
                                               desc: "Имя",
                                               placeholder: "Иван",
@@ -192,19 +228,18 @@ extension R_PassengerDataEntryController {
                                               onTextEnter: onNameEnter)
         self.inputStates.append(nameState)
         
-        let nameField = R_PassengerDataEntryView.ViewState.Filed(text: user.name == nil ? "Имя" : user.name!, height: 50) {
+        let nameField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.name == nil ? "Имя" : user.name!,
+            textColor: user.name == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: nameState)
         }.toElement()
         
         // middle name
         let onMiddleNameEnter: (TextEnterData) -> () = { data in
-            if self.passengerFieldExists(for: index) {
-                self.paymentModel?.ticket[index].user?.middleName = data.text.isEmpty ? nil : data.text
-                self.displayUser.middleName = data.text.isEmpty ? nil : data.text
-            }
+            self.displayRiverUser?.middleName = data.text.isEmpty ? nil : data.text
         }
         
-        let middleNameState = self.createInputField(index: (index * 10) + 3,
+        let middleNameState = self.createInputField(index: 3,
                                                     text: user.middleName,
                                                     desc: "Отчество",
                                                     placeholder: "Иванович",
@@ -212,16 +247,15 @@ extension R_PassengerDataEntryController {
                                                     onTextEnter: onMiddleNameEnter)
         self.inputStates.append(middleNameState)
         
-        let middleNameField = R_PassengerDataEntryView.ViewState.Filed(text: user.middleName == nil ? "Отчество" : user.middleName!, height: 50) {
+        let middleNameField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.middleName == nil ? "Отчество" : user.middleName!,
+            textColor: user.middleName == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: middleNameState)
         }.toElement()
         
         personalItems.append(contentsOf: [surnameField, nameField, middleNameField])
         let onBirthdayEnter: (TextEnterData) -> () = { data in
-            if self.passengerFieldExists(for: index) {
-                self.paymentModel?.ticket[index].user?.birthday = data.text.isEmpty ? nil : data.text
-                self.displayUser.birthday = data.text.isEmpty ? nil : data.text
-            }
+            self.displayRiverUser?.birthday = data.text.isEmpty ? nil : data.text
         }
         
         let validation: (TextValidationData) -> Bool = { [weak self] data in
@@ -230,7 +264,7 @@ extension R_PassengerDataEntryController {
             return validationData.1
         }
         
-        let birthdayState = self.createInputField(index: (index * 10) + 4,
+        let birthdayState = self.createInputField(index: 4,
                                                   text: user.birthday,
                                                   desc: "День рождения",
                                                   placeholder: "01.01.2000",
@@ -240,17 +274,16 @@ extension R_PassengerDataEntryController {
         
         self.inputStates.append(birthdayState)
         
-        let birthdayField = R_PassengerDataEntryView.ViewState.Filed(text: user.birthday == nil ? "День рождения" : user.birthday!, height: 50) {
+        let birthdayField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.birthday == nil ? "День рождения" : user.birthday!,
+            textColor: user.birthday == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: birthdayState)
         }.toElement()
         personalItems.append(birthdayField)
         
         // phone
         let onPhoneEnter: (TextEnterData) -> () = { data in
-            if self.passengerFieldExists(for: index) {
-                self.paymentModel?.ticket[index].user?.phoneNumber = data.text.isEmpty ? nil : data.text
-                self.displayUser.phoneNumber = data.text.isEmpty ? nil : data.text
-            }
+            self.displayRiverUser?.phoneNumber = data.text.isEmpty ? nil : data.text
         }
         
         let phoneValidation: (TextValidationData) -> Bool = { [weak self] data in
@@ -259,7 +292,7 @@ extension R_PassengerDataEntryController {
             return validationData.1
         }
         
-        let phoneState = self.createInputField(index: (index * 10) + 5,
+        let phoneState = self.createInputField(index: 5,
                                                text: user.phoneNumber == nil ? "+7" : user.phoneNumber!,
                                                desc: "Телефон",
                                                placeholder: "+7 900 000 00 00",
@@ -269,72 +302,175 @@ extension R_PassengerDataEntryController {
         
         self.inputStates.append(phoneState)
         
-        let phoneField = R_PassengerDataEntryView.ViewState.Filed(text: user.phoneNumber == nil ? "Телефон" : user.phoneNumber!, height: 50) {
+        let phoneField = R_PassengerDataEntryView.ViewState.Filed(
+            text: user.phoneNumber == nil ? "Телефон" : user.phoneNumber!,
+            textColor: user.phoneNumber == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: phoneState)
         }.toElement()
         personalItems.append(phoneField)
         
         let genderField = R_PassengerDataEntryView.ViewState.GenderCell(gender: user.gender ?? .male, onTap: { gender in
-            self.paymentModel?.ticket[index].user?.gender = gender
-        }, height: 50).toElement()
+            self.displayRiverUser?.gender = gender
+
+        }).toElement()
         personalItems.append(genderField)
         
         let personalDataSectionState = SectionState(header: nil, footer: nil)
         sections.append(State(model: personalDataSectionState, elements: personalItems))
                 
-        let onCountrySelect: () -> () = {
-            // select country
+        let onCountrySelect = Command { [weak self] in
+            let citizenshipController = R_CitizenshipController()
+            citizenshipController.onCitizenshipSelect = Command<R_Citizenship> { [weak self] citizenship in
+                self?.displayRiverUser?.citizenShip = citizenship
+            }
+            citizenshipController.modalPresentationStyle = .fullScreen
+            self?.present(citizenshipController, animated: true)
         }
-        let countryTitle = R_PassengerDataEntryView.ViewState.Header(title: "Гражданство", height: 50).toElement()
-        let countrySelection = R_PassengerDataEntryView.ViewState.SelectField(title: "Указать гражданство", height: 50) {
-            // open citizenship list
-        }.toElement()
+            
+        let countryTitle = R_PassengerDataEntryView.ViewState.Header(title: "Гражданство").toElement()
+        let cTitle = (displayRiverUser?.citizenShip == nil ? "Указать гражданство" : displayRiverUser?.citizenShip!.name) ?? ""
+        let countrySelection = R_PassengerDataEntryView.ViewState.SelectField(
+            title: cTitle,
+            onItemSelect: onCountrySelect
+        ).toElement()
         let countrySection = SectionState(header: nil, footer: nil)
         let countryState = State(model: countrySection, elements: [countryTitle, countrySelection])
         sections.append(countryState)
         
         // documents
-        let onDocSelect: () -> () = {
-            // select document
+        var documentElements: [Element] = []
+        let onDocSelect = Command { [weak self] in
+            let documentController = R_DocumentController()
+            documentController.tripId = model.id
+            documentController.onDocumentSelect = Command<R_Document> { [weak self] document in
+                self?.displayRiverUser?.document = document
+            }
+            self?.present(documentController, animated: true)
         }
         
-        let docTitle = R_PassengerDataEntryView.ViewState.Header(title: "Документ", height: 50).toElement()
-        let docSelection = R_PassengerDataEntryView.ViewState.SelectField(title: "Выбрать документ", height: 50) {
-            // open document list
-        }.toElement()
+        let docTitle = R_PassengerDataEntryView.ViewState.Header(title: "Документ").toElement()
+        documentElements.append(docTitle)
+        let dTitle = (displayRiverUser?.document == nil ? "Выбрать документ" : displayRiverUser?.document!.name) ?? ""
+        let docSelection = R_PassengerDataEntryView.ViewState.SelectField(
+            title: dTitle,
+            onItemSelect: onDocSelect
+        ).toElement()
+        documentElements.append(docSelection)
         let docSection = SectionState(header: nil, footer: nil)
-        let docState = State(model: docSection, elements: [docTitle, docSelection])
+        if displayRiverUser?.document != nil {
+            // show serial field
+            let onSerialEnter: (TextEnterData) -> () = { data in
+                self.displayRiverUser?.document?.cardIdentityNumber = data.text.isEmpty ? nil : data.text
+            }
+            
+            let serailValidation: (TextValidationData) -> Bool = { [weak self] data in
+                guard let validationData = self?.serialValidation(text: data.text, replacement: data.replacementString) else { return true }
+                data.textField.text = validationData.0
+                return validationData.1
+            }
+            
+            let serialState = self.createInputField(index: 6,
+                                                    text: user.document?.cardIdentityNumber == nil ? "" : user.document?.cardIdentityNumber,
+                                                    desc: "Серия и номер",
+                                                    placeholder: user.document?.exampleNumber ?? "",
+                                                    keyboardType: .numberPad,
+                                                    onTextEnter: onSerialEnter,
+                                                    validation: serailValidation)
+            
+            self.inputStates.append(serialState)
+            let serail = displayRiverUser?.document?.cardIdentityNumber
+            let serailField = R_PassengerDataEntryView.ViewState.Filed(
+                text: serail == nil ? "Введите данные" : serail!,
+                textColor: user.document?.cardIdentityNumber == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
+                self.nestedView.showInput(with: serialState)
+            }.toElement()
+            documentElements.append(serailField)
+        }
+        let docState = State(model: docSection, elements: documentElements)
         sections.append(docState)
         
         // tickets
         let tickets = R_PassengerDataEntryView.ViewState.Tickets(
-            ticketList: model,
+            ticketList: avaliableTariffs,
             onChoice: { ticketIndex in
-                // handle ticket for payment model
-                let choiceTicket = self.model.ticketsList[ticketIndex]
-                self.paymentModel?.ticket[index].ticket = choiceTicket
+                let choiceTicket = self.avaliableTariffs[ticketIndex]
+                self.displayRiverUser?.ticket = choiceTicket
             },
-            isSelectable: true,
-            height: 130
+            selectedTicket: displayRiverUser?.ticket
         ).toElement()
         let ticketsHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
             title: "Тариф",
-            ticketsCount: model.ticketsCount,
-            isInsetGroup: true,
-            height: 50
+            ticketsCount: 0,
+            isInsetGroup: true
         )
         let ticketsSection = SectionState(header: ticketsHeader, footer: nil)
         let ticketsState = State(model: ticketsSection, elements: [tickets])
         sections.append(ticketsState)
-        
-        if !model.isWithoutPlace {
-            let onSelect = Command(action: {})
-            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "", onItemSelect: onSelect).toElement()
+        if displayRiverUser?.ticket != nil && !additionalService.isEmpty {
+            let additionalHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
+                title: "Добавим к поездке?",
+                ticketsCount: 0,
+                isInsetGroup: true
+            )
+            var additionElements: [Element] = []
+            for addition in additionalService {
+                let tariff = addition.key
+                let count = addition.value
+                let price = "\(Int(tariff.price)) ₽"
+                let onPlus = Command { [weak self] in
+                    self?.handleOperation(for: tariff, isMinus: false)
+                }
+                var onMinus: Command<Void>?
+                
+                if count != 0 {
+                    onMinus = Command { [weak self] in
+                        self?.handleOperation(for: tariff, isMinus: true)
+                    }
+                }
+                
+                let tariffElement: Element = R_BookingWithoutPersonView.ViewState.TariffSteper(
+                    height: 100,
+                    serviceInfo: "ДОПОЛНИТЕЛЬНАЯ УСЛУГА",
+                    tariff: tariff.name,
+                    price: price,
+                    stepperCount: "\(count)",
+                    onPlus: onPlus,
+                    onMinus: onMinus
+                ).toElement()
+                additionElements.append(tariffElement)
+            }
+            let additionalSection = SectionState(header: additionalHeader, footer: nil)
+            let additionalState = State(model: additionalSection, elements: additionElements)
+            sections.append(additionalState)
+        }
+        if !(displayRiverUser?.ticket?.isWithoutPlace ?? true) {
+            let onSelect = Command { [weak self] in
+                guard let self = self else { return }
+                self.showPlaceController(for: model)
+            }
+            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: "Выберите место", onItemSelect: onSelect).toElement()
             let choiceSec = SectionState(header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])
             sections.append(choiceState)
         }
         return sections
+    }
+    
+    private func serialValidation(text: String, replacement: String) -> (String, Bool) {
+        if replacement == "" {
+            return (text, true)
+        }
+        
+        var _text = text
+        if _text.count == 4 {
+            _text.append(" ")
+        }
+        
+        if _text.count >= 11 {
+            return (_text, false)
+        }
+        
+        return (_text, true)
     }
     
     private func birtdayValidation(text: String, replacement: String) -> (String,Bool) {

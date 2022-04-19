@@ -9,11 +9,16 @@ import UIKit
 import CoreTableView
 
 internal final class R_BookingWithPersonView: UIView {
-    
+        
     struct ViewState {
         
-        var state: [State]
+        let title: String
+        let menuActions: [UIAction]
         var dataState: DataState
+        var showPersonAlert: Command<Void>?
+        var showPersonDataEntry: Command<Void>?
+        var showUserFromCache: Command<R_User>?
+        var book: Command<Void>?
         
         enum DataState {
             case addPersonData
@@ -22,43 +27,39 @@ internal final class R_BookingWithPersonView: UIView {
         
         struct PassengerHeader: _PassengerHeaderCell {
             let onAdd: () -> ()
-            let height: CGFloat
         }
         
         struct Passenger: _Passenger {
             let name: String
             let tariff: String
-            let height: CGFloat
+            let onSelect: () -> Void
         }
         
-        struct TariffHeader: _TariffHeaderCell {
-            let height: CGFloat
-        }
+        struct TariffHeader: _TariffHeaderCell {}
         
         struct Tariff: _Tariff {
             let tariffs: String
             let price: String
-            let height: CGFloat
         }
         
         struct Commission: _Commission {
             let commission: String
             let price: String
-            let height: CGFloat
         }
         
-        static let initial = R_BookingWithPersonView.ViewState(state: [], dataState: .addPersonData)
+        static let initial = R_BookingWithPersonView.ViewState(
+            title: "",
+            menuActions: [],
+            dataState: .addPersonData
+        )
     }
     
-    public var state: R_BookingWithPersonView.ViewState = .initial {
+    public var viewState: R_BookingWithPersonView.ViewState = .initial {
         didSet {
             updateView()
+            setupAddActions()
         }
     }
-    
-    public var showPersonAlert: (() -> Void)?
-    public var showPersonDataEntry: (() -> Void)?
-    public var showUserFromCache: ((R_User) -> Void)?
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
@@ -82,10 +83,10 @@ internal final class R_BookingWithPersonView: UIView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "MoscowSans-Bold", size: 22)
+        label.font = .customFont(forTextStyle: .title4)
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .custom(for: .textPrimary)
         return label
     }()
     
@@ -102,7 +103,7 @@ internal final class R_BookingWithPersonView: UIView {
         label.text = "Персональные данные"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.textColor = .custom(for: .textPrimary)
         return label
     }()
     
@@ -113,7 +114,7 @@ internal final class R_BookingWithPersonView: UIView {
         label.textAlignment = .center
         label.text = "На данном рейсе необходимо указать персональные данные пассажиров"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .systemGray
+        label.textColor = .custom(for: .textSecondary)
         return label
     }()
     
@@ -122,7 +123,8 @@ internal final class R_BookingWithPersonView: UIView {
         button.clipsToBounds = true
         button.layer.cornerRadius = 10
         button.tintColor = .black
-        button.backgroundColor = .white
+        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
+        button.backgroundColor = .custom(for: .buttonSecondary)
         button.setTitle("Добавить", for: .normal)
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 17)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -158,75 +160,53 @@ internal final class R_BookingWithPersonView: UIView {
         super.init(frame: frame)
         backgroundColor = Appearance.colors[.base]
         setupConstrains()
-        setupAction()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupPersonsMenu() -> [UIAction] {
-        var actions: [UIAction] = []
-        guard let users = SomeCache.shared.cache["user"] else { return [] }
-        users.forEach { user in
-            let action = UIAction(
-                title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
-                image: UIImage(systemName: "person")) { _ in
-                    self.showUserFromCache?(user)
-                }
-            actions.append(action)
-        }
-        let addAction = UIAction(title: "Новый пасажир", image: UIImage(systemName: "plus")) { _ in
-            self.pushPersonDataEntry()
-        }
-        actions.append(addAction)
-        return actions
-    }
-    
-    private func setupAction() {
+    private func setupAddActions() {
         guard let users = SomeCache.shared.cache["user"] else { return }
         if !users.isEmpty {
             if #available(iOS 14, *) {
                 addButton.showsMenuAsPrimaryAction = true
-                addButton.menu = UIMenu(title: "Persons", children: setupPersonsMenu())
+                addButton.menu = UIMenu(title: "Persons", children: viewState.menuActions)
             } else {
-                addButton.addTarget(self, action: #selector(onPersonsSelect), for: .touchUpInside)
+                addButton.addTarget(self, action: #selector(preseentPersonAlert), for: .touchUpInside)
             }
         } else {
             addButton.addTarget(self, action: #selector(pushPersonDataEntry), for: .touchUpInside)
+            bookButton.addTarget(self, action: #selector(book), for: .touchUpInside)
         }
-
     }
     
-    @objc private func onPersonsSelect() {
-        showPersonAlert?()
+    @objc private func book() {
+        viewState.book?.perform(with: ())
+    }
+    
+    @objc private func preseentPersonAlert() {
+        viewState.showPersonAlert?.perform(with: ())
     }
     
     @objc private func pushPersonDataEntry() {
-        print("pushing new screen")
-        showPersonDataEntry?()
+        viewState.showPersonDataEntry?.perform(with: ())
     }
     
     private func updateView() {
-        switch state.dataState {
-        case .addPersonData:
-            tableView.isHidden = true
-            layoutSubviews()
-        case .addedPersonData(let state):
-            containerView.isHidden = true
-            tableView.isHidden = false
-            buttonView.isHidden = false
-            tableView.viewStateInput = state
-            layoutSubviews()
+        DispatchQueue.main.async {
+            self.titleLabel.text = self.viewState.title
+            switch self.viewState.dataState {
+            case .addPersonData:
+                self.tableView.isHidden = true
+            case .addedPersonData(let viewState):
+                self.containerView.isHidden = true
+                self.tableView.isHidden = false
+                self.buttonView.isHidden = false
+                self.tableView.viewStateInput = viewState
+            }
         }
-    }
-
-    public func configureTitle(with model: FakeModel) {
-        titleLabel.text = model.title
-    }
-    
-    public func onReload() {
-        setupAction()
     }
 }
 
@@ -253,8 +233,8 @@ extension R_BookingWithPersonView {
                                 
                 userProfileImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 56),
                 userProfileImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                userProfileImage.heightAnchor.constraint(equalToConstant: 96),
-                userProfileImage.widthAnchor.constraint(equalToConstant: 96),
+                userProfileImage.heightAnchor.constraint(equalToConstant: 68),
+                userProfileImage.widthAnchor.constraint(equalToConstant: 80),
                 
                 summaryLabel.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 39),
                 summaryLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),

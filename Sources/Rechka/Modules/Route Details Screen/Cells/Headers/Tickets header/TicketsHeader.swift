@@ -40,9 +40,11 @@ extension _TicketsHeader {
 
 class TicketsHeader: UITableViewHeaderFooterView {
 
-    @IBOutlet weak var ticketLabel: UILabel!
-    @IBOutlet weak var lowTicketsCount: UILabel!
-    @IBOutlet weak var leftConstraintTitleLabel: NSLayoutConstraint!
+    @IBOutlet weak var ticketLabel : UILabel!
+    
+    @IBOutlet weak var lowTicketsCount : UILabel!
+    
+    @IBOutlet weak var leftConstraintTitleLabel : NSLayoutConstraint!
     
     var isLowTicketsCount: Int! {
         didSet {

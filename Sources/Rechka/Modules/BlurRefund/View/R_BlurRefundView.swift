@@ -23,11 +23,9 @@ internal final class R_BlurRefundView : UIView {
     @IBOutlet weak var loadingView: UIView!
     
     @IBOutlet private weak var title : UILabel!
-    
     @IBOutlet private weak var descr : UILabel!
         
     @IBOutlet private weak var cancelButton : UIButton!
-    
     @IBOutlet private weak var submitButton : UIButton!
     
     enum ViewState {

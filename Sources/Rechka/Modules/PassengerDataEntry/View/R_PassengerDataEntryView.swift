@@ -14,39 +14,37 @@ internal final class R_PassengerDataEntryView: UIView {
         
         var state: [State]
         let dataState: DataState
-        var onSave: () -> ()
+        let onReadySelect: Command<Void>?
+        let validate: Bool
         
         enum DataState {
             case loading
             case loaded
         }
         
-        struct Header: _Static {
+        struct Header: _HeaderCell {
             let title: String
-            let height: CGFloat
         }
         
         struct Filed: _Field {
             let text: String
-            let height: CGFloat
+            let textColor: UIColor
             let onSelect: () -> ()
         }
         
         struct GenderCell: _Gender {
             var gender: Gender
             let onTap: (Gender) -> ()
-            let height: CGFloat
         }
         
         struct SelectField: _SelectCell {
             let title: String
-            let height: CGFloat
-            let onSelect: () -> ()
+            let onItemSelect: Command<Void>
         }
         
         struct DocumentField: _Field {
             let text: String
-            let height: CGFloat
+            let textColor: UIColor
             let onSelect: () -> ()
         }
         
@@ -54,14 +52,12 @@ internal final class R_PassengerDataEntryView: UIView {
             let title: String
             let ticketsCount: Int
             let isInsetGroup: Bool
-            let height: CGFloat
         }
         
         struct Tickets: _Tickets {
-            let ticketList: FakeModel
+            let ticketList: [R_Tariff]
             let onChoice: ((Int) -> ())?
-            let isSelectable: Bool
-            let height: CGFloat
+            let selectedTicket: R_Tariff?
         }
         
         struct ChoicePlace: _ChoicePlace {
@@ -70,7 +66,7 @@ internal final class R_PassengerDataEntryView: UIView {
            
         }
                 
-        static let initial = R_PassengerDataEntryView.ViewState(state: [], dataState: .loading, onSave: {})
+        static let initial = R_PassengerDataEntryView.ViewState(state: [], dataState: .loading, onReadySelect: nil, validate: false)
     }
     
     var viewState: ViewState = .initial {
@@ -78,14 +74,6 @@ internal final class R_PassengerDataEntryView: UIView {
             render()
         }
     }
-    
-    var validate: (() -> Bool)? = { return false } {
-        didSet {
-            setupButtonAction()
-        }
-    }
-    
-    var onReadySelect: (() -> ())?
     
     private var buttonView: UIView = {
         let view = UIView()
@@ -113,7 +101,6 @@ internal final class R_PassengerDataEntryView: UIView {
     
     private let tableView: BaseTableView = {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
-        table.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorColor = .systemGray
         table.clipsToBounds = true
@@ -128,26 +115,22 @@ internal final class R_PassengerDataEntryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        bgBlurView = UIVisualEffectView(frame: frame)
-        let effect = UIBlurEffect(style: .systemChromeMaterial)
-        bgBlurView.effect = effect
-        self.buttonView.insertSubview(bgBlurView, at: 0)
+        setupBlur()
         setupConstrains()
-        setupButtonAction()
         backgroundColor = .custom(for: .base)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     @objc private func sendModelToBookingController() {
-        onReadySelect?()
+        viewState.onReadySelect?.perform(with: ())
     }
     
     private func setupButtonAction() {
-        guard let valid = validate?() else { return }
-        if valid {
+        if viewState.validate {
             readyButton.addTarget(self, action: #selector(sendModelToBookingController), for: .touchUpInside)
             readyButton.alpha = 1
             readyButton.isEnabled = true
@@ -155,6 +138,13 @@ internal final class R_PassengerDataEntryView: UIView {
             readyButton.alpha = 0.3
             readyButton.isEnabled = false
         }
+    }
+    
+    private func setupBlur() {
+        bgBlurView = UIVisualEffectView(frame: frame)
+        let effect = UIBlurEffect(style: .systemChromeMaterial)
+        bgBlurView.effect = effect
+        self.buttonView.insertSubview(bgBlurView, at: 0)
     }
     
     private func setupConstrains() {
@@ -185,6 +175,7 @@ internal final class R_PassengerDataEntryView: UIView {
         DispatchQueue.main.async {
             self.tableView.viewStateInput = self.viewState.state
             self.tableView.shouldUseReload = true
+            self.setupButtonAction()
         }
     }
 

@@ -43,15 +43,13 @@ extension _TicketInfo {
 
 class TicketInfoCell : UITableViewCell {
     
+    @IBOutlet private weak var title : UILabel!
+    @IBOutlet private weak var descr : UILabel!
+    @IBOutlet private weak var leftImage : UIImageView!
+    
     public func configure(with data: _TicketInfo) {
         title.text = data.title
         descr.text = data.descr
         leftImage.image = data.image
     }
-    
-    @IBOutlet private weak var title : UILabel!
-    
-    @IBOutlet private weak var descr : UILabel!
-    
-    @IBOutlet private weak var leftImage : UIImageView!
 }

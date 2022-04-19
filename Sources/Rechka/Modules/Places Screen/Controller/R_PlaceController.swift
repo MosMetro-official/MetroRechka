@@ -68,8 +68,6 @@ class R_PlaceController: UIViewController {
                 print(error)
             }
         }
-        
-        
     }
     
     override func loadView() {
@@ -101,7 +99,7 @@ extension R_PlaceController {
             return .init(text: "\(place)", isSelected: isSelected, isUnvailable: false, onSelect: onSelect)
         }
         await MainActor.run { [weak self] in
-            self?.mainView.viewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать", dataState: .loaded, items: seatsData)
+            self?.mainView.viewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать с реальной", dataState: .loaded, items: seatsData)
         }
         
     }

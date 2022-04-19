@@ -16,7 +16,7 @@ protocol _Tariff: CellData {
 extension _Tariff {
     
     var height: CGFloat {
-        return 50
+        return 60
     }
     
     func hashValues() -> [Int] {
@@ -42,8 +42,6 @@ class TariffCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        tariffsLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        priceLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
     
     public func configure(with data: _Tariff) {

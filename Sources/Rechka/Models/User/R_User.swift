@@ -66,6 +66,7 @@ struct R_User: Equatable {
         
         if let document = document {
             resultingList.updateValue(document.id, forKey: "cardIdentityId")
+            resultingList.updateValue(document.cardIdentityNumber, forKey: "cardIdentityNumber")
         }
         
         if let citizenShip = citizenShip {

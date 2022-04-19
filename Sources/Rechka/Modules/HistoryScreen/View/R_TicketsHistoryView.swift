@@ -73,12 +73,9 @@ internal final class R_TicketsHistoryView: UIView {
         super.init(frame: frame)
         setupConstrains()
         backgroundColor = .custom(for: .base)
-//        tableView.onWillDisplay = { [weak self] displayData in
-//            guard let self = self else { return }
-//            self.onWillDisplay?(displayData)
-//        }
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

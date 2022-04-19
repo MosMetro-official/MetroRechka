@@ -1,16 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Selector.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
+      "filename" : "select.png",
       "idiom" : "universal"
     }
   ],

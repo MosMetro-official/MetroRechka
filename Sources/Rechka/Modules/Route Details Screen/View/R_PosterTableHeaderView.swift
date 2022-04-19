@@ -10,6 +10,13 @@ import SDWebImage
 
 internal final class R_PosterTableHeaderView : UIView {
     
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        gradientView.frame = frame
+        createViews()
+        setViewConstrains()
+    }
+    
     private let gradientView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -43,7 +50,9 @@ internal final class R_PosterTableHeaderView : UIView {
     private var gradient: CAGradientLayer?
     
     private var imageViewHeight = NSLayoutConstraint()
+    
     private var imageViewBottom = NSLayoutConstraint()
+    
     private var containerViewHeight = NSLayoutConstraint()
     
     private var imageURL: String? {
@@ -55,14 +64,6 @@ internal final class R_PosterTableHeaderView : UIView {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        gradientView.frame = frame
-        createViews()
-        setViewConstrains()
-    }
-    
-    
     private func addGradient() {
         self.gradient = CAGradientLayer()
         guard let gradient = gradient else {
@@ -72,12 +73,10 @@ internal final class R_PosterTableHeaderView : UIView {
         let base = Appearance.colors[.base] ?? UIColor.clear
         
         gradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
-      
-//        gradient.startPoint = CGPoint(x: 0, y: 1)
-//        gradient.endPoint = CGPoint(x: 1, y: 1)
         self.gradientView.layer.insertSublayer(gradient, at: 0)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

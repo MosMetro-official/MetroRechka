@@ -494,6 +494,7 @@ internal final class R_OrderDetailsController : UIViewController {
         self.order = order
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -508,6 +509,4 @@ internal final class R_OrderDetailsController : UIViewController {
         super.viewDidLoad()
         self.setListeners()
     }
-    
-    
 }

@@ -19,6 +19,13 @@ extension _TerminalCell {
         return 80
     }
     
+    func hashValues() -> [Int] {
+        return [
+            title.hashValue,
+            descr.hashValue
+        ]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard
             let cell = cell as? RechkaTerminalsCell
@@ -38,7 +45,9 @@ extension _TerminalCell {
 class RechkaTerminalsCell : UITableViewCell {
 
     @IBOutlet private weak var title : UILabel!
+    
     @IBOutlet private weak var descr : UILabel!
+    
     @IBOutlet private weak var shipImage : UIImageView!
     
     public func configure(with data: _TerminalCell) {

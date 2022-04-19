@@ -47,9 +47,7 @@ public class Rechka {
         _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Regular", fontExtension: "otf")
         _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Medium", fontExtension: "otf")
     }
-    
-    private init() { }
-    
+        
     internal var deviceOS : String {
         return UIDevice.current.systemVersion
     }
@@ -119,7 +117,11 @@ public class Rechka {
             return defaultUserAgent
         }
     }
+    
+    private init() { }
 }
+
+// TODO: - Вынести отсюда
 
 extension DateComponents: Comparable {
     
@@ -139,7 +141,6 @@ extension DateComponents: Comparable {
         return false
     }
 }
-
 
 extension UIColor {
     
@@ -251,6 +252,7 @@ class GradientLabel : UIStackView {
         setupView()
     }
     
+    @available(*, unavailable)
     required init(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
@@ -259,7 +261,6 @@ class GradientLabel : UIStackView {
     private func setupView() {
         axis = .vertical
         alignment = .center
-        
         addArrangedSubview(label)
     }
     

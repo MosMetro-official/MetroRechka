@@ -5,7 +5,7 @@
 //  Created by guseyn on 07.04.2022.
 //
 
-import UIKit
+import Foundation
 
 enum R_BlurResultModel {
     case success(StatusData)
@@ -16,5 +16,3 @@ enum R_BlurResultModel {
         let subtitle: String
     }
 }
-
-

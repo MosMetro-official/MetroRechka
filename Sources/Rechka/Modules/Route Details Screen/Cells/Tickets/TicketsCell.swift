@@ -9,12 +9,13 @@ import UIKit
 import CoreTableView
 
 protocol _Tickets: CellData {
-    var ticketList: FakeModel { get }
+    var ticketList: [R_Tariff] { get }
     var onChoice: ((Int) -> ())? { get }
-    var isSelectable: Bool { get }
+    var selectedTicket: R_Tariff? { get }
 }
 
 extension _Tickets {
+    var selectedTicket: R_Tariff? { return nil }
     var onChoice: ((Int) -> ())? { return nil }
     
     var height: CGFloat {
@@ -22,7 +23,7 @@ extension _Tickets {
     }
     
     func hashValues() -> [Int] {
-        return [isSelectable.hashValue]
+        return [selectedTicket.hashValue]
     }
     
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
@@ -40,13 +41,13 @@ extension _Tickets {
 class TicketsCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    var model: FakeModel? {
+    var model: [R_Tariff]? {
         didSet {
             collectionView.reloadData()
         }
     }
     private var choiceTicket: ((Int) -> ())?
-    private var isSelectable: Bool?
+    private var selectedTicket: R_Tariff?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -58,33 +59,33 @@ class TicketsCell: UITableViewCell {
   
     public func configure(with data: _Tickets) {
         model = data.ticketList
-        isSelectable = data.isSelectable
         choiceTicket = data.onChoice
+        selectedTicket = data.selectedTicket
     }
 }
 
 extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch model?.ticketsCount {
+        switch model?.count {
         case 0:
             return 1
         default:
-            return model?.ticketsList.count ?? 0
+            return model?.count ?? 0
         }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let ticket = model?.ticketsList[indexPath.row] {
-            switch model?.ticketsCount {
+        if let ticket = model?[indexPath.item] {
+            switch model?.count {
             case 0:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyTicketCell.identifire, for: indexPath) as? EmptyTicketCell else { return .init() }
                 return cell
             default:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return .init() }
-                cell.isSelectable = isSelectable ?? false
-                cell.configure(with: ticket)
+                let isSelect = ticket == selectedTicket
+                cell.configure(with: ticket, isSelect: isSelect)
                 return cell
             }
         }
@@ -92,23 +93,13 @@ extension TicketsCell: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch model?.ticketsCount {
-        case 0:
-            break
-        default:
-            if isSelectable ?? false {
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TicketCell.identifire, for: indexPath) as? TicketCell else { return }
-                cell.isSelectable = isSelectable ?? false
-                choiceTicket?(indexPath.row)
-                cell.isSelected.toggle()
-            }
-        }
+        choiceTicket?(indexPath.item)
     }
 }
 
 extension TicketsCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch model?.ticketsCount {
+        switch model?.count {
         case 0:
             return CGSize(width: UIScreen.main.bounds.width - 20, height: collectionView.frame.height)
         default:
@@ -117,10 +108,6 @@ extension TicketsCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if isSelectable ?? true {
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        } else {
-            return UIEdgeInsets(top: 15, left: 10, bottom: 10, right: 10)
-        }
+        return UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
     }
 }

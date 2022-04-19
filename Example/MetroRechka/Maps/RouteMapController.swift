@@ -25,10 +25,10 @@ class RouteMapController: UIViewController, R_RouteLineController {
         super.init(nibName: "RouteMapController", bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

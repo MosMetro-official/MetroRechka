@@ -43,6 +43,8 @@ internal final class R_BookingScreenView : UIView {
             var descr : String
         }
         
+        
+        
         struct Cancel : _Cancel {
             var title : String
             var onSelect: (() -> Void)
@@ -72,7 +74,6 @@ internal final class R_BookingScreenView : UIView {
         self.paySumm.text = self.viewState.totalPrice
         self.payButton.alpha = self.viewState.onPay == nil ? 0.3 : 1
         self.payButton.isUserInteractionEnabled = self.viewState.onPay == nil ? false : true
-        
         self.tableView.viewStateInput = self.viewState.states
     }
     
@@ -148,6 +149,7 @@ internal final class R_BookingScreenView : UIView {
         self.tableView.contentInset = UIEdgeInsets(top: 80, left: 0, bottom: 0, right: 0)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

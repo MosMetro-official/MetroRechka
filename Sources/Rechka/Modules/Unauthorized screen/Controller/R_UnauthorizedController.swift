@@ -23,16 +23,21 @@ internal final class R_UnauthorizedController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let onMore = Command { [weak self] in
-            guard let url = URL(string: "https://mosmetro.ru/app/") else { return }
+            guard
+                let self = self,
+                    let url = URL(string: "https://mosmetro.ru/app/")
+            else { return }
             let safariVC = SFSafariViewController(url: url)
-            self?.present(safariVC, animated: true, completion: nil)
+            self.present(safariVC, animated: true, completion: nil)
         }
         let onClose = Command { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            guard let self = self else { return }
+            self.dismiss(animated: true, completion: nil)
         }
         let onLogin = Command { [weak self] in
-            self?.dismiss(animated: true, completion: { [weak self] in
-                self?.onLogin?.perform(with: ())
+            guard let self = self else { return }
+            self.dismiss(animated: true, completion: {
+                self.onLogin?.perform(with: ())
             })
         }
         self.nestedView.viewState = .init(onMore: onMore, onClose: onClose, onLogin: onLogin)

@@ -81,11 +81,7 @@ extension PDFDocumentController {
             if let pdfDoc = PDFDocument(url: filePath) {
                 return .init(onSave: onSave, dataState: .loaded(pdfDoc), onClose: onClose)
             }
-            
-            
         }
         return .init(onSave: nil, dataState: .error, onClose: nil)
     }
-    
-
 }

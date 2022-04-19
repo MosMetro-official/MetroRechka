@@ -148,6 +148,7 @@ internal final class R_RootDetailStationView: UIView {
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 125, right: 0)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

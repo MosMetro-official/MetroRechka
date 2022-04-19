@@ -42,11 +42,9 @@ internal final class R_BlurResultView : UIView {
     }
     
     @IBOutlet private weak var title : UILabel!
-    
     @IBOutlet private weak var descr : UILabel!
     
     @IBOutlet private weak var retryButton : UIButton!
-    
     @IBOutlet private weak var closeButton : UIButton!
     
     @IBOutlet private weak var resultImage : UIImageView!

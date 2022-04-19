@@ -25,6 +25,7 @@ class R_ErrorView : UIView {
         setup()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()

@@ -7,21 +7,14 @@
 
 import UIKit
 import CoreTableView
-
-protocol R_BookingWithPersonDelegate: AnyObject {
-    func setupNewUser(for payment: PaymentModel, and model: FakeModel)
-}
+import CoreNetwork
 
 internal final class R_BookingWithPersonController: UIViewController {
     
     let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
-        
-    var model: FakeModel!
-    var paymentModel: [PaymentModel] = [] {
-        didSet {
-            print("🔥🔥🔥 paymnet for booking - \(paymentModel)")
-        }
-    }
+    
+    var model: R_Trip?
+    var riverUsers: [R_User] = []
     
     override func loadView() {
         super.loadView()
@@ -30,117 +23,218 @@ internal final class R_BookingWithPersonController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: image for back button
-        nestedView.configureTitle(with: model)
-        setupPersonAlert()
-        setupCacheUser()
+        setupRiverBackButton()
+        createInitialState()
         title = "Покупка"
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        nestedView.onReload()
+    private func createInitialState() {
+        guard let model = model else {
+            return
+        }
+        
+        let showPersonDataEntry = Command { [weak self] in
+            self?.pushPersonDataEntry(with: model)
+        }
+        
+        let showPersonAlert = Command { [weak self] in
+            self?.setupPersonAlert()
+        }
+        
+        let viewState = R_BookingWithPersonView.ViewState(
+            title: model.name,
+            menuActions: setupPersonMenu(),
+            dataState: .addPersonData,
+            showPersonAlert: showPersonAlert,
+            showPersonDataEntry: showPersonDataEntry,
+            book: nil
+        )
+        nestedView.viewState = viewState
     }
     
-    private func makeState(for cacheUser: R_User? = nil, from payment: [PaymentModel]) {
-        let users = payment.flatMap({$0.ticket}).map({$0.user})
-        let tickets = payment.flatMap({$0.ticket})
-        var tickElements: [Element] = []
-        // passenger
+    private func handle(order: RiverOrder) {
+        self.nestedView.removeBlurLoading()
+        let bookingController = R_BookingScreenController()
+        self.present(bookingController, animated: true) {
+            bookingController.model = order
+            bookingController.onDismiss = { [weak self] in
+                self?.navigationController?.popToRootViewController(animated: false)
+                NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+            }
+        }
+    }
+    
+    private func startBooking() {
+        self.nestedView.showBlurLoading()
+        guard let tripID = self.model?.id else { return }
+        if let _ = Rechka.shared.token {
+            R_Trip.book(with: riverUsers, tripID: tripID) { result in
+                switch result {
+                case .success(let order):
+                    self.handle(order: order)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        } else {
+            self.nestedView.removeBlurLoading()
+            let unauthorizedVC = R_UnauthorizedController()
+            self.present(unauthorizedVC, animated: true, completion: nil)
+        }
+    }
+    
+    private func makeState(from riverUsers: [R_User]) {
+        guard let newModel = model else { return }
+        let users = riverUsers.map { $0 }
+        // passenger header with add button
         var passElements = [Element]()
         let passengerHeaderCell = R_BookingWithPersonView.ViewState.PassengerHeader(
-            onAdd: {
-                self.pushPersonDataEntry()
-            },
-            height: 50
+            onAdd: { [weak self] in
+                guard let self = self else { return }
+                if riverUsers.count < newModel.buyPlaceCountMax {
+                    self.pushPersonDataEntry(with: newModel)
+                }
+            }
         ).toElement()
         passElements.append(passengerHeaderCell)
         
-        users.forEach { user in
-            tickets.forEach { ticket in
-                if ticket.user == user {
-                    let passenger = R_BookingWithPersonView.ViewState.Passenger(
-                        name: "\(user?.surname ?? "") \(user?.name ?? "")",
-                        tariff: ticket.ticket?.tariff ?? "",
-                        height: 70
-                    ).toElement()
-                    if !passElements.contains(passenger) {
-                        passElements.append(passenger)
-                    }
-                }
+        for (index, user) in users.enumerated() {
+            let onSelect: () -> Void = { [weak self] in
+                self?.pushPersonDataEntry(with: newModel, and: user, for: index)
+            }
+            let passenger = R_BookingWithPersonView.ViewState.Passenger(
+                name: "\(user.surname ?? "") \(user.name ?? "")",
+                tariff: user.ticket?.name ?? "",
+                onSelect: onSelect
+            ).toElement()
+            if !passElements.contains(passenger) {
+                passElements.append(passenger)
             }
         }
-        
         let passengerSection = SectionState(header: nil, footer: nil)
         let passengerState = State(model: passengerSection, elements: passElements)
         
         // tickets
-        let tariffHeader = R_BookingWithPersonView.ViewState.TariffHeader(height: 50).toElement()
+        var tickElements : [Element] = []
+        let tariffHeader = R_BookingWithPersonView.ViewState.TariffHeader().toElement()
         tickElements.append(tariffHeader)
-        tickets.forEach { ticket in
-            let tariff = R_BookingWithPersonView.ViewState.Tariff(tariffs: "\(ticket.ticket?.tariff ?? "") x\(tickets.count)", price: ticket.ticket?.price ?? "", height: 60).toElement()
+        var tarrifs = [R_Tariff]()
+        riverUsers.forEach { user in
+            if let ticket = user.ticket {
+                tarrifs.append(ticket)
+            }
+        }
+        let tarrifsGroup = Dictionary(grouping: tarrifs) { $0.name }
+        tarrifsGroup.forEach { name, tickets in
+            let price = Int(tickets.first?.price ?? 0)
+            let tariff = R_BookingWithPersonView.ViewState.Tariff(
+                tariffs: "\(name) x\(tickets.count)",
+                price: "\(price * tickets.count) ₽"
+            ).toElement()
+            if !tickElements.contains(tariff) {
+                tickElements.append(tariff)
+            }
+        }
+        let additionalService = users.compactMap { $0.additionServices }.filter { !$0.isEmpty }.flatMap { $0 }
+        let additionalGroup = Dictionary(grouping: additionalService) { $0.name_ru }
+        additionalGroup.forEach { name, additionals in
+            let price = Int(additionals.first?.price ?? 0)
+            let tariff = R_BookingWithPersonView.ViewState.Tariff(
+                tariffs: "\(name) x\(additionals.count)",
+                price: "\(price * additionals.count) ₽"
+            ).toElement()
             tickElements.append(tariff)
         }
-//        let commission = R_BookingWithPersonView.ViewState.Commission(commission: "Комиссия сервиса", price: "60 ₽", height: 60).toElement()
-//        tickElements.append(commission)
+        
         let tariffSection = SectionState(header: nil, footer: nil)
         let tariffState = State(model: tariffSection, elements: tickElements)
+        let showPersonAlert = Command { [weak self] in
+            self?.setupPersonAlert()
+        }
+        let showPersonDataEntry = Command { [weak self] in
+            self?.pushPersonDataEntry(with: newModel)
+        }
         
-        nestedView.state = R_BookingWithPersonView.ViewState(state: [], dataState: .addedPersonData([passengerState, tariffState]))
+        let book: Command<Void>? = {
+            return Command { [weak self] in
+                self?.startBooking()
+            }
+        }()
+        
+        let viewState = R_BookingWithPersonView.ViewState(
+            title: newModel.name,
+            menuActions: setupPersonMenu(),
+            dataState: .addedPersonData([passengerState, tariffState]),
+            showPersonAlert: showPersonAlert,
+            showPersonDataEntry: showPersonDataEntry,
+            book: book
+        )
+        nestedView.viewState = viewState
     }
     
     private func setupPersonAlert() {
-        nestedView.showPersonAlert = { [weak self] in
+        guard let newModel = model else { return }
+        guard let users = SomeCache.shared.cache["user"] else { return }
+        let personAlert = UIAlertController(title: "Persons", message: "", preferredStyle: .actionSheet)
+        let addAction = UIAlertAction(title: "Новый пассажир", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            guard let users = SomeCache.shared.cache["user"] else { return }
-            var actions: [UIAlertAction] = []
-            users.forEach { user in
-                let action = UIAlertAction(title: "\(user.surname ?? "")", style: .default) { _ in
-                    print("action alert")
-                    self.pushPersonDataEntry(model: self.model, and: user)
-                }
-                actions.append(action)
+            self.pushPersonDataEntry(with: newModel)
+        }
+        personAlert.addAction(addAction)
+        users.forEach { [weak self] user in
+            guard let self = self else { return }
+            let action = UIAlertAction(title: "\(user.surname ?? "")", style: .default) { _ in
+                self.pushPersonDataEntry(with: newModel, and: user)
             }
-            let personAlert = UIAlertController(title: "Persons", message: "", preferredStyle: .actionSheet)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            personAlert.addAction(cancelAction)
-            self.present(personAlert, animated: true)
+            personAlert.addAction(action)
         }
-        
-        nestedView.showPersonDataEntry = { [weak self] in
-            guard let self = self else { return }
-            self.pushPersonDataEntry(model: self.model, with: self.paymentModel.first)
-        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        personAlert.addAction(cancelAction)
+        self.present(personAlert, animated: true)
     }
     
-    private func pushPersonDataEntry(model: FakeModel? = nil, with payment: PaymentModel? = nil, and user: R_User? = nil) {
+    private func setupPersonMenu() -> [UIAction] {
+        guard let newModel = model else { return [] }
+        var actions: [UIAction] = []
+        guard let users = SomeCache.shared.cache["user"] else { return [] }
+        for user in users {
+            let action = UIAction(
+                title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
+                image: UIImage(systemName: "person")) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.pushPersonDataEntry(with: newModel, and: user)
+                }
+            actions.append(action)
+        }
+        let addAction = UIAction(title: "Новый пасажир", image: UIImage(systemName: "plus")) { [weak self] _ in
+            guard let self = self else { return }
+            self.pushPersonDataEntry(with: newModel)
+        }
+        actions.append(addAction)
+        return actions
+    }
+    
+    private func pushPersonDataEntry(with model: R_Trip, and user: R_User? = nil, for index: Int? = nil) {
         let passenderDataEntry = R_PassengerDataEntryController()
-        passenderDataEntry.delegate = self
-//        if let model = model {
-            passenderDataEntry.model = self.model
-//        }
-        if payment != nil {
-            passenderDataEntry.paymentModel = payment
-            passenderDataEntry.displayUser = user
+        passenderDataEntry.model = model
+        if user != nil {
+            passenderDataEntry.displayRiverUser = user!
+            passenderDataEntry.index = index
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         } else {
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         }
-    }
-    
-    private func setupCacheUser() {
-        nestedView.showUserFromCache = { [weak self] user in
+        passenderDataEntry.setupUser = { [weak self] user, index, model in
             guard let self = self else { return }
-            //self.pushPersonDataEntry(model: self.model, with: self.paymentModel)
+            if index != nil {
+                self.riverUsers[index!] = user
+                self.model = model
+                self.makeState(from: self.riverUsers)
+            } else {
+                self.model = model
+                self.riverUsers.append(user)
+                self.makeState(from: self.riverUsers)
+            }
         }
-    }
-}
-
-extension R_BookingWithPersonController: R_BookingWithPersonDelegate {
-    
-    func setupNewUser(for payment: PaymentModel, and model: FakeModel) {
-        self.paymentModel.append(payment)
-        self.model = model
-        self.makeState(from: self.paymentModel)
     }
 }
