@@ -349,7 +349,10 @@ internal final class R_OrderDetailsController : UIViewController {
             let endBookingDate = order.operation.orderDate + seconds.seconds
             let period = endBookingDate - order.operation.orderDate
             guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .loaded, state: [], onClose: nil)}
-            let elapsedTime = "\(minute):\(seconds)"
+            let minuteStr = minute < 10 ? "0\(minute)" : "\(minute)"
+            let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+            
+            let elapsedTime = "\(minuteStr):\(secondsStr)"
             
             let needToPay = R_OrderDetailsView.ViewState.NeedToPay(onPay: onPay,
                                                                    time: elapsedTime,
