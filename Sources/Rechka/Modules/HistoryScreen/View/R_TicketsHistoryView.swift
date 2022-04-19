@@ -28,6 +28,12 @@ internal final class R_TicketsHistoryView: UIView {
             let onSelect : (() -> Void)
         }
         
+        struct Empty: _R_EmptyTableViewCell {
+            var title: String
+            
+            var image: UIImage
+        }
+        
         struct DateHeader: _TripsDateHeader {
             var title: String
         }
