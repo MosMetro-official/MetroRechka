@@ -36,13 +36,10 @@ extension _Tariff {
 }
 
 class TariffCell: UITableViewCell {
-
-    @IBOutlet weak var tariffsLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+    @IBOutlet weak var tariffsLabel: UILabel!
+    
+    @IBOutlet weak var priceLabel: UILabel!
     
     public func configure(with data: _Tariff) {
         tariffsLabel.text = data.tariffs

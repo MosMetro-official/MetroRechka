@@ -10,10 +10,10 @@ import CoreTableView
 
 internal final class R_CancelBookingController : UIViewController {
     
-    private let nestedView = R_CancelBookingView.loadFromNib()
+    public var onClose: Command<Void>?
     
-    var onClose: Command<Void>?
-    
+    private var nestedView = R_CancelBookingView.loadFromNib()
+        
     override func loadView() {
         self.view = nestedView
         nestedView.onCloseTap = { [weak self] in

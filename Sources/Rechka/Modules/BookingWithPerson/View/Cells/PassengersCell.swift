@@ -11,7 +11,7 @@ import CoreTableView
 protocol _Passenger: CellData {
     var name: String { get }
     var tariff: String { get }
-    var onSelect: () -> Void { get }
+    var onSelect: (() -> Void) { get }
 }
 
 extension _Passenger {

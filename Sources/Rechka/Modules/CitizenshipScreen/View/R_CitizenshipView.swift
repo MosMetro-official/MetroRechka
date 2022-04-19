@@ -60,7 +60,8 @@ class R_CitizenshipView: UIView {
         viewState.onClose?.perform(with: ())
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
+    @objc
+    func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
         handleSearhText?(text)
     }
@@ -83,10 +84,11 @@ class R_CitizenshipView: UIView {
             object: nil)
     }
     
-    @objc func keyboardNotification(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        
-        guard let endFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+    @objc
+    func keyboardNotification(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let endFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else { return }
         let endFrameY = endFrame.origin.y
         let endFrameHeight = endFrame.height
         let duration: TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0

@@ -9,42 +9,41 @@ import UIKit
 import CoreTableView
 
 internal final class R_BookingWithPersonView: UIView {
-        
+    
     struct ViewState {
-        
-        let title: String
-        let menuActions: [UIAction]
-        var dataState: DataState
-        var showPersonAlert: Command<Void>?
-        var showPersonDataEntry: Command<Void>?
-        var showUserFromCache: Command<R_User>?
-        var book: Command<Void>?
+        let title : String
+        let menuActions : [UIAction]
+        var dataState : DataState
+        var showPersonAlert : Command<Void>?
+        var showPersonDataEntry : Command<Void>?
+        var showUserFromCache : Command<R_User>?
+        var book : Command<Void>?
         
         enum DataState {
             case addPersonData
             case addedPersonData([State])
         }
         
-        struct PassengerHeader: _PassengerHeaderCell {
-            let onAdd: () -> ()
+        struct PassengerHeader : _PassengerHeaderCell {
+            let onAdd : (() -> Void)
         }
         
-        struct Passenger: _Passenger {
-            let name: String
-            let tariff: String
-            let onSelect: () -> Void
+        struct Passenger : _Passenger {
+            let name : String
+            let tariff : String
+            let onSelect : (() -> Void)
         }
         
-        struct TariffHeader: _TariffHeaderCell {}
+        struct TariffHeader: _TariffHeaderCell { }
         
-        struct Tariff: _Tariff {
-            let tariffs: String
-            let price: String
+        struct Tariff : _Tariff {
+            let tariffs : String
+            let price : String
         }
         
         struct Commission: _Commission {
-            let commission: String
-            let price: String
+            let commission : String
+            let price : String
         }
         
         static let initial = R_BookingWithPersonView.ViewState(
@@ -76,24 +75,24 @@ internal final class R_BookingWithPersonView: UIView {
     
     private let containerView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Appearance.colors[.base]
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .customFont(forTextStyle: .title4)
         label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .custom(for: .textPrimary)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let userProfileImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.tintColor = UIColor.custom(for: .textPrimary)
         imageView.image = UIImage(named: "user_profile", in: .module, with: nil)
+        imageView.tintColor = UIColor.custom(for: .textPrimary)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -102,32 +101,32 @@ internal final class R_BookingWithPersonView: UIView {
         let label = UILabel()
         label.font = UIFont(name: "MoscowSans-Bold", size: 22)
         label.text = "Персональные данные"
+        label.textColor = UIColor.custom(for: .textPrimary)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .custom(for: .textPrimary)
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "MoscowSans-Regular", size: 15)
+        label.text = "На данном рейсе необходимо указать персональные данные пассажиров"
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.text = "На данном рейсе необходимо указать персональные данные пассажиров"
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .custom(for: .textSecondary)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 10
-        button.tintColor = .black
-        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
-        button.backgroundColor = .custom(for: .buttonSecondary)
         button.setTitle("Добавить", for: .normal)
+        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
+        button.tintColor = .black
+        button.clipsToBounds = true
+        button.backgroundColor = .custom(for: .buttonSecondary)
         button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 17)
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -135,25 +134,25 @@ internal final class R_BookingWithPersonView: UIView {
     private let buttonView: UIView = {
         let view = UIView()
         view.backgroundColor = .custom(for: .settingsPanel)
-        view.layer.isOpaque = false
         view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        view.layer.isOpaque = false
         view.layer.cornerRadius = 10
         view.layer.cornerCurve = .continuous
-        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let bookButton: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.custom(for: .buttonSecondary)
-        button.tintColor = UIColor.custom(for: .textPrimary)
-        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
-        button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
-        button.titleLabel?.textAlignment = .center
-        button.layer.cornerRadius = 10
         button.setTitle("Забронировать", for: .normal)
+        button.setTitleColor(UIColor.custom(for: .textInverted), for: .normal)
+        button.tintColor = UIColor.custom(for: .textPrimary)
+        button.backgroundColor = UIColor.custom(for: .buttonSecondary)
+        button.titleLabel?.font = UIFont(name: "MoscowSans-Regular", size: 16)
+        button.layer.cornerRadius = 10
+        button.titleLabel?.textAlignment = .center
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -183,15 +182,18 @@ internal final class R_BookingWithPersonView: UIView {
         }
     }
     
-    @objc private func book() {
+    @objc
+    private func book() {
         viewState.book?.perform(with: ())
     }
     
-    @objc private func preseentPersonAlert() {
+    @objc
+    private func preseentPersonAlert() {
         viewState.showPersonAlert?.perform(with: ())
     }
     
-    @objc private func pushPersonDataEntry() {
+    @objc
+    private func pushPersonDataEntry() {
         viewState.showPersonDataEntry?.perform(with: ())
     }
     
@@ -212,57 +214,63 @@ internal final class R_BookingWithPersonView: UIView {
 }
 
 extension R_BookingWithPersonView {
+    
     private func setupConstrains() {
         addSubview(containerView)
         addSubview(tableView)
         addSubview(titleLabel)
         addSubview(buttonView)
         buttonView.addSubview(bookButton)
-        [userProfileImage, summaryLabel, descriptionLabel, addButton].forEach { view in
-            containerView.addSubview(view)
+        [
+            addButton,
+            summaryLabel,
+            userProfileImage,
+            descriptionLabel
+        ].forEach {
+            containerView.addSubview($0)
         }
         NSLayoutConstraint.activate([
-                titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
-                titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-                
-                containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-                containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                                
-                userProfileImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 56),
-                userProfileImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-                userProfileImage.heightAnchor.constraint(equalToConstant: 68),
-                userProfileImage.widthAnchor.constraint(equalToConstant: 80),
-                
-                summaryLabel.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 39),
-                summaryLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-                summaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-                
-                descriptionLabel.topAnchor.constraint(equalTo: summaryLabel.bottomAnchor, constant: 11),
-                descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-                descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-                
-                addButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 28),
-                addButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-                addButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-                addButton.heightAnchor.constraint(equalToConstant: 52),
-                
-                buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                buttonView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-                buttonView.heightAnchor.constraint(equalToConstant: 125),
-                
-                bookButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 30),
-                bookButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 16),
-                bookButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -16),
-                bookButton.heightAnchor.constraint(equalToConstant: 44),
-                
-                tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-                tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor)
-            ])
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            
+            containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            userProfileImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 56),
+            userProfileImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            userProfileImage.heightAnchor.constraint(equalToConstant: 68),
+            userProfileImage.widthAnchor.constraint(equalToConstant: 80),
+            
+            summaryLabel.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 39),
+            summaryLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            summaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: summaryLabel.bottomAnchor, constant: 11),
+            descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            
+            addButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 28),
+            addButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            addButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            addButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            buttonView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            buttonView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            buttonView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
+            buttonView.heightAnchor.constraint(equalToConstant: 125),
+            
+            bookButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 30),
+            bookButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 16),
+            bookButton.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: -16),
+            bookButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: buttonView.topAnchor)
+        ])
     }
 }
