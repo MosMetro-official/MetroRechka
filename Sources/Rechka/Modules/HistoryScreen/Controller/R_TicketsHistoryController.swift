@@ -24,9 +24,21 @@ internal final class R_TicketsHistoryController: UIViewController {
         }
     }
     
+    enum DataModel {
+        case loading
+        case loadingNewPage([RechkaShortOrder])
+        case loaded([RechkaShortOrder])
+    }
+    
+    var dataModel: DataModel = .loading {
+        didSet {
+            makeState()
+        }
+    }
+    
     private var items: [RechkaShortOrder] = [] {
         didSet {
-            self.makeState()
+            self.dataModel = .loaded(items)
         }
     }
     
@@ -61,16 +73,11 @@ internal final class R_TicketsHistoryController: UIViewController {
     }
     
     private func loadHistory(page: Int, size: Int) {
-        if isNeedToShowLoading {
-            self.nestedView.viewState = .init(state: [], dataState: .loading)
-            isNeedToShowLoading = false
-        }
-        self.isLoading = true
+    
         RechkaShortOrder.getOrders(size: size, page: page) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let ordersResponse):
-                self.isLoading = false
                 self.model = ordersResponse
             case .failure(let error):
                 print(error)
@@ -87,12 +94,16 @@ internal final class R_TicketsHistoryController: UIViewController {
         }
     }
     
-    private func makeState() {
-        let queue = DispatchQueue(label: "river.state.orders", qos: .userInitiated)
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            var states = [State]()
-            let dict = Dictionary.init(grouping: self.items, by: { element -> DateComponents in
+    private func createStateItems(from orders: [RechkaShortOrder]) -> [State] {
+        if orders.isEmpty {
+            let empty = R_TicketsHistoryView.ViewState.Empty(
+                title: "У вас пока нет заказов, совершите первую покупку, и она появится тут",
+                image: UIImage(named: "river_empty_bag", in: .module, with: nil) ?? UIImage())
+                .toElement()
+            let state = State(model: .init(header: nil, footer: nil), elements: [empty])
+            return [state]
+        } else {
+            let dict = Dictionary.init(grouping: orders, by: { element -> DateComponents in
                 //let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
                 let date = Calendar.current.dateComponents([.day, .month, .year], from: (element.createdDate.dateAt(.startOfDay).date))
                 return date
@@ -118,10 +129,15 @@ internal final class R_TicketsHistoryController: UIViewController {
                         }()
                         
                         
-                        
+                        let title: String = {
+                            if let name = order.routeName {
+                                return name
+                            }
+                            return "Заказ №\(order.operationID)"
+                        }()
                         
                         return R_TicketsHistoryView.ViewState.HistoryTicket(
-                            title: order.routeName,
+                            title: title,
                             descr: descr,
                             price: "\(order.totalPrice) ₽",
                             onSelect: onSelect
@@ -144,7 +160,6 @@ internal final class R_TicketsHistoryController: UIViewController {
                         return first.createdDate.toFormat("d MMMM", locale: Locales.russianRussia)
                         
                     }()
-                    
                     let headerData = R_TicketsHistoryView.ViewState.DateHeader(title: sectionTitle)
                     let sectionData = SectionState(header: headerData, footer: nil)
                     return State(model: sectionData, elements: sortedTrips)
@@ -152,20 +167,42 @@ internal final class R_TicketsHistoryController: UIViewController {
                 }
                 return nil
             }
-            states.append(contentsOf: ordersSections)
-            guard let model = self.model else {
-                return
-            }
-            if self.items.count < model.totalElements {
-                let onLoad = Command { [weak self] in
-                    guard let self = self else { return }
-                    self.loadHistory(page: model.page + 1, size: 5)
+            return ordersSections
+        }
+        
+        
+    }
+    
+    private func makeState() {
+        let queue = DispatchQueue(label: "river.state.orders", qos: .userInitiated)
+        queue.async { [weak self] in
+            guard let self = self else { return }
+            switch self.dataModel {
+            case .loading:
+                self.nestedView.viewState = .init(state: [], dataState: .loading)
+            case .loadingNewPage(let orders):
+                guard let model = self.model else { return }
+                var sections = [State]()
+                let ordersSections = self.createStateItems(from: orders)
+                sections.append(contentsOf: ordersSections)
+                let loadMore = R_TicketsHistoryView.ViewState.LoadMore(onLoad: nil).toElement()
+                sections.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+                self.nestedView.viewState = .init(state: sections, dataState: .loaded)
+            case .loaded(let orders):
+                guard let model = self.model else { return }
+                var sections = [State]()
+                let ordersSections = self.createStateItems(from: orders)
+                sections.append(contentsOf: ordersSections)
+                if self.items.count < model.totalElements {
+                    let onLoad = Command { [weak self] in
+                        guard let self = self else { return }
+                        self.dataModel = .loadingNewPage(orders)
+                        self.loadHistory(page: model.page + 1, size: 5)
+                    }
+                    let loadMore = R_TicketsHistoryView.ViewState.LoadMore(onLoad: onLoad).toElement()
+                    sections.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
                 }
-                let loadMore = R_TicketsHistoryView.ViewState.LoadMore(onLoad: self.isLoading ? nil : onLoad).toElement()
-                states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
-            }
-            DispatchQueue.main.async {
-                self.nestedView.viewState = .init(state: states, dataState: .loaded)
+                self.nestedView.viewState = .init(state: sections, dataState: .loaded)
             }
         }
         
