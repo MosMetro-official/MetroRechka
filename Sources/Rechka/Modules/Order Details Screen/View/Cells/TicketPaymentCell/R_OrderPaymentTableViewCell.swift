@@ -20,7 +20,7 @@ protocol _R_OrderPaymentTableViewCell: CellData {
 extension _R_OrderPaymentTableViewCell {
     
     var height: CGFloat {
-        return 64
+        return 72
     }
     
     func hashValues() -> [Int] {
@@ -53,7 +53,7 @@ class R_OrderPaymentTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        payButton.roundCorners(.all, radius: 16)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

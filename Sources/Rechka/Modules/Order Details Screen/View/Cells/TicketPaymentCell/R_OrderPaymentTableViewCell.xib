@@ -24,10 +24,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="oUr-kE-uQ8">
-                        <rect key="frame" x="16" y="12" width="200" height="40"/>
+                        <rect key="frame" x="16" y="12" width="182" height="40"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gno-d0-Kki">
-                                <rect key="frame" x="0.0" y="0.0" width="200" height="18"/>
+                                <rect key="frame" x="0.0" y="0.0" width="182" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" name="textSecondary"/>
                                 <nil key="highlightedColor"/>
@@ -36,7 +36,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNV-Py-fLF">
-                                <rect key="frame" x="0.0" y="22" width="200" height="18"/>
+                                <rect key="frame" x="0.0" y="22" width="182" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" name="textPrimary"/>
                                 <nil key="highlightedColor"/>
@@ -47,7 +47,7 @@
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2S-em-IGO">
-                        <rect key="frame" x="224" y="16" width="80" height="32"/>
+                        <rect key="frame" x="206" y="16" width="98" height="32"/>
                         <color key="backgroundColor" name="buttonSecondary"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="lxA-bQ-nQA"/>
@@ -55,7 +55,7 @@
                         <fontDescription key="fontDescription" name="MoscowSans-Medium" family="Moscow Sans" pointSize="13"/>
                         <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                        <state key="normal" title="Button">
+                        <state key="normal" title="Оплатить">
                             <color key="titleColor" name="textInverted"/>
                         </state>
                         <connections>
@@ -87,7 +87,7 @@
             <color red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="content">
-            <color red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textInverted">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

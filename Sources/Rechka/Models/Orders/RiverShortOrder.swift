@@ -27,18 +27,20 @@ struct RechkaHistoryResponse {
 
 struct RechkaShortOrder {
     let id: Int
+    let operationID: Int
     let status: RechkaOrderStatus
-    let routeName: String
+    let routeName: String?
     let createdDate: Date
     let totalPrice: Double
     
     init?(data: CoreNetwork.JSON) {
         guard let id = data["id"].int,
               let status = RechkaOrderStatus(rawValue: data["status"].intValue),
-              let createdDate = data["createdDate"].stringValue.toISODate(nil, region: nil)?.date else { return nil }
+              let createdDate = data["operation"]["dateTimeOrder"].stringValue.toISODate(nil, region: nil)?.date else { return nil }
         self.id = id
+        self.operationID = data["operation"]["id"].intValue
         self.status = status
-        self.routeName = data["routeName"].stringValue
+        self.routeName = data["routeName"].string
         self.createdDate = createdDate
         self.totalPrice = data["totalPrice"].doubleValue
     }

@@ -40,7 +40,6 @@ public struct R_Route {
     
     // tags
     public let tags: [String]
-    public let schedule: [Date]
     
     // polyline
     public let polyline: [R_Point]
@@ -66,7 +65,6 @@ public struct R_Route {
         self.polyline = data["polyline"].arrayValue.map { R_Point(data: $0)  }
         self.stations = data["stations"].arrayValue.map { R_Station(data: $0) }
         self.galleries = data["galleries"].arrayValue.map { R_Gallery(data: $0) }
-        self.schedule = []
         self.shortTrips = data["trips"].arrayValue.compactMap { R_ShortTrip(data: $0) }
         
     }
@@ -92,7 +90,7 @@ extension R_Route {
         }
     }
     
-    static func getRoutes(page: Int, size: Int, stationID: Int? = nil, tags: [String], completion: @escaping (Result<R_RouteResponse,APIError>) -> Void) {
+    static func getRoutes(page: Int, size: Int, stationID: Int? = nil, date: Date?, tags: [String], completion: @escaping (Result<R_RouteResponse,APIError>) -> Void) {
         let client = APIClient.unauthorizedClient
         var query: [String: String] = [
             "size": "\(size)",
@@ -105,6 +103,10 @@ extension R_Route {
         
         if !tags.isEmpty {
             query.updateValue(tags.joined(separator: ","), forKey: "tags")
+        }
+        
+        if let date = date {
+            query.updateValue(date.toFormat("YYYY-MM-dd", locale: nil), forKey: "date")
         }
         
         client.send(.GET(path: "/api/routes/v1", query: query)) { result in
