@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "Group-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "Grid, Layout, Delite.pdf",
       "idiom" : "universal"
     }
