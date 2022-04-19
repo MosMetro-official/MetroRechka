@@ -1,14 +1,13 @@
 //
-//  File.swift
+//  R_ErrorView.swift
 //  
 //
 //  Created by guseyn on 09.04.2022.
 //
 
-import Foundation
 import UIKit
 
-class R_ErrorView: UIView {
+class R_ErrorView : UIView {
     
     internal let errorLabel: UILabel = {
         let label = UILabel()
@@ -30,9 +29,6 @@ class R_ErrorView: UIView {
         super.init(coder: coder)
         setup()
     }
-    
-    
-    
 }
 
 extension R_ErrorView {
@@ -46,7 +42,6 @@ extension R_ErrorView {
             errorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 32),
             errorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -32)
         ])
-        
     }
     
     static func show(on view: UIView, with text: String, bgColor: UIColor, belowView: UIView? = nil) {
@@ -73,5 +68,4 @@ extension R_ErrorView {
             }
         }
     }
-    
 }

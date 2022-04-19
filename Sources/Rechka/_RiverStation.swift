@@ -7,17 +7,18 @@
 
 import Foundation
 
+// TODO: - Расставить лесенкой, шоб красиво
 public protocol _RiverStation {
-    var id: Int { get }
-    var name: String { get }
-    var cityID: Int { get }
+    var id : Int { get }
+    var name : String { get }
+    var cityID : Int { get }
     var cityName : String { get }
-    var regionName: String { get }
-    var countryID: Int { get }
+    var regionName : String { get }
+    var countryID : Int { get }
     var countryName : String { get }
-    var countryISO: String { get }
+    var countryISO : String { get }
     var latitude : Double { get }
-    var longitude: Double { get }
-    var position: Int? { get }
+    var longitude : Double { get }
+    var position : Int? { get }
     var onSelect : (() -> Void) { get }
 }

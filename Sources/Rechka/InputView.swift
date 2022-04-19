@@ -8,9 +8,10 @@
 import UIKit
 
 typealias TextEnterData = (text: String, textField: UITextField)
+
 typealias TextValidationData = (text: String, textField: UITextField, replacementString: String)
 
-internal final class InputView: UIView {
+internal final class InputView : UIView {
     
     @IBOutlet var backgroundBlurView: UIView!
     
@@ -23,6 +24,7 @@ internal final class InputView: UIView {
     @IBOutlet var submitButton: UIButton!
     
     @IBOutlet var backButton: UIButton!
+    
     @IBOutlet var floatingHeightAnchor: NSLayoutConstraint!
     
     private var bottomSafeArea: CGFloat = 0
@@ -40,7 +42,7 @@ internal final class InputView: UIView {
         setup()
     }
     
-    struct ViewState: Equatable {
+    struct ViewState : Equatable {
         static func == (lhs: InputView.ViewState, rhs: InputView.ViewState) -> Bool {
             return lhs.id == rhs.id
         }
@@ -56,7 +58,18 @@ internal final class InputView: UIView {
         let backImageEnabled: Bool
         var validation: ((TextValidationData) -> Bool)?
         
-        static let initial = ViewState.init(id: 0, desc: "", text: nil, placeholder: "", onTextEnter: { _ in}, keyboardType: .default, onNext: {}, onBack: {}, nextImage: UIImage(), backImageEnabled: false)
+        static let initial = ViewState.init(
+            id: 0,
+            desc: "",
+            text: nil,
+            placeholder: "",
+            onTextEnter: { _ in},
+            keyboardType: .default,
+            onNext: {},
+            onBack: {},
+            nextImage: UIImage(),
+            backImageEnabled: false
+        )
     }
     
     var viewState: ViewState = .initial {

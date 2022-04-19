@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  R_ReportService.swift
 //  
 //
 //  Created by guseyn on 12.04.2022.
@@ -8,15 +8,13 @@
 import Foundation
 import YandexMobileMetrica
 
-
-
 final class R_ReportService {
+    
     static let shared = R_ReportService()
     
     enum ErrorIndetifier: String {
-        case networkError = "river.network"
         case stateError = "river.stateError"
-        
+        case networkError = "river.network"
     }
     
     func report(error identifier: ErrorIndetifier, message: String, parameters: [String: Any]) {
@@ -35,5 +33,4 @@ final class R_ReportService {
             print("REPORT ERROR: %@", error.localizedDescription)
         })
     }
-    
 }

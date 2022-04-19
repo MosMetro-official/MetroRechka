@@ -5,18 +5,19 @@
 //  Created by guseyn on 01.04.2022.
 //
 
-import Foundation
 import UIKit
 import SafariServices
 import CoreTableView
 
 internal final class R_UnauthorizedView: UIView {
     
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var loginButton : UIButton!
     
-    @IBOutlet weak var effectView: UIVisualEffectView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var closeButton : UIButton!
+    
+    @IBOutlet weak var effectView : UIVisualEffectView!
+    
+    @IBOutlet weak var scrollView : UIScrollView!
     
     struct ViewState {
         let onMore: Command<Void>?
@@ -48,11 +49,9 @@ internal final class R_UnauthorizedView: UIView {
         super.layoutSubviews()
         self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.effectView.frame.height, right: 0)
     }
-    
 }
 
 extension R_UnauthorizedView {
-    private func setup() {}
+    
+    private func setup() { }
 }
-
-

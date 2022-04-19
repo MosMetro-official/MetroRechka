@@ -65,7 +65,6 @@ public final class Appearance: _Appearance {
         .footnote: UIFont(name: "MoscowSans-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .regular),
         .caption1: UIFont(name: "MoscowSans-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular),
         .caption2: UIFont(name: "MoscowSans-Regular", size: 11) ?? UIFont.systemFont(ofSize: 11, weight: .regular),
-        
     ]
     
     public static var colors: [Colors : UIColor] = [

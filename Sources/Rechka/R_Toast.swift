@@ -1,26 +1,24 @@
 //
-//  File.swift
+//  R_Toast.swift
 //  
 //
 //  Created by guseyn on 10.04.2022.
 //
 
-import Foundation
 import UIKit
 
-class R_Toast: UIView {
+class R_Toast : UIView {
     
     struct Configuration {
-        let icon: UIImage?
-        let title: String
-        let subtitle: String?
-        let titleColor: UIColor
-        let subtitleColor: UIColor
-        let actionType: ButtonType
-        let backgroundColor: UIColor
-        let tintColor: UIColor
-        let cornerRadius: CGFloat
-        
+        let icon : UIImage?
+        let title : String
+        let subtitle : String?
+        let titleColor : UIColor
+        let subtitleColor : UIColor
+        let actionType : ButtonType
+        let backgroundColor : UIColor
+        let tintColor : UIColor
+        let cornerRadius : CGFloat
         
         enum ButtonType {
             case imageButton(Button)
@@ -28,9 +26,9 @@ class R_Toast: UIView {
         }
         
         struct Button {
-            let image: UIImage?
-            let title: String?
-            let onSelect: () -> ()
+            let image : UIImage?
+            let title : String?
+            let onSelect : () -> ()
         }
     }
     

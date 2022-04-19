@@ -8,15 +8,12 @@
 import UIKit
 import Rechka
 
-
 class Dummy: RechkaNetworkDelegate {
+    
     func refreshToken(completion: @escaping (Bool) -> Void) {
         completion(false)
     }
-    
 }
-
-
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -34,8 +31,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Rechka.shared.delegate = self
         Rechka.shared.networkDelegate = dummy
         
-            
-            
         window?.rootViewController = Rechka.shared.showRechkaFlow()
         window?.makeKeyAndVisible()
     }
@@ -44,15 +39,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let first = URLContexts.first?.url {
             print(first)
             if first.absoluteString.contains(Rechka.shared.returnURL) {
-                NotificationCenter.default.post(name: .riverPaymentSuccess,
-                                                object: nil,
-                                                userInfo: nil)
+                NotificationCenter.default.post(
+                    name: .riverPaymentSuccess,
+                    object: nil,
+                    userInfo: nil
+                )
             }
-            
             if first.absoluteString.contains(Rechka.shared.failURL){
-                NotificationCenter.default.post(name: .riverPaymentFailure,
-                                                object: nil,
-                                                userInfo: nil)
+                NotificationCenter.default.post(
+                    name: .riverPaymentFailure,
+                    object: nil,
+                    userInfo: nil
+                )
             }
         }
     }
@@ -67,8 +65,4 @@ extension SceneDelegate : RechkaMapDelegate {
     func rechkaStationsController() -> R_StationsController {
         return MapViewController()
     }
-    
-    
- 
-    
 }
