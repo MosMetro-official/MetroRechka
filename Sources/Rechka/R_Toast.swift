@@ -136,11 +136,11 @@ extension R_Toast.Configuration {
         return R_Toast.Configuration(icon: nil,
                                      title: text,
                                      subtitle: subtitle,
-                                     titleColor: .systemRed,
-                                     subtitleColor: Appearance.colors[.textPrimary] ?? .label,
+                                     titleColor: .white,
+                                     subtitleColor: .white.withAlphaComponent(0.75),
                                      actionType: buttonType,
-                                     backgroundColor: Appearance.colors[.content] ?? .secondarySystemBackground,
-                                     tintColor: Appearance.colors[.textPrimary] ?? .label,
+                                     backgroundColor: .systemRed,
+                                     tintColor: .white,
                                      cornerRadius: 12)
     }
     

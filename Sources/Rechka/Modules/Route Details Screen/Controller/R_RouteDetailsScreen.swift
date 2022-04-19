@@ -65,25 +65,28 @@ internal class R_RouteDetailsController: UIViewController {
         
         let finalTitle = title
         
-        let onSelect = Command { [weak self] in
+        let onSelect: () -> Void = { [weak self] in
             guard let self = self, let _routeId = self.routeID else { return }
             self.routeID = _routeId
-            
         }
-        let err = R_OrderDetailsView.ViewState.Error(
-            image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
-            title: finalTitle,
-            action: onSelect,
-            buttonTitle: "Загрузить еще раз",
-            height: UIScreen.main.bounds.height / 2)
-            .toElement()
-        let state = State(model: .init(header: nil, footer: nil), elements: [err])
-        self.nestedView.viewState = .init(state: [state],
-                                          dataState: .error,
-                                          onChoice: nil,
-                                          onClose: self.nestedView.viewState.onClose,
-                                          posterTitle: self.nestedView.viewState.posterTitle,
-                                          posterImageURL: self.nestedView.viewState.posterImageURL)
+        
+        let currentState = self.nestedView.viewState
+        let buttonType = R_Toast.Configuration.Button(
+            image: UIImage(systemName: "arrow.triangle.2.circlepath"),
+            title: nil,
+            onSelect: onSelect)
+        
+        let config = R_Toast.Configuration.defaultError(text: finalTitle, subtitle: nil, buttonType: .imageButton(buttonType))
+        
+        let newState = R_RootDetailStationView.ViewState(
+            state: currentState.state,
+            dataState: .error(config),
+            onChoice: currentState.onChoice,
+            onClose: currentState.onClose,
+            posterTitle: currentState.posterTitle,
+            posterImageURL: currentState.posterImageURL)
+        self.nestedView.viewState = newState
+
     }
     
     private var isTextCollapsed = true {
@@ -158,6 +161,7 @@ internal class R_RouteDetailsController: UIViewController {
         )
         self.nestedView.viewState = loadingState
         R_Trip.get(by: selectedTripId) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let trip):
                 let loadedState = R_RootDetailStationView.ViewState(
@@ -168,12 +172,30 @@ internal class R_RouteDetailsController: UIViewController {
                     posterTitle: "",
                     posterImageURL: loadingState.posterImageURL
                 )
-                self?.setState(loadedState)
-                self?.openBuyTicketsController(with: trip)
+                self.setState(loadedState)
+                self.openBuyTicketsController(with: trip)
                 return
             case .failure(let error):
                 print(error)
-                return
+                let currentState = self.nestedView.viewState
+                let onSelect: () -> Void = { [weak self] in
+                    self?.handleChoice()
+                }
+                let buttonType = R_Toast.Configuration.Button(
+                    image: UIImage(systemName: "arrow.triangle.2.circlepath"),
+                    title: nil,
+                    onSelect: onSelect)
+                
+                let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(buttonType))
+                
+                let newState = R_RootDetailStationView.ViewState(
+                    state: currentState.state,
+                    dataState: .error(config),
+                    onChoice: currentState.onChoice,
+                    onClose: currentState.onClose,
+                    posterTitle: currentState.posterTitle,
+                    posterImageURL: currentState.posterImageURL)
+                self.nestedView.viewState = newState
             }
         }
         

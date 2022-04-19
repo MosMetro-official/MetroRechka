@@ -18,7 +18,7 @@ internal final class R_TicketsHistoryView: UIView {
         enum DataState {
             case loaded
             case loading
-            case error
+            case error(R_Toast.Configuration)
         }
         
         struct HistoryTicket: _History {
@@ -97,11 +97,14 @@ internal final class R_TicketsHistoryView: UIView {
         DispatchQueue.main.async { [self] in
             switch self.viewState.dataState {
             case .loaded:
+                R_Toast.remove(from: self)
                 self.removeBlurLoading(from: self)
             case .loading:
+                R_Toast.remove(from: self)
                 self.showBlurLoading(on: self)
-            case .error:
+            case .error(let config):
                 self.removeBlurLoading(from: self)
+                R_Toast.show(on: self, with: config)
             }
             self.tableView.viewStateInput = self.viewState.state
         }
