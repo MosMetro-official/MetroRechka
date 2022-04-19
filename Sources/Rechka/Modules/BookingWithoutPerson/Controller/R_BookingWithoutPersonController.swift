@@ -41,6 +41,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
+        setupRiverBackButton()
         NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] _ in
             guard let self = self else { return }
             self.startBooking()

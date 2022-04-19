@@ -12,7 +12,7 @@ import CoreNetwork
 internal final class R_BookingWithPersonController: UIViewController {
     
     let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
-        
+    
     var model: R_Trip?
     var riverUsers: [R_User] = []
     
@@ -32,7 +32,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         guard let model = model else {
             return
         }
-
+        
         let showPersonDataEntry = Command { [weak self] in
             self?.pushPersonDataEntry(with: model)
         }
@@ -68,8 +68,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         self.nestedView.showBlurLoading()
         guard let tripID = self.model?.id else { return }
         if let _ = Rechka.shared.token {
-            let finalUsers = riverUsers
-            R_Trip.book(with: finalUsers, tripID: tripID) { result in
+            R_Trip.book(with: riverUsers, tripID: tripID) { result in
                 switch result {
                 case .success(let order):
                     self.handle(order: order)
@@ -119,37 +118,42 @@ internal final class R_BookingWithPersonController: UIViewController {
         var tickElements : [Element] = []
         let tariffHeader = R_BookingWithPersonView.ViewState.TariffHeader().toElement()
         tickElements.append(tariffHeader)
-        let tickets = users.compactMap { $0.ticket }
-        tickets.forEach { ticket in
-            let price = Int(ticket.price)
+        var tarrifs = [R_Tariff]()
+        riverUsers.forEach { user in
+            if let ticket = user.ticket {
+                tarrifs.append(ticket)
+            }
+        }
+        let tarrifsGroup = Dictionary(grouping: tarrifs) { $0.name }
+        tarrifsGroup.forEach { name, tickets in
+            let price = Int(tickets.first?.price ?? 0)
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
-                tariffs: ticket.name,
-                price: "\(price) ₽"
+                tariffs: "\(name) x\(tickets.count)",
+                price: "\(price * tickets.count) ₽"
             ).toElement()
-            tickElements.append(tariff)
+            if !tickElements.contains(tariff) {
+                tickElements.append(tariff)
+            }
         }
         let additionalService = users.compactMap { $0.additionServices }.filter { !$0.isEmpty }.flatMap { $0 }
-        additionalService.forEach { service in
-            let price = Int(service.price)
+        let additionalGroup = Dictionary(grouping: additionalService) { $0.name_ru }
+        additionalGroup.forEach { name, additionals in
+            let price = Int(additionals.first?.price ?? 0)
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
-                tariffs: service.name_ru,
-                price: "\(price) ₽"
+                tariffs: "\(name) x\(additionals.count)",
+                price: "\(price * additionals.count) ₽"
             ).toElement()
             tickElements.append(tariff)
         }
         
         let tariffSection = SectionState(header: nil, footer: nil)
         let tariffState = State(model: tariffSection, elements: tickElements)
-        let showPersonAlert: Command<Void>? = {
-            return Command { [weak self] in
-                self?.setupPersonAlert()
-            }
-        }()
-        let showPersonDataEntry: Command<Void>? = {
-            return Command { [weak self] in
-                self?.pushPersonDataEntry(with: newModel)
-            }
-        }()
+        let showPersonAlert = Command { [weak self] in
+            self?.setupPersonAlert()
+        }
+        let showPersonDataEntry = Command { [weak self] in
+            self?.pushPersonDataEntry(with: newModel)
+        }
         
         let book: Command<Void>? = {
             return Command { [weak self] in

@@ -14,7 +14,6 @@ class R_CitizenshipView: UIView {
     @IBOutlet weak var searchViewToBottom: NSLayoutConstraint!
     @IBOutlet weak var textField: UITextField!
     var handleSearhText: ((String) -> Void)?
-    var isSearching: Bool = false
     
     struct ViewState {
         let onClose: Command<Void>?
@@ -29,7 +28,7 @@ class R_CitizenshipView: UIView {
         
         struct Citizenship: _Citizenship {
             let title: String
-            let onSelect: () -> Void
+            let onItemSelect: Command<Void>
         }
         
         static let initial = R_CitizenshipView.ViewState(onClose: nil, dataState: .loading, state: [])
@@ -55,9 +54,6 @@ class R_CitizenshipView: UIView {
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
         handleSearhText?(text)
-        isSearching = text == "" ? false : true
-        print("📄📄📄 \(text)")
-        print(isSearching)
     }
     
     private func render() {
@@ -99,7 +95,6 @@ class R_CitizenshipView: UIView {
         tableView.onScroll = { [weak self] scrollView in
             guard let self = self else { return }
             if scrollView.contentOffset.y > 5 {
-                // scrolling down
                 self.searchViewToBottom.constant = 0
                 self.textField.resignFirstResponder()
             }

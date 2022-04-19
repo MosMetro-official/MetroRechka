@@ -22,22 +22,22 @@ class R_CitizenshipController: UIViewController {
             makeState()
         }
     }
-  
+    
     override func loadView() {
         super.loadView()
         self.view = nestedView
         nestedView.backgroundColor = Appearance.colors[.content]
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCitizenships()
         nestedView.handleSearhText = { [weak self] text in
             guard let self = self else { return }
-            self.filter = self.citizenships.filter { $0.name.contains(text) }
+            self.filter = self.citizenships.filter { $0.name.lowercased().contains(text.lowercased()) }
         }
     }
- 
+    
     private func loadCitizenships() {
         nestedView.viewState = .init(onClose: nil, dataState: .loading, state: [])
         R_Citizenship.getCitizenships { result in
@@ -53,17 +53,17 @@ class R_CitizenshipController: UIViewController {
     private func makeState() {
         let currentList = filter.isEmpty ? citizenships : filter
         let elements: [Element] = currentList.map { citizen in
-            let onSelect: () -> Void = { [weak self] in
+            let onSelect = Command { [weak self] in
                 self?.onCitizenshipSelect?.perform(with: citizen)
                 self?.dismiss(animated: true)
             }
-            return R_CitizenshipView.ViewState.Citizenship(title: citizen.name, onSelect: onSelect).toElement()
+            return R_CitizenshipView.ViewState.Citizenship(title: citizen.name, onItemSelect: onSelect).toElement()
         }
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true)
         }
-        let sec = SectionState(header: nil, footer: nil)
-        let state = State(model: sec, elements: elements)
+        let section = SectionState(header: nil, footer: nil)
+        let state = State(model: section, elements: elements)
         let viewState = R_CitizenshipView.ViewState(
             onClose: onClose,
             dataState: .loaded,
