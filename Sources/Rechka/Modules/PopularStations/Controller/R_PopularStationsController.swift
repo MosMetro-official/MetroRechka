@@ -172,16 +172,18 @@ internal final class R_PopularStationsController : UIViewController {
                     imageURL = firstURL
                 }
             }
+            let onSelect = Command { [weak self] in
+                self?.pushDetail(with: route.id)
+            }
             
-            let routeData = R_HomeView.ViewState.Station(
-                imageURL: imageURL,
+            let routeData = R_HomeView.ViewState.Route(
                 title: route.name,
-                jetty: firstStation,
                 time: "\(route.time) мин.",
-                tickets: false,
-                price: "\(route.minPrice) ₽",
-                onSelect: onPay
-            ).toElement()
+                station: firstStation,
+                priceButtonTitle: "От \(route.minPrice) ₽",
+                imageURL: imageURL,
+                onItemSelect: onSelect)
+                .toElement()
             return routeData
         }
         let section = SectionState(header: nil, footer: nil)

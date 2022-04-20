@@ -31,19 +31,22 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yW1-8b-DwW">
-                        <rect key="frame" x="48" y="5" width="256" height="65"/>
+                        <rect key="frame" x="48" y="12" width="256" height="51"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ABd-S5-qiE">
-                                <rect key="frame" x="0.0" y="0.0" width="124" height="65"/>
+                                <rect key="frame" x="0.0" y="0.0" width="124" height="51"/>
                                 <fontDescription key="fontDescription" name="MoscowSans-Bold" family="Moscow Sans" pointSize="15"/>
                                 <color key="textColor" name="textPrimary"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ux-Uz-BKk">
-                                <rect key="frame" x="132" y="0.0" width="124" height="65"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ux-Uz-BKk">
+                                <rect key="frame" x="132" y="0.0" width="124" height="51"/>
                                 <fontDescription key="fontDescription" name="MoscowSans-Bold" family="Moscow Sans" pointSize="15"/>
                                 <color key="textColor" name="textPrimary"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="userFontName" value="subhead"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
                     </stackView>
@@ -52,9 +55,9 @@
                     <constraint firstItem="BJm-Ii-ywC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="6La-iP-Dbh"/>
                     <constraint firstItem="BJm-Ii-ywC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="PVD-Rn-RN4"/>
                     <constraint firstItem="yW1-8b-DwW" firstAttribute="leading" secondItem="BJm-Ii-ywC" secondAttribute="trailing" constant="8" id="W7R-ST-qYh"/>
-                    <constraint firstItem="yW1-8b-DwW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="d4t-ox-4Bx"/>
+                    <constraint firstItem="yW1-8b-DwW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="d4t-ox-4Bx"/>
                     <constraint firstAttribute="trailing" secondItem="yW1-8b-DwW" secondAttribute="trailing" constant="16" id="kv1-DO-V82"/>
-                    <constraint firstAttribute="bottom" secondItem="yW1-8b-DwW" secondAttribute="bottom" constant="5" id="vfX-n3-Blw"/>
+                    <constraint firstAttribute="bottom" secondItem="yW1-8b-DwW" secondAttribute="bottom" constant="12" id="vfX-n3-Blw"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -70,7 +73,7 @@
     <resources>
         <image name="ticket_info_check" width="24" height="24"/>
         <namedColor name="content">
-            <color red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="textPrimary">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

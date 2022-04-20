@@ -73,6 +73,8 @@ internal final class R_OrderDetailsView: UIView {
         }
         
         struct TicketInfo : _TicketInfo {
+            var height: CGFloat
+            
             var title : String
             var descr : String
             var image : UIImage

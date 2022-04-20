@@ -191,7 +191,6 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         } else {
             let vc = R_UnauthorizedController()
             vc.onLogin = Command(action: { [weak self] in
-                guard let self = self else { return }
                 guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else {
                     return
                 }

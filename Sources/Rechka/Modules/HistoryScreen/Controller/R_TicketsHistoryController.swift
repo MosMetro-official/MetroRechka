@@ -183,7 +183,6 @@ internal final class R_TicketsHistoryController: UIViewController {
             case .loading:
                 self.nestedView.viewState = .init(state: [], dataState: .loading)
             case .loadingNewPage(let orders):
-                guard let model = self.model else { return }
                 var sections = [State]()
                 let ordersSections = self.createStateItems(from: orders)
                 sections.append(contentsOf: ordersSections)
