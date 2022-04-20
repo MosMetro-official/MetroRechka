@@ -18,6 +18,8 @@ public class Rechka {
     
     public weak var delegate : RechkaMapDelegate? = nil
     
+    public var APIHost = "river.brndev.ru"
+    
     public var applicationName = ""
     
     public var isMapsAvailable : Bool!

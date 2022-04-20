@@ -10,7 +10,7 @@ import CoreNetwork
 
 extension APIClient {
     public static var authorizedClient : APIClient {
-        return APIClient(host: "river.brndev.ru", interceptor: SecureAPIClientInterceptor(), httpProtocol: .HTTPS, configuration: .default)
+        return APIClient(host: Rechka.shared.APIHost, interceptor: SecureAPIClientInterceptor(), httpProtocol: .HTTPS, configuration: .default)
     }
 }
 
