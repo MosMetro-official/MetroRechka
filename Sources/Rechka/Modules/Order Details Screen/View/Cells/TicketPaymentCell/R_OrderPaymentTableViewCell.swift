@@ -10,11 +10,9 @@ import CoreTableView
 
 
 protocol _R_OrderPaymentTableViewCell: CellData {
-    
     var onPay: Command<Void> { get }
     var time: String { get }
     var desc: String { get }
-    
 }
 
 extension _R_OrderPaymentTableViewCell {
@@ -64,8 +62,6 @@ class R_OrderPaymentTableViewCell: UITableViewCell {
     
     @IBAction func handlePay(_ sender: UIButton) {
         onPay?.perform(with: ())
-        
-        
     }
     
     public func configure(with data: _R_OrderPaymentTableViewCell) {
@@ -73,5 +69,4 @@ class R_OrderPaymentTableViewCell: UITableViewCell {
         self.timeLabel.text = data.time
         self.onPay = data.onPay
     }
-    
 }

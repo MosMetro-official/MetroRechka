@@ -9,12 +9,10 @@ import UIKit
 import CoreTableView
 
 internal final class R_StationListView : UIView {
-    
-    public var onMapTap : (() -> Void)?
-    
-    struct ViewState {
         
+    struct ViewState {
         var states : [State]
+        var onMapTap : Command<Void>?
         
         struct Terminal : _TerminalCell {
             var title : String
@@ -25,7 +23,7 @@ internal final class R_StationListView : UIView {
         }
     }
     
-    public var viewState = ViewState(states: []) {
+    public var viewState = ViewState(states: [], onMapTap: nil) {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.viewStateInput = self.viewState.states
@@ -64,13 +62,13 @@ internal final class R_StationListView : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstrains()
-        mapButton.layer.cornerRadius = 20
-        backgroundColor = Appearance.colors[.base]
-        self.mapButton.addTarget(
+        mapButton.addTarget(
             self,
             action: #selector(openMap),
             for: .touchUpInside
         )
+        backgroundColor = UIColor.custom(for: .base)
+        mapButton.layer.cornerRadius = 20
         if !Rechka.shared.isMapsAvailable {
             mapButton.isHidden = true
         }
@@ -78,9 +76,10 @@ internal final class R_StationListView : UIView {
     
     @objc
     private func openMap() {
-        self.onMapTap?()
+        viewState.onMapTap?.perform(with: ())
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

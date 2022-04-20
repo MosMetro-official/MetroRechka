@@ -40,9 +40,9 @@ extension _TicketTitle {
 
 class TicketTitleCell: UITableViewCell {
     
+    @IBOutlet private weak var title : UILabel!
+    
     public func configure(with data: _TicketTitle) {
         title.text = data.title
     }
-    
-    @IBOutlet private weak var title : UILabel!
 }

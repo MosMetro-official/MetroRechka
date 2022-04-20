@@ -8,31 +8,39 @@
 import UIKit
 import CoreTableView
 
-protocol _Static: CellData {
+protocol _HeaderCell: CellData {
     var title: String { get }
 }
 
-extension _Static {
+extension _HeaderCell {
+    
+    var height: CGFloat {
+        return 50
+    }
+    
+    func hashValues() -> [Int] {
+        return [title.hashValue]
+    }
+
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
-        guard let cell = cell as? StaticCell else { return }
+        guard let cell = cell as? HeaderCell else { return }
         cell.configure(with: self)
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(StaticCell.nib, forCellReuseIdentifier: StaticCell.identifire)
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: StaticCell.identifire, for: indexPath) as? StaticCell else { return .init() }
+        tableView.register(HeaderCell.nib, forCellReuseIdentifier: HeaderCell.identifire)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HeaderCell.identifire, for: indexPath) as? HeaderCell else { return .init() }
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         return cell
     }
 }
 
-class StaticCell: UITableViewCell {
+class HeaderCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Bold", size: 17)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -41,7 +49,7 @@ class StaticCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    public func configure(with data: _Static) {
+    public func configure(with data: _HeaderCell) {
         titleLabel.text = data.title
     }
     

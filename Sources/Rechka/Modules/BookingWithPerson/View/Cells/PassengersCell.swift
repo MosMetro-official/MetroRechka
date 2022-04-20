@@ -11,9 +11,19 @@ import CoreTableView
 protocol _Passenger: CellData {
     var name: String { get }
     var tariff: String { get }
+    var onSelect: (() -> Void) { get }
 }
 
 extension _Passenger {
+    
+    var height: CGFloat {
+        return 70
+    }
+    
+    func hashValues() -> [Int] {
+        return [name.hashValue, tariff.hashValue]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? PassengersCell else { return }
         cell.configure(with: self)
@@ -33,8 +43,6 @@ class PassengersCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        nameLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
-        tariffLabel.font = UIFont(name: "MoscowSans-Regular", size: 13)
     }
     
     public func configure(with data: _Passenger) {

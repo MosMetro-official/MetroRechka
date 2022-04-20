@@ -8,12 +8,22 @@
 import UIKit
 import CoreTableView
 
+
 protocol _Field: CellData {
     var text: String { get }
+    var textColor: UIColor { get }
     var onSelect: () -> () { get }
 }
 
 extension _Field {
+    
+    var height: CGFloat {
+        return 50
+    }
+    
+    func hashValues() -> [Int] {
+        return [text.hashValue]
+    }
     
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? FieldCell else { return }
@@ -33,11 +43,11 @@ class FieldCell: UITableViewCell {
         
     override func awakeFromNib() {
         super.awakeFromNib()
-        mainTextLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
+    
     
     public func configure(with data: _Field) {
         mainTextLabel.text = data.text
-        
+        mainTextLabel.textColor = data.textColor
     }
 }

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "addPlus.png",
+      "filename" : "Group-1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,6 +11,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "Group.pdf",
       "idiom" : "universal"
     }
   ],

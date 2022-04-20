@@ -31,8 +31,6 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
-    
-    
     override func loadView() {
         super.loadView()
         view = nestedView
@@ -41,13 +39,12 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Покупка"
+        setupRiverBackButton()
         NotificationCenter.default.addObserver(forName: .riverSuccessfulAuth, object: nil, queue: nil) { [weak self] _ in
             guard let self = self else { return }
             self.startBooking()
         }
-        
     }
-    
     
     private func set(state: R_BookingWithoutPersonView.ViewState) {
         self.nestedView.viewState = state
@@ -104,16 +101,8 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 currentCount += 1
             }
             self.selectedTarrifs.additionServices.updateValue(currentCount, forKey: tariff)
-            
         }
-        
-        
-        
-        
-         
     }
-    
-    
     
     private func handle(order: RiverOrder) {
         DispatchQueue.main.async {
@@ -267,7 +256,6 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             ticketElemets.append(tariffElement)
             // Если к билету нужно выбрать место
             if !tariff.isWithoutPlace {
-                
                 let placesElements: [Element] = arrayOfSelection.enumerated().map { (index,user) in
                     let onSelectPlace = Command { [weak self] in
                         guard let self = self else { return }
@@ -275,11 +263,13 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                             guard let self = self, let  _ = self.selectedTarrifs.selectedTarrifs[tariff]?[safe: index]?.ticket else { return }
                             self.selectedTarrifs.selectedTarrifs[tariff]![index].ticket!.place = place
                         }
-                        
                         self.showPlaceController(for: mainModel, selectedPlace: user.ticket?.place, onPlaceSelect: onPlaceSelect)
                     }
                     let title = user.ticket?.place == nil ? "Выберите место" : "Пассажир \(index+1) – место \(user.ticket!.place!)"
-                    let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: title, onItemSelect: onSelectPlace).toElement()
+                    let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(
+                        title: title,
+                        onItemSelect: onSelectPlace
+                    ).toElement()
                     return choicePlaceElement
                 }
                 

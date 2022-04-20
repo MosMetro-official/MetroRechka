@@ -66,14 +66,12 @@ internal final class R_BookingScreenController : UIViewController {
     
     override func loadView() {
         self.view = nestedView
-       
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setListeners()
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -102,7 +100,6 @@ internal final class R_BookingScreenController : UIViewController {
         
     }
     
-    
     @objc private func handleSuccessfulPayment() {
         hidePaymentController {
             self.removeTimer()
@@ -117,7 +114,6 @@ internal final class R_BookingScreenController : UIViewController {
             // TODO: Показать ошибку
         }
     }
-    
     
     private func hidePaymentController(onDismiss: @escaping () -> Void) {
         guard let paymentController = paymentController else {
@@ -137,8 +133,6 @@ internal final class R_BookingScreenController : UIViewController {
         })
         RunLoop.current.add(timer!, forMode: .common)
         self.needToSetTimer = false
-        
-        
     }
     
     
@@ -257,6 +251,4 @@ internal final class R_BookingScreenController : UIViewController {
         self.nestedView.viewState = .init(dataState: .loaded, states: [topState,cancelState], onClose: onClose, onPay: onPay, totalPrice: "\(Int(totalPrice)) ₽")
 
     }
-
-  
 }

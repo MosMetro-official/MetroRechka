@@ -23,7 +23,6 @@ protocol _BlurResult {
 
 internal final class R_BlurResultView : UIView {
     
-    
     struct ViewState {
         let title: String
         let subtitle: String
@@ -42,20 +41,10 @@ internal final class R_BlurResultView : UIView {
         }
     }
     
-    private func render() {
-        self.title.text = viewState.title
-        self.descr.text = viewState.subtitle
-        self.resultImage.image = viewState.image
-        self.retryButton.isHidden = viewState.onRetry == nil
-    }
-    
-    
     @IBOutlet private weak var title : UILabel!
-    
     @IBOutlet private weak var descr : UILabel!
     
     @IBOutlet private weak var retryButton : UIButton!
-    
     @IBOutlet private weak var closeButton : UIButton!
     
     @IBOutlet private weak var resultImage : UIImageView!
@@ -68,15 +57,22 @@ internal final class R_BlurResultView : UIView {
         viewState.onClose?.perform(with: ())
     }
     
+    private func render() {
+        self.title.text = viewState.title
+        self.descr.text = viewState.subtitle
+        self.resultImage.image = viewState.image
+        self.retryButton.isHidden = viewState.onRetry == nil
+    }
+    
+    @MainActor
     private func handleSuccess() {
         retryButton.isHidden = false
         resultImage.image = UIImage(named: "checkmark", in: .module, compatibleWith: nil)
     }
     
+    @MainActor
     private func handleFailure() {
         closeButton.backgroundColor = .clear
         resultImage.image = UIImage(named: "result_error", in: .module, compatibleWith: nil)
     }
-    
-   
 }

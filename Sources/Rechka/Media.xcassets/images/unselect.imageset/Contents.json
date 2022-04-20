@@ -1,16 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "unselect.png",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
+      "filename" : "Group.pdf",
       "idiom" : "universal"
     }
   ],

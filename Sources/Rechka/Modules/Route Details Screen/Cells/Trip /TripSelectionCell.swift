@@ -63,7 +63,29 @@ class TripSelectionCell: UITableViewCell {
         addGradient()
     }
     
-   
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let rightGradient = rightGradient else {
+            return
+        }
+        guard let leftGradient = leftGradient else {
+            return
+        }
+        leftGradient.endPoint = CGPoint(x: 0, y: 1)
+        leftGradient.startPoint = CGPoint(x: 1, y: 1)
+        rightGradient.endPoint = CGPoint(x: 1, y: 1)
+        rightGradient.startPoint = CGPoint(x: 0, y: 1)
+        let base = Appearance.colors[.base] ?? UIColor.systemBackground
+        leftGradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
+        leftGradient.frame = CGRect(origin: CGPoint(x: 76, y: 12), size: .init(width: 8, height: 56))
+        rightGradient.colors = [base.withAlphaComponent(0).cgColor, base.cgColor]
+        rightGradient.frame = CGRect(origin: CGPoint(x: UIScreen.main.bounds.width - 20, y: 12), size: .init(width: 20, height: 56))
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setNeedsLayout()
+        setNeedsDisplay()
+    }
     
     private func addGradient() {
         self.leftGradient = CAGradientLayer()
@@ -74,8 +96,8 @@ class TripSelectionCell: UITableViewCell {
         
         leftGradient.frame =  CGRect(origin: CGPoint(x: 76, y: 12), size: .init(width: 8, height: 56))
         leftGradient.colors = [base.cgColor, base.withAlphaComponent(0).cgColor]
-        leftGradient.startPoint = CGPoint(x: 0, y: 1)
-        leftGradient.endPoint = CGPoint(x: 1, y: 1)
+        leftGradient.startPoint = CGPoint(x: 1, y: 1)
+        leftGradient.endPoint = CGPoint(x: 0, y: 1)
         
         rightGradient.frame =  CGRect(origin: CGPoint(x: UIScreen.main.bounds.width - 20, y: 12), size: .init(width: 20, height: 56))
         rightGradient.colors = [base.withAlphaComponent(0).cgColor,base.cgColor]

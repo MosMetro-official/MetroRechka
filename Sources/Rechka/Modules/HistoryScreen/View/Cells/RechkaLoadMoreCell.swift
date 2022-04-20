@@ -33,8 +33,6 @@ extension _RechkaLoadMoreCell {
 
 class RechkaLoadMoreCell: UITableViewCell {
 
-    
-    
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var loadingButton: UIButton!
     
@@ -61,5 +59,4 @@ class RechkaLoadMoreCell: UITableViewCell {
         self.loadingIndicator.startAnimating()
         self.onLoad = data.onLoad
     }
-    
 }

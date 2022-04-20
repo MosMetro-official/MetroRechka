@@ -24,11 +24,10 @@ extension _TariffHeaderCell {
 }
 
 class TariffHeaderCell: UITableViewCell {
-
+    
     @IBOutlet weak var titleLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Bold", size: 20)
     }
 }

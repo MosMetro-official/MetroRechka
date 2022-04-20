@@ -18,11 +18,12 @@ protocol _R_DateCollectionCell {
 }
 
 class R_DateCollectionCell: UICollectionViewCell {
-
+    
+    private var borderColor : UIColor?
+    
     @IBOutlet private weak var timeLabel: UILabel!
+    
     @IBOutlet private weak var cardView: UIView!
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,12 +31,20 @@ class R_DateCollectionCell: UICollectionViewCell {
         self.cardView.layer.borderWidth = 0.5
     }
     
-    func configure(with data: _R_DateCollectionCell) {
-        self.timeLabel.text = data.time
-        self.timeLabel.textColor = data.textColor
-        self.cardView.backgroundColor = data.bgColor
-        self.cardView.layer.borderColor = data.borderColor.cgColor
-        
+    override func layoutSubviews() {
+        self.cardView.layer.borderColor = borderColor?.cgColor
     }
-
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setNeedsLayout()
+        setNeedsDisplay()
+    }
+    
+    func configure(with data: _R_DateCollectionCell) {
+        borderColor = data.borderColor
+        timeLabel.text = data.time
+        timeLabel.textColor = data.textColor
+        cardView.backgroundColor = data.bgColor
+        cardView.layer.borderColor = data.borderColor.cgColor
+    }
 }

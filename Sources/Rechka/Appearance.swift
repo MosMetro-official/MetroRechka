@@ -24,6 +24,8 @@ public enum FontTextStyle: String {
     case largeTitle = "largeTitle"
     case title1 = "title1"
     case title2 = "title2"
+    case title3 = "title3"
+    case title4 = "title4"
     case headline = "headline"
     case body = "body"
     case subhead = "subhead"
@@ -33,6 +35,8 @@ public enum FontTextStyle: String {
     case footnote = "footnote"
     case caption1 = "caption1"
     case caption2 = "caption2"
+    case timer = "timer"
+    case bold17 = "bold17"
 }
 
 protocol _Appearance: AnyObject {
@@ -56,6 +60,8 @@ public final class Appearance: _Appearance {
         .largeTitle: UIFont(name: "MoscowSans-Bold", size: 30) ?? UIFont.systemFont(ofSize: 30, weight: .bold),
         .title1: UIFont(name: "MoscowSans-Bold", size: 26) ?? UIFont.systemFont(ofSize: 26, weight: .bold),
         .title2: UIFont(name: "MoscowSans-Medium", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .medium),
+        .title3: UIFont(name: "MoscowSans-Bold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold),
+        .title4: UIFont(name: "MoscowSans-Bold", size: 22) ?? UIFont.systemFont(ofSize: 22, weight: .bold),
         .headline: UIFont(name: "MoscowSans-Medium", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .medium),
         .body: UIFont(name: "MoscowSans-Regular", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .regular),
         .subhead: UIFont(name: "MoscowSans-Regular", size: 15) ?? UIFont.systemFont(ofSize: 15, weight: .regular),
@@ -65,7 +71,8 @@ public final class Appearance: _Appearance {
         .footnote: UIFont(name: "MoscowSans-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .regular),
         .caption1: UIFont(name: "MoscowSans-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular),
         .caption2: UIFont(name: "MoscowSans-Regular", size: 11) ?? UIFont.systemFont(ofSize: 11, weight: .regular),
-        
+        .timer: UIFont(name: "MoscowSans-Bold", size: 62) ?? UIFont.systemFont(ofSize: 62, weight: .bold),
+        .bold17: UIFont(name: "MoscowSans-Bold", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: .bold)
     ]
     
     public static var colors: [Colors : UIColor] = [

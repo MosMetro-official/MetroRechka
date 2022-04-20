@@ -50,13 +50,12 @@ extension _TicketStatus {
 
 class TicketStatusCell: UITableViewCell {
     
+    @IBOutlet private weak var title : UILabel!
+    @IBOutlet private weak var status : UIImageView!
+    
     public func configure(with data: _TicketStatus) {
         title.text = data.title
         status.image = data.statusImage
         status.tintColor = data.statusColor
     }
-    
-    @IBOutlet private weak var title : UILabel!
-    
-    @IBOutlet private weak var status : UIImageView!
 }

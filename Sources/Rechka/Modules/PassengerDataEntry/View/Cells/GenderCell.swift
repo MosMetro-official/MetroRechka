@@ -14,6 +14,14 @@ protocol _Gender: CellData {
 }
 
 extension _Gender {
+    
+    var height: CGFloat {
+        return 50
+    }
+    
+    func hashValues() -> [Int] {
+        return [gender.hashValue]
+    }
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? GenderCell else { return }
         cell.configure(with: self)
@@ -36,7 +44,6 @@ class GenderCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        titleLabel.font = UIFont(name: "MoscowSans-Regular", size: 17)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

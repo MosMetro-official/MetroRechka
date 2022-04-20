@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -33,10 +33,10 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ye-gn-lH0">
-                        <rect key="frame" x="20" y="12" width="280" height="44"/>
+                        <rect key="frame" x="0.0" y="12" width="320" height="56"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nh5-JS-OJS">
-                                <rect key="frame" x="0.0" y="14" width="280" height="30"/>
+                                <rect key="frame" x="0.0" y="26" width="320" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="EmJ-pt-3Jz"/>
                                 </constraints>
@@ -60,13 +60,13 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="SxL-Nx-3gU" secondAttribute="trailing" constant="20" id="6Ku-gv-T0y"/>
-                    <constraint firstAttribute="bottom" secondItem="5ye-gn-lH0" secondAttribute="bottom" constant="12" id="7a2-rp-gCh"/>
+                    <constraint firstAttribute="bottom" secondItem="5ye-gn-lH0" secondAttribute="bottom" id="7a2-rp-gCh"/>
                     <constraint firstItem="5ye-gn-lH0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="Iyo-gu-sFf"/>
                     <constraint firstItem="SxL-Nx-3gU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="Nmj-Nl-jsx"/>
                     <constraint firstItem="SxL-Nx-3gU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="bm2-fT-wqV"/>
                     <constraint firstAttribute="bottom" secondItem="SxL-Nx-3gU" secondAttribute="bottom" constant="12" id="kYS-Ze-W47"/>
-                    <constraint firstAttribute="trailing" secondItem="5ye-gn-lH0" secondAttribute="trailing" constant="20" id="sRk-mW-Rat"/>
-                    <constraint firstItem="5ye-gn-lH0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="tLV-4k-M4p"/>
+                    <constraint firstAttribute="trailing" secondItem="5ye-gn-lH0" secondAttribute="trailing" id="sRk-mW-Rat"/>
+                    <constraint firstItem="5ye-gn-lH0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="tLV-4k-M4p"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

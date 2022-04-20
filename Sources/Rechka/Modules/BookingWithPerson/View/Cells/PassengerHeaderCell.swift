@@ -13,6 +13,11 @@ protocol _PassengerHeaderCell: CellData {
 }
 
 extension _PassengerHeaderCell {
+    
+    var height: CGFloat {
+        return 50
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? PassengerHeaderCell else { return }
         cell.configure(with: self)
@@ -32,7 +37,6 @@ class PassengerHeaderCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont(name: "MoscowSans-Bold", size: 20)
     }
 
     public func configure(with data: _PassengerHeaderCell) {

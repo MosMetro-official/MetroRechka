@@ -44,5 +44,4 @@ extension URLRequest {
         self.setValue(Rechka.shared.deviceUserAgent, forHTTPHeaderField: Headers.userAgentHeader.rawValue)
         self.setValue(Rechka.shared.language, forHTTPHeaderField: Headers.languageHeader.rawValue)
     }
-    
 }

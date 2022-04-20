@@ -28,6 +28,7 @@ internal final class R_LoadingView : UIView {
         spinner.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

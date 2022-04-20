@@ -8,16 +8,20 @@
 import UIKit
 
 extension UIViewController {
-    func dismissKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+    func setupRiverBackButton() {
+        navigationItem.hidesBackButton = true
+        let backItem = UIBarButtonItem(
+            image: UIImage(named: "backButton", in: .module, compatibleWith: nil)!,
+            style: .plain,
             target: self,
-            action: #selector(UIViewController.dismissKeyb)
+            action: #selector(riverBackButtonPressed)
         )
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+        navigationItem.leftBarButtonItem = backItem
     }
     
-    @objc func dismissKeyb() {
-        view.endEditing(true)
+    @objc
+    private func riverBackButtonPressed() {
+        guard let navigation = self.navigationController else { return }
+        navigation.popViewController(animated: true)
     }
 }

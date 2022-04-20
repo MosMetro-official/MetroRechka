@@ -11,7 +11,6 @@ import CoreTableView
 
 internal final class R_BlurRefundController : UIViewController {
     
-    
     public var ticket: RiverOperationTicket? {
         didSet {
             guard let ticket = ticket else { return }
@@ -70,19 +69,14 @@ internal final class R_BlurRefundController : UIViewController {
             Task.detached { [weak self] in
                 guard let self = self else { return}
                 await self.makeState(for: refund, ticket: ticket)
-                
             }
         }
     }
     
-    
-    
- 
     private let nestedView = R_BlurRefundView.loadFromNib()
     
     override func loadView() {
         self.view = nestedView
-        
     }
     
     override func viewDidLoad() {
@@ -112,14 +106,11 @@ extension R_BlurRefundController {
     private func makeState(for refund: RiverTicketRefund, ticket: RiverOperationTicket) async {
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
-            
         }
         
         let onSubmit = Command { [weak self] in
             guard let self = self else { return }
             self.startRefundConfirm()
-            
-        
         }
         
         var refundAmount = "Вам вернется \(refund.refundPrice) ₽ за билет"
@@ -129,7 +120,6 @@ extension R_BlurRefundController {
             refundAmount = "\(refundAmount) и \(totalAdditionRefund) ₽ за дополнительные услуги: \(additionsStr)"
         }
         let comission = ticket.price - refund.refundPrice
-        
         let comissionStr: String = {
             if comission == 0 {
                 return "Комиссии нет"
@@ -137,7 +127,6 @@ extension R_BlurRefundController {
                 return "Комиссия - \(comission) ₽"
             }
         }()
-        
         let state = R_BlurRefundView.ViewState.LoadedState(refunAmount: refundAmount,
                                                          comission: comissionStr,
                                                          onSubmit: onSubmit,
