@@ -8,7 +8,7 @@ public class Rechka {
     // TODO: - struct Settings
     public static let shared = Rechka()
     
-    public var token : String?
+    public var token : String? 
     
     public var failURL = "riverexample://main/riverPaymentFailure"
     

@@ -60,13 +60,15 @@ struct R_User: Equatable {
             resultingList.updateValue(gender.rawValue, forKey: "passengerGender")
         }
         
-        if let phoneNumber = phoneNumber {
+        if var phoneNumber = phoneNumber {
+            phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
+            phoneNumber = phoneNumber.replacingOccurrences(of: "+", with: "")
             resultingList.updateValue(phoneNumber, forKey: "passengerPhone")
         }
         
-        if let document = document {
+        if let document = document, let cardIdentityNumber = document.cardIdentityNumber {
             resultingList.updateValue(document.id, forKey: "cardIdentityId")
-            resultingList.updateValue(document.cardIdentityNumber!, forKey: "cardIdentityNumber")
+            resultingList.updateValue(cardIdentityNumber, forKey: "cardIdentityNumber")
         }
         
         if let citizenShip = citizenShip {

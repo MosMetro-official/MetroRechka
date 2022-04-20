@@ -16,10 +16,6 @@ protocol _TicketInfo : CellData {
 
 extension _TicketInfo {
     
-    var height: CGFloat {
-        return 46
-    }
-    
     func hashValues() -> [Int] {
         return [
             title.hashValue,

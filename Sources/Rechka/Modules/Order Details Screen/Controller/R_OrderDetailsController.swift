@@ -156,10 +156,7 @@ internal final class R_OrderDetailsController : UIViewController {
             onClose: onClose
         )
         
-        let onCloseToast: () -> () = { [weak self] in
-            guard let self = self else { return }
-            R_Toast.remove(from: self.nestedView)
-        }
+      
         self.set(state: loadingState)
         RiverOrder.get(by: id) { [weak self] result in
             guard let self = self else { return }
@@ -438,19 +435,33 @@ internal final class R_OrderDetailsController : UIViewController {
             title: "Информация:"
         ).toElement()
         
+        
+        let stackViewBounds = (UIScreen.main.bounds.width - 40 - 32 - 24 - 8) / 2
+        let font = Appearance.customFonts[.subhead] ?? UIFont.systemFont(ofSize: 15, weight: .regular)
+        
+        func height(for text: String) -> CGFloat {
+            return text.height(withConstrainedWidth: stackViewBounds, font: font) + 24
+        }
+        
         let status = R_OrderDetailsView.ViewState.TicketInfo(
+            height: height(for: statusString),
             title: "Статус",
             descr: statusString,
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
+        
+        
         let bookDate = R_OrderDetailsView.ViewState.TicketInfo(
+            height: height(for: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm")),
             title: "Дата брони",
             descr: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm"),
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
+        
         let orderNumber = R_OrderDetailsView.ViewState.TicketInfo(
+            height: height(for: "\(order.operation.id)"),
             title: "Номер заказа",
             descr: "\(order.operation.id)",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
@@ -461,12 +472,14 @@ internal final class R_OrderDetailsController : UIViewController {
         }
         let totalPrice = order.operation.totalPrice + additionsPrice
         let totalPriceData = R_OrderDetailsView.ViewState.TicketInfo(
+            height: height(for: "\(totalPrice) ₽"),
             title: "Общая цена",
             descr: "\(totalPrice) ₽",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
         ).toElement()
         
         let routeName = R_OrderDetailsView.ViewState.TicketInfo(
+            height: height(for: "\(order.operation.routeName)"),
             title: "Маршрут",
             descr: "\(order.operation.routeName)",
             image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!

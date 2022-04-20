@@ -97,8 +97,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             }
         } else {
             let vc = R_UnauthorizedController()
-            vc.onLogin = Command(action: { [weak self] in
-                guard let self = self else { return }
+            vc.onLogin = Command(action: { 
                 guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else { return }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)

@@ -34,14 +34,18 @@ class R_HomeView: UIView {
             let listData: [ListItem]?
         }
         
-        struct Station: _StationCell {
+        struct Route: _R_RouteTableViewCell {
+            var title: String
+            
+            var time: String
+            
+            var station: String
+            
+            var priceButtonTitle: String
+            
             var imageURL: String?
-            let title: String
-            let jetty: String
-            let time: String
-            let tickets: Bool
-            let price: String
-            let onSelect: (() -> Void)
+            
+            var onItemSelect: Command<Void>
         }
         
         struct Error: _R_ErrorCell {
