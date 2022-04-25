@@ -31,9 +31,7 @@ class R_PlaceController: UIViewController {
     var places: [Int] = [] {
         didSet {
             shouldPerformFirstSet = true
-            Task.detached { [weak self] in
-                await self?.makeState()
-            }
+            self.makeState()
         }
     }
     /// Говорит о том, что если уже было выбрано место и мы открываем контроллер с этим местом, то не трогать стейт
@@ -42,14 +40,10 @@ class R_PlaceController: UIViewController {
     var selectedPlace: Int? {
         didSet {
             if shouldPerformFirstSet {
-                Task.detached { [weak self] in
-                    await self?.makeState()
-                    try await Task.sleep(nanoseconds: 0_100_000_000)
-                    await MainActor.run { [weak self] in
-                        guard let self = self, let selectedPlace = self.selectedPlace else { return }
-                        self.onPlaceSelect?.perform(with: selectedPlace)
-                        self.dismiss(animated: true, completion: nil)
-                    }
+                self.makeState()
+                if let selectedPlace = self.selectedPlace {
+                    self.onPlaceSelect?.perform(with: selectedPlace)
+                    self.dismiss(animated: true, completion: nil)
                 }
                 shouldPerformFirstSet = false
             }
@@ -86,7 +80,7 @@ class R_PlaceController: UIViewController {
 
 extension R_PlaceController {
     
-    private func makeState() async {
+    private func makeState() {
         let seatsData: [R_PlaceView.ViewState.Seat] = places.map { place in
             var isSelected = false
             if let currentlySelected = self.selectedPlace {
@@ -98,9 +92,7 @@ extension R_PlaceController {
             
             return .init(text: "\(place)", isSelected: isSelected, isUnvailable: false, onSelect: onSelect)
         }
-        await MainActor.run { [weak self] in
-            self?.mainView.viewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать с реальной", dataState: .loaded, items: seatsData)
-        }
         
+        self.mainView.viewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать с реальной", dataState: .loaded, items: seatsData)
     }
 }

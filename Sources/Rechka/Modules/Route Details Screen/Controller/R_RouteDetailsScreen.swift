@@ -91,11 +91,7 @@ internal class R_RouteDetailsController: UIViewController {
     private var isTextCollapsed = true {
         didSet {
             if let route = route {
-                Task.detached { [weak self] in
-                    guard let self = self else { return }
-                    let state = await self.makeState(with: route)
-                    await self.setState(state)
-                }
+                self.makeState(with: route)
             }
         }
     }
@@ -104,11 +100,7 @@ internal class R_RouteDetailsController: UIViewController {
     
     private func createState() {
         if let route = route {
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                let state = await self.makeState(with: route)
-                await self.setState(state)
-            }
+            self.makeState(with: route)
         }
     }
     
@@ -225,7 +217,7 @@ internal class R_RouteDetailsController: UIViewController {
         
     }
     
-    func makeState(with model: R_Route) async -> R_RootDetailStationView.ViewState {
+    func makeState(with model: R_Route) {
         var resultSections = [State]()
         var main = [Element]()
         if let gallery = model.galleries.first, let desc = gallery.galleryDescription {
@@ -345,7 +337,7 @@ internal class R_RouteDetailsController: UIViewController {
             }
         }
         R_ReportService.shared.report(event: "river.detailscreen.stateCreated", parameters: ["resultSections": "\(resultSections.count)", "modelTripsCount": model.shortTrips.count])
-        return .init(
+        let state = R_RootDetailStationView.ViewState(
             state: resultSections,
             dataState: .loaded,
             onChoice: self.selectedTripId == nil ? nil : onChoice,
@@ -353,6 +345,7 @@ internal class R_RouteDetailsController: UIViewController {
             posterTitle: model.name,
             posterImageURL: imageURL
         )
+        self.nestedView.viewState = state
     }
     
     private func showRouteOnMap() {

@@ -64,12 +64,7 @@ internal final class R_BlurRefundController : UIViewController {
     private var refund: RiverTicketRefund? {
         didSet {
             guard let refund = refund, let ticket = ticket else { return }
-            print(refund)
-            print("dass")
-            Task.detached { [weak self] in
-                guard let self = self else { return}
-                await self.makeState(for: refund, ticket: ticket)
-            }
+            self.makeState(for: refund, ticket: ticket)
         }
     }
     
@@ -103,7 +98,7 @@ extension R_BlurRefundController {
      
     }
     
-    private func makeState(for refund: RiverTicketRefund, ticket: RiverOperationTicket) async {
+    private func makeState(for refund: RiverTicketRefund, ticket: RiverOperationTicket) {
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
@@ -131,9 +126,7 @@ extension R_BlurRefundController {
                                                          comission: comissionStr,
                                                          onSubmit: onSubmit,
                                                          onClose: onClose)
-        await MainActor.run {
-            self.nestedView.viewState = .loaded(state)
-        }
+        self.nestedView.viewState = .loaded(state)
     }
     
 //    private func makeState() async -> BlurRefundView.ViewState {

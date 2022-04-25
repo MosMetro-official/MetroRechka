@@ -22,11 +22,7 @@ class PDFDocumentController: UIViewController {
     
     var filePath: URL? {
         didSet {
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                let state = await self.makeState()
-                await self.set(state: state)
-            }
+            self.makeState()
         }
     }
     
@@ -67,7 +63,7 @@ extension PDFDocumentController {
         self.filePath = filePath
     }
     
-    private func makeState() async -> R_PDFDocView.ViewState {
+    private func makeState() {
         if let filePath = self.filePath {
             let onSave = Command { [weak self] in
                 guard let self = self else { return }
@@ -79,9 +75,14 @@ extension PDFDocumentController {
                 self?.dismiss(animated: true, completion: nil)
             }
             if let pdfDoc = PDFDocument(url: filePath) {
-                return .init(onSave: onSave, dataState: .loaded(pdfDoc), onClose: onClose)
+                let state = R_PDFDocView.ViewState(onSave: onSave, dataState: .loaded(pdfDoc), onClose: onClose)
+                self.pdfView.viewState = state
+                return
             }
         }
-        return .init(onSave: nil, dataState: .error, onClose: nil)
+        
+        let state = R_PDFDocView.ViewState(onSave: nil, dataState: .error, onClose: nil)
+        self.pdfView.viewState = state
+        return
     }
 }

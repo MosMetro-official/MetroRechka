@@ -23,14 +23,12 @@ internal final class R_OrderDetailsController : UIViewController {
     public var order: RiverOrder? {
         didSet {
             guard let order = order else { return }
-            Task.detached { [weak self] in
-                guard let self = self else { return }
-                let state = await self.makeState(for: order)
-                await self.set(state: state)
-                if order.operation.status == .booked && order.operation.timeLeftToCancel > 0 {
-                    await self.set(seconds: order.operation.timeLeftToCancel)
-                }
+            self.makeState(for: order)
+            if order.operation.status == .booked && order.operation.timeLeftToCancel > 0 {
+                self.seconds = order.operation.timeLeftToCancel
             }
+            
+            
         }
     }
     
@@ -54,11 +52,7 @@ internal final class R_OrderDetailsController : UIViewController {
             }
             
             if seconds > 0 {
-                Task.detached { [weak self] in
-                    guard let self = self else { return }
-                    let state = await self.makeState(for: order)
-                    await self.set(state: state)
-                }
+                self.makeState(for: order)
             } else {
                 self.removeTimer()
             }
@@ -292,7 +286,7 @@ internal final class R_OrderDetailsController : UIViewController {
         
     }
     
-    private func makeState(for order: RiverOrder) async -> R_OrderDetailsView.ViewState {
+    private func makeState(for order: RiverOrder) {
         var resultigState = [State]()
         // Status
         let statusString: String = {
@@ -345,7 +339,7 @@ internal final class R_OrderDetailsController : UIViewController {
             
             let endBookingDate = order.operation.orderDate + seconds.seconds
             let period = endBookingDate - order.operation.orderDate
-            guard let minute = period.minute, let seconds = period.second else { return .init(dataState: .loaded, state: [], onClose: nil)}
+            guard let minute = period.minute, let seconds = period.second else { return }
             let minuteStr = minute < 10 ? "0\(minute)" : "\(minute)"
             let secondsStr = seconds < 10 ? "0\(seconds)" : "\(seconds)"
             
@@ -492,7 +486,8 @@ internal final class R_OrderDetailsController : UIViewController {
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
-        return .init(dataState: .loaded, state: resultigState, onClose: onClose)
+        let state = R_OrderDetailsView.ViewState(dataState: .loaded, state: resultigState, onClose: onClose)
+        self.nestedView.viewState = state
         
     }
     

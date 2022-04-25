@@ -21,13 +21,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
  
     var selectedTarrifs: SelectionModel = .init(selectedTarrifs: [:], additionServices: [:]) {
         didSet {
-            Task.detached { [weak self] in
-                guard let selectedTarrifs = await self?.selectedTarrifs,
-                      let state = await self?.makeState(with: selectedTarrifs) else {
-                    return
-                }
-                await self?.set(state: state)
-            }
+            self.makeState(with: selectedTarrifs)
         }
     }
     
@@ -190,7 +184,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             
         } else {
             let vc = R_UnauthorizedController()
-            vc.onLogin = Command(action: { [weak self] in
+            vc.onLogin = Command(action: { 
                 guard let url = URL(string: Rechka.shared.openAuthDeeplink), UIApplication.shared.canOpenURL(url) else {
                     return
                 }
@@ -216,8 +210,8 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         }
     }
     
-    private func makeState(with model: SelectionModel) async -> R_BookingWithoutPersonView.ViewState? {
-        guard let mainModel = self.model else { return nil }
+    private func makeState(with model: SelectionModel) {
+        guard let mainModel = self.model else { return }
         
         let normalHeight = 72.0
         let bigHeight = 100.0
@@ -367,7 +361,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 return nil
             }
         }()
-        
-        return .init(title: mainModel.name, state: resultStates, dataState: .loaded, onBooking: onBooking)
+        let state = R_BookingWithoutPersonView.ViewState(title: mainModel.name, state: resultStates, dataState: .loaded, onBooking: onBooking)
+        self.nestedView.viewState = state
     }
 }

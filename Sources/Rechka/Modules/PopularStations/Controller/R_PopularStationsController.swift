@@ -80,7 +80,7 @@ internal final class R_PopularStationsController : UIViewController {
             case .success(let routesResponse):
                 self.searchResponse = routesResponse
                 dispatchGroup.leave()
-            case .failure(let error):
+            case .failure:
                 DispatchQueue.main.async {
                     let onSelect: () -> Void = { [weak self] in
                         guard let self = self else { return }
@@ -160,9 +160,7 @@ internal final class R_PopularStationsController : UIViewController {
     private func createState(for routes: [R_Route]) -> State {
         let elements: [Element] = routes.map { route in
             let firstStation = route.stations.first?.name ?? ""
-            let onPay: () -> () = { [weak self] in
-                self?.pushDetail(with: route.id)
-            }
+
             
             var imageURL: String? = nil
             if let routeFirstGallery = route.galleries.first, let firstURL = routeFirstGallery.urls.first {

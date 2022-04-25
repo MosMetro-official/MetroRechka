@@ -32,7 +32,7 @@ internal final class R_BookingScreenController : UIViewController {
                 switch result {
                 case .success(let order):
                     self.model = order
-                case .failure(let error):
+                case .failure:
                     print("error")
                 }
             }
