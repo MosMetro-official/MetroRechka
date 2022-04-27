@@ -134,7 +134,7 @@ internal final class R_BookingScreenView : UIView {
     
     internal let backButton : UIButton = {
         let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "cross", in: .module, with: nil), for: .normal)
+        button.setBackgroundImage(UIImage(named: "cross", in: Rechka.shared.bundle, with: nil), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(popToRoot), for: .touchUpInside)
         return button

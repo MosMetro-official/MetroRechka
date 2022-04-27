@@ -96,7 +96,7 @@ internal final class R_PosterTableHeaderView : UIView {
     
     public func configurePosterHeader(with title: String?, and imageURL: String?) {
         titleLabel.text = title
-        imageView.image = UIImage(named: "poster", in: .module, with: nil)
+        imageView.image = UIImage(named: "poster", in: Rechka.shared.bundle, with: nil)
         self.imageURL = imageURL
     }
     

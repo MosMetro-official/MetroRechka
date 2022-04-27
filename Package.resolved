@@ -5,9 +5,9 @@
         "package": "CoreNetwork",
         "repositoryURL": "https://github.com/MosMetro-official/CoreNetwork",
         "state": {
-          "branch": "callbacks",
-          "revision": "e48055ae187b2280a99832a9a5fe68815b27f70f",
-          "version": null
+          "branch": null,
+          "revision": "94125eef8fc08cb30a4807aff420fe34555b11f4",
+          "version": "0.0.1-callbacks"
         }
       },
       {
@@ -17,6 +17,24 @@
           "branch": null,
           "revision": "a367f9b0dd5679d64078a6defcd21463d0e30c97",
           "version": "0.0.3"
+        }
+      },
+      {
+        "package": "YandexMobileMetrica",
+        "repositoryURL": "https://github.com/yandexmobile/metrica-sdk-ios",
+        "state": {
+          "branch": null,
+          "revision": "56a79b9224ead8f186834bcebe4a8a83a50ee024",
+          "version": "3.17.0"
+        }
+      },
+      {
+        "package": "SDWebImage",
+        "repositoryURL": "https://github.com/SDWebImage/SDWebImage.git",
+        "state": {
+          "branch": null,
+          "revision": "2e63d0061da449ad0ed130768d05dceb1496de44",
+          "version": "5.12.5"
         }
       },
       {

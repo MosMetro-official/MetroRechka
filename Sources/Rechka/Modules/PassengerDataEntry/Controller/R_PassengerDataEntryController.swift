@@ -179,8 +179,8 @@ extension R_PassengerDataEntryController {
         let serialIsOnScreen = self.displayRiverUser?.document == nil ? 5 : 6
         let isLast = serialIsOnScreen == index
         
-        let nextEndImage = UIImage(named: "addPlus", in: .module, with: nil)
-        let nextImage = UIImage(named: "backButton", in: .module, with: nil)
+        let nextEndImage = UIImage(named: "addPlus", in: Rechka.shared.bundle, with: nil)
+        let nextImage = UIImage(named: "backButton", in: Rechka.shared.bundle, with: nil)
         
         return .init(
             id: index,

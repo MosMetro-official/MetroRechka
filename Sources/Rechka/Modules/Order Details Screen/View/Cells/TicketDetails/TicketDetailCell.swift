@@ -40,7 +40,7 @@ extension _TicketDetail {
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: TicketDetailCell.identifire, bundle: .module), forCellReuseIdentifier: TicketDetailCell.identifire)
+        tableView.register(UINib(nibName: TicketDetailCell.identifire, bundle: Rechka.shared.bundle), forCellReuseIdentifier: TicketDetailCell.identifire)
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: TicketDetailCell.identifire, for: indexPath) as? TicketDetailCell
         else { return .init() }

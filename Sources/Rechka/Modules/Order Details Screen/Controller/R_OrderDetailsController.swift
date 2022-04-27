@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
-import CoreNetwork
+import MMCoreNetwork
 
 internal final class R_OrderDetailsController : UIViewController {
     
@@ -303,11 +303,11 @@ internal final class R_OrderDetailsController : UIViewController {
         let statusImage: UIImage = {
             switch order.operation.status {
             case .success:
-                return UIImage(named: "checkmark", in: .module, compatibleWith: nil) ?? UIImage()
+                return UIImage(named: "checkmark", in: Rechka.shared.bundle, compatibleWith: nil) ?? UIImage()
             case .canceled:
-                return UIImage(named: "result_error", in: .module, compatibleWith: nil) ?? UIImage()
+                return UIImage(named: "result_error", in: Rechka.shared.bundle, compatibleWith: nil) ?? UIImage()
             case .booked:
-                return UIImage(named: "payment_waiting", in: .module, compatibleWith: nil) ?? UIImage()
+                return UIImage(named: "payment_waiting", in: Rechka.shared.bundle, compatibleWith: nil) ?? UIImage()
             }
         }()
         
@@ -441,7 +441,7 @@ internal final class R_OrderDetailsController : UIViewController {
             height: height(for: statusString),
             title: "Статус",
             descr: statusString,
-            image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
+            image: UIImage(named: "ticket_info_check", in: Rechka.shared.bundle, compatibleWith: nil)!
         ).toElement()
         
         
@@ -450,7 +450,7 @@ internal final class R_OrderDetailsController : UIViewController {
             height: height(for: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm")),
             title: "Дата брони",
             descr: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm"),
-            image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
+            image: UIImage(named: "ticket_info_check", in: Rechka.shared.bundle, compatibleWith: nil)!
         ).toElement()
         
         
@@ -458,7 +458,7 @@ internal final class R_OrderDetailsController : UIViewController {
             height: height(for: "\(order.operation.id)"),
             title: "Номер заказа",
             descr: "\(order.operation.id)",
-            image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
+            image: UIImage(named: "ticket_info_check", in: Rechka.shared.bundle, compatibleWith: nil)!
         ).toElement()
         
         let additionsPrice = order.operation.tickets.reduce(0) { partialResult, ticket in
@@ -469,14 +469,14 @@ internal final class R_OrderDetailsController : UIViewController {
             height: height(for: "\(totalPrice) ₽"),
             title: "Общая цена",
             descr: "\(totalPrice) ₽",
-            image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
+            image: UIImage(named: "ticket_info_check", in: Rechka.shared.bundle, compatibleWith: nil)!
         ).toElement()
         
         let routeName = R_OrderDetailsView.ViewState.TicketInfo(
             height: height(for: "\(order.operation.routeName)"),
             title: "Маршрут",
             descr: "\(order.operation.routeName)",
-            image: UIImage(named: "ticket_info_check", in: .module, compatibleWith: nil)!
+            image: UIImage(named: "ticket_info_check", in: Rechka.shared.bundle, compatibleWith: nil)!
         ).toElement()
         
         let infoBlock = State(model: .init(header: nil, footer: nil), elements: [title,status,bookDate,orderNumber,totalPriceData,routeName])

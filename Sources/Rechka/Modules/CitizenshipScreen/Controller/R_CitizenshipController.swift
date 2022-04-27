@@ -53,7 +53,7 @@ class R_CitizenshipController : UIViewController {
                     self?.dismiss(animated: true)
                 }
                 let error = R_CitizenshipView.ViewState.Error(
-                    image: UIImage(named: "result_error", in: .module, with: nil) ?? UIImage(),
+                    image: UIImage(named: "result_error", in: Rechka.shared.bundle, with: nil) ?? UIImage(),
                     title: "ЧТО-ТО ПОШЛО НЕ ТАК 😢",
                     action: actionReload,
                     buttonTitle: "Повторить",

@@ -22,5 +22,5 @@ Templates
 *.xcworkspacedata
 
 #Example
-Example/Pods
-Example/Podfile.lock
+Pods
+Podfile.lock

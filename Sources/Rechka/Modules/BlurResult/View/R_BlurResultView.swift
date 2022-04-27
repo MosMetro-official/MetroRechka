@@ -67,12 +67,12 @@ internal final class R_BlurResultView : UIView {
     @MainActor
     private func handleSuccess() {
         retryButton.isHidden = false
-        resultImage.image = UIImage(named: "checkmark", in: .module, compatibleWith: nil)
+        resultImage.image = UIImage(named: "checkmark", in: Rechka.shared.bundle, compatibleWith: nil)
     }
     
     @MainActor
     private func handleFailure() {
         closeButton.backgroundColor = .clear
-        resultImage.image = UIImage(named: "result_error", in: .module, compatibleWith: nil)
+        resultImage.image = UIImage(named: "result_error", in: Rechka.shared.bundle, compatibleWith: nil)
     }
 }

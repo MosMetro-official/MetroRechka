@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 import SwiftDate
-import CoreNetwork
+import MMCoreNetwork
 
 internal final class R_TicketsHistoryController: UIViewController {
     
@@ -106,7 +106,7 @@ internal final class R_TicketsHistoryController: UIViewController {
         if orders.isEmpty {
             let empty = R_TicketsHistoryView.ViewState.Empty(
                 title: "У вас пока нет заказов, совершите первую покупку, и она появится тут",
-                image: UIImage(named: "river_empty_bag", in: .module, with: nil) ?? UIImage())
+                image: UIImage(named: "river_empty_bag", in: Rechka.shared.bundle, with: nil) ?? UIImage())
                 .toElement()
             let state = State(model: .init(header: nil, footer: nil), elements: [empty])
             return [state]

@@ -31,7 +31,7 @@ extension _R_OrderPaymentTableViewCell {
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: R_OrderPaymentTableViewCell.identifire, bundle: .module), forCellReuseIdentifier: R_OrderPaymentTableViewCell.identifire)
+        tableView.register(UINib(nibName: R_OrderPaymentTableViewCell.identifire, bundle: Rechka.shared.bundle), forCellReuseIdentifier: R_OrderPaymentTableViewCell.identifire)
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: R_OrderPaymentTableViewCell.identifire, for: indexPath) as? R_OrderPaymentTableViewCell
         else { return .init() }

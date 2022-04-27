@@ -32,7 +32,7 @@ extension _TripSelectionCell {
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: TripSelectionCell.identifire, bundle: .module), forCellReuseIdentifier: TripSelectionCell.identifire)
+        tableView.register(UINib(nibName: TripSelectionCell.identifire, bundle: Rechka.shared.bundle), forCellReuseIdentifier: TripSelectionCell.identifire)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TripSelectionCell.identifire, for: indexPath) as? TripSelectionCell else { return .init() }
         return cell
     }

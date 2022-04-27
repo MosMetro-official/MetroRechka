@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 struct R_Document: Equatable {
     let id: Int
@@ -19,7 +19,7 @@ struct R_Document: Equatable {
     let exampleNumber: String
     var cardIdentityNumber: String?
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard
             let id = data["id"].int,
             let name = data["name"].string,
@@ -44,7 +44,7 @@ struct R_Document: Equatable {
         client.send(.GET(path: "/api/references/v1/idCards/\(id)")) { result in
             switch result {
             case .success(let repsonse):
-                let json = CoreNetwork.JSON(repsonse.data)
+                let json = JSON(repsonse.data)
                 guard let array = json["data"].array else {
                     completion(.failure(.badMapping))
                     return

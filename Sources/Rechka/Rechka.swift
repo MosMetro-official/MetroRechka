@@ -1,9 +1,13 @@
 import UIKit
 import SwiftDate
 
-public let fontBundle = Bundle.module
+
 
 public class Rechka {
+    
+    var bundle: Bundle {
+        return Bundle(for: type(of: self))
+    }
     
     // TODO: - struct Settings
     public static let shared = Rechka()
@@ -45,9 +49,9 @@ public class Rechka {
     
     /// Need to call in AppDelegate or SceneDelegate to register custom fonts from package
     public static func registerFonts() {
-        _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Bold", fontExtension: "otf")
-        _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Regular", fontExtension: "otf")
-        _ = UIFont.registerFont(bundle: .module, fontName: "MoscowSans-Medium", fontExtension: "otf")
+        _ = UIFont.registerFont(bundle: Rechka.shared.bundle, fontName: "MoscowSans-Bold", fontExtension: "otf")
+        _ = UIFont.registerFont(bundle: Rechka.shared.bundle, fontName: "MoscowSans-Regular", fontExtension: "otf")
+        _ = UIFont.registerFont(bundle: Rechka.shared.bundle, fontName: "MoscowSans-Medium", fontExtension: "otf")
     }
         
     internal var deviceOS : String {

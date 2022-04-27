@@ -26,7 +26,7 @@ extension _Summary {
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: SummaryCell.identifire, bundle: .module), forCellReuseIdentifier: SummaryCell.identifire)
+        tableView.register(UINib(nibName: SummaryCell.identifire, bundle: Rechka.shared.bundle), forCellReuseIdentifier: SummaryCell.identifire)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SummaryCell.identifire, for: indexPath) as? SummaryCell else { return .init() }
         return cell
     }

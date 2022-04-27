@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 
 struct RechkaHistoryResponse {
@@ -15,7 +15,7 @@ struct RechkaHistoryResponse {
     let totalElements: Int
     var orders: [RechkaShortOrder]
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let ordersArray = data["items"].array else { return nil }
         self.page = data["page"].intValue
         self.totalPages = data["totalPages"].intValue
@@ -33,10 +33,10 @@ struct RechkaShortOrder {
     let createdDate: Date
     let totalPrice: Double
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let id = data["id"].int,
               let status = RechkaOrderStatus(rawValue: data["status"].intValue),
-              let createdDate = data["operation"]["dateTimeOrder"].stringValue.toISODate(nil, region: nil)?.date else { return nil }
+              let createdDate = data["operation"]["dateTimeOrder"].stringValue.toISODate(nil, region: .UTC)?.date else { return nil }
         self.id = id
         self.operationID = data["operation"]["id"].intValue
         self.status = status
@@ -56,7 +56,7 @@ extension RechkaShortOrder {
         client.send(.GET(path: "/api/orders/v1/", query: query)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let response = RechkaHistoryResponse(data: json["data"]) else {
                     completion(.failure(.badMapping))
                     return

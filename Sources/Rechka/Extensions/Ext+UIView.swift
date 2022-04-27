@@ -46,8 +46,7 @@ extension UIView {
         - none
      */
     static internal func loadFromNib() -> Self {
-        let bundle = Bundle.module
-        let nib = UINib(nibName: String(describing: self), bundle: bundle)
+        let nib = UINib(nibName: String(describing: self), bundle: Rechka.shared.bundle)
         return nib.instantiate(withOwner: nil, options: nil).first as! Self
     }
     

@@ -27,7 +27,7 @@ extension _R_ErrorCell {
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: R_ErrorCell.identifire, bundle: .module), forCellReuseIdentifier: R_ErrorCell.identifire)
+        tableView.register(UINib(nibName: R_ErrorCell.identifire, bundle: Rechka.shared.bundle), forCellReuseIdentifier: R_ErrorCell.identifire)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: R_ErrorCell.identifire, for: indexPath) as? R_ErrorCell else { return .init() }
         return cell
     }

@@ -17,7 +17,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="R_HomeView" customModule="Rechka">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="R_HomeView" customModule="MetroRechka">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -50,9 +50,6 @@
                                                 <state key="normal" title="Даты" image="calendar" catalog="system">
                                                     <color key="titleColor" name="textSecondary"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="handleDate:" destination="iN0-l3-epB" eventType="touchUpInside" id="CnV-jf-uz4"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cjO-JB-vom">
                                                 <rect key="frame" x="190.5" y="0.0" width="183.5" height="40"/>
@@ -67,9 +64,6 @@
                                                 <state key="normal" title="Причал" image="sheep">
                                                     <color key="titleColor" name="textSecondary"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="handleStation:" destination="iN0-l3-epB" eventType="touchUpInside" id="qXg-p1-hHw"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -89,9 +83,6 @@
                                         <state key="normal" title="Категория" image="chevron.down" catalog="system">
                                             <color key="titleColor" name="textSecondary"/>
                                         </state>
-                                        <connections>
-                                            <action selector="handleCategories:" destination="iN0-l3-epB" eventType="touchUpInside" id="7Sn-1R-IAh"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x71-iP-oQn">
                                         <rect key="frame" x="0.0" y="96" width="374" height="40"/>
@@ -105,10 +96,6 @@
                                         <state key="normal" title="Сбросить фильтры">
                                             <color key="titleColor" systemColor="systemRedColor"/>
                                         </state>
-                                        <connections>
-                                            <action selector="handleCategories:" destination="iN0-l3-epB" eventType="touchUpInside" id="06k-zY-LxD"/>
-                                            <action selector="handleClear:" destination="iN0-l3-epB" eventType="touchUpInside" id="lnp-8g-KRQ"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -135,14 +122,14 @@
                 <constraint firstItem="Esa-sf-l7T" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="zFM-QM-YS9"/>
             </constraints>
             <connections>
-                <outlet property="categoriesButton" destination="lND-7b-gmk" id="j3B-bh-fq0"/>
-                <outlet property="clearButton" destination="x71-iP-oQn" id="dTT-y0-dTv"/>
-                <outlet property="clearButtonHeightAnchor" destination="UzF-tp-MXr" id="Mjr-FQ-EZg"/>
-                <outlet property="dateButton" destination="Dqb-xb-s6a" id="A3V-kR-0fu"/>
-                <outlet property="effectView" destination="Esa-sf-l7T" id="gN5-FE-AGL"/>
-                <outlet property="stationButton" destination="cjO-JB-vom" id="R85-53-uc7"/>
-                <outlet property="tableView" destination="esS-sv-NJc" id="GGs-UY-Ppx"/>
-                <outlet property="verticalStackView" destination="NB2-ls-eIP" id="dc6-8g-Z2C"/>
+                <outlet property="categoriesButton" destination="lND-7b-gmk" id="UcM-HV-Z3M"/>
+                <outlet property="clearButton" destination="x71-iP-oQn" id="Iof-w0-Szr"/>
+                <outlet property="clearButtonHeightAnchor" destination="UzF-tp-MXr" id="Znf-dc-t7i"/>
+                <outlet property="dateButton" destination="Dqb-xb-s6a" id="pLe-fx-ckF"/>
+                <outlet property="effectView" destination="Esa-sf-l7T" id="KMz-uh-usp"/>
+                <outlet property="stationButton" destination="cjO-JB-vom" id="94s-hP-JZZ"/>
+                <outlet property="tableView" destination="esS-sv-NJc" id="zeh-AG-l32"/>
+                <outlet property="verticalStackView" destination="NB2-ls-eIP" id="rPy-hz-EeN"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
         </view>
@@ -150,7 +137,7 @@
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
         <image name="chevron.down" catalog="system" width="128" height="72"/>
-        <image name="sheep" width="14" height="13"/>
+        <image name="sheep" width="16" height="16"/>
         <namedColor name="base">
             <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

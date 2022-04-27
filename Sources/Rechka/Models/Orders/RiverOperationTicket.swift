@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 import SwiftDate
 
 struct RiverTicketRefund {
@@ -16,12 +16,12 @@ struct RiverTicketRefund {
     let totalPriceRefund: Double
     let additionRefunds: [R_OperationAdditionServiceRefund]
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let ticketID = data["id"].int else { return nil }
         self.ticketID = ticketID
         
         self.refundPrice = data["ticketPriceRefund"].doubleValue
-        self.refundDate  = data["dateTimeRefund"].stringValue.toISODate(nil, region: nil)?.date
+        self.refundDate  = data["dateTimeRefund"].stringValue.toISODate(nil, region: .UTC)?.date
         self.totalPriceRefund = data["totalPriceRefund"].doubleValue
         self.additionRefunds = data["additionServicesRefund"].arrayValue.compactMap { R_OperationAdditionServiceRefund(data: $0) }
     }
@@ -40,7 +40,7 @@ struct R_OperationAdditionServiceRefund {
     let priceTotalRefund: Double
     let date: Date?
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let id = data["id"].string else { return nil }
         self.id = id
         self.name = data["name"].stringValue
@@ -51,7 +51,7 @@ struct R_OperationAdditionServiceRefund {
         self.priceTotal = data["priceTotal"].doubleValue
         self.pricePerOneRefund = data["pricePerOneRefund"].doubleValue
         self.priceTotalRefund = data["priceTotalRefund"].doubleValue
-        self.date = data["dateTimeRefund"].stringValue.toISODate(nil, region: nil)?.date
+        self.date = data["dateTimeRefund"].stringValue.toISODate(nil, region: .UTC)?.date
     }
     
 }
@@ -64,7 +64,7 @@ struct R_OperationAdditionService {
     let totalPrice: Double
     let type: Int
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let id = data["id"].string else { return nil }
         self.id = id
         self.pricePerOne = data["pricePerOne"].doubleValue
@@ -100,10 +100,10 @@ struct RiverOperationTicket {
     let additionServices: [R_OperationAdditionService]
     
     
-    init?(data: CoreNetwork.JSON, parentOrderID: Int) {
+    init?(data: JSON, parentOrderID: Int) {
         guard let id = data["id"].int,
-              let dateTimeStart = data["dateTimeStart"].stringValue.toISODate(nil, region: nil)?.date,
-              let dateTimeEnd = data["dateTimeEnd"].stringValue.toISODate(nil, region: nil)?.date,
+              let dateTimeStart = data["dateTimeStart"].stringValue.toISODate(nil, region: .UTC)?.date,
+              let dateTimeEnd = data["dateTimeEnd"].stringValue.toISODate(nil, region: .UTC)?.date,
         let status = Status(rawValue: data["status"].intValue) else { return nil }
         self.id = id
         self.parentOrderID = parentOrderID
@@ -150,7 +150,7 @@ extension RiverOperationTicket {
         client.send(.GET(path: path, query: nil)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let refund = RiverTicketRefund(data: json["data"]) else {
                     completion(.failure(.badMapping))
                     return

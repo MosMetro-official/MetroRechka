@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreTableView
-import CoreNetwork
+import MMCoreNetwork
 import SwiftDate
 
 

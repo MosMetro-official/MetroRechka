@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 import SwiftDate
 
 
@@ -24,7 +24,7 @@ public struct R_Point {
     public let longitude: Double
     public let position: Int
     
-    init(data: CoreNetwork.JSON) {
+    init(data: JSON) {
         self.latitude = data["lat"].doubleValue
         self.longitude = data["lon"].doubleValue
         self.position = data["position"].intValue
@@ -55,7 +55,7 @@ public struct R_Route {
     
     
     
-    init(data: CoreNetwork.JSON) {
+    init(data: JSON) {
         self.id = data["id"].intValue
         self.name = data["name"].stringValue
         self.minPrice = data["minPrice"].intValue
@@ -79,7 +79,7 @@ extension R_Route {
         client.send(.GET(path: "/api/routes/v1/\(id)",query: nil)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 let route = R_Route(data: json["data"])
                 completion(.success(route))
                 return
@@ -112,7 +112,7 @@ extension R_Route {
         client.send(.GET(path: "/api/routes/v1", query: query)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let routesArray = json["data"]["items"].array,
                       let page = json["data"]["page"].int,
                       let totalPages = json["data"]["totalPages"].int,

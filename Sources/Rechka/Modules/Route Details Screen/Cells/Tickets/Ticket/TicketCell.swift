@@ -52,7 +52,7 @@ class TicketCell : UICollectionViewCell {
     public func configure(with data: R_Tariff, isSelect: Bool) {
         self.priceLabel.text = "\(Int(data.price)) P"
         self.tarifLabel.text = data.name
-        selectedImage.image = isSelect ? UIImage(named: "select", in: .module, with: nil) : UIImage(named: "unselect", in: .module, with: nil)
+        selectedImage.image = isSelect ? UIImage(named: "select", in: Rechka.shared.bundle, with: nil) : UIImage(named: "unselect", in: Rechka.shared.bundle, with: nil)
         gradient?.isHidden = isSelect ? false : true
         contentView.layer.borderWidth = isSelect ? 0 : 1.5
     }

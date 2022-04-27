@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 
 struct R_Trip {
@@ -23,11 +23,11 @@ struct R_Trip {
     let personalDataRequired: Bool?
     
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let id = data["id"].int,
               let name = data["routeName"].string,
-              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: nil)?.date,
-              let endDate = data["dateTimeEnd"].stringValue.toISODate(nil, region: nil)?.date
+              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: .UTC)?.date,
+              let endDate = data["dateTimeEnd"].stringValue.toISODate(nil, region: .UTC)?.date
         else { return nil }
         
         self.id = id
@@ -53,7 +53,7 @@ extension R_Trip {
         client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let array = json["data"].array else {
                     completion(.failure(.badMapping))
                     return
@@ -87,7 +87,7 @@ extension R_Trip {
             switch result {
                 
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let order = RiverOrder(data: json["data"]) else {
                     completion(.failure(.badMapping))
                     return
@@ -109,7 +109,7 @@ extension R_Trip {
             query: nil)) { result in
                 switch result {
                 case .success(let response):
-                    let json = CoreNetwork.JSON(response.data)
+                    let json = JSON(response.data)
                     guard let trip = R_Trip(data: json["data"]) else {
                         completion(.failure(.badMapping))
                         return
