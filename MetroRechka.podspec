@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "MetroRechka"
-  spec.version      = "0.2.4"
+  spec.version      = "0.2.5"
   spec.summary      = "A short description of MetroRechka."
 
   # This description is used to generate tags and improve search results.
@@ -24,8 +24,7 @@ Pod::Spec.new do |spec|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  spec.description  = <<-DESC
-                   DESC
+  spec.description  = "Metro rechka"
 
   spec.homepage     = "https://github.com/MosMetro-official/MetroRechka"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
@@ -92,7 +91,11 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "Sources/Rechka/**/*.{swift}"
   spec.exclude_files = "Tests/RechkaTests/**/*"
-
+  spec.dependency 'MMCoreNetwork', :git => 'https://github.com/MosMetro-official/MMCoreNetwork.git', :branch => 'callbacks'
+  spec.dependency 'CoreTableView'
+  spec.dependency 'SDWebImage'
+  spec.dependency 'SwiftDate', '~> 5.0'
+  spec.dependency 'YandexMobileMetrica'
   # spec.public_header_files = "Classes/**/*.h"
 
 
