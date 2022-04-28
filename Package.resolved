@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "CoreNetwork",
-        "repositoryURL": "https://github.com/MosMetro-official/CoreNetwork",
-        "state": {
-          "branch": null,
-          "revision": "94125eef8fc08cb30a4807aff420fe34555b11f4",
-          "version": "0.0.1-callbacks"
-        }
-      },
-      {
         "package": "CoreTableView",
         "repositoryURL": "https://github.com/MosMetro-official/CoreTableView",
         "state": {
@@ -26,6 +17,15 @@
           "branch": null,
           "revision": "56a79b9224ead8f186834bcebe4a8a83a50ee024",
           "version": "3.17.0"
+        }
+      },
+      {
+        "package": "MMCoreNetwork",
+        "repositoryURL": "https://github.com/MosMetro-official/MMCoreNetwork",
+        "state": {
+          "branch": null,
+          "revision": "534774963272230206c3ababb52490b8421f2197",
+          "version": "0.0.3-callbacks"
         }
       },
       {
