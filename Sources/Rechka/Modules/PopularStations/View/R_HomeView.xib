@@ -50,6 +50,9 @@
                                                 <state key="normal" title="Даты" image="calendar" catalog="system">
                                                     <color key="titleColor" name="textSecondary"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="handleDate:" destination="iN0-l3-epB" eventType="touchUpInside" id="mZM-ZP-C6j"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cjO-JB-vom">
                                                 <rect key="frame" x="190.5" y="0.0" width="183.5" height="40"/>
@@ -64,6 +67,9 @@
                                                 <state key="normal" title="Причал" image="sheep">
                                                     <color key="titleColor" name="textSecondary"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="handleStation:" destination="iN0-l3-epB" eventType="touchUpInside" id="fvO-WG-Bd1"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -83,6 +89,9 @@
                                         <state key="normal" title="Категория" image="chevron.down" catalog="system">
                                             <color key="titleColor" name="textSecondary"/>
                                         </state>
+                                        <connections>
+                                            <action selector="handleCategories:" destination="iN0-l3-epB" eventType="touchUpInside" id="ggK-T9-PCJ"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x71-iP-oQn">
                                         <rect key="frame" x="0.0" y="96" width="374" height="40"/>
@@ -96,6 +105,9 @@
                                         <state key="normal" title="Сбросить фильтры">
                                             <color key="titleColor" systemColor="systemRedColor"/>
                                         </state>
+                                        <connections>
+                                            <action selector="handleClear:" destination="iN0-l3-epB" eventType="touchUpInside" id="RMZ-rV-NZL"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
