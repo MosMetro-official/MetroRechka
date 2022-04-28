@@ -91,8 +91,7 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "Sources/Rechka/**/*.{swift}"
   spec.exclude_files = "Tests/RechkaTests/**/*"
-  spec.dependency 'MMCoreNetwork', :git => 'https://github.com/MosMetro-official/MMCoreNetwork.git', :branch => 'callbacks'
-  spec.dependency 'CoreTableView'
+  spec.dependency 'MMCoreNetwork'
   spec.dependency 'SDWebImage'
   spec.dependency 'SwiftDate', '~> 5.0'
   spec.dependency 'YandexMobileMetrica'
