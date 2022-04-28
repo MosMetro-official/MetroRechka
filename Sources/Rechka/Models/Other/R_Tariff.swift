@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 struct R_Tariff: Hashable {
     
@@ -26,7 +26,7 @@ struct R_Tariff: Hashable {
     let isWithoutPlace: Bool
     var place: Int?
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard let id = data["id"].string, let type = TariffType(rawValue: data["type"].intValue) else { return nil }
         self.id = id
         self.type = type

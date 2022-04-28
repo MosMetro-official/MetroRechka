@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="6F4-wq-rZP" customClass="TripsDateHeader" customModule="Rechka">
+        <view contentMode="scaleToFill" id="6F4-wq-rZP" customClass="TripsDateHeader" customModule="MetroRechka">
             <rect key="frame" x="0.0" y="0.0" width="406" height="40"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>

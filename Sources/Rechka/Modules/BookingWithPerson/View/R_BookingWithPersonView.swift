@@ -95,7 +95,7 @@ internal final class R_BookingWithPersonView: UIView {
     
     private let userProfileImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "user_profile", in: .module, with: nil)
+        imageView.image = UIImage(named: "user_profile", in: Rechka.shared.bundle, with: nil)
         imageView.tintColor = UIColor.custom(for: .textPrimary)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

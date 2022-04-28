@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 // MARK: - Station
 public struct R_Station : _RiverStation {
@@ -22,7 +22,7 @@ public struct R_Station : _RiverStation {
     public var onSelect : (() -> Void)
     
     
-    init(data: CoreNetwork.JSON) {
+    init(data: JSON) {
         self.id = data["id"].intValue
         self.name = data["name"].stringValue
         self.cityID = data["cityId"].intValue

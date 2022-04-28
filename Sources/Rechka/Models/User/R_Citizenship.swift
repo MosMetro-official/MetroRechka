@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 
 struct R_Citizenship: Equatable {
@@ -15,7 +15,7 @@ struct R_Citizenship: Equatable {
     let isonumeric: String
     let isoalpha2: String
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard
             let id = data["id"].int,
             let name = data["name"].string,
@@ -32,7 +32,7 @@ struct R_Citizenship: Equatable {
         client.send(.GET(path: "/api/references/v1/citizenship")) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let array = json["data"].array else {
                     completion(.failure(.badMapping))
                     return

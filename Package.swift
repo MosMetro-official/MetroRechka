@@ -12,7 +12,7 @@ let package = Package(
             .library(name: "Rechka", targets: ["Rechka"])
     ],
     dependencies: [
-        .package(name: "CoreNetwork", url: "https://github.com/MosMetro-official/CoreNetwork", .exactItem("0.0.1-callbacks")),
+        .package(name: "MMCoreNetwork", url: "https://github.com/MosMetro-official/MMCoreNetwork", .exactItem("0.0.3-callbacks")),
 //        .package(name: "CoreNetwork", url: "https://github.com/MosMetro-official/CoreNetwork", branch: "callbacks"),
         .package(name: "CoreTableView", url: "https://github.com/MosMetro-official/CoreTableView", from: "0.0.2"),
         .package(name: "SwiftDate", url: "https://github.com/malcommac/SwiftDate.git", from: "6.0.0"),
@@ -23,7 +23,7 @@ let package = Package(
         .target(
             name: "Rechka",
             dependencies: [
-                "CoreNetwork",
+                "MMCoreNetwork",
                 "CoreTableView",
                 "SwiftDate",
                 "SDWebImage",

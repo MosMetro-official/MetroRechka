@@ -36,13 +36,13 @@ internal final class R_BlurResultController : UIViewController {
         case .success(let data):
             self.nestedView.viewState = .init(title: data.title,
                                               subtitle: data.subtitle,
-                                              image: UIImage(named: "checkmark", in: .module, compatibleWith: nil) ?? UIImage(),
+                                              image: UIImage(named: "checkmark", in: Rechka.shared.bundle, compatibleWith: nil) ?? UIImage(),
                                               onClose: onClose,
                                               onRetry: nil)
         case .failure(let data):
             self.nestedView.viewState = .init(title: data.title,
                                               subtitle: data.subtitle,
-                                              image: UIImage(named: "result_error", in: .module, compatibleWith: nil) ?? UIImage(),
+                                              image: UIImage(named: "result_error", in: Rechka.shared.bundle, compatibleWith: nil) ?? UIImage(),
                                               onClose: onClose,
                                               onRetry: onRetry)
         }

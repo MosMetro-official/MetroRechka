@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
-import CoreNetwork
+import MMCoreNetwork
 
 
 internal final class R_BookingScreenController : UIViewController {

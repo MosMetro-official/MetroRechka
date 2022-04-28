@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 
 final class R_Service {
@@ -17,7 +17,7 @@ final class R_Service {
         client.send(.GET(path: "/api/routes/v1/tags", query: nil)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let array = json["data"].array else {
                     completion(.failure(.badMapping))
                     return

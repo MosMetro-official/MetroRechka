@@ -1,0 +1,2045 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2977A59A05E6CDAEB1426B07 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */; };
+		44B0228D281912D50058F2F4 /* MetroRechka.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B0228C281912D50058F2F4 /* MetroRechka.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		44B0239E2819130A0058F2F4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B022952819130A0058F2F4 /* Media.xcassets */; };
+		44B0239F2819130A0058F2F4 /* _RiverStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022962819130A0058F2F4 /* _RiverStation.swift */; };
+		44B023A02819130A0058F2F4 /* R_ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022972819130A0058F2F4 /* R_ErrorView.swift */; };
+		44B023A12819130A0058F2F4 /* SomeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022982819130A0058F2F4 /* SomeCache.swift */; };
+		44B023A22819130A0058F2F4 /* AuthorizedClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229B2819130A0058F2F4 /* AuthorizedClient.swift */; };
+		44B023A32819130A0058F2F4 /* BasicClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229C2819130A0058F2F4 /* BasicClient.swift */; };
+		44B023A42819130A0058F2F4 /* R_Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229E2819130A0058F2F4 /* R_Gallery.swift */; };
+		44B023A52819130A0058F2F4 /* R_Tariff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229F2819130A0058F2F4 /* R_Tariff.swift */; };
+		44B023A62819130A0058F2F4 /* R_AdditionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A02819130A0058F2F4 /* R_AdditionService.swift */; };
+		44B023A72819130A0058F2F4 /* R_Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A12819130A0058F2F4 /* R_Vehicle.swift */; };
+		44B023A82819130A0058F2F4 /* R_User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A32819130A0058F2F4 /* R_User.swift */; };
+		44B023A92819130A0058F2F4 /* R_Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A42819130A0058F2F4 /* R_Document.swift */; };
+		44B023AA2819130A0058F2F4 /* R_Citizenship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A52819130A0058F2F4 /* R_Citizenship.swift */; };
+		44B023AB2819130A0058F2F4 /* RiverShortOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A72819130A0058F2F4 /* RiverShortOrder.swift */; };
+		44B023AC2819130A0058F2F4 /* RiverOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A82819130A0058F2F4 /* RiverOperation.swift */; };
+		44B023AD2819130A0058F2F4 /* RiverOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022A92819130A0058F2F4 /* RiverOrder.swift */; };
+		44B023AE2819130A0058F2F4 /* RiverOperationTicket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022AA2819130A0058F2F4 /* RiverOperationTicket.swift */; };
+		44B023AF2819130A0058F2F4 /* R_Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022AC2819130A0058F2F4 /* R_Trip.swift */; };
+		44B023B02819130A0058F2F4 /* R_ShortTrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022AD2819130A0058F2F4 /* R_ShortTrip.swift */; };
+		44B023B12819130A0058F2F4 /* R_Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022AE2819130A0058F2F4 /* R_Route.swift */; };
+		44B023B22819130A0058F2F4 /* R_Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022AF2819130A0058F2F4 /* R_Station.swift */; };
+		44B023B32819130A0058F2F4 /* R_ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B12819130A0058F2F4 /* R_ReportService.swift */; };
+		44B023B42819130A0058F2F4 /* R_Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B22819130A0058F2F4 /* R_Service.swift */; };
+		44B023B52819130A0058F2F4 /* Ext+UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B42819130A0058F2F4 /* Ext+UIScreen.swift */; };
+		44B023B62819130A0058F2F4 /* Ext+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B52819130A0058F2F4 /* Ext+String.swift */; };
+		44B023B72819130A0058F2F4 /* Ext+UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B62819130A0058F2F4 /* Ext+UIDevice.swift */; };
+		44B023B82819130A0058F2F4 /* Ext+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B72819130A0058F2F4 /* Ext+URLRequest.swift */; };
+		44B023B92819130A0058F2F4 /* Ext+UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B82819130A0058F2F4 /* Ext+UITableViewCell.swift */; };
+		44B023BA2819130A0058F2F4 /* Ext+UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022B92819130A0058F2F4 /* Ext+UIFont.swift */; };
+		44B023BB2819130A0058F2F4 /* Ext+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022BA2819130A0058F2F4 /* Ext+UIViewController.swift */; };
+		44B023BC2819130A0058F2F4 /* Ext+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022BB2819130A0058F2F4 /* Ext+UIView.swift */; };
+		44B023BD2819130A0058F2F4 /* SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022BC2819130A0058F2F4 /* SafeIndex.swift */; };
+		44B023BE2819130A0058F2F4 /* Ext+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022BD2819130A0058F2F4 /* Ext+UIImage.swift */; };
+		44B023BF2819130A0058F2F4 /* Ext+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022BE2819130A0058F2F4 /* Ext+Notification.swift */; };
+		44B023C02819130A0058F2F4 /* RechkaNetworkDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022BF2819130A0058F2F4 /* RechkaNetworkDelegate.swift */; };
+		44B023C12819130A0058F2F4 /* R_Toast.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022C02819130A0058F2F4 /* R_Toast.xib */; };
+		44B023C22819130A0058F2F4 /* R_Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022C12819130A0058F2F4 /* R_Toast.swift */; };
+		44B023C32819130A0058F2F4 /* Rechka.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022C22819130A0058F2F4 /* Rechka.swift */; };
+		44B023C42819130A0058F2F4 /* R_PDFDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022C62819130A0058F2F4 /* R_PDFDocumentController.swift */; };
+		44B023C52819130A0058F2F4 /* R_PDFDocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022C72819130A0058F2F4 /* R_PDFDocView.swift */; };
+		44B023C62819130A0058F2F4 /* R_PDFDocView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022C82819130A0058F2F4 /* R_PDFDocView.xib */; };
+		44B023C72819130A0058F2F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B022C92819130A0058F2F4 /* Assets.xcassets */; };
+		44B023C82819130A0058F2F4 /* R_OrderDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022CB2819130A0058F2F4 /* R_OrderDetailsController.swift */; };
+		44B023C92819130A0058F2F4 /* TicketTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022CF2819130A0058F2F4 /* TicketTitleCell.xib */; };
+		44B023CA2819130A0058F2F4 /* TicketTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022D02819130A0058F2F4 /* TicketTitleCell.swift */; };
+		44B023CB2819130A0058F2F4 /* R_OrderPaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022D22819130A0058F2F4 /* R_OrderPaymentTableViewCell.xib */; };
+		44B023CC2819130A0058F2F4 /* R_OrderPaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022D32819130A0058F2F4 /* R_OrderPaymentTableViewCell.swift */; };
+		44B023CD2819130A0058F2F4 /* TicketDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022D52819130A0058F2F4 /* TicketDetailCell.xib */; };
+		44B023CE2819130A0058F2F4 /* TicketDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022D62819130A0058F2F4 /* TicketDetailCell.swift */; };
+		44B023CF2819130A0058F2F4 /* TicketInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022D82819130A0058F2F4 /* TicketInfoCell.swift */; };
+		44B023D02819130A0058F2F4 /* TicketInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022D92819130A0058F2F4 /* TicketInfoCell.xib */; };
+		44B023D12819130A0058F2F4 /* TicketStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022DB2819130A0058F2F4 /* TicketStatusCell.swift */; };
+		44B023D22819130A0058F2F4 /* TicketStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022DC2819130A0058F2F4 /* TicketStatusCell.xib */; };
+		44B023D32819130A0058F2F4 /* R_OrderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022DD2819130A0058F2F4 /* R_OrderDetailsView.swift */; };
+		44B023D42819130A0058F2F4 /* R_OrderDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022DE2819130A0058F2F4 /* R_OrderDetailsView.xib */; };
+		44B023D52819130A0058F2F4 /* R_BookingWithoutPersonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022E12819130A0058F2F4 /* R_BookingWithoutPersonController.swift */; };
+		44B023D62819130A0058F2F4 /* ChoicePlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022E42819130A0058F2F4 /* ChoicePlaceCell.swift */; };
+		44B023D72819130A0058F2F4 /* TariffSteperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022E52819130A0058F2F4 /* TariffSteperCell.swift */; };
+		44B023D82819130A0058F2F4 /* ChoicePlaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022E62819130A0058F2F4 /* ChoicePlaceCell.xib */; };
+		44B023D92819130A0058F2F4 /* TariffSteperCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022E72819130A0058F2F4 /* TariffSteperCell.xib */; };
+		44B023DA2819130A0058F2F4 /* R_BookingWithoutPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022E82819130A0058F2F4 /* R_BookingWithoutPersonView.swift */; };
+		44B023DB2819130A0058F2F4 /* R_TicketsHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022EB2819130A0058F2F4 /* R_TicketsHistoryController.swift */; };
+		44B023DC2819130A0058F2F4 /* HistoryTicketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022EE2819130A0058F2F4 /* HistoryTicketCell.swift */; };
+		44B023DD2819130A0058F2F4 /* R_EmptyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022EF2819130A0058F2F4 /* R_EmptyTableViewCell.xib */; };
+		44B023DE2819130A0058F2F4 /* HistoryTicketCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022F02819130A0058F2F4 /* HistoryTicketCell.xib */; };
+		44B023DF2819130A0058F2F4 /* RechkaLoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022F12819130A0058F2F4 /* RechkaLoadMoreCell.xib */; };
+		44B023E02819130A0058F2F4 /* RechkaLoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022F22819130A0058F2F4 /* RechkaLoadMoreCell.swift */; };
+		44B023E12819130A0058F2F4 /* R_EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022F32819130A0058F2F4 /* R_EmptyTableViewCell.swift */; };
+		44B023E22819130A0058F2F4 /* R_TicketsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022F42819130A0058F2F4 /* R_TicketsHistoryView.swift */; };
+		44B023E32819130A0058F2F4 /* R_PassengerDataEntryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022F72819130A0058F2F4 /* R_PassengerDataEntryController.swift */; };
+		44B023E42819130A0058F2F4 /* HeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022FA2819130A0058F2F4 /* HeaderCell.xib */; };
+		44B023E52819130A0058F2F4 /* GenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022FB2819130A0058F2F4 /* GenderCell.swift */; };
+		44B023E62819130A0058F2F4 /* SelectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B022FC2819130A0058F2F4 /* SelectCell.xib */; };
+		44B023E72819130A0058F2F4 /* SelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022FD2819130A0058F2F4 /* SelectCell.swift */; };
+		44B023E82819130A0058F2F4 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022FE2819130A0058F2F4 /* HeaderCell.swift */; };
+		44B023E92819130A0058F2F4 /* FieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022FF2819130A0058F2F4 /* FieldCell.swift */; };
+		44B023EA2819130A0058F2F4 /* FieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023002819130A0058F2F4 /* FieldCell.xib */; };
+		44B023EB2819130A0058F2F4 /* GenderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023012819130A0058F2F4 /* GenderCell.xib */; };
+		44B023EC2819130A0058F2F4 /* R_PassengerDataEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023022819130A0058F2F4 /* R_PassengerDataEntryView.swift */; };
+		44B023ED2819130A0058F2F4 /* InputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023042819130A0058F2F4 /* InputView.xib */; };
+		44B023EE2819130A0058F2F4 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023052819130A0058F2F4 /* InputView.swift */; };
+		44B023EF2819130A0058F2F4 /* R_LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023072819130A0058F2F4 /* R_LoadingView.swift */; };
+		44B023F02819130A0058F2F4 /* R_BlurLoadingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0230A2819130A0058F2F4 /* R_BlurLoadingController.swift */; };
+		44B023F12819130A0058F2F4 /* R_BlurLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0230C2819130A0058F2F4 /* R_BlurLoadingView.swift */; };
+		44B023F22819130A0058F2F4 /* R_BlurLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0230D2819130A0058F2F4 /* R_BlurLoadingView.xib */; };
+		44B023F32819130A0058F2F4 /* R_BlurRefundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023102819130A0058F2F4 /* R_BlurRefundController.swift */; };
+		44B023F42819130A0058F2F4 /* R_BlurRefundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023122819130A0058F2F4 /* R_BlurRefundView.xib */; };
+		44B023F52819130A0058F2F4 /* R_BlurRefundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023132819130A0058F2F4 /* R_BlurRefundView.swift */; };
+		44B023F62819130A0058F2F4 /* TerminalsBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023152819130A0058F2F4 /* TerminalsBubble.swift */; };
+		44B023F72819130A0058F2F4 /* RechkaMapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023172819130A0058F2F4 /* RechkaMapDelegate.swift */; };
+		44B023F82819130A0058F2F4 /* R_DocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0231A2819130A0058F2F4 /* R_DocumentController.swift */; };
+		44B023F92819130A0058F2F4 /* DocumentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0231D2819130A0058F2F4 /* DocumentCell.xib */; };
+		44B023FA2819130A0058F2F4 /* DocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0231E2819130A0058F2F4 /* DocumentCell.swift */; };
+		44B023FB2819130A0058F2F4 /* R_DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0231F2819130A0058F2F4 /* R_DocumentView.swift */; };
+		44B023FC2819130A0058F2F4 /* R_DocumentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023202819130A0058F2F4 /* R_DocumentView.xib */; };
+		44B023FD2819130A0058F2F4 /* R_BookingScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023232819130A0058F2F4 /* R_BookingScreenController.swift */; };
+		44B023FE2819130A0058F2F4 /* CancelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023272819130A0058F2F4 /* CancelCell.xib */; };
+		44B023FF2819130A0058F2F4 /* CancelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023282819130A0058F2F4 /* CancelCell.swift */; };
+		44B024002819130A0058F2F4 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0232A2819130A0058F2F4 /* TitleCell.swift */; };
+		44B024012819130A0058F2F4 /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0232B2819130A0058F2F4 /* TitleCell.xib */; };
+		44B024022819130A0058F2F4 /* TimerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0232D2819130A0058F2F4 /* TimerCell.xib */; };
+		44B024032819130A0058F2F4 /* TimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0232E2819130A0058F2F4 /* TimerCell.swift */; };
+		44B024042819130A0058F2F4 /* R_BookingScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0232F2819130A0058F2F4 /* R_BookingScreenView.swift */; };
+		44B024052819130A0058F2F4 /* R_CancelBookingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023322819130A0058F2F4 /* R_CancelBookingController.swift */; };
+		44B024062819130A0058F2F4 /* R_CancelBookingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023342819130A0058F2F4 /* R_CancelBookingView.xib */; };
+		44B024072819130A0058F2F4 /* R_CancelBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023352819130A0058F2F4 /* R_CancelBookingView.swift */; };
+		44B024082819130B0058F2F4 /* R_UnauthorizedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023382819130A0058F2F4 /* R_UnauthorizedController.swift */; };
+		44B024092819130B0058F2F4 /* R_UnauthorizedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0233A2819130A0058F2F4 /* R_UnauthorizedView.xib */; };
+		44B0240A2819130B0058F2F4 /* R_UnauthorizedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0233B2819130A0058F2F4 /* R_UnauthorizedView.swift */; };
+		44B0240B2819130B0058F2F4 /* R_BookingWithPersonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0233E2819130A0058F2F4 /* R_BookingWithPersonController.swift */; };
+		44B0240C2819130B0058F2F4 /* TariffHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023412819130A0058F2F4 /* TariffHeaderCell.xib */; };
+		44B0240D2819130B0058F2F4 /* TariffCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023422819130A0058F2F4 /* TariffCell.swift */; };
+		44B0240E2819130B0058F2F4 /* CommissionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023432819130A0058F2F4 /* CommissionCell.xib */; };
+		44B0240F2819130B0058F2F4 /* CommissionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023442819130A0058F2F4 /* CommissionCell.swift */; };
+		44B024102819130B0058F2F4 /* TariffHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023452819130A0058F2F4 /* TariffHeaderCell.swift */; };
+		44B024112819130B0058F2F4 /* PassengerHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023462819130A0058F2F4 /* PassengerHeaderCell.swift */; };
+		44B024122819130B0058F2F4 /* PassengersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023472819130A0058F2F4 /* PassengersCell.xib */; };
+		44B024132819130B0058F2F4 /* PassengerHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023482819130A0058F2F4 /* PassengerHeaderCell.xib */; };
+		44B024142819130B0058F2F4 /* TariffCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023492819130A0058F2F4 /* TariffCell.xib */; };
+		44B024152819130B0058F2F4 /* PassengersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0234A2819130A0058F2F4 /* PassengersCell.swift */; };
+		44B024162819130B0058F2F4 /* R_BookingWithPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0234B2819130A0058F2F4 /* R_BookingWithPersonView.swift */; };
+		44B024172819130B0058F2F4 /* R_BlurResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0234D2819130A0058F2F4 /* R_BlurResultModel.swift */; };
+		44B024182819130B0058F2F4 /* R_BlurResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0234F2819130A0058F2F4 /* R_BlurResultController.swift */; };
+		44B024192819130B0058F2F4 /* R_BlurResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023512819130A0058F2F4 /* R_BlurResultView.swift */; };
+		44B0241A2819130B0058F2F4 /* R_BlurResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023522819130A0058F2F4 /* R_BlurResultView.xib */; };
+		44B0241B2819130B0058F2F4 /* TicketsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023562819130A0058F2F4 /* TicketsCell.swift */; };
+		44B0241C2819130B0058F2F4 /* EmptyTicketCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023582819130A0058F2F4 /* EmptyTicketCell.xib */; };
+		44B0241D2819130B0058F2F4 /* EmptyTicketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023592819130A0058F2F4 /* EmptyTicketCell.swift */; };
+		44B0241E2819130B0058F2F4 /* TicketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0235A2819130A0058F2F4 /* TicketCell.swift */; };
+		44B0241F2819130B0058F2F4 /* TicketCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0235B2819130A0058F2F4 /* TicketCell.xib */; };
+		44B024202819130B0058F2F4 /* TicketsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0235C2819130A0058F2F4 /* TicketsCell.xib */; };
+		44B024212819130B0058F2F4 /* TripSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0235E2819130A0058F2F4 /* TripSelectionCell.xib */; };
+		44B024222819130B0058F2F4 /* R_DateCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0235F2819130A0058F2F4 /* R_DateCollectionCell.xib */; };
+		44B024232819130B0058F2F4 /* R_DateCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023602819130A0058F2F4 /* R_DateCollectionCell.swift */; };
+		44B024242819130B0058F2F4 /* TripSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023612819130A0058F2F4 /* TripSelectionCell.swift */; };
+		44B024252819130B0058F2F4 /* TicketsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023642819130A0058F2F4 /* TicketsHeader.xib */; };
+		44B024262819130B0058F2F4 /* TicketsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023652819130A0058F2F4 /* TicketsHeader.swift */; };
+		44B024272819130B0058F2F4 /* TripsDateHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023672819130A0058F2F4 /* TripsDateHeader.swift */; };
+		44B024282819130B0058F2F4 /* TripsDateHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023682819130A0058F2F4 /* TripsDateHeader.xib */; };
+		44B024292819130B0058F2F4 /* MapViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0236A2819130A0058F2F4 /* MapViewCell.xib */; };
+		44B0242A2819130B0058F2F4 /* MapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0236B2819130A0058F2F4 /* MapViewCell.swift */; };
+		44B0242B2819130B0058F2F4 /* SummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0236D2819130A0058F2F4 /* SummaryCell.swift */; };
+		44B0242C2819130B0058F2F4 /* SummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0236E2819130A0058F2F4 /* SummaryCell.xib */; };
+		44B0242D2819130B0058F2F4 /* R_RouteDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023702819130A0058F2F4 /* R_RouteDetailsScreen.swift */; };
+		44B0242E2819130B0058F2F4 /* R_RootStationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023722819130A0058F2F4 /* R_RootStationDetailView.swift */; };
+		44B0242F2819130B0058F2F4 /* R_PosterTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023732819130A0058F2F4 /* R_PosterTableHeaderView.swift */; };
+		44B024302819130B0058F2F4 /* R_PopularStationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023762819130A0058F2F4 /* R_PopularStationsController.swift */; };
+		44B024312819130B0058F2F4 /* R_RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023792819130A0058F2F4 /* R_RouteTableViewCell.swift */; };
+		44B024322819130B0058F2F4 /* R_ErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0237A2819130A0058F2F4 /* R_ErrorCell.swift */; };
+		44B024332819130B0058F2F4 /* R_ErrorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0237B2819130A0058F2F4 /* R_ErrorCell.xib */; };
+		44B024342819130B0058F2F4 /* R_RouteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0237C2819130A0058F2F4 /* R_RouteTableViewCell.xib */; };
+		44B024352819130B0058F2F4 /* R_HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0237D2819130A0058F2F4 /* R_HomeView.xib */; };
+		44B024362819130B0058F2F4 /* R_HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0237E2819130A0058F2F4 /* R_HomeView.swift */; };
+		44B024372819130B0058F2F4 /* R_StationsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023812819130A0058F2F4 /* R_StationsListController.swift */; };
+		44B024382819130B0058F2F4 /* RechkaTerminalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023842819130A0058F2F4 /* RechkaTerminalsCell.swift */; };
+		44B024392819130B0058F2F4 /* RechkaTerminalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023852819130A0058F2F4 /* RechkaTerminalsCell.xib */; };
+		44B0243A2819130B0058F2F4 /* R_StationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023862819130A0058F2F4 /* R_StationListView.swift */; };
+		44B0243B2819130B0058F2F4 /* R_CitizenshipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023892819130A0058F2F4 /* R_CitizenshipController.swift */; };
+		44B0243C2819130B0058F2F4 /* CitizenshipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0238C2819130A0058F2F4 /* CitizenshipCell.swift */; };
+		44B0243D2819130B0058F2F4 /* CitizenshipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0238D2819130A0058F2F4 /* CitizenshipCell.xib */; };
+		44B0243E2819130B0058F2F4 /* R_CitizenshipView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B0238E2819130A0058F2F4 /* R_CitizenshipView.xib */; };
+		44B0243F2819130B0058F2F4 /* R_CitizenshipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0238F2819130A0058F2F4 /* R_CitizenshipView.swift */; };
+		44B024402819130B0058F2F4 /* R_PlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023922819130A0058F2F4 /* R_PlaceController.swift */; };
+		44B024412819130B0058F2F4 /* R_PlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023942819130A0058F2F4 /* R_PlaceView.swift */; };
+		44B024422819130B0058F2F4 /* R_PlaceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023952819130A0058F2F4 /* R_PlaceView.xib */; };
+		44B024432819130B0058F2F4 /* R_PlaceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B023972819130A0058F2F4 /* R_PlaceCollectionCell.swift */; };
+		44B024442819130B0058F2F4 /* R_PlaceCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44B023982819130A0058F2F4 /* R_PlaceCollectionCell.xib */; };
+		44B024452819130B0058F2F4 /* MoscowSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 44B0239A2819130A0058F2F4 /* MoscowSans-Regular.otf */; };
+		44B024462819130B0058F2F4 /* MoscowSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 44B0239B2819130A0058F2F4 /* MoscowSans-Medium.otf */; };
+		44B024472819130B0058F2F4 /* MoscowSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 44B0239C2819130A0058F2F4 /* MoscowSans-Bold.otf */; };
+		44B024482819130B0058F2F4 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0239D2819130A0058F2F4 /* Appearance.swift */; };
+		44B41F4F28193FE700CB2B2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B41F4E28193FE700CB2B2F /* AppDelegate.swift */; };
+		44B41F5128193FE700CB2B2F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B41F5028193FE700CB2B2F /* SceneDelegate.swift */; };
+		44B41F5328193FE700CB2B2F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B41F5228193FE700CB2B2F /* ViewController.swift */; };
+		44B41F5628193FE700CB2B2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5428193FE700CB2B2F /* Main.storyboard */; };
+		44B41F5828193FE800CB2B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5728193FE800CB2B2F /* Assets.xcassets */; };
+		44B41F5B28193FE800CB2B2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5928193FE800CB2B2F /* LaunchScreen.storyboard */; };
+		CD481419B5CBCB37ACFE864D /* libPods-RechkaExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		44B02289281912D50058F2F4 /* MetroRechka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MetroRechka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		44B0228C281912D50058F2F4 /* MetroRechka.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetroRechka.h; sourceTree = "<group>"; };
+		44B022952819130A0058F2F4 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		44B022962819130A0058F2F4 /* _RiverStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _RiverStation.swift; sourceTree = "<group>"; };
+		44B022972819130A0058F2F4 /* R_ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_ErrorView.swift; sourceTree = "<group>"; };
+		44B022982819130A0058F2F4 /* SomeCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SomeCache.swift; sourceTree = "<group>"; };
+		44B0229B2819130A0058F2F4 /* AuthorizedClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizedClient.swift; sourceTree = "<group>"; };
+		44B0229C2819130A0058F2F4 /* BasicClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicClient.swift; sourceTree = "<group>"; };
+		44B0229E2819130A0058F2F4 /* R_Gallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Gallery.swift; sourceTree = "<group>"; };
+		44B0229F2819130A0058F2F4 /* R_Tariff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Tariff.swift; sourceTree = "<group>"; };
+		44B022A02819130A0058F2F4 /* R_AdditionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_AdditionService.swift; sourceTree = "<group>"; };
+		44B022A12819130A0058F2F4 /* R_Vehicle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Vehicle.swift; sourceTree = "<group>"; };
+		44B022A32819130A0058F2F4 /* R_User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_User.swift; sourceTree = "<group>"; };
+		44B022A42819130A0058F2F4 /* R_Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Document.swift; sourceTree = "<group>"; };
+		44B022A52819130A0058F2F4 /* R_Citizenship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Citizenship.swift; sourceTree = "<group>"; };
+		44B022A72819130A0058F2F4 /* RiverShortOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiverShortOrder.swift; sourceTree = "<group>"; };
+		44B022A82819130A0058F2F4 /* RiverOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiverOperation.swift; sourceTree = "<group>"; };
+		44B022A92819130A0058F2F4 /* RiverOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiverOrder.swift; sourceTree = "<group>"; };
+		44B022AA2819130A0058F2F4 /* RiverOperationTicket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiverOperationTicket.swift; sourceTree = "<group>"; };
+		44B022AC2819130A0058F2F4 /* R_Trip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Trip.swift; sourceTree = "<group>"; };
+		44B022AD2819130A0058F2F4 /* R_ShortTrip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_ShortTrip.swift; sourceTree = "<group>"; };
+		44B022AE2819130A0058F2F4 /* R_Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Route.swift; sourceTree = "<group>"; };
+		44B022AF2819130A0058F2F4 /* R_Station.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Station.swift; sourceTree = "<group>"; };
+		44B022B12819130A0058F2F4 /* R_ReportService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_ReportService.swift; sourceTree = "<group>"; };
+		44B022B22819130A0058F2F4 /* R_Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Service.swift; sourceTree = "<group>"; };
+		44B022B42819130A0058F2F4 /* Ext+UIScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UIScreen.swift"; sourceTree = "<group>"; };
+		44B022B52819130A0058F2F4 /* Ext+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+String.swift"; sourceTree = "<group>"; };
+		44B022B62819130A0058F2F4 /* Ext+UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UIDevice.swift"; sourceTree = "<group>"; };
+		44B022B72819130A0058F2F4 /* Ext+URLRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+URLRequest.swift"; sourceTree = "<group>"; };
+		44B022B82819130A0058F2F4 /* Ext+UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UITableViewCell.swift"; sourceTree = "<group>"; };
+		44B022B92819130A0058F2F4 /* Ext+UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UIFont.swift"; sourceTree = "<group>"; };
+		44B022BA2819130A0058F2F4 /* Ext+UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UIViewController.swift"; sourceTree = "<group>"; };
+		44B022BB2819130A0058F2F4 /* Ext+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UIView.swift"; sourceTree = "<group>"; };
+		44B022BC2819130A0058F2F4 /* SafeIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafeIndex.swift; sourceTree = "<group>"; };
+		44B022BD2819130A0058F2F4 /* Ext+UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+UIImage.swift"; sourceTree = "<group>"; };
+		44B022BE2819130A0058F2F4 /* Ext+Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ext+Notification.swift"; sourceTree = "<group>"; };
+		44B022BF2819130A0058F2F4 /* RechkaNetworkDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RechkaNetworkDelegate.swift; sourceTree = "<group>"; };
+		44B022C02819130A0058F2F4 /* R_Toast.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_Toast.xib; sourceTree = "<group>"; };
+		44B022C12819130A0058F2F4 /* R_Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Toast.swift; sourceTree = "<group>"; };
+		44B022C22819130A0058F2F4 /* Rechka.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rechka.swift; sourceTree = "<group>"; };
+		44B022C62819130A0058F2F4 /* R_PDFDocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PDFDocumentController.swift; sourceTree = "<group>"; };
+		44B022C72819130A0058F2F4 /* R_PDFDocView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PDFDocView.swift; sourceTree = "<group>"; };
+		44B022C82819130A0058F2F4 /* R_PDFDocView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_PDFDocView.xib; sourceTree = "<group>"; };
+		44B022C92819130A0058F2F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		44B022CB2819130A0058F2F4 /* R_OrderDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_OrderDetailsController.swift; sourceTree = "<group>"; };
+		44B022CF2819130A0058F2F4 /* TicketTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketTitleCell.xib; sourceTree = "<group>"; };
+		44B022D02819130A0058F2F4 /* TicketTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketTitleCell.swift; sourceTree = "<group>"; };
+		44B022D22819130A0058F2F4 /* R_OrderPaymentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_OrderPaymentTableViewCell.xib; sourceTree = "<group>"; };
+		44B022D32819130A0058F2F4 /* R_OrderPaymentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_OrderPaymentTableViewCell.swift; sourceTree = "<group>"; };
+		44B022D52819130A0058F2F4 /* TicketDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketDetailCell.xib; sourceTree = "<group>"; };
+		44B022D62819130A0058F2F4 /* TicketDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketDetailCell.swift; sourceTree = "<group>"; };
+		44B022D82819130A0058F2F4 /* TicketInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketInfoCell.swift; sourceTree = "<group>"; };
+		44B022D92819130A0058F2F4 /* TicketInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketInfoCell.xib; sourceTree = "<group>"; };
+		44B022DB2819130A0058F2F4 /* TicketStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketStatusCell.swift; sourceTree = "<group>"; };
+		44B022DC2819130A0058F2F4 /* TicketStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketStatusCell.xib; sourceTree = "<group>"; };
+		44B022DD2819130A0058F2F4 /* R_OrderDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_OrderDetailsView.swift; sourceTree = "<group>"; };
+		44B022DE2819130A0058F2F4 /* R_OrderDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_OrderDetailsView.xib; sourceTree = "<group>"; };
+		44B022E12819130A0058F2F4 /* R_BookingWithoutPersonController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BookingWithoutPersonController.swift; sourceTree = "<group>"; };
+		44B022E42819130A0058F2F4 /* ChoicePlaceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoicePlaceCell.swift; sourceTree = "<group>"; };
+		44B022E52819130A0058F2F4 /* TariffSteperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TariffSteperCell.swift; sourceTree = "<group>"; };
+		44B022E62819130A0058F2F4 /* ChoicePlaceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChoicePlaceCell.xib; sourceTree = "<group>"; };
+		44B022E72819130A0058F2F4 /* TariffSteperCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TariffSteperCell.xib; sourceTree = "<group>"; };
+		44B022E82819130A0058F2F4 /* R_BookingWithoutPersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BookingWithoutPersonView.swift; sourceTree = "<group>"; };
+		44B022EB2819130A0058F2F4 /* R_TicketsHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_TicketsHistoryController.swift; sourceTree = "<group>"; };
+		44B022EE2819130A0058F2F4 /* HistoryTicketCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTicketCell.swift; sourceTree = "<group>"; };
+		44B022EF2819130A0058F2F4 /* R_EmptyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_EmptyTableViewCell.xib; sourceTree = "<group>"; };
+		44B022F02819130A0058F2F4 /* HistoryTicketCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTicketCell.xib; sourceTree = "<group>"; };
+		44B022F12819130A0058F2F4 /* RechkaLoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RechkaLoadMoreCell.xib; sourceTree = "<group>"; };
+		44B022F22819130A0058F2F4 /* RechkaLoadMoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RechkaLoadMoreCell.swift; sourceTree = "<group>"; };
+		44B022F32819130A0058F2F4 /* R_EmptyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_EmptyTableViewCell.swift; sourceTree = "<group>"; };
+		44B022F42819130A0058F2F4 /* R_TicketsHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_TicketsHistoryView.swift; sourceTree = "<group>"; };
+		44B022F72819130A0058F2F4 /* R_PassengerDataEntryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PassengerDataEntryController.swift; sourceTree = "<group>"; };
+		44B022FA2819130A0058F2F4 /* HeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCell.xib; sourceTree = "<group>"; };
+		44B022FB2819130A0058F2F4 /* GenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenderCell.swift; sourceTree = "<group>"; };
+		44B022FC2819130A0058F2F4 /* SelectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectCell.xib; sourceTree = "<group>"; };
+		44B022FD2819130A0058F2F4 /* SelectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCell.swift; sourceTree = "<group>"; };
+		44B022FE2819130A0058F2F4 /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		44B022FF2819130A0058F2F4 /* FieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldCell.swift; sourceTree = "<group>"; };
+		44B023002819130A0058F2F4 /* FieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FieldCell.xib; sourceTree = "<group>"; };
+		44B023012819130A0058F2F4 /* GenderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenderCell.xib; sourceTree = "<group>"; };
+		44B023022819130A0058F2F4 /* R_PassengerDataEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PassengerDataEntryView.swift; sourceTree = "<group>"; };
+		44B023042819130A0058F2F4 /* InputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputView.xib; sourceTree = "<group>"; };
+		44B023052819130A0058F2F4 /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
+		44B023072819130A0058F2F4 /* R_LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_LoadingView.swift; sourceTree = "<group>"; };
+		44B0230A2819130A0058F2F4 /* R_BlurLoadingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurLoadingController.swift; sourceTree = "<group>"; };
+		44B0230C2819130A0058F2F4 /* R_BlurLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurLoadingView.swift; sourceTree = "<group>"; };
+		44B0230D2819130A0058F2F4 /* R_BlurLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_BlurLoadingView.xib; sourceTree = "<group>"; };
+		44B023102819130A0058F2F4 /* R_BlurRefundController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurRefundController.swift; sourceTree = "<group>"; };
+		44B023122819130A0058F2F4 /* R_BlurRefundView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_BlurRefundView.xib; sourceTree = "<group>"; };
+		44B023132819130A0058F2F4 /* R_BlurRefundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurRefundView.swift; sourceTree = "<group>"; };
+		44B023152819130A0058F2F4 /* TerminalsBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalsBubble.swift; sourceTree = "<group>"; };
+		44B023172819130A0058F2F4 /* RechkaMapDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RechkaMapDelegate.swift; sourceTree = "<group>"; };
+		44B0231A2819130A0058F2F4 /* R_DocumentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_DocumentController.swift; sourceTree = "<group>"; };
+		44B0231D2819130A0058F2F4 /* DocumentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentCell.xib; sourceTree = "<group>"; };
+		44B0231E2819130A0058F2F4 /* DocumentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentCell.swift; sourceTree = "<group>"; };
+		44B0231F2819130A0058F2F4 /* R_DocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_DocumentView.swift; sourceTree = "<group>"; };
+		44B023202819130A0058F2F4 /* R_DocumentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_DocumentView.xib; sourceTree = "<group>"; };
+		44B023232819130A0058F2F4 /* R_BookingScreenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BookingScreenController.swift; sourceTree = "<group>"; };
+		44B023272819130A0058F2F4 /* CancelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CancelCell.xib; sourceTree = "<group>"; };
+		44B023282819130A0058F2F4 /* CancelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancelCell.swift; sourceTree = "<group>"; };
+		44B0232A2819130A0058F2F4 /* TitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
+		44B0232B2819130A0058F2F4 /* TitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
+		44B0232D2819130A0058F2F4 /* TimerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerCell.xib; sourceTree = "<group>"; };
+		44B0232E2819130A0058F2F4 /* TimerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerCell.swift; sourceTree = "<group>"; };
+		44B0232F2819130A0058F2F4 /* R_BookingScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BookingScreenView.swift; sourceTree = "<group>"; };
+		44B023322819130A0058F2F4 /* R_CancelBookingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_CancelBookingController.swift; sourceTree = "<group>"; };
+		44B023342819130A0058F2F4 /* R_CancelBookingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_CancelBookingView.xib; sourceTree = "<group>"; };
+		44B023352819130A0058F2F4 /* R_CancelBookingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_CancelBookingView.swift; sourceTree = "<group>"; };
+		44B023382819130A0058F2F4 /* R_UnauthorizedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_UnauthorizedController.swift; sourceTree = "<group>"; };
+		44B0233A2819130A0058F2F4 /* R_UnauthorizedView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_UnauthorizedView.xib; sourceTree = "<group>"; };
+		44B0233B2819130A0058F2F4 /* R_UnauthorizedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_UnauthorizedView.swift; sourceTree = "<group>"; };
+		44B0233E2819130A0058F2F4 /* R_BookingWithPersonController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BookingWithPersonController.swift; sourceTree = "<group>"; };
+		44B023412819130A0058F2F4 /* TariffHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TariffHeaderCell.xib; sourceTree = "<group>"; };
+		44B023422819130A0058F2F4 /* TariffCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TariffCell.swift; sourceTree = "<group>"; };
+		44B023432819130A0058F2F4 /* CommissionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommissionCell.xib; sourceTree = "<group>"; };
+		44B023442819130A0058F2F4 /* CommissionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommissionCell.swift; sourceTree = "<group>"; };
+		44B023452819130A0058F2F4 /* TariffHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TariffHeaderCell.swift; sourceTree = "<group>"; };
+		44B023462819130A0058F2F4 /* PassengerHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassengerHeaderCell.swift; sourceTree = "<group>"; };
+		44B023472819130A0058F2F4 /* PassengersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PassengersCell.xib; sourceTree = "<group>"; };
+		44B023482819130A0058F2F4 /* PassengerHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PassengerHeaderCell.xib; sourceTree = "<group>"; };
+		44B023492819130A0058F2F4 /* TariffCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TariffCell.xib; sourceTree = "<group>"; };
+		44B0234A2819130A0058F2F4 /* PassengersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassengersCell.swift; sourceTree = "<group>"; };
+		44B0234B2819130A0058F2F4 /* R_BookingWithPersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BookingWithPersonView.swift; sourceTree = "<group>"; };
+		44B0234D2819130A0058F2F4 /* R_BlurResultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurResultModel.swift; sourceTree = "<group>"; };
+		44B0234F2819130A0058F2F4 /* R_BlurResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurResultController.swift; sourceTree = "<group>"; };
+		44B023512819130A0058F2F4 /* R_BlurResultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_BlurResultView.swift; sourceTree = "<group>"; };
+		44B023522819130A0058F2F4 /* R_BlurResultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_BlurResultView.xib; sourceTree = "<group>"; };
+		44B023562819130A0058F2F4 /* TicketsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketsCell.swift; sourceTree = "<group>"; };
+		44B023582819130A0058F2F4 /* EmptyTicketCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyTicketCell.xib; sourceTree = "<group>"; };
+		44B023592819130A0058F2F4 /* EmptyTicketCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTicketCell.swift; sourceTree = "<group>"; };
+		44B0235A2819130A0058F2F4 /* TicketCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketCell.swift; sourceTree = "<group>"; };
+		44B0235B2819130A0058F2F4 /* TicketCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketCell.xib; sourceTree = "<group>"; };
+		44B0235C2819130A0058F2F4 /* TicketsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketsCell.xib; sourceTree = "<group>"; };
+		44B0235E2819130A0058F2F4 /* TripSelectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TripSelectionCell.xib; sourceTree = "<group>"; };
+		44B0235F2819130A0058F2F4 /* R_DateCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_DateCollectionCell.xib; sourceTree = "<group>"; };
+		44B023602819130A0058F2F4 /* R_DateCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_DateCollectionCell.swift; sourceTree = "<group>"; };
+		44B023612819130A0058F2F4 /* TripSelectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripSelectionCell.swift; sourceTree = "<group>"; };
+		44B023642819130A0058F2F4 /* TicketsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketsHeader.xib; sourceTree = "<group>"; };
+		44B023652819130A0058F2F4 /* TicketsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketsHeader.swift; sourceTree = "<group>"; };
+		44B023672819130A0058F2F4 /* TripsDateHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripsDateHeader.swift; sourceTree = "<group>"; };
+		44B023682819130A0058F2F4 /* TripsDateHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TripsDateHeader.xib; sourceTree = "<group>"; };
+		44B0236A2819130A0058F2F4 /* MapViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewCell.xib; sourceTree = "<group>"; };
+		44B0236B2819130A0058F2F4 /* MapViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewCell.swift; sourceTree = "<group>"; };
+		44B0236D2819130A0058F2F4 /* SummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryCell.swift; sourceTree = "<group>"; };
+		44B0236E2819130A0058F2F4 /* SummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SummaryCell.xib; sourceTree = "<group>"; };
+		44B023702819130A0058F2F4 /* R_RouteDetailsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_RouteDetailsScreen.swift; sourceTree = "<group>"; };
+		44B023722819130A0058F2F4 /* R_RootStationDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_RootStationDetailView.swift; sourceTree = "<group>"; };
+		44B023732819130A0058F2F4 /* R_PosterTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PosterTableHeaderView.swift; sourceTree = "<group>"; };
+		44B023762819130A0058F2F4 /* R_PopularStationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PopularStationsController.swift; sourceTree = "<group>"; };
+		44B023792819130A0058F2F4 /* R_RouteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_RouteTableViewCell.swift; sourceTree = "<group>"; };
+		44B0237A2819130A0058F2F4 /* R_ErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_ErrorCell.swift; sourceTree = "<group>"; };
+		44B0237B2819130A0058F2F4 /* R_ErrorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_ErrorCell.xib; sourceTree = "<group>"; };
+		44B0237C2819130A0058F2F4 /* R_RouteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_RouteTableViewCell.xib; sourceTree = "<group>"; };
+		44B0237D2819130A0058F2F4 /* R_HomeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_HomeView.xib; sourceTree = "<group>"; };
+		44B0237E2819130A0058F2F4 /* R_HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_HomeView.swift; sourceTree = "<group>"; };
+		44B023812819130A0058F2F4 /* R_StationsListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_StationsListController.swift; sourceTree = "<group>"; };
+		44B023842819130A0058F2F4 /* RechkaTerminalsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RechkaTerminalsCell.swift; sourceTree = "<group>"; };
+		44B023852819130A0058F2F4 /* RechkaTerminalsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RechkaTerminalsCell.xib; sourceTree = "<group>"; };
+		44B023862819130A0058F2F4 /* R_StationListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_StationListView.swift; sourceTree = "<group>"; };
+		44B023892819130A0058F2F4 /* R_CitizenshipController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_CitizenshipController.swift; sourceTree = "<group>"; };
+		44B0238C2819130A0058F2F4 /* CitizenshipCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitizenshipCell.swift; sourceTree = "<group>"; };
+		44B0238D2819130A0058F2F4 /* CitizenshipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CitizenshipCell.xib; sourceTree = "<group>"; };
+		44B0238E2819130A0058F2F4 /* R_CitizenshipView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_CitizenshipView.xib; sourceTree = "<group>"; };
+		44B0238F2819130A0058F2F4 /* R_CitizenshipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_CitizenshipView.swift; sourceTree = "<group>"; };
+		44B023922819130A0058F2F4 /* R_PlaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PlaceController.swift; sourceTree = "<group>"; };
+		44B023942819130A0058F2F4 /* R_PlaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PlaceView.swift; sourceTree = "<group>"; };
+		44B023952819130A0058F2F4 /* R_PlaceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_PlaceView.xib; sourceTree = "<group>"; };
+		44B023972819130A0058F2F4 /* R_PlaceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_PlaceCollectionCell.swift; sourceTree = "<group>"; };
+		44B023982819130A0058F2F4 /* R_PlaceCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = R_PlaceCollectionCell.xib; sourceTree = "<group>"; };
+		44B0239A2819130A0058F2F4 /* MoscowSans-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MoscowSans-Regular.otf"; sourceTree = "<group>"; };
+		44B0239B2819130A0058F2F4 /* MoscowSans-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MoscowSans-Medium.otf"; sourceTree = "<group>"; };
+		44B0239C2819130A0058F2F4 /* MoscowSans-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MoscowSans-Bold.otf"; sourceTree = "<group>"; };
+		44B0239D2819130A0058F2F4 /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		44B41F4C28193FE700CB2B2F /* RechkaExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RechkaExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44B41F4E28193FE700CB2B2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		44B41F5028193FE700CB2B2F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		44B41F5228193FE700CB2B2F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		44B41F5528193FE700CB2B2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		44B41F5728193FE800CB2B2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		44B41F5A28193FE800CB2B2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		44B41F5C28193FE800CB2B2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55E46465B797F0BA7BD3CE54 /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
+		6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RechkaExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C956EEAA5D2E420DD72A2452 /* Pods-RechkaExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RechkaExample.release.xcconfig"; path = "Target Support Files/Pods-RechkaExample/Pods-RechkaExample.release.xcconfig"; sourceTree = "<group>"; };
+		F7666EB08AE2B9156427D60E /* Pods-MetroRechka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.release.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.release.xcconfig"; sourceTree = "<group>"; };
+		FA96E1C32CFAA647D56A7626 /* Pods-RechkaExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RechkaExample.debug.xcconfig"; path = "Target Support Files/Pods-RechkaExample/Pods-RechkaExample.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		44B02286281912D50058F2F4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2977A59A05E6CDAEB1426B07 /* libPods-MetroRechka.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		44B41F4928193FE700CB2B2F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD481419B5CBCB37ACFE864D /* libPods-RechkaExample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		44B0227F281912D50058F2F4 = {
+			isa = PBXGroup;
+			children = (
+				44B022932819130A0058F2F4 /* Sources */,
+				44B0228B281912D50058F2F4 /* MetroRechka */,
+				44B41F4D28193FE700CB2B2F /* RechkaExample */,
+				44B0228A281912D50058F2F4 /* Products */,
+				D36E40FE5C76FA9DF6448BBA /* Pods */,
+				E2BE82B7E95A2EC333D2A71E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		44B0228A281912D50058F2F4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				44B02289281912D50058F2F4 /* MetroRechka.framework */,
+				44B41F4C28193FE700CB2B2F /* RechkaExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		44B0228B281912D50058F2F4 /* MetroRechka */ = {
+			isa = PBXGroup;
+			children = (
+				44B0228C281912D50058F2F4 /* MetroRechka.h */,
+			);
+			path = MetroRechka;
+			sourceTree = "<group>";
+		};
+		44B022932819130A0058F2F4 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				44B022942819130A0058F2F4 /* Rechka */,
+			);
+			name = Sources;
+			path = ../Sources;
+			sourceTree = "<group>";
+		};
+		44B022942819130A0058F2F4 /* Rechka */ = {
+			isa = PBXGroup;
+			children = (
+				44B022952819130A0058F2F4 /* Media.xcassets */,
+				44B022962819130A0058F2F4 /* _RiverStation.swift */,
+				44B022972819130A0058F2F4 /* R_ErrorView.swift */,
+				44B022982819130A0058F2F4 /* SomeCache.swift */,
+				44B022992819130A0058F2F4 /* Models */,
+				44B022B02819130A0058F2F4 /* RechkaService */,
+				44B022B32819130A0058F2F4 /* Extensions */,
+				44B022BF2819130A0058F2F4 /* RechkaNetworkDelegate.swift */,
+				44B022C02819130A0058F2F4 /* R_Toast.xib */,
+				44B022C12819130A0058F2F4 /* R_Toast.swift */,
+				44B022C22819130A0058F2F4 /* Rechka.swift */,
+				44B022C32819130A0058F2F4 /* Modules */,
+				44B023992819130A0058F2F4 /* Fonts */,
+				44B0239D2819130A0058F2F4 /* Appearance.swift */,
+			);
+			path = Rechka;
+			sourceTree = "<group>";
+		};
+		44B022992819130A0058F2F4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				44B0229A2819130A0058F2F4 /* API Clients */,
+				44B0229D2819130A0058F2F4 /* Other */,
+				44B022A22819130A0058F2F4 /* User */,
+				44B022A62819130A0058F2F4 /* Orders */,
+				44B022AB2819130A0058F2F4 /* Routes */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		44B0229A2819130A0058F2F4 /* API Clients */ = {
+			isa = PBXGroup;
+			children = (
+				44B0229B2819130A0058F2F4 /* AuthorizedClient.swift */,
+				44B0229C2819130A0058F2F4 /* BasicClient.swift */,
+			);
+			path = "API Clients";
+			sourceTree = "<group>";
+		};
+		44B0229D2819130A0058F2F4 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				44B0229E2819130A0058F2F4 /* R_Gallery.swift */,
+				44B0229F2819130A0058F2F4 /* R_Tariff.swift */,
+				44B022A02819130A0058F2F4 /* R_AdditionService.swift */,
+				44B022A12819130A0058F2F4 /* R_Vehicle.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		44B022A22819130A0058F2F4 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				44B022A32819130A0058F2F4 /* R_User.swift */,
+				44B022A42819130A0058F2F4 /* R_Document.swift */,
+				44B022A52819130A0058F2F4 /* R_Citizenship.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		44B022A62819130A0058F2F4 /* Orders */ = {
+			isa = PBXGroup;
+			children = (
+				44B022A72819130A0058F2F4 /* RiverShortOrder.swift */,
+				44B022A82819130A0058F2F4 /* RiverOperation.swift */,
+				44B022A92819130A0058F2F4 /* RiverOrder.swift */,
+				44B022AA2819130A0058F2F4 /* RiverOperationTicket.swift */,
+			);
+			path = Orders;
+			sourceTree = "<group>";
+		};
+		44B022AB2819130A0058F2F4 /* Routes */ = {
+			isa = PBXGroup;
+			children = (
+				44B022AC2819130A0058F2F4 /* R_Trip.swift */,
+				44B022AD2819130A0058F2F4 /* R_ShortTrip.swift */,
+				44B022AE2819130A0058F2F4 /* R_Route.swift */,
+				44B022AF2819130A0058F2F4 /* R_Station.swift */,
+			);
+			path = Routes;
+			sourceTree = "<group>";
+		};
+		44B022B02819130A0058F2F4 /* RechkaService */ = {
+			isa = PBXGroup;
+			children = (
+				44B022B12819130A0058F2F4 /* R_ReportService.swift */,
+				44B022B22819130A0058F2F4 /* R_Service.swift */,
+			);
+			path = RechkaService;
+			sourceTree = "<group>";
+		};
+		44B022B32819130A0058F2F4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				44B022B42819130A0058F2F4 /* Ext+UIScreen.swift */,
+				44B022B52819130A0058F2F4 /* Ext+String.swift */,
+				44B022B62819130A0058F2F4 /* Ext+UIDevice.swift */,
+				44B022B72819130A0058F2F4 /* Ext+URLRequest.swift */,
+				44B022B82819130A0058F2F4 /* Ext+UITableViewCell.swift */,
+				44B022B92819130A0058F2F4 /* Ext+UIFont.swift */,
+				44B022BA2819130A0058F2F4 /* Ext+UIViewController.swift */,
+				44B022BB2819130A0058F2F4 /* Ext+UIView.swift */,
+				44B022BC2819130A0058F2F4 /* SafeIndex.swift */,
+				44B022BD2819130A0058F2F4 /* Ext+UIImage.swift */,
+				44B022BE2819130A0058F2F4 /* Ext+Notification.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		44B022C32819130A0058F2F4 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				44B022C42819130A0058F2F4 /* Order Details Screen */,
+				44B022DF2819130A0058F2F4 /* BookingWithoutPerson */,
+				44B022E92819130A0058F2F4 /* HistoryScreen */,
+				44B022F52819130A0058F2F4 /* PassengerDataEntry */,
+				44B023032819130A0058F2F4 /* InputView */,
+				44B023062819130A0058F2F4 /* Loading */,
+				44B023082819130A0058F2F4 /* BlurLoading */,
+				44B0230E2819130A0058F2F4 /* BlurRefund */,
+				44B023142819130A0058F2F4 /* MapStuff */,
+				44B023182819130A0058F2F4 /* DocumentScreen */,
+				44B023212819130A0058F2F4 /* BookingScreen */,
+				44B023302819130A0058F2F4 /* CancelBooking */,
+				44B023362819130A0058F2F4 /* Unauthorized screen */,
+				44B0233C2819130A0058F2F4 /* BookingWithPerson */,
+				44B0234C2819130A0058F2F4 /* BlurResult */,
+				44B023532819130A0058F2F4 /* Route Details Screen */,
+				44B023742819130A0058F2F4 /* PopularStations */,
+				44B0237F2819130A0058F2F4 /* StationsList */,
+				44B023872819130A0058F2F4 /* CitizenshipScreen */,
+				44B023902819130A0058F2F4 /* Places Screen */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		44B022C42819130A0058F2F4 /* Order Details Screen */ = {
+			isa = PBXGroup;
+			children = (
+				44B022C52819130A0058F2F4 /* PDF Document Screen */,
+				44B022C92819130A0058F2F4 /* Assets.xcassets */,
+				44B022CA2819130A0058F2F4 /* Controller */,
+				44B022CC2819130A0058F2F4 /* View */,
+			);
+			path = "Order Details Screen";
+			sourceTree = "<group>";
+		};
+		44B022C52819130A0058F2F4 /* PDF Document Screen */ = {
+			isa = PBXGroup;
+			children = (
+				44B022C62819130A0058F2F4 /* R_PDFDocumentController.swift */,
+				44B022C72819130A0058F2F4 /* R_PDFDocView.swift */,
+				44B022C82819130A0058F2F4 /* R_PDFDocView.xib */,
+			);
+			path = "PDF Document Screen";
+			sourceTree = "<group>";
+		};
+		44B022CA2819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B022CB2819130A0058F2F4 /* R_OrderDetailsController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B022CC2819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B022CD2819130A0058F2F4 /* Cells */,
+				44B022DD2819130A0058F2F4 /* R_OrderDetailsView.swift */,
+				44B022DE2819130A0058F2F4 /* R_OrderDetailsView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B022CD2819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B022CE2819130A0058F2F4 /* TicketTitleCell */,
+				44B022D12819130A0058F2F4 /* TicketPaymentCell */,
+				44B022D42819130A0058F2F4 /* TicketDetails */,
+				44B022D72819130A0058F2F4 /* TicketInfoCell */,
+				44B022DA2819130A0058F2F4 /* TicketStatus */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B022CE2819130A0058F2F4 /* TicketTitleCell */ = {
+			isa = PBXGroup;
+			children = (
+				44B022CF2819130A0058F2F4 /* TicketTitleCell.xib */,
+				44B022D02819130A0058F2F4 /* TicketTitleCell.swift */,
+			);
+			path = TicketTitleCell;
+			sourceTree = "<group>";
+		};
+		44B022D12819130A0058F2F4 /* TicketPaymentCell */ = {
+			isa = PBXGroup;
+			children = (
+				44B022D22819130A0058F2F4 /* R_OrderPaymentTableViewCell.xib */,
+				44B022D32819130A0058F2F4 /* R_OrderPaymentTableViewCell.swift */,
+			);
+			path = TicketPaymentCell;
+			sourceTree = "<group>";
+		};
+		44B022D42819130A0058F2F4 /* TicketDetails */ = {
+			isa = PBXGroup;
+			children = (
+				44B022D52819130A0058F2F4 /* TicketDetailCell.xib */,
+				44B022D62819130A0058F2F4 /* TicketDetailCell.swift */,
+			);
+			path = TicketDetails;
+			sourceTree = "<group>";
+		};
+		44B022D72819130A0058F2F4 /* TicketInfoCell */ = {
+			isa = PBXGroup;
+			children = (
+				44B022D82819130A0058F2F4 /* TicketInfoCell.swift */,
+				44B022D92819130A0058F2F4 /* TicketInfoCell.xib */,
+			);
+			path = TicketInfoCell;
+			sourceTree = "<group>";
+		};
+		44B022DA2819130A0058F2F4 /* TicketStatus */ = {
+			isa = PBXGroup;
+			children = (
+				44B022DB2819130A0058F2F4 /* TicketStatusCell.swift */,
+				44B022DC2819130A0058F2F4 /* TicketStatusCell.xib */,
+			);
+			path = TicketStatus;
+			sourceTree = "<group>";
+		};
+		44B022DF2819130A0058F2F4 /* BookingWithoutPerson */ = {
+			isa = PBXGroup;
+			children = (
+				44B022E02819130A0058F2F4 /* Controller */,
+				44B022E22819130A0058F2F4 /* View */,
+			);
+			path = BookingWithoutPerson;
+			sourceTree = "<group>";
+		};
+		44B022E02819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B022E12819130A0058F2F4 /* R_BookingWithoutPersonController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B022E22819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B022E32819130A0058F2F4 /* Cells */,
+				44B022E82819130A0058F2F4 /* R_BookingWithoutPersonView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B022E32819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B022E42819130A0058F2F4 /* ChoicePlaceCell.swift */,
+				44B022E52819130A0058F2F4 /* TariffSteperCell.swift */,
+				44B022E62819130A0058F2F4 /* ChoicePlaceCell.xib */,
+				44B022E72819130A0058F2F4 /* TariffSteperCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B022E92819130A0058F2F4 /* HistoryScreen */ = {
+			isa = PBXGroup;
+			children = (
+				44B022EA2819130A0058F2F4 /* Controller */,
+				44B022EC2819130A0058F2F4 /* View */,
+			);
+			path = HistoryScreen;
+			sourceTree = "<group>";
+		};
+		44B022EA2819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B022EB2819130A0058F2F4 /* R_TicketsHistoryController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B022EC2819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B022ED2819130A0058F2F4 /* Cells */,
+				44B022F42819130A0058F2F4 /* R_TicketsHistoryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B022ED2819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B022EE2819130A0058F2F4 /* HistoryTicketCell.swift */,
+				44B022EF2819130A0058F2F4 /* R_EmptyTableViewCell.xib */,
+				44B022F02819130A0058F2F4 /* HistoryTicketCell.xib */,
+				44B022F12819130A0058F2F4 /* RechkaLoadMoreCell.xib */,
+				44B022F22819130A0058F2F4 /* RechkaLoadMoreCell.swift */,
+				44B022F32819130A0058F2F4 /* R_EmptyTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B022F52819130A0058F2F4 /* PassengerDataEntry */ = {
+			isa = PBXGroup;
+			children = (
+				44B022F62819130A0058F2F4 /* Controller */,
+				44B022F82819130A0058F2F4 /* View */,
+			);
+			path = PassengerDataEntry;
+			sourceTree = "<group>";
+		};
+		44B022F62819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B022F72819130A0058F2F4 /* R_PassengerDataEntryController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B022F82819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B022F92819130A0058F2F4 /* Cells */,
+				44B023022819130A0058F2F4 /* R_PassengerDataEntryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B022F92819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B022FA2819130A0058F2F4 /* HeaderCell.xib */,
+				44B022FB2819130A0058F2F4 /* GenderCell.swift */,
+				44B022FC2819130A0058F2F4 /* SelectCell.xib */,
+				44B022FD2819130A0058F2F4 /* SelectCell.swift */,
+				44B022FE2819130A0058F2F4 /* HeaderCell.swift */,
+				44B022FF2819130A0058F2F4 /* FieldCell.swift */,
+				44B023002819130A0058F2F4 /* FieldCell.xib */,
+				44B023012819130A0058F2F4 /* GenderCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B023032819130A0058F2F4 /* InputView */ = {
+			isa = PBXGroup;
+			children = (
+				44B023042819130A0058F2F4 /* InputView.xib */,
+				44B023052819130A0058F2F4 /* InputView.swift */,
+			);
+			path = InputView;
+			sourceTree = "<group>";
+		};
+		44B023062819130A0058F2F4 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				44B023072819130A0058F2F4 /* R_LoadingView.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		44B023082819130A0058F2F4 /* BlurLoading */ = {
+			isa = PBXGroup;
+			children = (
+				44B023092819130A0058F2F4 /* Controller */,
+				44B0230B2819130A0058F2F4 /* View */,
+			);
+			path = BlurLoading;
+			sourceTree = "<group>";
+		};
+		44B023092819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B0230A2819130A0058F2F4 /* R_BlurLoadingController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B0230B2819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B0230C2819130A0058F2F4 /* R_BlurLoadingView.swift */,
+				44B0230D2819130A0058F2F4 /* R_BlurLoadingView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B0230E2819130A0058F2F4 /* BlurRefund */ = {
+			isa = PBXGroup;
+			children = (
+				44B0230F2819130A0058F2F4 /* Controller */,
+				44B023112819130A0058F2F4 /* View */,
+			);
+			path = BlurRefund;
+			sourceTree = "<group>";
+		};
+		44B0230F2819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023102819130A0058F2F4 /* R_BlurRefundController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023112819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023122819130A0058F2F4 /* R_BlurRefundView.xib */,
+				44B023132819130A0058F2F4 /* R_BlurRefundView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023142819130A0058F2F4 /* MapStuff */ = {
+			isa = PBXGroup;
+			children = (
+				44B023152819130A0058F2F4 /* TerminalsBubble.swift */,
+				44B023162819130A0058F2F4 /* Delegate */,
+			);
+			path = MapStuff;
+			sourceTree = "<group>";
+		};
+		44B023162819130A0058F2F4 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				44B023172819130A0058F2F4 /* RechkaMapDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		44B023182819130A0058F2F4 /* DocumentScreen */ = {
+			isa = PBXGroup;
+			children = (
+				44B023192819130A0058F2F4 /* Controller */,
+				44B0231B2819130A0058F2F4 /* View */,
+			);
+			path = DocumentScreen;
+			sourceTree = "<group>";
+		};
+		44B023192819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B0231A2819130A0058F2F4 /* R_DocumentController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B0231B2819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B0231C2819130A0058F2F4 /* Cells */,
+				44B0231F2819130A0058F2F4 /* R_DocumentView.swift */,
+				44B023202819130A0058F2F4 /* R_DocumentView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B0231C2819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B0231D2819130A0058F2F4 /* DocumentCell.xib */,
+				44B0231E2819130A0058F2F4 /* DocumentCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B023212819130A0058F2F4 /* BookingScreen */ = {
+			isa = PBXGroup;
+			children = (
+				44B023222819130A0058F2F4 /* Controller */,
+				44B023242819130A0058F2F4 /* View */,
+			);
+			path = BookingScreen;
+			sourceTree = "<group>";
+		};
+		44B023222819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023232819130A0058F2F4 /* R_BookingScreenController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023242819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023252819130A0058F2F4 /* Cells */,
+				44B0232F2819130A0058F2F4 /* R_BookingScreenView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023252819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B023262819130A0058F2F4 /* Cancel */,
+				44B023292819130A0058F2F4 /* TItle */,
+				44B0232C2819130A0058F2F4 /* Timer */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B023262819130A0058F2F4 /* Cancel */ = {
+			isa = PBXGroup;
+			children = (
+				44B023272819130A0058F2F4 /* CancelCell.xib */,
+				44B023282819130A0058F2F4 /* CancelCell.swift */,
+			);
+			path = Cancel;
+			sourceTree = "<group>";
+		};
+		44B023292819130A0058F2F4 /* TItle */ = {
+			isa = PBXGroup;
+			children = (
+				44B0232A2819130A0058F2F4 /* TitleCell.swift */,
+				44B0232B2819130A0058F2F4 /* TitleCell.xib */,
+			);
+			path = TItle;
+			sourceTree = "<group>";
+		};
+		44B0232C2819130A0058F2F4 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				44B0232D2819130A0058F2F4 /* TimerCell.xib */,
+				44B0232E2819130A0058F2F4 /* TimerCell.swift */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
+		44B023302819130A0058F2F4 /* CancelBooking */ = {
+			isa = PBXGroup;
+			children = (
+				44B023312819130A0058F2F4 /* Controller */,
+				44B023332819130A0058F2F4 /* View */,
+			);
+			path = CancelBooking;
+			sourceTree = "<group>";
+		};
+		44B023312819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023322819130A0058F2F4 /* R_CancelBookingController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023332819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023342819130A0058F2F4 /* R_CancelBookingView.xib */,
+				44B023352819130A0058F2F4 /* R_CancelBookingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023362819130A0058F2F4 /* Unauthorized screen */ = {
+			isa = PBXGroup;
+			children = (
+				44B023372819130A0058F2F4 /* Controller */,
+				44B023392819130A0058F2F4 /* View */,
+			);
+			path = "Unauthorized screen";
+			sourceTree = "<group>";
+		};
+		44B023372819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023382819130A0058F2F4 /* R_UnauthorizedController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023392819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B0233A2819130A0058F2F4 /* R_UnauthorizedView.xib */,
+				44B0233B2819130A0058F2F4 /* R_UnauthorizedView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B0233C2819130A0058F2F4 /* BookingWithPerson */ = {
+			isa = PBXGroup;
+			children = (
+				44B0233D2819130A0058F2F4 /* Controller */,
+				44B0233F2819130A0058F2F4 /* View */,
+			);
+			path = BookingWithPerson;
+			sourceTree = "<group>";
+		};
+		44B0233D2819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B0233E2819130A0058F2F4 /* R_BookingWithPersonController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B0233F2819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023402819130A0058F2F4 /* Cells */,
+				44B0234B2819130A0058F2F4 /* R_BookingWithPersonView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023402819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B023412819130A0058F2F4 /* TariffHeaderCell.xib */,
+				44B023422819130A0058F2F4 /* TariffCell.swift */,
+				44B023432819130A0058F2F4 /* CommissionCell.xib */,
+				44B023442819130A0058F2F4 /* CommissionCell.swift */,
+				44B023452819130A0058F2F4 /* TariffHeaderCell.swift */,
+				44B023462819130A0058F2F4 /* PassengerHeaderCell.swift */,
+				44B023472819130A0058F2F4 /* PassengersCell.xib */,
+				44B023482819130A0058F2F4 /* PassengerHeaderCell.xib */,
+				44B023492819130A0058F2F4 /* TariffCell.xib */,
+				44B0234A2819130A0058F2F4 /* PassengersCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B0234C2819130A0058F2F4 /* BlurResult */ = {
+			isa = PBXGroup;
+			children = (
+				44B0234D2819130A0058F2F4 /* R_BlurResultModel.swift */,
+				44B0234E2819130A0058F2F4 /* Controller */,
+				44B023502819130A0058F2F4 /* View */,
+			);
+			path = BlurResult;
+			sourceTree = "<group>";
+		};
+		44B0234E2819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B0234F2819130A0058F2F4 /* R_BlurResultController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023502819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023512819130A0058F2F4 /* R_BlurResultView.swift */,
+				44B023522819130A0058F2F4 /* R_BlurResultView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023532819130A0058F2F4 /* Route Details Screen */ = {
+			isa = PBXGroup;
+			children = (
+				44B023542819130A0058F2F4 /* Cells */,
+				44B0236F2819130A0058F2F4 /* Controller */,
+				44B023712819130A0058F2F4 /* View */,
+			);
+			path = "Route Details Screen";
+			sourceTree = "<group>";
+		};
+		44B023542819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B023552819130A0058F2F4 /* Tickets */,
+				44B0235D2819130A0058F2F4 /* Trip  */,
+				44B023622819130A0058F2F4 /* Headers */,
+				44B023692819130A0058F2F4 /* MapView */,
+				44B0236C2819130A0058F2F4 /* Summary */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B023552819130A0058F2F4 /* Tickets */ = {
+			isa = PBXGroup;
+			children = (
+				44B023562819130A0058F2F4 /* TicketsCell.swift */,
+				44B023572819130A0058F2F4 /* Ticket */,
+				44B0235C2819130A0058F2F4 /* TicketsCell.xib */,
+			);
+			path = Tickets;
+			sourceTree = "<group>";
+		};
+		44B023572819130A0058F2F4 /* Ticket */ = {
+			isa = PBXGroup;
+			children = (
+				44B023582819130A0058F2F4 /* EmptyTicketCell.xib */,
+				44B023592819130A0058F2F4 /* EmptyTicketCell.swift */,
+				44B0235A2819130A0058F2F4 /* TicketCell.swift */,
+				44B0235B2819130A0058F2F4 /* TicketCell.xib */,
+			);
+			path = Ticket;
+			sourceTree = "<group>";
+		};
+		44B0235D2819130A0058F2F4 /* Trip  */ = {
+			isa = PBXGroup;
+			children = (
+				44B0235E2819130A0058F2F4 /* TripSelectionCell.xib */,
+				44B0235F2819130A0058F2F4 /* R_DateCollectionCell.xib */,
+				44B023602819130A0058F2F4 /* R_DateCollectionCell.swift */,
+				44B023612819130A0058F2F4 /* TripSelectionCell.swift */,
+			);
+			path = "Trip ";
+			sourceTree = "<group>";
+		};
+		44B023622819130A0058F2F4 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				44B023632819130A0058F2F4 /* Tickets header */,
+				44B023662819130A0058F2F4 /* Trip date header */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		44B023632819130A0058F2F4 /* Tickets header */ = {
+			isa = PBXGroup;
+			children = (
+				44B023642819130A0058F2F4 /* TicketsHeader.xib */,
+				44B023652819130A0058F2F4 /* TicketsHeader.swift */,
+			);
+			path = "Tickets header";
+			sourceTree = "<group>";
+		};
+		44B023662819130A0058F2F4 /* Trip date header */ = {
+			isa = PBXGroup;
+			children = (
+				44B023672819130A0058F2F4 /* TripsDateHeader.swift */,
+				44B023682819130A0058F2F4 /* TripsDateHeader.xib */,
+			);
+			path = "Trip date header";
+			sourceTree = "<group>";
+		};
+		44B023692819130A0058F2F4 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				44B0236A2819130A0058F2F4 /* MapViewCell.xib */,
+				44B0236B2819130A0058F2F4 /* MapViewCell.swift */,
+			);
+			path = MapView;
+			sourceTree = "<group>";
+		};
+		44B0236C2819130A0058F2F4 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				44B0236D2819130A0058F2F4 /* SummaryCell.swift */,
+				44B0236E2819130A0058F2F4 /* SummaryCell.xib */,
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
+		44B0236F2819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023702819130A0058F2F4 /* R_RouteDetailsScreen.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023712819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023722819130A0058F2F4 /* R_RootStationDetailView.swift */,
+				44B023732819130A0058F2F4 /* R_PosterTableHeaderView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023742819130A0058F2F4 /* PopularStations */ = {
+			isa = PBXGroup;
+			children = (
+				44B023752819130A0058F2F4 /* Controller */,
+				44B023772819130A0058F2F4 /* View */,
+			);
+			path = PopularStations;
+			sourceTree = "<group>";
+		};
+		44B023752819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023762819130A0058F2F4 /* R_PopularStationsController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023772819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023782819130A0058F2F4 /* Cells */,
+				44B0237D2819130A0058F2F4 /* R_HomeView.xib */,
+				44B0237E2819130A0058F2F4 /* R_HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023782819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B023792819130A0058F2F4 /* R_RouteTableViewCell.swift */,
+				44B0237A2819130A0058F2F4 /* R_ErrorCell.swift */,
+				44B0237B2819130A0058F2F4 /* R_ErrorCell.xib */,
+				44B0237C2819130A0058F2F4 /* R_RouteTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B0237F2819130A0058F2F4 /* StationsList */ = {
+			isa = PBXGroup;
+			children = (
+				44B023802819130A0058F2F4 /* Controller */,
+				44B023822819130A0058F2F4 /* View */,
+			);
+			path = StationsList;
+			sourceTree = "<group>";
+		};
+		44B023802819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023812819130A0058F2F4 /* R_StationsListController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023822819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023832819130A0058F2F4 /* Cells */,
+				44B023862819130A0058F2F4 /* R_StationListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023832819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B023842819130A0058F2F4 /* RechkaTerminalsCell.swift */,
+				44B023852819130A0058F2F4 /* RechkaTerminalsCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B023872819130A0058F2F4 /* CitizenshipScreen */ = {
+			isa = PBXGroup;
+			children = (
+				44B023882819130A0058F2F4 /* Controller */,
+				44B0238A2819130A0058F2F4 /* View */,
+			);
+			path = CitizenshipScreen;
+			sourceTree = "<group>";
+		};
+		44B023882819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023892819130A0058F2F4 /* R_CitizenshipController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B0238A2819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B0238B2819130A0058F2F4 /* Cells */,
+				44B0238E2819130A0058F2F4 /* R_CitizenshipView.xib */,
+				44B0238F2819130A0058F2F4 /* R_CitizenshipView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B0238B2819130A0058F2F4 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				44B0238C2819130A0058F2F4 /* CitizenshipCell.swift */,
+				44B0238D2819130A0058F2F4 /* CitizenshipCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		44B023902819130A0058F2F4 /* Places Screen */ = {
+			isa = PBXGroup;
+			children = (
+				44B023912819130A0058F2F4 /* Controller */,
+				44B023932819130A0058F2F4 /* View */,
+			);
+			path = "Places Screen";
+			sourceTree = "<group>";
+		};
+		44B023912819130A0058F2F4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				44B023922819130A0058F2F4 /* R_PlaceController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		44B023932819130A0058F2F4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44B023942819130A0058F2F4 /* R_PlaceView.swift */,
+				44B023952819130A0058F2F4 /* R_PlaceView.xib */,
+				44B023962819130A0058F2F4 /* Place Collection Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44B023962819130A0058F2F4 /* Place Collection Cell */ = {
+			isa = PBXGroup;
+			children = (
+				44B023972819130A0058F2F4 /* R_PlaceCollectionCell.swift */,
+				44B023982819130A0058F2F4 /* R_PlaceCollectionCell.xib */,
+			);
+			path = "Place Collection Cell";
+			sourceTree = "<group>";
+		};
+		44B023992819130A0058F2F4 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				44B0239A2819130A0058F2F4 /* MoscowSans-Regular.otf */,
+				44B0239B2819130A0058F2F4 /* MoscowSans-Medium.otf */,
+				44B0239C2819130A0058F2F4 /* MoscowSans-Bold.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		44B41F4D28193FE700CB2B2F /* RechkaExample */ = {
+			isa = PBXGroup;
+			children = (
+				44B41F4E28193FE700CB2B2F /* AppDelegate.swift */,
+				44B41F5028193FE700CB2B2F /* SceneDelegate.swift */,
+				44B41F5228193FE700CB2B2F /* ViewController.swift */,
+				44B41F5428193FE700CB2B2F /* Main.storyboard */,
+				44B41F5728193FE800CB2B2F /* Assets.xcassets */,
+				44B41F5928193FE800CB2B2F /* LaunchScreen.storyboard */,
+				44B41F5C28193FE800CB2B2F /* Info.plist */,
+			);
+			path = RechkaExample;
+			sourceTree = "<group>";
+		};
+		D36E40FE5C76FA9DF6448BBA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				55E46465B797F0BA7BD3CE54 /* Pods-MetroRechka.debug.xcconfig */,
+				F7666EB08AE2B9156427D60E /* Pods-MetroRechka.release.xcconfig */,
+				FA96E1C32CFAA647D56A7626 /* Pods-RechkaExample.debug.xcconfig */,
+				C956EEAA5D2E420DD72A2452 /* Pods-RechkaExample.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E2BE82B7E95A2EC333D2A71E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */,
+				6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		44B02284281912D50058F2F4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44B0228D281912D50058F2F4 /* MetroRechka.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		44B02288281912D50058F2F4 /* MetroRechka */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 44B02290281912D50058F2F4 /* Build configuration list for PBXNativeTarget "MetroRechka" */;
+			buildPhases = (
+				D1856CAA2F967494A8897B51 /* [CP] Check Pods Manifest.lock */,
+				44B02284281912D50058F2F4 /* Headers */,
+				44B02285281912D50058F2F4 /* Sources */,
+				44B02286281912D50058F2F4 /* Frameworks */,
+				44B02287281912D50058F2F4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MetroRechka;
+			productName = MetroRechka;
+			productReference = 44B02289281912D50058F2F4 /* MetroRechka.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		44B41F4B28193FE700CB2B2F /* RechkaExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 44B41F5D28193FE800CB2B2F /* Build configuration list for PBXNativeTarget "RechkaExample" */;
+			buildPhases = (
+				D2B371F7CBE6F9FF66DD50B1 /* [CP] Check Pods Manifest.lock */,
+				44B41F4828193FE700CB2B2F /* Sources */,
+				44B41F4928193FE700CB2B2F /* Frameworks */,
+				44B41F4A28193FE700CB2B2F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RechkaExample;
+			productName = RechkaExample;
+			productReference = 44B41F4C28193FE700CB2B2F /* RechkaExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		44B02280281912D50058F2F4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					44B02288281912D50058F2F4 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					44B41F4B28193FE700CB2B2F = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 44B02283281912D50058F2F4 /* Build configuration list for PBXProject "MetroRechka" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 44B0227F281912D50058F2F4;
+			productRefGroup = 44B0228A281912D50058F2F4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				44B02288281912D50058F2F4 /* MetroRechka */,
+				44B41F4B28193FE700CB2B2F /* RechkaExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		44B02287281912D50058F2F4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44B024342819130B0058F2F4 /* R_RouteTableViewCell.xib in Resources */,
+				44B023CD2819130A0058F2F4 /* TicketDetailCell.xib in Resources */,
+				44B023D42819130A0058F2F4 /* R_OrderDetailsView.xib in Resources */,
+				44B023C12819130A0058F2F4 /* R_Toast.xib in Resources */,
+				44B024202819130B0058F2F4 /* TicketsCell.xib in Resources */,
+				44B0241C2819130B0058F2F4 /* EmptyTicketCell.xib in Resources */,
+				44B023E62819130A0058F2F4 /* SelectCell.xib in Resources */,
+				44B024022819130A0058F2F4 /* TimerCell.xib in Resources */,
+				44B0240E2819130B0058F2F4 /* CommissionCell.xib in Resources */,
+				44B023F42819130A0058F2F4 /* R_BlurRefundView.xib in Resources */,
+				44B0240C2819130B0058F2F4 /* TariffHeaderCell.xib in Resources */,
+				44B024352819130B0058F2F4 /* R_HomeView.xib in Resources */,
+				44B024452819130B0058F2F4 /* MoscowSans-Regular.otf in Resources */,
+				44B023D22819130A0058F2F4 /* TicketStatusCell.xib in Resources */,
+				44B023DF2819130A0058F2F4 /* RechkaLoadMoreCell.xib in Resources */,
+				44B0243D2819130B0058F2F4 /* CitizenshipCell.xib in Resources */,
+				44B024222819130B0058F2F4 /* R_DateCollectionCell.xib in Resources */,
+				44B023D92819130A0058F2F4 /* TariffSteperCell.xib in Resources */,
+				44B023DD2819130A0058F2F4 /* R_EmptyTableViewCell.xib in Resources */,
+				44B024462819130B0058F2F4 /* MoscowSans-Medium.otf in Resources */,
+				44B0243E2819130B0058F2F4 /* R_CitizenshipView.xib in Resources */,
+				44B0239E2819130A0058F2F4 /* Media.xcassets in Resources */,
+				44B024472819130B0058F2F4 /* MoscowSans-Bold.otf in Resources */,
+				44B024062819130A0058F2F4 /* R_CancelBookingView.xib in Resources */,
+				44B023ED2819130A0058F2F4 /* InputView.xib in Resources */,
+				44B023EB2819130A0058F2F4 /* GenderCell.xib in Resources */,
+				44B023F22819130A0058F2F4 /* R_BlurLoadingView.xib in Resources */,
+				44B024422819130B0058F2F4 /* R_PlaceView.xib in Resources */,
+				44B024252819130B0058F2F4 /* TicketsHeader.xib in Resources */,
+				44B023E42819130A0058F2F4 /* HeaderCell.xib in Resources */,
+				44B0242C2819130B0058F2F4 /* SummaryCell.xib in Resources */,
+				44B023F92819130A0058F2F4 /* DocumentCell.xib in Resources */,
+				44B023EA2819130A0058F2F4 /* FieldCell.xib in Resources */,
+				44B023D82819130A0058F2F4 /* ChoicePlaceCell.xib in Resources */,
+				44B023D02819130A0058F2F4 /* TicketInfoCell.xib in Resources */,
+				44B024332819130B0058F2F4 /* R_ErrorCell.xib in Resources */,
+				44B023CB2819130A0058F2F4 /* R_OrderPaymentTableViewCell.xib in Resources */,
+				44B023DE2819130A0058F2F4 /* HistoryTicketCell.xib in Resources */,
+				44B023C72819130A0058F2F4 /* Assets.xcassets in Resources */,
+				44B023C62819130A0058F2F4 /* R_PDFDocView.xib in Resources */,
+				44B024012819130A0058F2F4 /* TitleCell.xib in Resources */,
+				44B024292819130B0058F2F4 /* MapViewCell.xib in Resources */,
+				44B024142819130B0058F2F4 /* TariffCell.xib in Resources */,
+				44B024442819130B0058F2F4 /* R_PlaceCollectionCell.xib in Resources */,
+				44B024392819130B0058F2F4 /* RechkaTerminalsCell.xib in Resources */,
+				44B024212819130B0058F2F4 /* TripSelectionCell.xib in Resources */,
+				44B023FC2819130A0058F2F4 /* R_DocumentView.xib in Resources */,
+				44B023C92819130A0058F2F4 /* TicketTitleCell.xib in Resources */,
+				44B0241F2819130B0058F2F4 /* TicketCell.xib in Resources */,
+				44B024092819130B0058F2F4 /* R_UnauthorizedView.xib in Resources */,
+				44B024122819130B0058F2F4 /* PassengersCell.xib in Resources */,
+				44B024132819130B0058F2F4 /* PassengerHeaderCell.xib in Resources */,
+				44B024282819130B0058F2F4 /* TripsDateHeader.xib in Resources */,
+				44B0241A2819130B0058F2F4 /* R_BlurResultView.xib in Resources */,
+				44B023FE2819130A0058F2F4 /* CancelCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		44B41F4A28193FE700CB2B2F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44B41F5B28193FE800CB2B2F /* LaunchScreen.storyboard in Resources */,
+				44B41F5828193FE800CB2B2F /* Assets.xcassets in Resources */,
+				44B41F5628193FE700CB2B2F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D1856CAA2F967494A8897B51 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MetroRechka-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D2B371F7CBE6F9FF66DD50B1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RechkaExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		44B02285281912D50058F2F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44B024312819130B0058F2F4 /* R_RouteTableViewCell.swift in Sources */,
+				44B024382819130B0058F2F4 /* RechkaTerminalsCell.swift in Sources */,
+				44B023D72819130A0058F2F4 /* TariffSteperCell.swift in Sources */,
+				44B024412819130B0058F2F4 /* R_PlaceView.swift in Sources */,
+				44B023BC2819130A0058F2F4 /* Ext+UIView.swift in Sources */,
+				44B023F32819130A0058F2F4 /* R_BlurRefundController.swift in Sources */,
+				44B023B42819130A0058F2F4 /* R_Service.swift in Sources */,
+				44B0242B2819130B0058F2F4 /* SummaryCell.swift in Sources */,
+				44B023E12819130A0058F2F4 /* R_EmptyTableViewCell.swift in Sources */,
+				44B023E32819130A0058F2F4 /* R_PassengerDataEntryController.swift in Sources */,
+				44B024362819130B0058F2F4 /* R_HomeView.swift in Sources */,
+				44B023F82819130A0058F2F4 /* R_DocumentController.swift in Sources */,
+				44B023D52819130A0058F2F4 /* R_BookingWithoutPersonController.swift in Sources */,
+				44B024272819130B0058F2F4 /* TripsDateHeader.swift in Sources */,
+				44B023FD2819130A0058F2F4 /* R_BookingScreenController.swift in Sources */,
+				44B023B72819130A0058F2F4 /* Ext+UIDevice.swift in Sources */,
+				44B0242A2819130B0058F2F4 /* MapViewCell.swift in Sources */,
+				44B023BD2819130A0058F2F4 /* SafeIndex.swift in Sources */,
+				44B023A62819130A0058F2F4 /* R_AdditionService.swift in Sources */,
+				44B023B22819130A0058F2F4 /* R_Station.swift in Sources */,
+				44B023CA2819130A0058F2F4 /* TicketTitleCell.swift in Sources */,
+				44B024152819130B0058F2F4 /* PassengersCell.swift in Sources */,
+				44B023E92819130A0058F2F4 /* FieldCell.swift in Sources */,
+				44B023AA2819130A0058F2F4 /* R_Citizenship.swift in Sources */,
+				44B0243B2819130B0058F2F4 /* R_CitizenshipController.swift in Sources */,
+				44B0243F2819130B0058F2F4 /* R_CitizenshipView.swift in Sources */,
+				44B023EC2819130A0058F2F4 /* R_PassengerDataEntryView.swift in Sources */,
+				44B023DA2819130A0058F2F4 /* R_BookingWithoutPersonView.swift in Sources */,
+				44B024192819130B0058F2F4 /* R_BlurResultView.swift in Sources */,
+				44B023B12819130A0058F2F4 /* R_Route.swift in Sources */,
+				44B024402819130B0058F2F4 /* R_PlaceController.swift in Sources */,
+				44B023FF2819130A0058F2F4 /* CancelCell.swift in Sources */,
+				44B023FB2819130A0058F2F4 /* R_DocumentView.swift in Sources */,
+				44B023AE2819130A0058F2F4 /* RiverOperationTicket.swift in Sources */,
+				44B023F12819130A0058F2F4 /* R_BlurLoadingView.swift in Sources */,
+				44B023BE2819130A0058F2F4 /* Ext+UIImage.swift in Sources */,
+				44B023EE2819130A0058F2F4 /* InputView.swift in Sources */,
+				44B023AF2819130A0058F2F4 /* R_Trip.swift in Sources */,
+				44B023AC2819130A0058F2F4 /* RiverOperation.swift in Sources */,
+				44B023D12819130A0058F2F4 /* TicketStatusCell.swift in Sources */,
+				44B023D32819130A0058F2F4 /* R_OrderDetailsView.swift in Sources */,
+				44B023B92819130A0058F2F4 /* Ext+UITableViewCell.swift in Sources */,
+				44B024432819130B0058F2F4 /* R_PlaceCollectionCell.swift in Sources */,
+				44B023B82819130A0058F2F4 /* Ext+URLRequest.swift in Sources */,
+				44B024302819130B0058F2F4 /* R_PopularStationsController.swift in Sources */,
+				44B024172819130B0058F2F4 /* R_BlurResultModel.swift in Sources */,
+				44B023A92819130A0058F2F4 /* R_Document.swift in Sources */,
+				44B0242F2819130B0058F2F4 /* R_PosterTableHeaderView.swift in Sources */,
+				44B023CF2819130A0058F2F4 /* TicketInfoCell.swift in Sources */,
+				44B024042819130A0058F2F4 /* R_BookingScreenView.swift in Sources */,
+				44B023CE2819130A0058F2F4 /* TicketDetailCell.swift in Sources */,
+				44B024082819130B0058F2F4 /* R_UnauthorizedController.swift in Sources */,
+				44B0240B2819130B0058F2F4 /* R_BookingWithPersonController.swift in Sources */,
+				44B023BA2819130A0058F2F4 /* Ext+UIFont.swift in Sources */,
+				44B023E82819130A0058F2F4 /* HeaderCell.swift in Sources */,
+				44B023E02819130A0058F2F4 /* RechkaLoadMoreCell.swift in Sources */,
+				44B0241D2819130B0058F2F4 /* EmptyTicketCell.swift in Sources */,
+				44B023D62819130A0058F2F4 /* ChoicePlaceCell.swift in Sources */,
+				44B023B02819130A0058F2F4 /* R_ShortTrip.swift in Sources */,
+				44B024182819130B0058F2F4 /* R_BlurResultController.swift in Sources */,
+				44B023F02819130A0058F2F4 /* R_BlurLoadingController.swift in Sources */,
+				44B0243A2819130B0058F2F4 /* R_StationListView.swift in Sources */,
+				44B023A02819130A0058F2F4 /* R_ErrorView.swift in Sources */,
+				44B023C42819130A0058F2F4 /* R_PDFDocumentController.swift in Sources */,
+				44B024112819130B0058F2F4 /* PassengerHeaderCell.swift in Sources */,
+				44B023BF2819130A0058F2F4 /* Ext+Notification.swift in Sources */,
+				44B023DC2819130A0058F2F4 /* HistoryTicketCell.swift in Sources */,
+				44B024482819130B0058F2F4 /* Appearance.swift in Sources */,
+				44B024032819130A0058F2F4 /* TimerCell.swift in Sources */,
+				44B023A42819130A0058F2F4 /* R_Gallery.swift in Sources */,
+				44B023A72819130A0058F2F4 /* R_Vehicle.swift in Sources */,
+				44B023E22819130A0058F2F4 /* R_TicketsHistoryView.swift in Sources */,
+				44B024072819130A0058F2F4 /* R_CancelBookingView.swift in Sources */,
+				44B023A12819130A0058F2F4 /* SomeCache.swift in Sources */,
+				44B024002819130A0058F2F4 /* TitleCell.swift in Sources */,
+				44B023F62819130A0058F2F4 /* TerminalsBubble.swift in Sources */,
+				44B023C52819130A0058F2F4 /* R_PDFDocView.swift in Sources */,
+				44B0241B2819130B0058F2F4 /* TicketsCell.swift in Sources */,
+				44B023B62819130A0058F2F4 /* Ext+String.swift in Sources */,
+				44B024052819130A0058F2F4 /* R_CancelBookingController.swift in Sources */,
+				44B024102819130B0058F2F4 /* TariffHeaderCell.swift in Sources */,
+				44B024232819130B0058F2F4 /* R_DateCollectionCell.swift in Sources */,
+				44B023FA2819130A0058F2F4 /* DocumentCell.swift in Sources */,
+				44B023DB2819130A0058F2F4 /* R_TicketsHistoryController.swift in Sources */,
+				44B023E52819130A0058F2F4 /* GenderCell.swift in Sources */,
+				44B023F52819130A0058F2F4 /* R_BlurRefundView.swift in Sources */,
+				44B024322819130B0058F2F4 /* R_ErrorCell.swift in Sources */,
+				44B023E72819130A0058F2F4 /* SelectCell.swift in Sources */,
+				44B023C02819130A0058F2F4 /* RechkaNetworkDelegate.swift in Sources */,
+				44B0241E2819130B0058F2F4 /* TicketCell.swift in Sources */,
+				44B024162819130B0058F2F4 /* R_BookingWithPersonView.swift in Sources */,
+				44B023B52819130A0058F2F4 /* Ext+UIScreen.swift in Sources */,
+				44B023C82819130A0058F2F4 /* R_OrderDetailsController.swift in Sources */,
+				44B0240A2819130B0058F2F4 /* R_UnauthorizedView.swift in Sources */,
+				44B0243C2819130B0058F2F4 /* CitizenshipCell.swift in Sources */,
+				44B024262819130B0058F2F4 /* TicketsHeader.swift in Sources */,
+				44B023A32819130A0058F2F4 /* BasicClient.swift in Sources */,
+				44B023AB2819130A0058F2F4 /* RiverShortOrder.swift in Sources */,
+				44B023CC2819130A0058F2F4 /* R_OrderPaymentTableViewCell.swift in Sources */,
+				44B023B32819130A0058F2F4 /* R_ReportService.swift in Sources */,
+				44B024242819130B0058F2F4 /* TripSelectionCell.swift in Sources */,
+				44B023BB2819130A0058F2F4 /* Ext+UIViewController.swift in Sources */,
+				44B023C32819130A0058F2F4 /* Rechka.swift in Sources */,
+				44B023A52819130A0058F2F4 /* R_Tariff.swift in Sources */,
+				44B0239F2819130A0058F2F4 /* _RiverStation.swift in Sources */,
+				44B0240D2819130B0058F2F4 /* TariffCell.swift in Sources */,
+				44B0242E2819130B0058F2F4 /* R_RootStationDetailView.swift in Sources */,
+				44B024372819130B0058F2F4 /* R_StationsListController.swift in Sources */,
+				44B023C22819130A0058F2F4 /* R_Toast.swift in Sources */,
+				44B023EF2819130A0058F2F4 /* R_LoadingView.swift in Sources */,
+				44B023A22819130A0058F2F4 /* AuthorizedClient.swift in Sources */,
+				44B023F72819130A0058F2F4 /* RechkaMapDelegate.swift in Sources */,
+				44B023A82819130A0058F2F4 /* R_User.swift in Sources */,
+				44B0240F2819130B0058F2F4 /* CommissionCell.swift in Sources */,
+				44B023AD2819130A0058F2F4 /* RiverOrder.swift in Sources */,
+				44B0242D2819130B0058F2F4 /* R_RouteDetailsScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		44B41F4828193FE700CB2B2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44B41F5328193FE700CB2B2F /* ViewController.swift in Sources */,
+				44B41F4F28193FE700CB2B2F /* AppDelegate.swift in Sources */,
+				44B41F5128193FE700CB2B2F /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		44B41F5428193FE700CB2B2F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44B41F5528193FE700CB2B2F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		44B41F5928193FE800CB2B2F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				44B41F5A28193FE800CB2B2F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		44B0228E281912D50058F2F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		44B0228F281912D50058F2F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		44B02291281912D50058F2F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55E46465B797F0BA7BD3CE54 /* Pods-MetroRechka.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = PS3BVPM73X;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mosmetro.MetroRechka;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		44B02292281912D50058F2F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7666EB08AE2B9156427D60E /* Pods-MetroRechka.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = PS3BVPM73X;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mosmetro.MetroRechka;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		44B41F5E28193FE800CB2B2F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA96E1C32CFAA647D56A7626 /* Pods-RechkaExample.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PS3BVPM73X;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RechkaExample/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mosmetro.RechkaExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		44B41F5F28193FE800CB2B2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C956EEAA5D2E420DD72A2452 /* Pods-RechkaExample.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PS3BVPM73X;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RechkaExample/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mosmetro.RechkaExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		44B02283281912D50058F2F4 /* Build configuration list for PBXProject "MetroRechka" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44B0228E281912D50058F2F4 /* Debug */,
+				44B0228F281912D50058F2F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		44B02290281912D50058F2F4 /* Build configuration list for PBXNativeTarget "MetroRechka" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44B02291281912D50058F2F4 /* Debug */,
+				44B02292281912D50058F2F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		44B41F5D28193FE800CB2B2F /* Build configuration list for PBXNativeTarget "RechkaExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44B41F5E28193FE800CB2B2F /* Debug */,
+				44B41F5F28193FE800CB2B2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 44B02280281912D50058F2F4 /* Project object */;
+}

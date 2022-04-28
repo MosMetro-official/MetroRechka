@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 extension APIClient {
     public static var authorizedClient : APIClient {
@@ -41,7 +41,7 @@ internal final class SecureAPIClientInterceptor: APIClientInterceptor {
             
         } else {
             if let data = data {
-                let json = CoreNetwork.JSON(data)
+                let json = JSON(data)
                 print("🥰 ERROR - \(json)")
                 let message = json["error"]["message"].stringValue
                 R_ReportService.shared.report(error: .networkError, message: message, parameters: [:])

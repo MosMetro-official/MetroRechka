@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 import SwiftDate
 
 enum RechkaOrderStatus: Int {
@@ -36,11 +36,11 @@ struct RiverOperation {
     
     
     
-    init?(data: CoreNetwork.JSON, internalOrderID: Int) {
+    init?(data: JSON, internalOrderID: Int) {
         guard
             let id = data["id"].int,
             let status = RechkaOrderStatus(rawValue: data["status"].intValue),
-            let orderDate = data["dateTimeOrder"].stringValue.toISODate(nil, region: nil)?.date,
+            let orderDate = data["dateTimeOrder"].stringValue.toISODate(nil, region: .UTC)?.date,
             let tickets = data["tickets"].array else { return nil }
         self.id = id
         self.internalOrderID = internalOrderID

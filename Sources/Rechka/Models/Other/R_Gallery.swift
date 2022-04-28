@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 // MARK: - Gallery
 public struct R_Gallery {
@@ -15,7 +15,7 @@ public struct R_Gallery {
     public let galleryDescription: String?
     public let urls: [String]
     
-    init(data: CoreNetwork.JSON) {
+    init(data: JSON) {
         self.id = data["id"].intValue
         self.title = data["title"].stringValue
         self.galleryDescription = data["description"].string

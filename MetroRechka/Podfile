@@ -1,0 +1,30 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '13.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'MetroRechka' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for MetroRechka
+  pod 'YandexMobileMetrica'
+  pod 'CoreTableView'
+  pod 'MMCoreNetwork', :git => 'https://github.com/MosMetro-official/MMCoreNetwork.git', :branch => 'callbacks'
+  pod 'SDWebImage', :modular_headers => true
+  pod 'SwiftDate', '~> 5.0'
+
+end
+
+target 'RechkaExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for RechkaExample
+  pod 'YandexMobileMetrica'
+  pod 'CoreTableView'
+  pod 'MMCoreNetwork', :git => 'https://github.com/MosMetro-official/MMCoreNetwork.git', :branch => 'callbacks'
+  pod 'SDWebImage', :modular_headers => true
+  pod 'SwiftDate', '~> 5.0'
+
+end

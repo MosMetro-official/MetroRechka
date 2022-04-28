@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 extension APIClient {
     
@@ -26,7 +26,7 @@ internal final class BasicApiClientInterceptor : APIClientInterceptor {
     
     func client(_ client: APIClient, initialRequest: Request, didReceiveInvalidResponse response: HTTPURLResponse, data: Data?, completion: @escaping (RetryPolicy) -> Void) {
         if let data = data {
-            let json = CoreNetwork.JSON(data)
+            let json = JSON(data)
             print("🥰 ERROR - \(json)")
             let message = json["error"]["message"].stringValue
             R_ReportService.shared.report(error: .networkError, message: message, parameters: [:])

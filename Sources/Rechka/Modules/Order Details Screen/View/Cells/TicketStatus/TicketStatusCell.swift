@@ -40,7 +40,7 @@ extension _TicketStatus {
     }
     
     func cell(for tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(UINib(nibName: TicketStatusCell.identifire, bundle: .module), forCellReuseIdentifier: TicketStatusCell.identifire)
+        tableView.register(UINib(nibName: TicketStatusCell.identifire, bundle: Rechka.shared.bundle), forCellReuseIdentifier: TicketStatusCell.identifire)
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: TicketStatusCell.identifire, for: indexPath) as? TicketStatusCell
         else { return .init() }

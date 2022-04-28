@@ -22,7 +22,7 @@ internal final class R_StationsListController : UIViewController {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
         let backItem = UIBarButtonItem(
-            image: UIImage(named: "backButton", in: .module, compatibleWith: nil)!,
+            image: UIImage(named: "backButton", in: Rechka.shared.bundle, compatibleWith: nil)!,
             style: .plain,
             target: self,
             action: #selector(backButtonPressed)

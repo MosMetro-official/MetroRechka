@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreNetwork
+import MMCoreNetwork
 
 struct RiverOrder {
     let id: Int
@@ -15,7 +15,7 @@ struct RiverOrder {
     
     let operation: RiverOperation
     
-    init?(data: CoreNetwork.JSON) {
+    init?(data: JSON) {
         guard
             let id = data["id"].int,
             let url = data["formUrl"].string,
@@ -38,7 +38,7 @@ extension RiverOrder {
             client.send(.POST(path: "/api/orders/v1/\(self.id)/cancel", body: nil, contentType: .json)) { result in
                 switch result {
                 case .success(let response):
-                    let json = CoreNetwork.JSON(response.data)
+                    let json = JSON(response.data)
                     if let success = json["success"].bool, success {
                         print("successfully cancelled order")
                         completion(.success(()))
@@ -66,7 +66,7 @@ extension RiverOrder {
         client.send(.GET(path: "/api/orders/v1/\(id)", query: nil)) { result in
             switch result {
             case .success(let response):
-                let json = CoreNetwork.JSON(response.data)
+                let json = JSON(response.data)
                 guard let order = RiverOrder(data: json["data"]) else {
                     completion(.failure(.badMapping))
                     return

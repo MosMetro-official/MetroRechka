@@ -76,16 +76,16 @@ public final class Appearance: _Appearance {
     ]
     
     public static var colors: [Colors : UIColor] = [
-        .base: UIColor(named: Colors.base.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .content: UIColor(named: Colors.content.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .priceLayer: UIColor(named: Colors.priceLayer.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .settingsPanel: UIColor(named: Colors.settingsPanel.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .textPrimary: UIColor(named: Colors.textPrimary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .textInverted: UIColor(named: Colors.textInverted.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .textSecondary: UIColor(named: Colors.textSecondary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .buttonSecondary: UIColor(named: Colors.buttonSecondary.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .emptyTicketsLayer: UIColor(named: Colors.emptyTicketsLayer.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
-        .settingsButtonColor: UIColor(named: Colors.settingsButtonColor.rawValue, in: .module, compatibleWith: nil) ?? UIColor(),
+        .base: UIColor(named: Colors.base.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .content: UIColor(named: Colors.content.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .priceLayer: UIColor(named: Colors.priceLayer.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .settingsPanel: UIColor(named: Colors.settingsPanel.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .textPrimary: UIColor(named: Colors.textPrimary.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .textInverted: UIColor(named: Colors.textInverted.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .textSecondary: UIColor(named: Colors.textSecondary.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .buttonSecondary: UIColor(named: Colors.buttonSecondary.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .emptyTicketsLayer: UIColor(named: Colors.emptyTicketsLayer.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
+        .settingsButtonColor: UIColor(named: Colors.settingsButtonColor.rawValue, in: Rechka.shared.bundle, compatibleWith: nil) ?? UIColor(),
     ]
 }
 

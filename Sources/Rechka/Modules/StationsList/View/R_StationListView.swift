@@ -54,7 +54,7 @@ internal final class R_StationListView : UIView {
         button.setTitleColor(Appearance.colors[.textInverted], for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "map", in: .module, compatibleWith: nil), for: .normal)
+        button.setImage(UIImage(named: "map", in: Rechka.shared.bundle, compatibleWith: nil), for: .normal)
         button.backgroundColor = Appearance.colors[.buttonSecondary]
         return button
     }()

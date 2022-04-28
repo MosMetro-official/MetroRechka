@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreTableView
-import CoreNetwork
+import MMCoreNetwork
 
 internal final class R_BookingWithPersonController: UIViewController {
     
