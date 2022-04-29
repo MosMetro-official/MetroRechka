@@ -6,7 +6,11 @@ import SwiftDate
 public class Rechka {
     
     var bundle: Bundle {
-        return Bundle(for: type(of: self))
+        let podBundle = Bundle(for: type(of: self))
+        guard let url = podBundle.url(forResource: "MetroRechka", withExtension: "bundle") else {
+            return podBundle
+        }
+        return Bundle(url: url) ?? podBundle
     }
     
     // TODO: - struct Settings

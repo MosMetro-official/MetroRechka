@@ -92,6 +92,7 @@ Pod::Spec.new do |spec|
   spec.source_files  = "Sources/Rechka/**/*.{swift}"
   spec.exclude_files = "Tests/RechkaTests/**/*"
   spec.dependency 'MMCoreNetwork'
+  spec.dependency 'CoreTableView'
   spec.dependency 'SDWebImage'
   spec.dependency 'SwiftDate', '~> 5.0'
   spec.dependency 'YandexMobileMetrica'
@@ -105,8 +106,8 @@ Pod::Spec.new do |spec|
   #  You can preserve files from being cleaned, please don't preserve
   #  non-essential files like tests, examples and documentation.
   #
-
-  spec.resources = "Sources/Rechka/**/*.{png,jpeg,jpg,pdf,storyboard,xib,xcassets}"
+  spec.resource_bundle = { 'MetroRechka' => 'Sources/Rechka/**/*.{png,jpeg,jpg,pdf,storyboard,xib,xcassets}' }
+  #spec.resources = "Sources/Rechka/**/*.{png,jpeg,jpg,pdf,storyboard,xib,xcassets}"
 
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
