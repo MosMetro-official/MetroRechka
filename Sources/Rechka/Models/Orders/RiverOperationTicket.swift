@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 import SwiftDate
 
 struct RiverTicketRefund {

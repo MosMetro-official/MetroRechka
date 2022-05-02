@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 
 
 struct RechkaHistoryResponse {

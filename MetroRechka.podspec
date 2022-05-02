@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "MetroRechka"
-  spec.version      = "0.2.5"
+  spec.version      = "0.2.6"
   spec.summary      = "A short description of MetroRechka."
 
   # This description is used to generate tags and improve search results.
@@ -64,9 +64,10 @@ Pod::Spec.new do |spec|
 
   spec.platform     = :ios
   spec.platform     = :ios, "13.0"
-
+  spec.static_framework = true
   #  When using multiple platforms
   spec.ios.deployment_target = "13.0"
+  spec.swift_version = '5.0'
   # spec.osx.deployment_target = "10.7"
   # spec.watchos.deployment_target = "2.0"
   # spec.tvos.deployment_target = "9.0"
@@ -91,11 +92,12 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "Sources/Rechka/**/*.{swift}"
   spec.exclude_files = "Tests/RechkaTests/**/*"
-  spec.dependency 'MMCoreNetwork'
+  spec.dependency 'MMCoreNetworkCallbacks'
   spec.dependency 'CoreTableView'
   spec.dependency 'SDWebImage'
   spec.dependency 'SwiftDate', '~> 5.0'
   spec.dependency 'YandexMobileMetrica'
+
   # spec.public_header_files = "Classes/**/*.h"
 
 

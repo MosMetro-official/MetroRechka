@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 
 // MARK: - Station
 public struct R_Station : _RiverStation {

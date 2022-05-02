@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreTableView
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 
 internal final class R_BookingWithoutPersonController: UIViewController {
     

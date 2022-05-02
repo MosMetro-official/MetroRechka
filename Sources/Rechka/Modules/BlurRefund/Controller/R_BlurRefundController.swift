@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 import CoreTableView
 
 internal final class R_BlurRefundController : UIViewController {

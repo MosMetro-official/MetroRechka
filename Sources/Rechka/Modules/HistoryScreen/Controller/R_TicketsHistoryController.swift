@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 import SwiftDate
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 
 internal final class R_TicketsHistoryController: UIViewController {
     

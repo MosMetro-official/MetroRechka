@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
-import MMCoreNetwork
+import MMCoreNetworkCallbacks
 
 
 internal final class R_BookingScreenController : UIViewController {
