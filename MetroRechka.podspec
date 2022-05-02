@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "MetroRechka"
-  spec.version      = "0.2.6"
+  spec.version      = "0.2.7"
   spec.summary      = "A short description of MetroRechka."
 
   # This description is used to generate tags and improve search results.
