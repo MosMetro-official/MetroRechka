@@ -10,7 +10,7 @@ import MMCoreNetworkCallbacks
 
 
 // MARK: - Vehicle
-struct R_Vehicle {
+struct R_Vehicle: Decodable {
     let name: String?
     let number: String?
     let placeCount: String?

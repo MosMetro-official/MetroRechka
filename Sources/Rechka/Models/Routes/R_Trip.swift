@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 
-struct R_Trip {
+struct R_Trip: Decodable {
     let id: Int
     let name: String
     let distance: Int
@@ -23,49 +23,98 @@ struct R_Trip {
     let personalDataRequired: Bool?
     
     
-    init?(data: JSON) {
-        guard let id = data["id"].int,
-              let name = data["routeName"].string,
-              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: .UTC)?.date,
-              let endDate = data["dateTimeEnd"].stringValue.toISODate(nil, region: .UTC)?.date
-        else { return nil }
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name = "routeName"
+        case distance
+        case freePlaceCount
+        case buyPlaceCountMax
+        case dateStart = "dateTimeStart"
+        case dateEnd = "dateTimeEnd"
+        case vehicle
+        case ticketPrintedRequired
+        case tarrifs
+        case personalDataRequired
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
+        distance = try values.decode(Int.self, forKey: .distance)
+        freePlaceCount = try values.decode(Int.self, forKey: .freePlaceCount)
+        buyPlaceCountMax = try values.decode(Int.self, forKey: .buyPlaceCountMax)
         
-        self.id = id
-        self.name = name
-        self.distance = data["distance"].intValue
-        self.freePlaceCount = data["freePlaceCount"].intValue
-        self.buyPlaceCountMax = data["buyPlaceCountMax"].intValue
-        self.dateStart = startDate
-        self.dateEnd = endDate
-        self.vehicle = nil
-        self.ticketPrintedRequired = data["ticketPrintedRequired"].bool
-        self.tarrifs = data["tariffs"].array?.compactMap { R_Tariff(data: $0) }
-        self.personalDataRequired = data["personalDataRequired"].bool
-        
+        let dateStartStr = try values.decode(String.self, forKey: .dateStart)
+        let dateEndStr = try values.decode(String.self, forKey: .dateEnd)
+        guard let _dateStart = dateStartStr.toISODate(nil, region: .UTC)?.date, let _dateEnd = dateEndStr.toISODate(nil, region: .UTC)?.date else {
+            throw APIError.badMapping
+        }
+        dateStart = _dateStart
+        dateEnd = _dateEnd
+        vehicle = try? values.decodeIfPresent(R_Vehicle.self, forKey: .vehicle)
+        ticketPrintedRequired = try? values.decodeIfPresent(Bool.self, forKey: .ticketPrintedRequired)
+        tarrifs = try? values.decodeIfPresent([R_Tariff].self, forKey: .tarrifs)
+        personalDataRequired = try? values.decodeIfPresent(Bool.self, forKey: .personalDataRequired)
+    }
+    
+//    init?(data: JSON) {
+//        guard let id = data["id"].int,
+//              let name = data["routeName"].string,
+//              let startDate = data["dateTimeStart"].stringValue.toISODate(nil, region: .UTC)?.date,
+//              let endDate = data["dateTimeEnd"].stringValue.toISODate(nil, region: .UTC)?.date
+//        else { return nil }
+//
+//        self.id = id
+//        self.name = name
+//        self.distance = data["distance"].intValue
+//        self.freePlaceCount = data["freePlaceCount"].intValue
+//        self.buyPlaceCountMax = data["buyPlaceCountMax"].intValue
+//        self.dateStart = startDate
+//        self.dateEnd = endDate
+//        self.vehicle = nil
+//        self.ticketPrintedRequired = data["ticketPrintedRequired"].bool
+//        self.tarrifs = data["tariffs"].array?.compactMap { R_Tariff(data: $0) }
+//        self.personalDataRequired = data["personalDataRequired"].bool
+//
+//    }
+    
+}
+
+struct RFreePlacesResponse: Codable {
+    let freePlaces: [Int]
+    
+    enum CodingKeys: String, CodingKey {
+        case freePlaces = "data"
     }
     
 }
 
 extension R_Trip {
     
-    func getFreePlaces(completion: @escaping (Result<[Int],APIError>) -> Void) {
+    func getFreePlaces() async throws -> [Int] {
         let client = APIClient.unauthorizedClient
-        client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
-            switch result {
-            case .success(let response):
-                let json = JSON(response.data)
-                guard let array = json["data"].array else {
-                    completion(.failure(.badMapping))
-                    return
-                }
-                let places = array.compactMap { $0.int }
-                completion(.success(places))
-                return
-            case .failure(let err):
-                completion(.failure(err))
-                return
-            }
-        }
+        let response = try await client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability"))
+        let freePlacesResponse = try JSONDecoder().decode(RFreePlacesResponse.self, from: response.data)
+        return freePlacesResponse.freePlaces
+        
+        
+//        client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
+//            switch result {
+//            case .success(let response):
+//                let json = JSON(response.data)
+//                guard let array = json["data"].array else {
+//                    completion(.failure(.badMapping))
+//                    return
+//                }
+//                let places = array.compactMap { $0.int }
+//                completion(.success(places))
+//                return
+//            case .failure(let err):
+//                completion(.failure(err))
+//                return
+//            }
+//        }
     }
     
     static func book(with users: [R_User], tripID: Int, completion: @escaping (Result<RiverOrder, APIError>) -> Void) {

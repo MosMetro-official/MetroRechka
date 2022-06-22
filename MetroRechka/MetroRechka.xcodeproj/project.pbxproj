@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2977A59A05E6CDAEB1426B07 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */; };
+		44A1380B2863728A00708B66 /* MetroRechka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B02289281912D50058F2F4 /* MetroRechka.framework */; platformFilter = ios; };
+		44A1380C2863728A00708B66 /* MetroRechka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 44B02289281912D50058F2F4 /* MetroRechka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		44B0228D281912D50058F2F4 /* MetroRechka.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B0228C281912D50058F2F4 /* MetroRechka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		44B0239E2819130A0058F2F4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B022952819130A0058F2F4 /* Media.xcassets */; };
 		44B0239F2819130A0058F2F4 /* _RiverStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022962819130A0058F2F4 /* _RiverStation.swift */; };
@@ -188,6 +190,30 @@
 		44B41F5B28193FE800CB2B2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5928193FE800CB2B2F /* LaunchScreen.storyboard */; };
 		CD481419B5CBCB37ACFE864D /* libPods-RechkaExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		44A1380D2863728A00708B66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44B02280281912D50058F2F4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 44B02288281912D50058F2F4;
+			remoteInfo = MetroRechka;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		44A1380F2863728A00708B66 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				44A1380C2863728A00708B66 /* MetroRechka.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		44B02289281912D50058F2F4 /* MetroRechka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MetroRechka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -392,6 +418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44A1380B2863728A00708B66 /* MetroRechka.framework in Frameworks */,
 				CD481419B5CBCB37ACFE864D /* libPods-RechkaExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1442,10 +1469,12 @@
 				44B41F4828193FE700CB2B2F /* Sources */,
 				44B41F4928193FE700CB2B2F /* Frameworks */,
 				44B41F4A28193FE700CB2B2F /* Resources */,
+				44A1380F2863728A00708B66 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				44A1380E2863728A00708B66 /* PBXTargetDependency */,
 			);
 			name = RechkaExample;
 			productName = RechkaExample;
@@ -1746,6 +1775,15 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		44A1380E2863728A00708B66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 44B02288281912D50058F2F4 /* MetroRechka */;
+			targetProxy = 44A1380D2863728A00708B66 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		44B41F5428193FE700CB2B2F /* Main.storyboard */ = {

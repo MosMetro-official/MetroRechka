@@ -26,7 +26,7 @@ public class Rechka {
     
     public weak var delegate : RechkaMapDelegate? = nil
     
-    public var APIHost = "river.brndev.ru"
+    public var APIHost = "dev.sudasuda.ru"
     
     public var applicationName = ""
     

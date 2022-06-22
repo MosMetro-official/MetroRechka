@@ -9,7 +9,7 @@ import Foundation
 import MMCoreNetworkCallbacks
 
 // MARK: - Station
-public struct R_Station : _RiverStation {
+public struct R_Station : _RiverStation, Decodable {
     public  let id: Int
     public let name: String
     public let cityID: Int

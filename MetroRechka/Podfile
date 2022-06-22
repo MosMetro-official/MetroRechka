@@ -13,6 +13,7 @@ target 'MetroRechka' do
   pod 'MMCoreNetworkCallbacks'
   pod 'SDWebImage', :modular_headers => true
   pod 'SwiftDate', '~> 5.0'
+  pod 'MMCoreNetworkAsync'
 
 end
 
@@ -26,5 +27,6 @@ target 'RechkaExample' do
   pod 'MMCoreNetworkCallbacks'
   pod 'SDWebImage', :modular_headers => true
   pod 'SwiftDate', '~> 5.0'
+  pod 'MMCoreNetworkAsync'
 
 end

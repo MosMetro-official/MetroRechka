@@ -9,17 +9,27 @@ import Foundation
 import MMCoreNetworkCallbacks
 
 // MARK: - Gallery
-public struct R_Gallery {
+public struct R_Gallery: Decodable {
     public let id: Int
     public let title: String
     public let galleryDescription: String?
     public let urls: [String]
     
-    init(data: JSON) {
-        self.id = data["id"].intValue
-        self.title = data["title"].stringValue
-        self.galleryDescription = data["description"].string
-        self.urls = data["urls"].arrayValue.compactMap {  $0.string }
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case galleryDescription = "description"
+        case urls
     }
+    
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        title = try values.decode(String.self, forKey: .title)
+        galleryDescription = try values.decodeIfPresent(String.self, forKey: .galleryDescription)
+        urls = try values.decode([String].self, forKey: .urls)
+    }
+    
     
 }

@@ -19,19 +19,19 @@ public struct R_RouteResponse {
     let totalElements: Int
 }
 
-public struct R_Point {
+public struct R_Point: Decodable {
     public let latitude: Double
     public let longitude: Double
     public let position: Int
     
-    init(data: JSON) {
-        self.latitude = data["lat"].doubleValue
-        self.longitude = data["lon"].doubleValue
-        self.position = data["position"].intValue
+    enum CodingKeys: String, CodingKey {
+        case latitude = "lat"
+        case longitude = "lon"
+        case position
     }
 }
 
-public struct R_Route {
+public struct R_Route: Decodable {
     public let id: Int
     public let name: String
     public let minPrice: Int

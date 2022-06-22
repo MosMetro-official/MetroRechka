@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+
+import MMCoreNetworkAsync
 
 extension APIClient {
     
@@ -24,18 +25,16 @@ internal final class BasicApiClientInterceptor : APIClientInterceptor {
         request.appendBasicHeaders()
     }
     
-    func client(_ client: APIClient, initialRequest: Request, didReceiveInvalidResponse response: HTTPURLResponse, data: Data?, completion: @escaping (RetryPolicy) -> Void) {
+    func client(_ client: APIClient, initialRequest: Request, didReceiveInvalidResponse response: HTTPURLResponse, data: Data?) async -> RetryPolicy {
         if let data = data {
-            let json = JSON(data)
-            print("🥰 ERROR - \(json)")
-            let message = json["error"]["message"].stringValue
-            R_ReportService.shared.report(error: .networkError, message: message, parameters: [:])
-            completion(.doNotRetryWith(.genericError(message)))
-            return
+            print(String(data: data, encoding: .utf8))
+//            let json = JSON(data)
+//            print("🥰 ERROR - \(json)")
+//            let message = json["error"]["message"].stringValue
+//            R_ReportService.shared.report(error: .networkError, message: message, parameters: [:])
+//            return .doNotRetryWith(.genericError(message))
         }
-        R_ReportService.shared.report(error: .networkError, message: "Статус код \(response.statusCode)", parameters: [:])
-        completion(.doNotRetryWith(.unacceptableStatusCode(response.statusCode)))
-        return
+        return .doNotRetry
     }
     
 
