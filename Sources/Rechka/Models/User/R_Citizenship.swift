@@ -6,44 +6,18 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 
-struct R_Citizenship: Equatable {
+struct R_Citizenship: Equatable, Decodable {
     let id: Int
     let name: String
     let isonumeric: String
     let isoalpha2: String
     
-    init?(data: JSON) {
-        guard
-            let id = data["id"].int,
-            let name = data["name"].string,
-            let isonumeric = data["isonumeric"].string,
-            let isoalpha2 = data["isoalpha2"].string else { return nil }
-        self.id = id
-        self.name = name
-        self.isonumeric = isonumeric
-        self.isoalpha2 = isoalpha2
-    }
-    
-    static func getCitizenships(completion: @escaping (Result<[R_Citizenship], APIError>) -> Void) {
+    static func getCitizenships() async throws -> [R_Citizenship] {
         let client = APIClient.unauthorizedClient
-        client.send(.GET(path: "/api/references/v1/citizenship")) { result in
-            switch result {
-            case .success(let response):
-                let json = JSON(response.data)
-                guard let array = json["data"].array else {
-                    completion(.failure(.badMapping))
-                    return
-                }
-                let citizenships = array.compactMap { R_Citizenship(data: $0) }
-                completion(.success(citizenships))
-                return
-            case .failure(let error):
-                completion(.failure(error))
-                return
-            }
-        }
+        let response = try await client.send(.GET(path: "/api/references/v1/citizenship"))
+        return try JSONDecoder().decode(R_BaseResponse<[R_Citizenship]>.self, from: response.data).data
     }
 }

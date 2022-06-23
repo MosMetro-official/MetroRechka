@@ -35,15 +35,17 @@ internal class R_RouteDetailsController: UIViewController {
             guard let routeID = routeID else {
                 return
             }
-            R_Route.getRoute(by: routeID) { [weak self] result in
-                switch result {
-                case .success(let route):
-                    self?.route = route
-                    return
-                case .failure(let error):
-                    self?.setErrorState(with: error)
-                    return
+            Task {
+                do {
+                    let route = try await R_Route.getRoute(by: routeID)
+                    self.route = route
+                } catch {
+                    if let err = error as? APIError {
+                        setErrorState(with: err)
+                    }
+                    setErrorState(with: .badRequest)
                 }
+                
             }
         }
     }
@@ -151,10 +153,9 @@ internal class R_RouteDetailsController: UIViewController {
             posterImageURL: self.nestedView.viewState.posterImageURL
         )
         self.nestedView.viewState = loadingState
-        R_Trip.get(by: selectedTripId) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let trip):
+        Task {
+            do {
+                let trip = try await R_Trip.get(by: selectedTripId)
                 let loadedState = R_RootDetailStationView.ViewState(
                     state: loadingState.state,
                     dataState: .loaded,
@@ -165,9 +166,8 @@ internal class R_RouteDetailsController: UIViewController {
                 )
                 self.setState(loadedState)
                 self.openBuyTicketsController(with: trip)
-                return
-            case .failure(let error):
-                print(error)
+            } catch {
+                let err: APIError = (error as? APIError) != nil ? (error as! APIError) : .badRequest
                 let currentState = self.nestedView.viewState
                 let onSelect: () -> Void = { [weak self] in
                     self?.handleChoice()
@@ -177,7 +177,7 @@ internal class R_RouteDetailsController: UIViewController {
                     title: nil,
                     onSelect: onSelect)
                 
-                let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(buttonType))
+                let config = R_Toast.Configuration.defaultError(text: err.errorDescription, subtitle: nil, buttonType: .imageButton(buttonType))
                 
                 let newState = R_RootDetailStationView.ViewState(
                     state: currentState.state,
@@ -189,6 +189,8 @@ internal class R_RouteDetailsController: UIViewController {
                 self.nestedView.viewState = newState
             }
         }
+        
+
     }
     
     func prepareText(for description: String) -> NSMutableAttributedString? {

@@ -6,29 +6,18 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 
 final class R_Service {
     
-    func getTags(completion: @escaping (Result<[String],APIError>) -> Void)  {
+    func getTags() async throws -> [String]  {
+        
+        
         print("🚢🚢🚢🚢 Started fetching tags")
         let client = APIClient.unauthorizedClient
-        client.send(.GET(path: "/api/routes/v1/tags", query: nil)) { result in
-            switch result {
-            case .success(let response):
-                let json = JSON(response.data)
-                guard let array = json["data"].array else {
-                    completion(.failure(.badMapping))
-                    return
-                }
-                let tags = array.compactMap { $0.string }
-                completion(.success(tags))
-                return
-            case .failure(let error):
-                completion(.failure(error))
-                return
-            }
-        }
+        let response = try await client.send(.GET(path: "/api/routes/v1/tags", query: nil))
+        return try JSONDecoder().decode(R_BaseResponse<[String]>.self, from: response.data).data
+       
     }
 }

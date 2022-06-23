@@ -54,14 +54,16 @@ class R_PlaceController: UIViewController {
     
     private func loadPlaces(for trip: R_Trip) {
         self.mainView.viewState = .init(title: "Выберите место", subtitle: "Схема может не совпадать", dataState: .loading, items: [])
-        trip.getFreePlaces { [weak self] result in
-            switch result {
-            case .success(let places):
-                self?.places = places
-            case .failure(let error):
+        Task {
+            do {
+                let places = try await trip.getFreePlaces()
+                self.places = places
+            } catch {
                 print(error)
             }
+            
         }
+      
     }
     
     override func loadView() {

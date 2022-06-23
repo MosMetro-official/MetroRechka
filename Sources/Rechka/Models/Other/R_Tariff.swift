@@ -8,14 +8,19 @@
 import Foundation
 import MMCoreNetworkCallbacks
 
-struct R_Tariff: Hashable, Codable {
+struct R_Tariff: Hashable, Decodable {
     
-    enum TariffType: Int, Codable {
+    enum TariffType: Int, Decodable {
         case base = 1
         case `default` = 2
         case luggage = 3
         case good = 4
         case additional = 5
+        
+//        private enum CodingKeys: Int, CodingKey {
+//            case base = 1
+//            case
+//        }
     }
     
     let id: String
@@ -26,6 +31,25 @@ struct R_Tariff: Hashable, Codable {
     let isWithoutPlace: Bool
     var place: Int?
     
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case type
+        case name
+        case price
+        case info
+        case isWithoutPlace
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
+        type = try values.decode(TariffType.self, forKey: .type)
+        name = try values.decode(String.self, forKey: .name)
+        price = try values.decode(Double.self, forKey: .price)
+        let _info = try values.decodeIfPresent(String.self, forKey: .info)
+        info = _info == "" ? nil : _info
+        isWithoutPlace = try values.decode(Bool.self, forKey: .isWithoutPlace)
+    }
     
     
 //

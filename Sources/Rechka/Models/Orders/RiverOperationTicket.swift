@@ -111,8 +111,10 @@ struct RiverOperationTicket {
         self.price = data["ticketPrice"].doubleValue
         self.status = status
         self.refund = RiverTicketRefund(data: data["ticketRefund"])
-        self.stationStart = R_Station(data: data["stationStart"])
-        self.stationEnd = R_Station(data: data["stationEnd"])
+//        self.stationStart = R_Station(data: data["stationStart"])
+//        self.stationEnd = R_Station(data: data["stationEnd"])
+        self.stationStart = nil
+        self.stationEnd = nil
         self.place = data["position"].intValue
         self.dateTimeStart = dateTimeStart
         self.dateTimeEnd = dateTimeEnd

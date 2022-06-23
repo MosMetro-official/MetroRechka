@@ -50,7 +50,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     }
     
     private func createInitialSelectedItems() {
-        guard let tarrifs = model?.tarrifs else {
+        guard let tarrifs = model?.tariffs else {
             return
         }
         

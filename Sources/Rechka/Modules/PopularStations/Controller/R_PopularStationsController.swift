@@ -71,43 +71,25 @@ internal final class R_PopularStationsController : UIViewController {
     
     private func load(page: Int, size: Int, stationID: Int?, tags: [String], date: Date?) {
        
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        R_Route.getRoutes(page: page, size: size, stationID: stationID, date: date, tags: tags) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let routesResponse):
-                self.searchResponse = routesResponse
-                dispatchGroup.leave()
-            case .failure:
-                DispatchQueue.main.async {
-                    let onSelect: () -> Void = { [weak self] in
-                        guard let self = self else { return }
-                        self.load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
-                    }
-                    
-                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
-                    let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка при загрузке", subtitle: nil, buttonType: .imageButton(buttonData))
-                    self.nestedView.viewState = .error(errorConfig)
+        Task {
+            do {
+                let searchResponse = try await R_Route.getRoutes(page: page, size: size, stationID: stationID, date: date, tags: tags)
+                let tags = try await service.getTags()
+                self.tags =  tags
+                self.searchResponse = searchResponse
+                
+            } catch {
+                let onSelect: () -> Void = { [weak self] in
+                    guard let self = self else { return }
+                    self.load(page: 0, size: 10, stationID: nil, tags: [], date: nil)
                 }
-                dispatchGroup.leave()
+                
+                let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "arrow.triangle.2.circlepath"), title: nil, onSelect: onSelect)
+                let errorConfig = R_Toast.Configuration.defaultError(text: "Произошла ошибка при загрузке", subtitle: nil, buttonType: .imageButton(buttonData))
+                self.nestedView.viewState = .error(errorConfig)
             }
         }
-        dispatchGroup.enter()
-        service.getTags { result in
-            switch result {
-            case .success(let tags):
-                self.tags = tags
-                dispatchGroup.leave()
-            case .failure(let err):
-                print(err)
-                dispatchGroup.leave()
-            }
-        }
-        dispatchGroup.notify(queue: .main) {
-            print("All tasks finished")
-        }
+        
         
     }
     

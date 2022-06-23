@@ -12,14 +12,14 @@ import MMCoreNetworkAsync
 struct R_Trip: Decodable {
     let id: Int
     let name: String
-    let distance: Int
+    let distance: Int?
     let freePlaceCount: Int
     let buyPlaceCountMax: Int
     let dateStart: Date
     let dateEnd: Date
     let vehicle: R_Vehicle?
     let ticketPrintedRequired: Bool?
-    let tarrifs: [R_Tariff]?
+    let tariffs: [R_Tariff]?
     let personalDataRequired: Bool?
     
     
@@ -33,7 +33,7 @@ struct R_Trip: Decodable {
         case dateEnd = "dateTimeEnd"
         case vehicle
         case ticketPrintedRequired
-        case tarrifs
+        case tariffs
         case personalDataRequired
     }
     
@@ -41,7 +41,7 @@ struct R_Trip: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
         name = try values.decode(String.self, forKey: .name)
-        distance = try values.decode(Int.self, forKey: .distance)
+        distance = try values.decodeIfPresent(Int.self, forKey: .distance)
         freePlaceCount = try values.decode(Int.self, forKey: .freePlaceCount)
         buyPlaceCountMax = try values.decode(Int.self, forKey: .buyPlaceCountMax)
         
@@ -54,7 +54,7 @@ struct R_Trip: Decodable {
         dateEnd = _dateEnd
         vehicle = try? values.decodeIfPresent(R_Vehicle.self, forKey: .vehicle)
         ticketPrintedRequired = try? values.decodeIfPresent(Bool.self, forKey: .ticketPrintedRequired)
-        tarrifs = try? values.decodeIfPresent([R_Tariff].self, forKey: .tarrifs)
+        tariffs = try? values.decodeIfPresent([R_Tariff].self, forKey: .tariffs)
         personalDataRequired = try? values.decodeIfPresent(Bool.self, forKey: .personalDataRequired)
     }
     
@@ -81,22 +81,14 @@ struct R_Trip: Decodable {
     
 }
 
-struct RFreePlacesResponse: Codable {
-    let freePlaces: [Int]
-    
-    enum CodingKeys: String, CodingKey {
-        case freePlaces = "data"
-    }
-    
-}
+
 
 extension R_Trip {
     
     func getFreePlaces() async throws -> [Int] {
         let client = APIClient.unauthorizedClient
-        let response = try await client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability"))
-        let freePlacesResponse = try JSONDecoder().decode(RFreePlacesResponse.self, from: response.data)
-        return freePlacesResponse.freePlaces
+        let response = try await client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability"), debug: true)
+        return try JSONDecoder().decode(R_BaseResponse<[Int]>.self, from: response.data).data
         
         
 //        client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
@@ -119,59 +111,46 @@ extension R_Trip {
     
     static func book(with users: [R_User], tripID: Int, completion: @escaping (Result<RiverOrder, APIError>) -> Void) {
         
-        let tickets: [[String:Any]] = users.map { user in
-            return user.createBodyItem()
-        }
-        
-        let body: [String: Any] = [
-            "id": tripID,
-            "returnUrl": Rechka.shared.returnURL,
-            "failUrl": Rechka.shared.failURL,
-            "tickets": tickets
-        ]
-        print(body)
-        let client = APIClient.authorizedClient
-        
-        client.send(.POST(path: "/api/orders/v1/booking", body: body, contentType: .json)) { result in
-            switch result {
-                
-            case .success(let response):
-                let json = JSON(response.data)
-                guard let order = RiverOrder(data: json["data"]) else {
-                    completion(.failure(.badMapping))
-                    return
-                }
-                completion(.success(order))
-                return
-            case .failure(let error):
-                completion(.failure(error))
-                return
-            }
-        }
+//        let tickets: [[String:Any]] = users.map { user in
+//            return user.createBodyItem()
+//        }
+//
+//        let body: [String: Any] = [
+//            "id": tripID,
+//            "returnUrl": Rechka.shared.returnURL,
+//            "failUrl": Rechka.shared.failURL,
+//            "tickets": tickets
+//        ]
+//        print(body)
+//        let client = APIClient.authorizedClient
+//
+//        client.send(.POST(path: "/api/orders/v1/booking", body: body, contentType: .json)) { result in
+//            switch result {
+//
+//            case .success(let response):
+//                let json = JSON(response.data)
+//                guard let order = RiverOrder(data: json["data"]) else {
+//                    completion(.failure(.badMapping))
+//                    return
+//                }
+//                completion(.success(order))
+//                return
+//            case .failure(let error):
+//                completion(.failure(error))
+//                return
+//            }
+//        }
+        completion(.failure(.badMapping))
+        return
         
     }
     
-    static func get(by id: Int, completion: @escaping (Result<R_Trip,APIError>) -> Void)  {
+    static func get(by id: Int) async throws -> R_Trip  {
         let client = APIClient.unauthorizedClient
-        client.send(.GET(
+        let response = try await client.send(.GET(
             path: "/api/trips/v1/\(id)",
-            query: nil)) { result in
-                switch result {
-                case .success(let response):
-                    let json = JSON(response.data)
-                    guard let trip = R_Trip(data: json["data"]) else {
-                        completion(.failure(.badMapping))
-                        return
-                    }
-                    completion(.success(trip))
-                    return
-                case .failure(let error):
-                    completion(.failure(error))
-                    return
-                }
-                
-                
-            }
+            query: nil))
+        return try JSONDecoder().decode(R_BaseResponse<R_Trip>.self, from: response.data).data
     }
     
 }

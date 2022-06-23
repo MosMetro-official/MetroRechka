@@ -50,7 +50,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
     }
     
     private func setupTariffType() {
-        guard let tariffs = model?.tarrifs else { return }
+        guard let tariffs = model?.tariffs else { return }
         tariffs.forEach { tariff in
             switch tariff.type {
             case .base, .default:

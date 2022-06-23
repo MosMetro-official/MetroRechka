@@ -40,11 +40,10 @@ class R_CitizenshipController : UIViewController {
     
     private func loadCitizenships() {
         nestedView.viewState = .init(onClose: nil, dataState: .loading, state: [], enableTextField: false)
-        R_Citizenship.getCitizenships { result in
-            switch result {
-            case .success(let citizenships):
-                self.citizenships = citizenships
-            case .failure(let error):
+        Task {
+            do {
+                self.citizenships = try await R_Citizenship.getCitizenships()
+            } catch {
                 print(error)
                 let actionReload = Command { [weak self] in
                     self?.loadCitizenships()

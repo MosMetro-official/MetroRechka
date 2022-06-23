@@ -10,6 +10,7 @@
 		2977A59A05E6CDAEB1426B07 /* libPods-MetroRechka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */; };
 		44A1380B2863728A00708B66 /* MetroRechka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B02289281912D50058F2F4 /* MetroRechka.framework */; platformFilter = ios; };
 		44A1380C2863728A00708B66 /* MetroRechka.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 44B02289281912D50058F2F4 /* MetroRechka.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		44A13811286451B600708B66 /* R_BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A13810286451B600708B66 /* R_BaseResponse.swift */; };
 		44B0228D281912D50058F2F4 /* MetroRechka.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B0228C281912D50058F2F4 /* MetroRechka.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		44B0239E2819130A0058F2F4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B022952819130A0058F2F4 /* Media.xcassets */; };
 		44B0239F2819130A0058F2F4 /* _RiverStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022962819130A0058F2F4 /* _RiverStation.swift */; };
@@ -216,6 +217,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		44A13810286451B600708B66 /* R_BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R_BaseResponse.swift; sourceTree = "<group>"; };
 		44B02289281912D50058F2F4 /* MetroRechka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MetroRechka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B0228C281912D50058F2F4 /* MetroRechka.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetroRechka.h; sourceTree = "<group>"; };
 		44B022952819130A0058F2F4 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 				44B0229F2819130A0058F2F4 /* R_Tariff.swift */,
 				44B022A02819130A0058F2F4 /* R_AdditionService.swift */,
 				44B022A12819130A0058F2F4 /* R_Vehicle.swift */,
+				44A13810286451B600708B66 /* R_BaseResponse.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1661,6 +1664,7 @@
 				44B024272819130B0058F2F4 /* TripsDateHeader.swift in Sources */,
 				44B023FD2819130A0058F2F4 /* R_BookingScreenController.swift in Sources */,
 				44B023B72819130A0058F2F4 /* Ext+UIDevice.swift in Sources */,
+				44A13811286451B600708B66 /* R_BaseResponse.swift in Sources */,
 				44B0242A2819130B0058F2F4 /* MapViewCell.swift in Sources */,
 				44B023BD2819130A0058F2F4 /* SafeIndex.swift in Sources */,
 				44B023A62819130A0058F2F4 /* R_AdditionService.swift in Sources */,

@@ -36,11 +36,10 @@ class R_DocumentController: UIViewController {
     
     private func loadDocuments(by id: Int) {
         nestedView.viewState = .init(dataState: .loading, state: [], onClose: nil)
-        R_Document.getDocs(by: id) { result in
-            switch result {
-            case .success(let doc):
-                self.documents = doc
-            case .failure(let error):
+        Task {
+            do {
+                self.documents = try await R_Document.getDocs(by: id)
+            } catch {
                 print(error)
                 let actionReload = Command { [weak self] in
                     self?.loadDocuments(by: id)
