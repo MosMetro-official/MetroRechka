@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreTableView
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 import SwiftDate
 
 internal class R_RouteDetailsController: UIViewController {
@@ -37,8 +37,9 @@ internal class R_RouteDetailsController: UIViewController {
             }
             Task {
                 do {
-                    let route = try await R_Route.getRoute(by: routeID)
-                    self.route = route
+                    let client = APIClient.unauthorizedClient
+                    let route: R_BaseResponse<R_Route> = try await client.send(.GET(path: "/api/routes/v1/\(routeID)")).value
+                    self.route = route.data
                 } catch {
                     if let err = error as? APIError {
                         setErrorState(with: err)

@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 internal final class R_OrderDetailsController : UIViewController {
     
@@ -150,41 +150,39 @@ internal final class R_OrderDetailsController : UIViewController {
             onClose: onClose
         )
         
-      
+        
         self.set(state: loadingState)
-        RiverOrder.get(by: id) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let order):
+        Task {
+            do {
                 self.isFirstLoad = true
-                self.order = order
-            case .failure(let error):
+                self.order = try await RiverOrder.get(by: id)
+            } catch {
                 var title = "Возникла ошибка при загрузке"
-                if case .genericError(let message) = error {
+                if case .genericError(let message) = error as? APIError {
                     title = message
                 }
                 
                 let finalTitle = title
-                DispatchQueue.main.async {
-                    let onSelect = Command { [weak self] in
-                        guard let self = self, let orderID = self.orderID else { return }
-                        self.load(with: orderID)
-                        
-                    }
-                    let err = R_OrderDetailsView.ViewState.Error(
-                        image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
-                        title: finalTitle,
-                        action: onSelect,
-                        buttonTitle: "Загрузить еще раз",
-                        height: UIScreen.main.bounds.height / 2)
-                        .toElement()
-                    let state = State(model: .init(header: nil, footer: nil), elements: [err])
-                    
-                    self.nestedView.viewState = .init(dataState: .error, state: [state], onClose: onClose)
-                }
                 
+                let onSelect = Command { [weak self] in
+                    guard let self = self, let orderID = self.orderID else { return }
+                    self.load(with: orderID)
+                    
+                }
+                let err = R_OrderDetailsView.ViewState.Error(
+                    image: UIImage(systemName: "xmark.octagon") ?? UIImage(),
+                    title: finalTitle,
+                    action: onSelect,
+                    buttonTitle: "Загрузить еще раз",
+                    height: UIScreen.main.bounds.height / 2)
+                    .toElement()
+                let state = State(model: .init(header: nil, footer: nil), elements: [err])
+                
+                self.nestedView.viewState = .init(dataState: .error, state: [state], onClose: onClose)
             }
         }
+        
+      
     }
     
     

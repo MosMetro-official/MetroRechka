@@ -32,7 +32,7 @@ struct R_Document: Equatable, Decodable {
     
     static func getDocs(by id: Int) async throws -> [R_Document] {
         let client = APIClient.unauthorizedClient
-        let response = try await client.send(.GET(path: "/api/references/v1/idCards/\(id)"))
+        let response = try await client.send(  .GET(path: "/api/references/v1/idCards/\(id)"))
         return try JSONDecoder().decode(R_BaseResponse<[R_Document]>.self, from: response.data).data
     }
 }

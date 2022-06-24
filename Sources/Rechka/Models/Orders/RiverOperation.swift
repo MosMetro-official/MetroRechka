@@ -6,23 +6,27 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 import SwiftDate
 
-enum RechkaOrderStatus: Int {
+enum RechkaOrderStatus: Int, Decodable {
     case success = 1
     case canceled = 2
     case booked = 3
 }
 
-struct RiverOperation {
+struct RiverOperation: Decodable {
     let id: Int
-    let internalOrderID: Int
+    var internalOrderID: Int = 0 {
+        didSet {
+            self.tickets = tickets.map { RiverOperationTicket(from: $0, parentOrderID: internalOrderID) }
+        }
+    }
     let status: RechkaOrderStatus
     let timeLeftToCancel: Int // seconds
     let orderDate: Date // MSK timezone
     let hash: String
-    let tickets: [RiverOperationTicket]
+    var tickets: [RiverOperationTicket]
     
     var totalPrice: Double {
         return tickets.reduce(0, { $0 + $1.price })
@@ -33,22 +37,24 @@ struct RiverOperation {
         return "\(stationStart.name) → \(stationEnd.name)"
     }
     
-    
-    
-    
-    init?(data: JSON, internalOrderID: Int) {
-        guard
-            let id = data["id"].int,
-            let status = RechkaOrderStatus(rawValue: data["status"].intValue),
-            let orderDate = data["dateTimeOrder"].stringValue.toISODate(nil, region: .UTC)?.date,
-            let tickets = data["tickets"].array else { return nil }
-        self.id = id
-        self.internalOrderID = internalOrderID
-        self.status = status
-        self.timeLeftToCancel = data["timeLeftToCancel"].intValue
-        self.hash = data["hash"].stringValue
-        self.orderDate = orderDate
-        self.tickets = tickets.compactMap { RiverOperationTicket(data: $0, parentOrderID: internalOrderID) }
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case status
+        case timeLeftToCancel
+        case orderDate = "dateTimeOrder"
+        case hash
+        case tickets
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.status = try container.decode(RechkaOrderStatus.self, forKey: .status)
+        self.orderDate = try container.decode(Date.self, forKey: .orderDate)
+        self.timeLeftToCancel = try container.decode(Int.self, forKey: .timeLeftToCancel)
+        self.hash = try container.decode(String.self, forKey: .hash)
+        self.tickets = try container.decode([RiverOperationTicket].self, forKey: .tickets)
+    }
+    
     
 }

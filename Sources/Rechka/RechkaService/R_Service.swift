@@ -16,7 +16,7 @@ final class R_Service {
         
         print("🚢🚢🚢🚢 Started fetching tags")
         let client = APIClient.unauthorizedClient
-        let response = try await client.send(.GET(path: "/api/routes/v1/tags", query: nil))
+        let response = try await client.send(  .GET(path: "/api/routes/v1/tags", query: nil))
         return try JSONDecoder().decode(R_BaseResponse<[String]>.self, from: response.data).data
        
     }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 
 // MARK: - Vehicle

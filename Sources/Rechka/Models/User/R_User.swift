@@ -6,17 +6,17 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 // MARK: Gender
 
-enum Gender: Int {
+enum Gender: Int, Encodable {
     case male = 1
     case female = 0
 }
 
 // MARK: - User
-struct R_User: Equatable {
+struct R_User: Equatable, Encodable {
     
     var name: String?
     var surname: String?

@@ -8,7 +8,7 @@
 import UIKit
 import CoreTableView
 import SwiftDate
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 internal final class R_TicketsHistoryController: UIViewController {
     
@@ -69,19 +69,16 @@ internal final class R_TicketsHistoryController: UIViewController {
     }
     
     private func loadHistory(page: Int, size: Int) {
-    
-        RechkaShortOrder.getOrders(size: size, page: page) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let ordersResponse):
-                self.model = ordersResponse
-            case .failure(let error):
+        Task {
+            do {
+                self.model = try await RechkaShortOrder.getOrders(size: size, page: page)
+            } catch {
                 self.makeErrorState(with: error)
             }
         }
     }
     
-    private func makeErrorState(with error: APIError) {
+    private func makeErrorState(with error: Error) {
         let onSelect: () -> Void = { [weak self] in
             self?.loadHistory(page: 0, size: 5)
         }
@@ -90,7 +87,7 @@ internal final class R_TicketsHistoryController: UIViewController {
             image: UIImage(systemName: "arrow.triangle.2.circlepath"),
             title: nil,
             onSelect: onSelect)
-        let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(button))
+        let config = R_Toast.Configuration.defaultError(text: error.localizedDescription, subtitle: nil, buttonType: .imageButton(button))
         self.nestedView.viewState = .init(state: [], dataState: .error(config))
     }
     

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 import CoreTableView
 
 internal final class R_BlurRefundController : UIViewController {
@@ -19,18 +19,17 @@ internal final class R_BlurRefundController : UIViewController {
     }
     
     private func startLoad(for ticket: RiverOperationTicket) {
-        ticket.calculateRefund { [weak self] result in
-            switch result {
-            case .success(let refund):
-                self?.refund = refund
-            case .failure(let error):
-                self?.handle(error: error)
+        Task {
+            do {
+                self.refund = try await ticket.calculateRefund()
+            } catch {
+                self.handle(error: error)
             }
         }
     }
     
     
-    private func handle(error: APIError) {
+    private func handle(error: Error) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let controller = R_BlurResultController()
@@ -86,15 +85,14 @@ extension R_BlurRefundController {
     private func startRefundConfirm() {
         self.nestedView.viewState = .loading(.init(title: "Возвращаем билет", descr: "Немного подождите"))
         guard let ticket = ticket else { return }
-        ticket.confirmRefund { [weak self] result in
-            switch result {
-            case .success():
-                self?.handleSuccessRefund()
-            case .failure(let error):
-                self?.handle(error: error)
+        Task {
+            do {
+                try await ticket.confirmRefund()
+                self.handleSuccessRefund()
+            } catch {
+                self.handle(error: error)
             }
         }
-        
      
     }
     

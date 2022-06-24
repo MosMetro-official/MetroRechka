@@ -6,29 +6,37 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 import SwiftDate
 
-struct RiverTicketRefund {
+struct RiverTicketRefund: Decodable {
     let ticketID: Int
     let refundPrice: Double
     let refundDate: Date? // MSK timezone
     let totalPriceRefund: Double
     let additionRefunds: [R_OperationAdditionServiceRefund]
     
-    init?(data: JSON) {
-        guard let ticketID = data["id"].int else { return nil }
-        self.ticketID = ticketID
-        
-        self.refundPrice = data["ticketPriceRefund"].doubleValue
-        self.refundDate  = data["dateTimeRefund"].stringValue.toISODate(nil, region: .UTC)?.date
-        self.totalPriceRefund = data["totalPriceRefund"].doubleValue
-        self.additionRefunds = data["additionServicesRefund"].arrayValue.compactMap { R_OperationAdditionServiceRefund(data: $0) }
+    private enum CodingKeys: String, CodingKey {
+        case ticketID = "id"
+        case refundPrice = "ticketPriceRefund"
+        case refundDate = "dateTimeRefund"
+        case totalPriceRefund = "totalPriceRefund"
+        case additionRefunds = "additionServicesRefund"
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.ticketID = try container.decode(Int.self, forKey: .ticketID)
+        self.refundPrice = try container.decode(Double.self, forKey: .refundPrice)
+        self.refundDate = try container.decodeIfPresent(Date.self, forKey: .refundDate)
+        self.totalPriceRefund = try container.decode(Double.self, forKey: .totalPriceRefund)
+        self.additionRefunds = try container.decode([R_OperationAdditionServiceRefund].self, forKey: .additionRefunds)
+    }
+    
     
 }
 
-struct R_OperationAdditionServiceRefund {
+struct R_OperationAdditionServiceRefund: Decodable {
     let id: String
     let name: String
     let nameEn: String
@@ -40,23 +48,36 @@ struct R_OperationAdditionServiceRefund {
     let priceTotalRefund: Double
     let date: Date?
     
-    init?(data: JSON) {
-        guard let id = data["id"].string else { return nil }
-        self.id = id
-        self.name = data["name"].stringValue
-        self.nameEn = data["nameEn"].stringValue
-        self.type = data["type"].intValue
-        self.pricePerOne = data["pricePerOne"].doubleValue
-        self.count = data["count"].intValue
-        self.priceTotal = data["priceTotal"].doubleValue
-        self.pricePerOneRefund = data["pricePerOneRefund"].doubleValue
-        self.priceTotalRefund = data["priceTotalRefund"].doubleValue
-        self.date = data["dateTimeRefund"].stringValue.toISODate(nil, region: .UTC)?.date
+    private enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case nameEn = "nameEn"
+        case type
+        case pricePerOne
+        case count
+        case priceTotal
+        case pricePerOneRefund
+        case priceTotalRefund
+        case date = "dateTimeRefund"
     }
+    
+//    init?(data: JSON) {
+//        guard let id = data["id"].string else { return nil }
+//        self.id = id
+//        self.name = data["name"].stringValue
+//        self.nameEn = data["nameEn"].stringValue
+//        self.type = data["type"].intValue
+//        self.pricePerOne = data["pricePerOne"].doubleValue
+//        self.count = data["count"].intValue
+//        self.priceTotal = data["priceTotal"].doubleValue
+//        self.pricePerOneRefund = data["pricePerOneRefund"].doubleValue
+//        self.priceTotalRefund = data["priceTotalRefund"].doubleValue
+//        self.date = data["dateTimeRefund"].stringValue.toISODate(nil, region: .UTC)?.date
+//    }
     
 }
 
-struct R_OperationAdditionService {
+struct R_OperationAdditionService: Decodable {
     let id: String
     let pricePerOne: Double
     let name: String
@@ -64,20 +85,11 @@ struct R_OperationAdditionService {
     let totalPrice: Double
     let type: Int
     
-    init?(data: JSON) {
-        guard let id = data["id"].string else { return nil }
-        self.id = id
-        self.pricePerOne = data["pricePerOne"].doubleValue
-        self.name = data["name"].stringValue
-        self.count = data["count"].intValue
-        self.totalPrice = data["priceTotal"].doubleValue
-        self.type = data["type"].intValue
-    }
 }
 
-struct RiverOperationTicket {
+struct RiverOperationTicket: Decodable {
     
-    enum Status: Int {
+    enum Status: Int, Decodable {
         case payed = 1 // билет продан
         case returnedByCarrier = 2 // Билет продан, после продажи возвращен перевозчиком
         case booked = 3 // Билет находится во временной брони
@@ -86,7 +98,7 @@ struct RiverOperationTicket {
     }
     
     let id: Int
-    let parentOrderID: Int
+    var parentOrderID: Int
     let routeName: String 
     let price: Double
     let status: Status
@@ -99,72 +111,87 @@ struct RiverOperationTicket {
     let operationHash: String
     let additionServices: [R_OperationAdditionService]
     
-    
-    init?(data: JSON, parentOrderID: Int) {
-        guard let id = data["id"].int,
-              let dateTimeStart = data["dateTimeStart"].stringValue.toISODate(nil, region: .UTC)?.date,
-              let dateTimeEnd = data["dateTimeEnd"].stringValue.toISODate(nil, region: .UTC)?.date,
-        let status = Status(rawValue: data["status"].intValue) else { return nil }
-        self.id = id
-        self.parentOrderID = parentOrderID
-        self.routeName = data["routeName"].stringValue
-        self.price = data["ticketPrice"].doubleValue
-        self.status = status
-        self.refund = RiverTicketRefund(data: data["ticketRefund"])
-//        self.stationStart = R_Station(data: data["stationStart"])
-//        self.stationEnd = R_Station(data: data["stationEnd"])
-        self.stationStart = nil
-        self.stationEnd = nil
-        self.place = data["position"].intValue
-        self.dateTimeStart = dateTimeStart
-        self.dateTimeEnd = dateTimeEnd
-        self.operationHash = data["operationHash"].stringValue
-        self.additionServices = data["additionServices"].arrayValue.compactMap { R_OperationAdditionService(data: $0) }
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case routeName
+        case price = "ticketPrice"
+        case status
+        case refund = "ticketRefund"
+        case stationStart
+        case stationEnd
+        case place = "position"
+        case dateTimeStart
+        case dateTimeEnd
+        case operationHash
+        case additionServices
     }
+    
+    init(from: Self, parentOrderID: Int) {
+        self = from
+        self.parentOrderID = parentOrderID
+
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.routeName = try container.decode(String.self, forKey: .routeName)
+        self.price = try container.decode(Double.self, forKey: .price)
+        self.status = try container.decode(Status.self, forKey: .status)
+        self.refund = try container.decode(RiverTicketRefund.self, forKey: .refund)
+        self.stationStart = try container.decode(R_Station.self, forKey: .stationStart)
+        self.stationEnd = try container.decode(R_Station.self, forKey: .stationStart)
+        self.place = try container.decode(Int.self, forKey: .place)
+        self.dateTimeStart = try container.decode(Date.self, forKey: .dateTimeStart)
+        self.dateTimeEnd = try container.decode(Date.self, forKey: .dateTimeEnd)
+        self.operationHash = try container.decode(String.self, forKey: .operationHash)
+        self.additionServices = try container.decode([R_OperationAdditionService].self, forKey: .additionServices)
+        self.parentOrderID = 0
+    }
+    
+//    init(from decoder: Decoder, parentOrderID: Int) throws {
+//        self.parentOrderID = parentOrderID
+//        self.init(from: decoder)
+//    }
+    
+//    init?(data: JSON, parentOrderID: Int) {
+//        guard let id = data["id"].int,
+//              let dateTimeStart = data["dateTimeStart"].stringValue.toISODate(nil, region: .UTC)?.date,
+//              let dateTimeEnd = data["dateTimeEnd"].stringValue.toISODate(nil, region: .UTC)?.date,
+//        let status = Status(rawValue: data["status"].intValue) else { return nil }
+//        self.id = id
+//        self.parentOrderID = parentOrderID
+//        self.routeName = data["routeName"].stringValue
+//        self.price = data["ticketPrice"].doubleValue
+//        self.status = status
+//        self.refund = RiverTicketRefund(data: data["ticketRefund"])
+////        self.stationStart = R_Station(data: data["stationStart"])
+////        self.stationEnd = R_Station(data: data["stationEnd"])
+//        self.stationStart = nil
+//        self.stationEnd = nil
+//        self.place = data["position"].intValue
+//        self.dateTimeStart = dateTimeStart
+//        self.dateTimeEnd = dateTimeEnd
+//        self.operationHash = data["operationHash"].stringValue
+//        self.additionServices = data["additionServices"].arrayValue.compactMap { R_OperationAdditionService(data: $0) }
+//    }
     
     
 }
 
 extension RiverOperationTicket {
     
-    public func confirmRefund(completion: @escaping (Result<Void, APIError>) -> Void) {
-        
+    public func confirmRefund() async throws {
         let client = APIClient.authorizedClient
-        client.send(.POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refund",
-                          body: nil,
-                          contentType: .json)) { result in
-            switch result {
-                
-            case .success(_):
-                completion(.success(()))
-                return
-            case .failure(let error):
-                completion(.failure(error))
-                return
-            }
-        }
+        try await client.send(.POST(path: "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refund", contentType: .json))
        
     }
     
-    public func calculateRefund(completion: @escaping (Result<RiverTicketRefund,APIError>) -> Void) {
+    public func calculateRefund() async throws -> RiverTicketRefund {
         let client = APIClient.authorizedClient
         let path = "/api/tickets/v1/\(self.id)/order/\(self.parentOrderID)/refundAmount"
-        client.send(.GET(path: path, query: nil)) { result in
-            switch result {
-            case .success(let response):
-                let json = JSON(response.data)
-                guard let refund = RiverTicketRefund(data: json["data"]) else {
-                    completion(.failure(.badMapping))
-                    return
-                }
-                completion(.success(refund))
-                return
-            case .failure(let error):
-                completion(.failure(error))
-                return
-            }
-        }
-
+        let refund: R_BaseResponse<RiverTicketRefund> = try await client.send(.GET(path: path)).value
+        return refund.data
     }
     
     private func documentExist(path: String) -> URL? {
@@ -184,12 +211,11 @@ extension RiverOperationTicket {
         }
     }
     
-    private func saveDocument(path: String, data: Data) -> URL? {
+    private func saveDocument(path: String, data: Data) throws -> URL {
         let fileManager = FileManager.default
-        guard let documentDirectory = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false) else { return nil }
+        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
         let fileURL = documentDirectory.appendingPathComponent(path)
         fileManager.createFile(atPath: fileURL.path, contents: data)
-        
         return fileURL
         
         
@@ -199,32 +225,16 @@ extension RiverOperationTicket {
         return "Маршрутная квитанция электронного билета" + " \(dateTimeStart.toFormat("d MMMM HH:mm", locale: Locales.russian))" + " \(id)" + ".pdf"
     }
     
-    public func getDocumentURL(completion: @escaping (Result<URL,APIError>) -> Void) {
+    public func getDocumentURL() async throws -> URL {
         if let filePath = documentExist(path: self.docPath()) {
-            completion(.success(filePath))
-            return
+            return filePath
         } else {
             let client = APIClient.authorizedClient
             let path = "/api/tickets/v1/\(self.id)/blank"
             let query = ["operationHash": self.operationHash]
-            client.send(.GET(path: path, query: query)) { result in
-                switch result {
-                case .success(let response):
-                    guard let data = response.data as? Data else {
-                        completion(.failure(.badData))
-                        return
-                    }
-                    guard let fileURL = saveDocument(path: self.docPath(), data: data) else {
-                        completion(.failure(.badData))
-                        return
-                    }
-                    completion(.success(fileURL))
-                    return
-                case .failure(let error):
-                    completion(.failure(error))
-                    return
-                }
-            }
+            let response = try await client.send(.GET(path: path, query: query))
+            let url = try saveDocument(path: self.docPath(), data: response.data)
+            return url
         }
     }
         

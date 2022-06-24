@@ -62,7 +62,7 @@ extension R_Station {
     
     public static func getStations() async throws -> [R_Station] {
         let client = APIClient.unauthorizedClient
-        let response = try await client.send(.GET(path: "/api/references/v1/stationsFrom"))
+        let response = try await client.send(  .GET(path: "/api/references/v1/stationsFrom"))
         return try JSONDecoder().decode(R_BaseResponse<[R_Station]>.self, from: response.data).data
         
     }

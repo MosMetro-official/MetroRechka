@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 import SwiftDate
 
 public struct R_ShortTrip: Decodable {

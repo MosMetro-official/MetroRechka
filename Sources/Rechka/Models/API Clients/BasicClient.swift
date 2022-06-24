@@ -12,7 +12,13 @@ import MMCoreNetworkAsync
 extension APIClient {
     
     public static var unauthorizedClient : APIClient {
-        return APIClient(host: Rechka.shared.APIHost, interceptor: BasicApiClientInterceptor(), httpProtocol: .HTTPS, configuration: .default)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        
+        let serializer = Serializer(decoder: decoder, encoder: encoder)
+        return APIClient(host: Rechka.shared.APIHost, interceptor: BasicApiClientInterceptor(), httpProtocol: .HTTPS, configuration: .default, serializer: serializer)
     }
     
 }

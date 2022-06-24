@@ -9,7 +9,7 @@ import UIKit
 import CoreTableView
 import SwiftDate
 import SafariServices
-import MMCoreNetworkCallbacks
+import MMCoreNetworkAsync
 
 
 internal final class R_BookingScreenController : UIViewController {
@@ -27,13 +27,13 @@ internal final class R_BookingScreenController : UIViewController {
             guard let orderID = orderID else {
                 return
             }
-            RiverOrder.get(by: orderID) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let order):
+            
+            Task {
+                do {
+                    let order = try await RiverOrder.get(by: orderID)
                     self.model = order
-                case .failure:
-                    print("error")
+                } catch {
+                    print(error.localizedDescription)
                 }
             }
         }
@@ -157,23 +157,19 @@ internal final class R_BookingScreenController : UIViewController {
     private func startCancel() {
         guard let model = model else { return }
         self.nestedView.viewState.dataState = .loading
-        model.cancelBooking { result in
-            switch result {
-            case .success():
-                DispatchQueue.main.async {
-                    self.showCancelSuccess()
+        Task {
+            do {
+                try await model.cancelBooking()
+                self.showCancelSuccess()
+            } catch {
+                let onSelect: () -> Void = { [weak self] in
+                    guard let self = self else { return }
+                    self.nestedView.viewState.dataState = .loaded
                 }
-            case .failure(let err):
-                DispatchQueue.main.async {
-                    let onSelect: () -> Void = { [weak self] in
-                        guard let self = self else { return }
-                        self.nestedView.viewState.dataState = .loaded
-                    }
-                    
-                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
-                    let errorConfig = R_Toast.Configuration.defaultError(text: err.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
-                    self.nestedView.viewState.dataState = .error(errorConfig)
-                }
+                
+                let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
+                let errorConfig = R_Toast.Configuration.defaultError(text: error.localizedDescription, subtitle: nil, buttonType: .imageButton(buttonData))
+                self.nestedView.viewState.dataState = .error(errorConfig)
             }
         }
     }

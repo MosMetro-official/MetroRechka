@@ -87,11 +87,11 @@ extension R_Trip {
     
     func getFreePlaces() async throws -> [Int] {
         let client = APIClient.unauthorizedClient
-        let response = try await client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability"), debug: true)
-        return try JSONDecoder().decode(R_BaseResponse<[Int]>.self, from: response.data).data
+        let response: R_BaseResponse<[Int]> = try await client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability")).value
+        return response.data
         
         
-//        client.send(.GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
+//        client.send(  .GET(path: "/api/trips/v1/\(id)/placesAvailability", query: nil)) { result in
 //            switch result {
 //            case .success(let response):
 //                let json = JSON(response.data)
@@ -109,18 +109,43 @@ extension R_Trip {
 //        }
     }
     
-    static func book(with users: [R_User], tripID: Int, completion: @escaping (Result<RiverOrder, APIError>) -> Void) {
+    struct R_BookingData: Encodable {
         
-//        let tickets: [[String:Any]] = users.map { user in
-//            return user.createBodyItem()
-//        }
-//
-//        let body: [String: Any] = [
-//            "id": tripID,
-//            "returnUrl": Rechka.shared.returnURL,
-//            "failUrl": Rechka.shared.failURL,
-//            "tickets": tickets
-//        ]
+        
+        let id: Int
+        let returnURL: String
+        let failURL: String
+        let tickets: [R_BookingTicket]
+        
+        
+    }
+    
+    struct R_BookingTicket: Encodable {
+        var name: String?
+        var middleName: String?
+        var surname: String?
+        var birthDay: String?
+        var mail: String
+        var gender: Gender
+        var phoneNumber: String?
+        var documentID: Int?
+        var cardIdentityNumber: String?
+        var citizenshipID: Int?
+        
+    }
+    
+    static func book(with users: [R_User], tripID: Int) async throws -> RiverOrder {
+        
+        let tickets: [[String:Any]] = users.map { user in
+            return user.createBodyItem()
+        }
+
+        let body: [String: Any] = [
+            "id": tripID,
+            "returnUrl": Rechka.shared.returnURL,
+            "failUrl": Rechka.shared.failURL,
+            "tickets": tickets
+        ]
 //        print(body)
 //        let client = APIClient.authorizedClient
 //

@@ -29,13 +29,9 @@ class PDFDocumentController: UIViewController {
     var ticket: RiverOperationTicket? {
         didSet {
             guard let ticket = ticket else { return }
-            ticket.getDocumentURL { result in
-                switch result {
-                case .success(let fileURL):
-                    self.filePath = fileURL
-                case .failure(let error):
-                    print(error)
-                }
+            Task {
+                let filePath = try await ticket.getDocumentURL()
+                self.filePath = filePath
             }
         }
     }
