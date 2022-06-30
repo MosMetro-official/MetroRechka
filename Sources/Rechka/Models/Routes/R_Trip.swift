@@ -136,16 +136,22 @@ extension R_Trip {
     
     static func book(with users: [R_User], tripID: Int) async throws -> RiverOrder {
         
-        let tickets: [[String:Any]] = users.map { user in
-            return user.createBodyItem()
-        }
-
-        let body: [String: Any] = [
-            "id": tripID,
-            "returnUrl": Rechka.shared.returnURL,
-            "failUrl": Rechka.shared.failURL,
-            "tickets": tickets
-        ]
+//        let tickets: [[String:Any]] = users.map { user in
+//            return user.createBodyItem()
+//        }
+//
+//        let body: [String: Any] = [
+//            "id": tripID,
+//            "returnUrl": Rechka.shared.returnURL,
+//            "failUrl": Rechka.shared.failURL,
+//            "tickets": tickets
+//        ]
+        
+        let bookingRequest = R_BookRequest(users: users, tripID: tripID)
+        let client = APIClient.authorizedClient
+        let response: R_BaseResponse<RiverOrder> = try await client.send(.POST(path:  "/api/orders/v1/booking", body: bookingRequest, contentType: .json)).value
+        return response.data
+        
 //        print(body)
 //        let client = APIClient.authorizedClient
 //
@@ -165,8 +171,6 @@ extension R_Trip {
 //                return
 //            }
 //        }
-        completion(.failure(.badMapping))
-        return
         
     }
     

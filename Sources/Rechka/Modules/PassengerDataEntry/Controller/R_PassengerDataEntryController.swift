@@ -117,8 +117,9 @@ internal final class R_PassengerDataEntryController : UIViewController {
             var selectedServices: [R_AdditionService] = []
             for (service, itemsCount) in self.additionalService {
                 if itemsCount > 0 {
-                    let array = Array.init(repeating: service.toAdditionService(), count: itemsCount)
-                    selectedServices.append(contentsOf: array)
+                    var addService = service.toAdditionService()
+                    addService.count = itemsCount
+                    selectedServices.append(addService)
                 }
             }
             user.additionServices = selectedServices

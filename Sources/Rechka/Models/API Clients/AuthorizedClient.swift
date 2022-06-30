@@ -16,6 +16,7 @@ extension APIClient {
         encoder.dateEncodingStrategy = .iso8601
         
         let serializer = Serializer(decoder: decoder, encoder: encoder)
+
         return APIClient(host: Rechka.shared.APIHost, interceptor: SecureAPIClientInterceptor(), httpProtocol: .HTTPS, configuration: .default, serializer: serializer)
     }
 }

@@ -8,6 +8,38 @@
 import Foundation
 import MMCoreNetworkAsync
 
+
+// MARK: Book Request
+
+struct R_BookRequest: Encodable {
+    public let users: [R_User]
+    private let returnURL: String = Rechka.shared.returnURL
+    private let failURL: String = Rechka.shared.failURL
+    public let tripID: Int
+    
+    init(users: [R_User], tripID: Int) {
+        self.users = users
+        self.tripID = tripID
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case returnUrl
+        case failUrl
+        case tickets
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(tripID, forKey: .id)
+        try container.encode(users, forKey: .tickets)
+        try container.encode(returnURL, forKey: .returnUrl)
+        try container.encode(failURL, forKey: .failUrl)
+        
+    }
+    
+}
+
 // MARK: Gender
 
 enum Gender: Int, Encodable {
@@ -36,11 +68,25 @@ struct R_User: Equatable, Encodable {
     
     init() { }
     
-    func createBodyItem() -> [String: Any] {
-        var resultingList = [String: Any]()
-        if let name = name, let surname = surname {
-            let middleNameStr = middleName == nil ? "" : " \(middleName!)"
-            resultingList.updateValue("\(name) \(surname)\(middleNameStr)", forKey: "passengerName")
+    private enum CodingKeys: String, CodingKey {
+        case passengerName
+        case passengerBirthday
+        case passengerEmail
+        case passengerGender
+        case passengerPhone
+        case cardIdentityId
+        case cardIdentityNumber
+        case citizenshipId
+        case ticketTariffId
+        case position
+        case additionService
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        let fullName = [name,middleName,surname].compactMap { $0 }.joined(separator: " ")
+        if !fullName.isEmpty {
+            try container.encode(fullName, forKey: .passengerName)
         }
         
         if let birthday = birthday {
@@ -48,64 +94,110 @@ struct R_User: Equatable, Encodable {
             
             if let day = separated[safe: 0], let month = separated[safe: 1], let year = separated[safe: 2] {
                 let newBirthdayString = "\(year)-\(month)-\(day)"
-                resultingList.updateValue(newBirthdayString, forKey: "passengerBirthday")
+                try container.encode(newBirthdayString, forKey: .passengerBirthday)
             }
         }
         
-        if let mail = mail {
-            resultingList.updateValue(mail, forKey: "passengerEmail")
-        }
-        
-        if let gender = gender {
-            resultingList.updateValue(gender.rawValue, forKey: "passengerGender")
-        }
-        
+        try container.encodeIfPresent(mail, forKey: .passengerEmail)
+        try container.encodeIfPresent(gender, forKey: .passengerGender)
         if var phoneNumber = phoneNumber {
             phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
             phoneNumber = phoneNumber.replacingOccurrences(of: "+", with: "")
-            resultingList.updateValue(phoneNumber, forKey: "passengerPhone")
+            try container.encode(phoneNumber, forKey: .passengerPhone)
         }
+        
         
         if let document = document, let cardIdentityNumber = document.cardIdentityNumber {
-            resultingList.updateValue(document.id, forKey: "cardIdentityId")
-            resultingList.updateValue(cardIdentityNumber, forKey: "cardIdentityNumber")
+            try container.encode(document.id, forKey: .cardIdentityId)
+            try container.encode(cardIdentityNumber, forKey: .cardIdentityNumber)
         }
         
-        if let citizenShip = citizenShip {
-            resultingList.updateValue(citizenShip.id, forKey: "citizenshipId")
-        }
-        
-        resultingList.updateValue("auto", forKey: "position")
-        
+        try container.encodeIfPresent(citizenShip?.id, forKey: .citizenshipId)
         if let ticket = ticket {
-            resultingList.updateValue(ticket.id, forKey: "ticketTariffId")
+            try container.encode(ticket.id, forKey: .ticketTariffId)
             if ticket.isWithoutPlace {
-                resultingList.updateValue("none", forKey: "position")
+                try container.encode("none", forKey: .position)
             } else {
-                if let place = ticket.place {
-                    resultingList.updateValue(place, forKey: "position")
-                }
+                try container.encode(ticket.place == nil ? "auto" : "\(ticket.place!)", forKey: .position)
             }
+        } else {
+            try container.encode("auto" , forKey: .position)
         }
-        if let additionServices = additionServices {
-            let grouped = Dictionary(grouping: additionServices, by: { $0 })
-            let additions: [[String:Any]] = grouped.map { key, value in
-                return ["id": key.id,
-                        "name": key.name_ru,
-                        "nameEn": key.name_en,
-                        "type": key.type,
-                        "pricePerOne": key.price,
-                        "count": value.count,
-                        "priceTotal": key.price * Double(value.count)
-                ]
-            }
-            
-            resultingList.updateValue(additions, forKey: "additionService")
-            
-            
-        }
-       
-        return resultingList
+        
+        try container.encodeIfPresent(additionServices, forKey: .additionService)
         
     }
+    
+//    func createBodyItem() -> [String: Any] {
+//        var resultingList = [String: Any]()
+//        if let name = name, let surname = surname {
+//            let middleNameStr = middleName == nil ? "" : " \(middleName!)"
+//            resultingList.updateValue("\(name) \(surname) \(middleNameStr)", forKey: "passengerName")
+//        }
+//
+//        if let birthday = birthday {
+//            let separated = birthday.split(separator: ".")
+//
+//            if let day = separated[safe: 0], let month = separated[safe: 1], let year = separated[safe: 2] {
+//                let newBirthdayString = "\(year)-\(month)-\(day)"
+//                resultingList.updateValue(newBirthdayString, forKey: "passengerBirthday")
+//            }
+//        }
+//
+//        if let mail = mail {
+//            resultingList.updateValue(mail, forKey: "passengerEmail")
+//        }
+//
+//        if let gender = gender {
+//            resultingList.updateValue(gender.rawValue, forKey: "passengerGender")
+//        }
+//
+//        if var phoneNumber = phoneNumber {
+//            phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
+//            phoneNumber = phoneNumber.replacingOccurrences(of: "+", with: "")
+//            resultingList.updateValue(phoneNumber, forKey: "passengerPhone")
+//        }
+//
+//        if let document = document, let cardIdentityNumber = document.cardIdentityNumber {
+//            resultingList.updateValue(document.id, forKey: "cardIdentityId")
+//            resultingList.updateValue(cardIdentityNumber, forKey: "cardIdentityNumber")
+//        }
+//
+//        if let citizenShip = citizenShip {
+//            resultingList.updateValue(citizenShip.id, forKey: "citizenshipId")
+//        }
+//
+//        resultingList.updateValue("auto", forKey: "position")
+//
+//        if let ticket = ticket {
+//            resultingList.updateValue(ticket.id, forKey: "ticketTariffId")
+//            if ticket.isWithoutPlace {
+//                resultingList.updateValue("none", forKey: "position")
+//            } else {
+//                if let place = ticket.place {
+//                    resultingList.updateValue(place, forKey: "position")
+//                }
+//            }
+//        }
+//        if let additionServices = additionServices {
+//            let grouped = Dictionary(grouping: additionServices, by: { $0 })
+//            let additions: [[String:Any]] = grouped.map { key, value in
+//                return ["id": key.id,
+//                        "name": key.name_ru,
+//                        "nameEn": key.name_en,
+//                        "type": key.type,
+//                        "pricePerOne": key.price,
+//                        "count": value.count,
+//                        "priceTotal": key.price * Double(value.count)
+//                ]
+//            }
+//
+//            resultingList.updateValue(additions, forKey: "additionService")
+//
+//
+//        }
+//
+//        return resultingList
+//
+//    }
 }

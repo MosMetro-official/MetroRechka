@@ -68,33 +68,31 @@ internal final class R_BookingWithPersonController: UIViewController {
     private func startBooking() {
         guard let tripID = self.model?.id else { return }
         if let _ = Rechka.shared.token {
-            R_Trip.book(with: riverUsers, tripID: tripID) { result in
-                switch result {
-                case .success(let order):
+            Task {
+                do {
+                    let order = try await R_Trip.book(with: riverUsers, tripID: tripID)
                     self.handle(order: order)
-                case .failure(let error):
-                    print(error)
-                    DispatchQueue.main.async {
-                        let onSelect: () -> Void = { [weak self] in
-                            guard let self = self else { return }
-                            R_Toast.remove(from: self.nestedView)
-                            self.nestedView.viewState.dataState = .addedPersonData
-                        }
-                        
-                        let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
-                        
-                        let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
-                        let newErrorState: R_BookingWithPersonView.ViewState = .init(
-                            title: self.nestedView.viewState.title,
-                            menuActions: self.nestedView.viewState.menuActions,
-                            dataState: .error(config),
-                            state: self.nestedView.viewState.state,
-                            book: self.nestedView.viewState.book
-                        )
-                        self.nestedView.viewState = newErrorState
+                } catch {
+                    let onSelect: () -> Void = { [weak self] in
+                        guard let self = self else { return }
+                        R_Toast.remove(from: self.nestedView)
+                        self.nestedView.viewState.dataState = .addedPersonData
                     }
+                    
+                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
+                    
+                    let config = R_Toast.Configuration.defaultError(text: error.localizedDescription, subtitle: nil, buttonType: .imageButton(buttonData))
+                    let newErrorState: R_BookingWithPersonView.ViewState = .init(
+                        title: self.nestedView.viewState.title,
+                        menuActions: self.nestedView.viewState.menuActions,
+                        dataState: .error(config),
+                        state: self.nestedView.viewState.state,
+                        book: self.nestedView.viewState.book
+                    )
+                    self.nestedView.viewState = newErrorState
                 }
             }
+        
         } else {
             let vc = R_UnauthorizedController()
             vc.onLogin = Command(action: { 

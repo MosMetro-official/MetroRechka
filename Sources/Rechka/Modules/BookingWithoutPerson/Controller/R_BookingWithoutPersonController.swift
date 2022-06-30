@@ -136,8 +136,9 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 var selectedServices = [R_AdditionService]()
                 for (service,itemsCount) in self.selectedTarrifs.additionServices {
                     if itemsCount > 0 {
-                        let array = Array.init(repeating: service.toAdditionService(), count: itemsCount)
-                        selectedServices.append(contentsOf: array)
+                        var service = service.toAdditionService()
+                        service.count = itemsCount
+                        selectedServices.append(service)
                     }
                 }
                 users[0].additionServices = selectedServices
@@ -153,32 +154,28 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             self.set(state: newState)
             let finalUsers = users
             
-            R_Trip.book(with: finalUsers, tripID: tripID) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let order):
+            Task {
+                do {
+                    let order = try await R_Trip.book(with: finalUsers, tripID: tripID)
                     self.handle(order: order)
-                    return
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        let onSelect: () -> Void = { [weak self] in
-                            guard let self = self else { return }
-                            R_Toast.remove(from: self.nestedView)
-                            self.nestedView.viewState.dataState = .loaded
-                        }
-                        
-                        let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
-                        
-                        let config = R_Toast.Configuration.defaultError(text: error.errorTitle, subtitle: nil, buttonType: .imageButton(buttonData))
-                        let newErrorState: R_BookingWithoutPersonView.ViewState = .init(
-                            title: self.nestedView.viewState.title,
-                            state: self.nestedView.viewState.state,
-                            dataState: .error(config),
-                            onBooking: self.nestedView.viewState.onBooking
-                        )
-                        
-                        self.nestedView.viewState = newErrorState
+                } catch {
+                    let onSelect: () -> Void = { [weak self] in
+                        guard let self = self else { return }
+                        R_Toast.remove(from: self.nestedView)
+                        self.nestedView.viewState.dataState = .loaded
                     }
+                    
+                    let buttonData = R_Toast.Configuration.Button(image: UIImage(systemName: "xmark"), title: nil, onSelect: onSelect)
+                    
+                    let config = R_Toast.Configuration.defaultError(text: error.localizedDescription, subtitle: nil, buttonType: .imageButton(buttonData))
+                    let newErrorState: R_BookingWithoutPersonView.ViewState = .init(
+                        title: self.nestedView.viewState.title,
+                        state: self.nestedView.viewState.state,
+                        dataState: .error(config),
+                        onBooking: self.nestedView.viewState.onBooking
+                    )
+                    
+                    self.nestedView.viewState = newErrorState
                 }
             }
             

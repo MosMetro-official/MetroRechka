@@ -178,7 +178,7 @@ internal class R_RouteDetailsController: UIViewController {
                     title: nil,
                     onSelect: onSelect)
                 
-                let config = R_Toast.Configuration.defaultError(text: err.errorDescription, subtitle: nil, buttonType: .imageButton(buttonType))
+                let config = R_Toast.Configuration.defaultError(text: err.localizedDescription, subtitle: nil, buttonType: .imageButton(buttonType))
                 
                 let newState = R_RootDetailStationView.ViewState(
                     state: currentState.state,
