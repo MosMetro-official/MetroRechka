@@ -24,6 +24,17 @@ extension APIClient {
 
 internal final class SecureAPIClientInterceptor: APIClientInterceptor {
     func client(_ client: APIClient, initialRequest: Request, didReceiveInvalidResponse response: HTTPURLResponse, data: Data?) async -> RetryPolicy {
+        if response.statusCode == 401 {
+            guard let networkDelegate = Rechka.shared.networkDelegate else {
+                fatalError("Не реализован механизм обновления токена")
+            }
+            do {
+                try await networkDelegate.refreshToken()
+                return .shouldRetry
+            } catch {
+                return .doNotRetryWith(.badRequest)
+            }
+        }
         return .doNotRetry
     }
     
