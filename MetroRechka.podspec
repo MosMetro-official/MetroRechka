@@ -93,6 +93,7 @@ Pod::Spec.new do |spec|
   spec.source_files  = "Sources/Rechka/**/*.{swift}"
   spec.exclude_files = "Tests/RechkaTests/**/*"
   spec.dependency 'MMCoreNetworkCallbacks'
+  spec.dependency 'MMCoreNetworkAsync'
   spec.dependency 'CoreTableView'
   spec.dependency 'SDWebImage'
   spec.dependency 'SwiftDate', '~> 5.0'
