@@ -8,6 +8,8 @@
 import Foundation
 import MMCoreNetworkAsync
 
+
+
 extension APIClient {
     public static var authorizedClient : APIClient {
         let decoder = JSONDecoder()
@@ -17,7 +19,7 @@ extension APIClient {
         
         let serializer = Serializer(decoder: decoder, encoder: encoder)
 
-        return APIClient(host: Rechka.shared.APIHost, interceptor: SecureAPIClientInterceptor(), httpProtocol: .HTTPS, configuration: .default, serializer: serializer)
+        return APIClient(host: Rechka.shared.APIHost, interceptor: SecureAPIClientInterceptor(), httpProtocol: .HTTPS, configuration: .default, serializer: serializer, debug: true)
     }
 }
 
