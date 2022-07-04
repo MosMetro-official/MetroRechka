@@ -235,6 +235,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             }
            
             let tariffElement: Element = R_BookingWithoutPersonView.ViewState.TariffSteper(
+                id: tariff.id,
                 height: normalHeight,
                 serviceInfo: nil,
                 tariff: tariff.name,
@@ -257,6 +258,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                     }
                     let title = user.ticket?.place == nil ? "Выберите место" : "Пассажир \(index+1) – место \(user.ticket!.place!)"
                     let choicePlaceElement = R_BookingWithoutPersonView.ViewState.ChoicePlace(
+                        id: user.id,
                         title: title,
                         onItemSelect: onSelectPlace
                     ).toElement()
@@ -266,7 +268,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 ticketElemets.append(contentsOf: placesElements)
             }
             
-            let mainTariffSection = SectionState(header: nil, footer: nil)
+            let mainTariffSection = SectionState(id: "mainTariffSection", header: nil, footer: nil)
             resultStates.append(State(model: mainTariffSection, elements: ticketElemets))
         }
         
@@ -289,6 +291,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 }
                 
                 let tariffElement: Element = R_BookingWithoutPersonView.ViewState.TariffSteper(
+                    id: tariff.id,
                     height: bigHeight,
                     serviceInfo: "ДОПОЛНИТЕЛЬНАЯ УСЛУГА",
                     tariff: tariff.name,
@@ -298,7 +301,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                     onMinus: onMinus
                 ).toElement()
                 
-                let additionalTariffSection = SectionState(header: nil, footer: nil)
+                let additionalTariffSection = SectionState(id: "additionalTariffSection", header: nil, footer: nil)
                 resultStates.append(State(model: additionalTariffSection, elements: [tariffElement]))
             }
         }
@@ -319,6 +322,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 let totalPrice = selectedTariff.key.price * Double(selectedTariff.value.count)
                 let priceStr = "\(totalPrice) ₽"
                 return R_BookingWithoutPersonView.ViewState.Tariff(
+                    id: selectedTariff.key.id,
                     tariffs: text,
                     price: priceStr)
                     .toElement()
@@ -331,6 +335,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 let totalPrice = additionalTariff.key.price * Double(additionalTariff.value)
                 let priceStr = "\(totalPrice) ₽"
                 return R_BookingWithoutPersonView.ViewState.Tariff(
+                    id: additionalTariff.key.id,
                     tariffs: text,
                     price: priceStr)
                     .toElement()
@@ -340,7 +345,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             paidElements.append(contentsOf: paidTarrifs)
             paidElements.append(contentsOf: additional)
             
-            let paidSection = SectionState(header: nil, footer: nil)
+            let paidSection = SectionState(id: "paySection", header: nil, footer: nil)
             let paidState = State(model: paidSection, elements: paidElements)
             resultStates.append(paidState)
         }

@@ -125,6 +125,7 @@ internal final class R_BookingWithPersonController: UIViewController {
                 self?.pushPersonDataEntry(with: newModel, and: user, for: index)
             }
             let passenger = R_BookingWithPersonView.ViewState.Passenger(
+                id: user.id,
                 name: "\(user.surname ?? "") \(user.name ?? "")",
                 tariff: user.ticket?.name ?? "",
                 onSelect: onSelect
@@ -133,7 +134,7 @@ internal final class R_BookingWithPersonController: UIViewController {
                 passElements.append(passenger)
             }
         }
-        let passengerSection = SectionState(header: nil, footer: nil)
+        let passengerSection = SectionState(id: "passenger", header: nil, footer: nil)
         let passengerState = State(model: passengerSection, elements: passElements)
         
         // tickets
@@ -150,6 +151,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         tarrifsGroup.forEach { name, tickets in
             let price = Int(tickets.first?.price ?? 0)
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
+                id: name,
                 tariffs: "\(name) x\(tickets.count)",
                 price: "\(price * tickets.count) ₽"
             ).toElement()
@@ -162,13 +164,14 @@ internal final class R_BookingWithPersonController: UIViewController {
         additionalGroup.forEach { name, additionals in
             let price = Int(additionals.first?.price ?? 0)
             let tariff = R_BookingWithPersonView.ViewState.Tariff(
+                id: name,
                 tariffs: "\(name) x\(additionals.count)",
                 price: "\(price * additionals.count) ₽"
             ).toElement()
             tickElements.append(tariff)
         }
         
-        let tariffSection = SectionState(header: nil, footer: nil)
+        let tariffSection = SectionState(id: "tariff", header: nil, footer: nil)
         let tariffState = State(model: tariffSection, elements: tickElements)
         let showPersonAlert = Command { [weak self] in
             self?.setupPersonAlert()

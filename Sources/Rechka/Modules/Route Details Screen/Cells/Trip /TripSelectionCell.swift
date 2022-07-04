@@ -23,7 +23,9 @@ extension _TripSelectionCell {
     }
     
     func hashValues() -> [Int] {
-        return [day.hashValue]
+        var hashes = items.map { $0.hash() }
+        hashes.append(day.hashValue)
+        return hashes
     }
     
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {

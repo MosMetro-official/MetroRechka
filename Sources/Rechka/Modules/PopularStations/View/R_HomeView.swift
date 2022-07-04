@@ -35,6 +35,8 @@ class R_HomeView: UIView {
         }
         
         struct Route: _R_RouteTableViewCell {
+            var id: String
+            
             var title: String
             
             var time: String
@@ -49,6 +51,8 @@ class R_HomeView: UIView {
         }
         
         struct Error: _R_ErrorCell {
+            var id: String = "error"
+            
             var image: UIImage
             
             var title: String
@@ -68,7 +72,11 @@ class R_HomeView: UIView {
         }
         
         struct LoadMore: _RechkaLoadMoreCell {
-            var onLoad: Command<Void>?
+            var state: RechkaLoadMoreCell.ViewState
+            
+            var id: String
+            
+            
         }
         
         struct LoadedState {
@@ -177,7 +185,7 @@ extension R_HomeView {
     }
     
     private func setup() {
-        tableView.shouldUseReload = true
+        //tableView.shouldUseReload = true
         [dateButton,categoriesButton,stationButton].forEach {
             $0?.roundCorners(.all, radius: 20)
         }

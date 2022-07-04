@@ -24,6 +24,7 @@ internal final class R_BookingWithoutPersonView: UIView {
         }
         
         struct TariffSteper: _TariffSteper {
+            var id: String
             var height: CGFloat
             var serviceInfo: String?
             var tariff: String
@@ -34,22 +35,28 @@ internal final class R_BookingWithoutPersonView: UIView {
         }
         
         struct ChoicePlace: _ChoicePlace {
+            var id: String
             var title: String
             var onItemSelect: Command<Void>
         }
         
         struct DateHeader: _TripsDateHeader {
+            var id: String
             var title: String
         }
         
-        struct TariffHeader: _TariffHeaderCell { }
+        struct TariffHeader: _TariffHeaderCell {
+            var id: String = "tariffHeader"
+        }
         
-        struct Tariff: _Tariff {            
+        struct Tariff: _Tariff {
+            var id: String
             let tariffs: String
             let price: String
         }
         
         struct Commission: _Commission {
+            var id: String
             let commission: String
             let price: String
         }
@@ -79,11 +86,10 @@ internal final class R_BookingWithoutPersonView: UIView {
         table.separatorColor = .clear
         table.clipsToBounds = true
         table.backgroundColor = Appearance.colors[.base]
-        table.shouldUseReload = true
         table.showsVerticalScrollIndicator = false
         table.showsHorizontalScrollIndicator = false
         table.sectionFooterHeight = .leastNormalMagnitude
-        table.shouldUseReload = true
+        table.rowAnimation = .fade
         return table
     }()
     

@@ -15,7 +15,18 @@ protocol _R_DateCollectionCell {
     var borderColor: UIColor { get }
     var onSelect: Command<Void> { get }
     
+    
 }
+
+extension _R_DateCollectionCell {
+    
+    func hash() -> Int {
+        return textColor.hashValue
+    }
+}
+
+
+
 
 class R_DateCollectionCell: UICollectionViewCell {
     

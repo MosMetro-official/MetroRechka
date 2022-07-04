@@ -15,6 +15,7 @@ internal final class R_StationListView : UIView {
         var onMapTap : Command<Void>?
         
         struct Terminal : _TerminalCell {
+            var id: String
             var title : String
             var descr : String
             var latitude : Double

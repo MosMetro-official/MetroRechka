@@ -18,6 +18,10 @@ extension _PassengerHeaderCell {
         return 50
     }
     
+    func hashValues() -> [Int] {
+        return []
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? PassengerHeaderCell else { return }
         cell.configure(with: self)

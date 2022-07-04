@@ -56,7 +56,7 @@ class R_DocumentController: UIViewController {
                 ).toElement()
                 let errorState = R_DocumentView.ViewState(
                     dataState: .error,
-                    state: [State(model: .init(header: nil, footer: nil), elements: [error])],
+                    state: [State(model: .init(id: "error", header: nil, footer: nil), elements: [error])],
                     onClose: onClose
                 )
                 self.nestedView.viewState = errorState
@@ -70,12 +70,12 @@ class R_DocumentController: UIViewController {
                 self?.onDocumentSelect?.perform(with: document)
                 self?.dismiss(animated: true)
             }
-            return R_DocumentView.ViewState.Document(title: document.name, onItemSelect: onSelect).toElement()
+            return R_DocumentView.ViewState.Document(id: "\(document.id)", title: document.name, onItemSelect: onSelect).toElement()
         }
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true)
         }
-        let sec = SectionState(header: nil, footer: nil)
+        let sec = SectionState(id: "documents", header: nil, footer: nil)
         let state = State(model: sec, elements: elements)
         let viewState = R_DocumentView.ViewState(
             dataState: .loaded,

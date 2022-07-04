@@ -28,23 +28,29 @@ internal final class R_BookingWithPersonView: UIView {
         }
         
         struct PassengerHeader : _PassengerHeaderCell {
+            var id: String = "passengerHeader"
             let onAdd : (() -> Void)
         }
         
         struct Passenger : _Passenger {
+            var id: String
             let name : String
             let tariff : String
             let onSelect : (() -> Void)
         }
         
-        struct TariffHeader: _TariffHeaderCell { }
+        struct TariffHeader: _TariffHeaderCell {
+            var id: String = "tariffHeader"
+        }
         
         struct Tariff : _Tariff {
+            var id: String
             let tariffs : String
             let price : String
         }
         
         struct Commission: _Commission {
+            var id: String = "comission"
             let commission : String
             let price : String
         }

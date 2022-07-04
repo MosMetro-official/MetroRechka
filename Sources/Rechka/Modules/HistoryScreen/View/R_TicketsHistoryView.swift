@@ -22,6 +22,7 @@ internal final class R_TicketsHistoryView: UIView {
         }
         
         struct HistoryTicket: _History {
+            var id: String
             let title : String
             let descr : String
             let price : String
@@ -29,17 +30,20 @@ internal final class R_TicketsHistoryView: UIView {
         }
         
         struct Empty: _R_EmptyTableViewCell {
+            var id: String = "1"
             var title: String
             
             var image: UIImage
         }
         
         struct DateHeader: _TripsDateHeader {
+            var id: String
             var title: String
         }
         
         struct LoadMore: _RechkaLoadMoreCell {
-            var onLoad: Command<Void>?
+            var id: String
+            var state: RechkaLoadMoreCell.ViewState
         }
         
         static let initial = R_TicketsHistoryView.ViewState(state: [], dataState: .loading)

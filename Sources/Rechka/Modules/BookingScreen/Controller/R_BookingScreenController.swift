@@ -203,17 +203,20 @@ internal final class R_BookingScreenController : UIViewController {
         
         let titleHeigght = "Билеты забронированы".height(withConstrainedWidth: UIScreen.main.bounds.width - 40, font: Appearance.customFonts[.largeTitle] ?? UIFont.systemFont(ofSize: 30, weight: .bold)) + 20
         let title = R_BookingScreenView.ViewState.Title(
+            id: "title",
             title: "Билеты забронированы",
             height: titleHeigght
         ).toElement()
         topElements.append(title)
         let timer = R_BookingScreenView.ViewState.Timer(
+            id: "timer",
             timer: elapsedTime,
             descr: "Осталось времени для оплаты"
         ).toElement()
         topElements.append(timer)
         var cancelElements = [Element]()
         let cancel = R_BookingScreenView.ViewState.Cancel(
+            id: "cancel",
             title: "Отменить бронирование",
             onSelect: { [weak self] in
                 guard let self = self else { return }
@@ -221,10 +224,10 @@ internal final class R_BookingScreenController : UIViewController {
             }
         ).toElement()
         cancelElements.append(cancel)
-        let topSection = SectionState(header: nil, footer: nil)
+        let topSection = SectionState(id: "topsection", header: nil, footer: nil)
         let topState = State(model: topSection, elements: topElements)
         
-        let cancelSection = SectionState(header: nil, footer: nil)
+        let cancelSection = SectionState(id: "cancelsection", header: nil, footer: nil)
         let cancelState = State(model: cancelSection, elements: cancelElements)
         
         let onClose = Command { [weak self] in

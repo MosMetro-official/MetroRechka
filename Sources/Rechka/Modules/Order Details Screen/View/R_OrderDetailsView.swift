@@ -45,6 +45,7 @@ internal final class R_OrderDetailsView: UIView {
         let onClose: Command<Void>?
         
         struct Ticket : _TicketDetail {
+            var id: String
             var price: String
             var place: String
             var number: String
@@ -54,6 +55,7 @@ internal final class R_OrderDetailsView: UIView {
         }
         
         struct Error: _R_ErrorCell {
+            var id: String = "error"
             var image: UIImage
             
             var title: String
@@ -67,12 +69,16 @@ internal final class R_OrderDetailsView: UIView {
         }
  
         struct TicketStatus : _TicketStatus {
+            var id: String
+            
             var title: String
             var statusImage: UIImage
             var statusColor: UIColor
         }
         
         struct TicketInfo : _TicketInfo {
+            var id: String
+            
             var height: CGFloat
             
             var title : String
@@ -81,15 +87,21 @@ internal final class R_OrderDetailsView: UIView {
         }
         
         struct TicketTitle : _TicketTitle {
+            var id: String
+            
             var title : String
         }
         
         struct Addtional: _Tariff {
+            var id: String
+            
             let tariffs: String
             let price: String
         }
         
         struct NeedToPay: _R_OrderPaymentTableViewCell {
+            var id: String
+            
             var onPay: Command<Void>
             var time: String
             var desc: String

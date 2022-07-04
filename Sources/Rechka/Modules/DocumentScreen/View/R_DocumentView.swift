@@ -24,12 +24,14 @@ class R_DocumentView: UIView {
             case error
         }
         
-        struct Document: _Document {            
+        struct Document: _Document {
+            var id: String
             let title: String
             let onItemSelect: Command<Void>
         }
         
         struct Error: _R_ErrorCell {
+            var id: String = "error"
             let image: UIImage
             let title: String
             let action: Command<Void>?

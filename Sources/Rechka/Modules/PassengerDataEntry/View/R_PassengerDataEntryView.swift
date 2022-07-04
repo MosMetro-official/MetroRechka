@@ -23,44 +23,60 @@ internal final class R_PassengerDataEntryView: UIView {
         }
         
         struct Header: _HeaderCell {
+            var id: String
+            
             let title: String
         }
         
         struct Filed: _Field {
+            var id: String
+            
             let text: String
             let textColor: UIColor
             let onSelect: () -> ()
         }
         
         struct GenderCell: _Gender {
+            var id: String
+            
             var gender: Gender
             let onTap: (Gender) -> ()
         }
         
         struct SelectField: _SelectCell {
+            var id: String
+            
             let title: String
             let onItemSelect: Command<Void>
         }
         
         struct DocumentField: _Field {
+            var id: String
+            
             let text: String
             let textColor: UIColor
             let onSelect: () -> ()
         }
         
         struct TariffHeader: _TicketsHeader {
+            var id: String
+            
             let title: String
             let ticketsCount: Int
             let isInsetGroup: Bool
         }
         
         struct Tickets: _Tickets {
+            var id: String
+            
             let ticketList: [R_Tariff]
             let onChoice: ((Int) -> ())?
             let selectedTicket: R_Tariff?
         }
         
         struct ChoicePlace: _ChoicePlace {
+            var id: String
+            
             var title: String
             var onItemSelect: Command<Void>
            

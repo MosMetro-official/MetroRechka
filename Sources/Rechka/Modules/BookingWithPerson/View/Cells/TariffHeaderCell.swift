@@ -12,6 +12,10 @@ protocol _TariffHeaderCell: CellData { }
 
 extension _TariffHeaderCell {
     
+    func hashValues() -> [Int] {
+        return []
+    }
+    
     var height: CGFloat {
         return 50
     }

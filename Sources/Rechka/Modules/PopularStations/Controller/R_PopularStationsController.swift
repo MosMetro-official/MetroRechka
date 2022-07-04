@@ -157,6 +157,7 @@ internal final class R_PopularStationsController : UIViewController {
             }
             
             let routeData = R_HomeView.ViewState.Route(
+                id: "\(route.id)",
                 title: route.name,
                 time: "\(route.time) мин.",
                 station: firstStation,
@@ -166,7 +167,7 @@ internal final class R_PopularStationsController : UIViewController {
                 .toElement()
             return routeData
         }
-        let section = SectionState(header: nil, footer: nil)
+        let section = SectionState(id: "routes", header: nil, footer: nil)
         let routesState = State(model: section, elements: elements)
         return routesState
     }
@@ -295,8 +296,8 @@ internal final class R_PopularStationsController : UIViewController {
         case .loadingNewPage(let routes):
             let routesState = createState(for: routes)
             states.append(routesState)
-            let loadMore = R_HomeView.ViewState.LoadMore(onLoad: nil).toElement()
-            states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+            let loadMore = R_HomeView.ViewState.LoadMore(state: .loading, id: "load_more").toElement()
+            states.append(.init(model: .init(id: "load_more", header: nil, footer: nil), elements: [loadMore]))
             
             let state = stateForLoaded(tableState: states)
             DispatchQueue.main.async { [weak self] in
@@ -318,7 +319,7 @@ internal final class R_PopularStationsController : UIViewController {
                     buttonTitle: "Сбросить фильтры",
                     height: UIScreen.main.bounds.height / 2)
                     .toElement()
-                let section = SectionState(header: nil, footer: nil)
+                let section = SectionState(id: "empty", header: nil, footer: nil)
                 let errorState = State(model: section, elements: [notFoundErr])
                 states.append(errorState)
             } else {
@@ -330,8 +331,8 @@ internal final class R_PopularStationsController : UIViewController {
                         self.dataModel = .loadingNewPage(routes)
                         self.load(page: searchResponse.page + 1, size: 10, stationID: self.searchModel.station?.id, tags: self.searchModel.selectedTags, date: self.searchModel.date)
                     }
-                    let loadMore = R_HomeView.ViewState.LoadMore(onLoad: onLoad).toElement()
-                    states.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+                    let loadMore = R_HomeView.ViewState.LoadMore(state: .default(onLoad), id: "load_more").toElement()
+                    states.append(.init(model: .init(id: "load_more", header: nil, footer: nil), elements: [loadMore]))
                 }
             }
             

@@ -45,6 +45,7 @@ internal final class R_StationsListController : UIViewController {
         for item in items {
             elements.append(
                 R_StationListView.ViewState.Terminal(
+                    id: "\(item.id)",
                     title: item.name,
                     descr: item.cityName,
                     latitude: item.latitude,
@@ -65,7 +66,7 @@ internal final class R_StationsListController : UIViewController {
             }
         }()
         
-        let section = SectionState(header: nil, footer: nil)
+        let section = SectionState(id: "1", header: nil, footer: nil)
         let state = State(model: section, elements: elements)
         let viewState = R_StationListView.ViewState(states: [state], onMapTap: onMapTap)
         nestedView.viewState = viewState

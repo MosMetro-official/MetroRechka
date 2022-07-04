@@ -105,7 +105,7 @@ internal final class R_TicketsHistoryController: UIViewController {
                 title: "У вас пока нет заказов, совершите первую покупку, и она появится тут",
                 image: UIImage(named: "river_empty_bag", in: Rechka.shared.bundle, with: nil) ?? UIImage())
                 .toElement()
-            let state = State(model: .init(header: nil, footer: nil), elements: [empty])
+            let state = State(model: .init(id: UUID().uuidString, header: nil, footer: nil), elements: [empty])
             return [state]
         } else {
             let dict = Dictionary.init(grouping: orders, by: { element -> DateComponents in
@@ -141,6 +141,7 @@ internal final class R_TicketsHistoryController: UIViewController {
                         }()
                         
                         return R_TicketsHistoryView.ViewState.HistoryTicket(
+                            id: "\(order.id)",
                             title: title,
                             descr: descr,
                             price: "\(order.totalPrice) ₽",
@@ -160,8 +161,8 @@ internal final class R_TicketsHistoryController: UIViewController {
                         }
                         return first.createdDate.toFormat("d MMMM", locale: Locales.russianRussia)
                     }()
-                    let headerData = R_TicketsHistoryView.ViewState.DateHeader(title: sectionTitle)
-                    let sectionData = SectionState(header: headerData, footer: nil)
+                    let headerData = R_TicketsHistoryView.ViewState.DateHeader(id: sectionTitle, title: sectionTitle)
+                    let sectionData = SectionState(id: "orders", header: headerData, footer: nil)
                     return State(model: sectionData, elements: sortedTrips)
                 }
                 return nil
@@ -183,8 +184,8 @@ internal final class R_TicketsHistoryController: UIViewController {
                 var sections = [State]()
                 let ordersSections = self.createStateItems(from: orders)
                 sections.append(contentsOf: ordersSections)
-                let loadMore = R_TicketsHistoryView.ViewState.LoadMore(onLoad: nil).toElement()
-                sections.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+                let loadMore = R_TicketsHistoryView.ViewState.LoadMore(id: "load_more", state: .loading).toElement()
+                sections.append(.init(model: .init(id: "load_more", header: nil, footer: nil), elements: [loadMore]))
                 self.nestedView.viewState = .init(state: sections, dataState: .loaded)
             case .loaded(let orders):
                 guard let model = self.model else { return }
@@ -197,8 +198,8 @@ internal final class R_TicketsHistoryController: UIViewController {
                         self.dataModel = .loadingNewPage(orders)
                         self.loadHistory(page: model.page + 1, size: 5)
                     }
-                    let loadMore = R_TicketsHistoryView.ViewState.LoadMore(onLoad: onLoad).toElement()
-                    sections.append(.init(model: .init(header: nil, footer: nil), elements: [loadMore]))
+                    let loadMore = R_TicketsHistoryView.ViewState.LoadMore(id: "load_more", state: .default(onLoad)).toElement()
+                    sections.append(.init(model: .init(id: "load_more", header: nil, footer: nil), elements: [loadMore]))
                 }
                 self.nestedView.viewState = .init(state: sections, dataState: .loaded)
             }

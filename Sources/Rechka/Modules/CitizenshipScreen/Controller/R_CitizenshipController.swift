@@ -52,6 +52,7 @@ class R_CitizenshipController : UIViewController {
                     self?.dismiss(animated: true)
                 }
                 let error = R_CitizenshipView.ViewState.Error(
+                    id: "error",
                     image: UIImage(named: "result_error", in: Rechka.shared.bundle, with: nil) ?? UIImage(),
                     title: "ЧТО-ТО ПОШЛО НЕ ТАК 😢",
                     action: actionReload,
@@ -61,7 +62,7 @@ class R_CitizenshipController : UIViewController {
                 let errorState = R_CitizenshipView.ViewState(
                     onClose: onClose,
                     dataState: .error,
-                    state: [State(model: .init(header: nil, footer: nil), elements: [error])],
+                    state: [State(model: .init(id: "1", header: nil, footer: nil), elements: [error])],
                     enableTextField: false
                 )
                 self.nestedView.viewState = errorState
@@ -76,12 +77,12 @@ class R_CitizenshipController : UIViewController {
                 self?.onCitizenshipSelect?.perform(with: citizen)
                 self?.dismiss(animated: true)
             }
-            return R_CitizenshipView.ViewState.Citizenship(title: citizen.name, onItemSelect: onSelect).toElement()
+            return R_CitizenshipView.ViewState.Citizenship(id: "\(citizen.id)", title: citizen.name, onItemSelect: onSelect).toElement()
         }
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true)
         }
-        let section = SectionState(header: nil, footer: nil)
+        let section = SectionState(id: "citizenships", header: nil, footer: nil)
         let state = State(model: section, elements: elements)
         let viewState = R_CitizenshipView.ViewState(
             onClose: onClose,

@@ -9,13 +9,17 @@ import UIKit
 import CoreTableView
 
 protocol _RechkaLoadMoreCell: CellData {
-    var onLoad: Command<Void>? { get }
+    var state: RechkaLoadMoreCell.ViewState { get set }
 }
 
 extension _RechkaLoadMoreCell {
     
     var height: CGFloat {
         return 56
+    }
+    
+    func hashValues() -> [Int] {
+        return [state.hashValue]
     }
     
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
@@ -32,6 +36,20 @@ extension _RechkaLoadMoreCell {
 }
 
 class RechkaLoadMoreCell: UITableViewCell {
+    
+    enum ViewState {
+        case loading
+        case `default`(Command<Void>)
+        
+        var hashValue: Int {
+            switch self {
+            case .default(let command):
+                return 0
+            case .loading:
+                return 1
+            }
+        }
+    }
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var loadingButton: UIButton!
@@ -54,9 +72,16 @@ class RechkaLoadMoreCell: UITableViewCell {
     }
     
     public func configure(with data: _RechkaLoadMoreCell) {
-        self.loadingButton.isHidden = data.onLoad == nil
-        self.loadingIndicator.isHidden = data.onLoad != nil
-        self.loadingIndicator.startAnimating()
-        self.onLoad = data.onLoad
+        switch data.state {
+        case .loading:
+            self.loadingButton.isHidden = true
+            self.loadingIndicator.isHidden = false
+            self.loadingIndicator.startAnimating()
+        case .default(let onLoad):
+            self.loadingButton.isHidden = false
+            self.loadingIndicator.isHidden = true
+            self.loadingIndicator.startAnimating()
+            self.onLoad = onLoad
+        }
     }
 }

@@ -19,6 +19,10 @@ extension _ChoicePlace {
         return 60
     }
     
+    func hashValues() -> [Int] {
+        return [title.hashValue]
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? ChoicePlaceCell else { return }
         cell.configure(with: self)

@@ -33,11 +33,13 @@ class R_CitizenshipView: UIView {
         }
         
         struct Citizenship: _Citizenship {
+            var id: String
             let title: String
             let onItemSelect: Command<Void>
         }
         
         struct Error: _R_ErrorCell {
+            var id: String
             let image: UIImage
             let title: String
             let action: Command<Void>?

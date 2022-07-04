@@ -235,6 +235,7 @@ internal class R_RouteDetailsController: UIViewController {
                     }
                     
                     let summary = R_RootDetailStationView.ViewState.Summary(
+                        id: "summary",
                         text: text,
                         onMore: isTextCollapsed ? onMore : nil,
                         height: isTextCollapsed ? 80 + 24 :  size.height + 24)
@@ -244,6 +245,7 @@ internal class R_RouteDetailsController: UIViewController {
                     
                 } else {
                     let summary = R_RootDetailStationView.ViewState.Summary(
+                        id: "summary",
                         text: text,
                         onMore: nil,
                         height: size.height + 24)
@@ -260,6 +262,7 @@ internal class R_RouteDetailsController: UIViewController {
         
         if Rechka.shared.isMapsRoutesAvailable && !model.polyline.isEmpty {
             let mapView = R_RootDetailStationView.ViewState.MapView(
+                id: "mapview",
                 onButtonSelect: { [weak self] in
                     guard let self = self else { return }
                     self.showRouteOnMap()
@@ -267,7 +270,7 @@ internal class R_RouteDetailsController: UIViewController {
             ).toElement()
             main.append(mapView)
         }
-        let infoSection = SectionState(header: nil, footer: nil)
+        let infoSection = SectionState(id: "info", header: nil, footer: nil)
         let infoSectionState = State(model: infoSection, elements: main)
         let dict = Dictionary.init(grouping: model.shortTrips, by: { element -> DateComponents in
             //let date = Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: (element.dateStart))
@@ -312,6 +315,7 @@ internal class R_RouteDetailsController: UIViewController {
                 let shouldScrollToInitial = value.contains(where: {  $0.id == self.selectedTripId })
                 let dayTitle = first.dateStart.toFormat("d MMM", locale: Locales.russianRussia)
                 return R_RootDetailStationView.ViewState.Trips(
+                    id: "\(dayTitle)",
                     day: dayTitle,
                     items: tripsOnThisDay,
                     shouldScrollToInitial: shouldScrollToInitial)
@@ -320,8 +324,8 @@ internal class R_RouteDetailsController: UIViewController {
             return nil
         }
         
-        let tripsHeaderData = R_RootDetailStationView.ViewState.DateHeader(title: "Когда поедем?")
-        let tripsSection = SectionState(header: tripsHeaderData, footer: nil)
+        let tripsHeaderData = R_RootDetailStationView.ViewState.DateHeader(id: "header", title: "Когда поедем?")
+        let tripsSection = SectionState(id: "header", header: tripsHeaderData, footer: nil)
         resultSections.append(.init(model: tripsSection, elements: tripsTest))
         let onChoice = Command { [weak self] in
             guard let self = self else { return }

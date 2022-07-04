@@ -34,11 +34,15 @@ internal final class R_BookingScreenView : UIView {
         }
         
         struct Title : _Title {
+            var id: String
+            
             var title : String
             var height: CGFloat
         }
         
         struct Timer : _Timer {
+            var id: String
+            
             var timer : String
             var descr : String
         }
@@ -46,6 +50,8 @@ internal final class R_BookingScreenView : UIView {
         
         
         struct Cancel : _Cancel {
+            var id: String
+            
             var title : String
             var onSelect: (() -> Void)
         }
@@ -124,7 +130,7 @@ internal final class R_BookingScreenView : UIView {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
         table.clipsToBounds = true
         table.separatorColor = .clear
-        table.shouldUseReload = true
+        //table.shouldUseReload = true
         table.showsVerticalScrollIndicator = false
         table.backgroundColor = .custom(for: .base)
         table.showsHorizontalScrollIndicator = false

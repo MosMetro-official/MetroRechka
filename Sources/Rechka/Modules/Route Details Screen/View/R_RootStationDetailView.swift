@@ -25,6 +25,7 @@ internal final class R_RootDetailStationView: UIView {
         }
         
         struct Summary: _Summary {
+            var id: String
             var text: NSAttributedString
             
             var onMore: Command<Void>?
@@ -34,15 +35,19 @@ internal final class R_RootDetailStationView: UIView {
         }
         
         struct MapView: _MapView {
+            var id: String
             let onButtonSelect: () -> ()
         }
         
         struct DateHeader: _TripsDateHeader {
+            var id: String
             var title: String
         }
         
         
         struct Trips: _TripSelectionCell {
+            
+            var id: String
             
             var day: String
             
@@ -52,6 +57,8 @@ internal final class R_RootDetailStationView: UIView {
         }
         
         struct TripTime: _R_DateCollectionCell {
+         
+            
             var time: String
             
             var textColor: UIColor
@@ -61,10 +68,15 @@ internal final class R_RootDetailStationView: UIView {
             var borderColor: UIColor
             
             var onSelect: Command<Void>
+            
+           
         
         }
         
         struct Error: _R_ErrorCell {
+            
+            var id: String = "error"
+            
             var image: UIImage
             
             var title: String

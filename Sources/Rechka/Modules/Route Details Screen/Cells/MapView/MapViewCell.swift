@@ -18,6 +18,10 @@ extension _MapView {
         return 175
     }
     
+    func hashValues() -> [Int] {
+        return []
+    }
+    
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
         guard let cell = cell as? MapViewCell else { return }
         cell.configure(with: self)

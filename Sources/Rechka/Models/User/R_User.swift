@@ -49,7 +49,7 @@ enum Gender: Int, Encodable {
 
 // MARK: - User
 struct R_User: Equatable, Encodable {
-    
+    let id = UUID().uuidString
     var name: String?
     var surname: String?
     var middleName: String?

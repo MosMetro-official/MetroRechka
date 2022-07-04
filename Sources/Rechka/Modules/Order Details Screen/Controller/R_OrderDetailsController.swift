@@ -176,7 +176,7 @@ internal final class R_OrderDetailsController : UIViewController {
                     buttonTitle: "Загрузить еще раз",
                     height: UIScreen.main.bounds.height / 2)
                     .toElement()
-                let state = State(model: .init(header: nil, footer: nil), elements: [err])
+                let state = State(model: .init(id: "error", header: nil, footer: nil), elements: [err])
                 
                 self.nestedView.viewState = .init(dataState: .error, state: [state], onClose: onClose)
             }
@@ -321,12 +321,13 @@ internal final class R_OrderDetailsController : UIViewController {
         }()
         
         let statusData = R_OrderDetailsView.ViewState.TicketStatus(
+            id: "ticketStatus",
             title: statusString,
             statusImage: statusImage,
             statusColor: statusColor
         ).toElement()
         
-        let statusSection = SectionState(header: nil, footer: nil)
+        let statusSection = SectionState(id: "statusSection", header: nil, footer: nil)
         let statusBlock = State(model: statusSection, elements: [statusData])
         resultigState.append(statusBlock)
         
@@ -343,10 +344,11 @@ internal final class R_OrderDetailsController : UIViewController {
             
             let elapsedTime = "\(minuteStr):\(secondsStr)"
             
-            let needToPay = R_OrderDetailsView.ViewState.NeedToPay(onPay: onPay,
+            let needToPay = R_OrderDetailsView.ViewState.NeedToPay(id: "needToPay",
+                                                                   onPay: onPay,
                                                                    time: elapsedTime,
                                                                    desc: "Осталось времени").toElement()
-            let needToPaySection = SectionState(header: nil, footer: nil)
+            let needToPaySection = SectionState(id: "needToPay", header: nil, footer: nil)
             let needToPayBlock = State(model: needToPaySection, elements: [needToPay])
             resultigState.append(needToPayBlock)
             
@@ -392,6 +394,7 @@ internal final class R_OrderDetailsController : UIViewController {
             }()
             
             let element = R_OrderDetailsView.ViewState.Ticket(
+                id: "\(ticket.id)",
                 price: "\(Int(ticket.price)) ₽",
                 place: place,
                 number: "\(ticket.id)",
@@ -399,22 +402,23 @@ internal final class R_OrderDetailsController : UIViewController {
                 buttons: buttonsData,
                 status: status)
                 .toElement()
-            let section = SectionState(header: nil, footer: nil)
+            let section = SectionState(id: "ticket_\(ticket.id)", header: nil, footer: nil)
             let ticketState = State(model: section, elements: [element])
             resulting.append(ticketState)
             if !ticket.additionServices.isEmpty {
                 var additionElements = [Element]()
                 let additionHeader = R_OrderDetailsView.ViewState.TicketTitle(
+                    id: "additions",
                     title: "Дополнительные услуги"
                 ).toElement()
                 
                 let additions: [Element] = ticket.additionServices.map { service in
-                    return R_OrderDetailsView.ViewState.Addtional(tariffs: "\(service.name) x\(service.count)", price: "\(service.totalPrice) ₽").toElement()
+                    return R_OrderDetailsView.ViewState.Addtional(id: service.id, tariffs: "\(service.name) x\(service.count)", price: "\(service.totalPrice) ₽").toElement()
                 }
                 additionElements.append(additionHeader)
                 additionElements.append(contentsOf: additions)
                 
-                let additionsSection = SectionState(header: nil, footer: nil)
+                let additionsSection = SectionState(id: "additions", header: nil, footer: nil)
                 resulting.append(.init(model: additionsSection, elements: additionElements))
             }
             ticketsStates.append(contentsOf: resulting)
@@ -424,6 +428,7 @@ internal final class R_OrderDetailsController : UIViewController {
         
         // info
         let title = R_OrderDetailsView.ViewState.TicketTitle(
+            id: "info",
             title: "Информация:"
         ).toElement()
         
@@ -436,6 +441,7 @@ internal final class R_OrderDetailsController : UIViewController {
         }
         
         let status = R_OrderDetailsView.ViewState.TicketInfo(
+            id: "status",
             height: height(for: statusString),
             title: "Статус",
             descr: statusString,
@@ -445,6 +451,7 @@ internal final class R_OrderDetailsController : UIViewController {
         
         
         let bookDate = R_OrderDetailsView.ViewState.TicketInfo(
+            id: "bookdate",
             height: height(for: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm")),
             title: "Дата брони",
             descr: order.operation.orderDate.toFormat("d MMMM yyyy HH:mm"),
@@ -453,6 +460,7 @@ internal final class R_OrderDetailsController : UIViewController {
         
         
         let orderNumber = R_OrderDetailsView.ViewState.TicketInfo(
+            id: "orderNumber",
             height: height(for: "\(order.operation.id)"),
             title: "Номер заказа",
             descr: "\(order.operation.id)",
@@ -464,6 +472,7 @@ internal final class R_OrderDetailsController : UIViewController {
         }
         let totalPrice = order.operation.totalPrice + additionsPrice
         let totalPriceData = R_OrderDetailsView.ViewState.TicketInfo(
+            id: "totalPrice",
             height: height(for: "\(totalPrice) ₽"),
             title: "Общая цена",
             descr: "\(totalPrice) ₽",
@@ -471,13 +480,14 @@ internal final class R_OrderDetailsController : UIViewController {
         ).toElement()
         
         let routeName = R_OrderDetailsView.ViewState.TicketInfo(
+            id: "routeName",
             height: height(for: "\(order.operation.routeName)"),
             title: "Маршрут",
             descr: "\(order.operation.routeName)",
             image: UIImage(named: "ticket_info_check", in: Rechka.shared.bundle, compatibleWith: nil)!
         ).toElement()
         
-        let infoBlock = State(model: .init(header: nil, footer: nil), elements: [title,status,bookDate,orderNumber,totalPriceData,routeName])
+        let infoBlock = State(model: .init(id: "infoBlock", header: nil, footer: nil), elements: [title,status,bookDate,orderNumber,totalPriceData,routeName])
         
         resultigState.append(infoBlock)
         

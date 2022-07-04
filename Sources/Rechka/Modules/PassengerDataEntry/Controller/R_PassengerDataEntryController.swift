@@ -201,7 +201,7 @@ extension R_PassengerDataEntryController {
     private func createTableState(for user: R_User) -> [State] {
         guard let model = model else { return [] }
         var sections = [State]()
-        let titleElement = R_PassengerDataEntryView.ViewState.Header(title: "Личные данные").toElement()
+        let titleElement = R_PassengerDataEntryView.ViewState.Header(id: "personalData", title: "Личные данные").toElement()
         var personalItems = [Element]()
         personalItems.append(titleElement)
         let onSurnameEnter: (TextEnterData) -> () = { data in
@@ -216,6 +216,7 @@ extension R_PassengerDataEntryController {
         self.inputStates.append(surnameState)
         
         let surnameField = R_PassengerDataEntryView.ViewState.Filed(
+            id: "surname",
             text: user.surname == nil ? "Фамилия" : user.surname!,
             textColor: user.surname == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: surnameState)
@@ -235,6 +236,7 @@ extension R_PassengerDataEntryController {
         self.inputStates.append(nameState)
         
         let nameField = R_PassengerDataEntryView.ViewState.Filed(
+            id: "name",
             text: user.name == nil ? "Имя" : user.name!,
             textColor: user.name == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: nameState)
@@ -254,6 +256,7 @@ extension R_PassengerDataEntryController {
         self.inputStates.append(middleNameState)
         
         let middleNameField = R_PassengerDataEntryView.ViewState.Filed(
+            id: "middleName",
             text: user.middleName == nil ? "Отчество" : user.middleName!,
             textColor: user.middleName == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: middleNameState)
@@ -281,6 +284,7 @@ extension R_PassengerDataEntryController {
         self.inputStates.append(birthdayState)
         
         let birthdayField = R_PassengerDataEntryView.ViewState.Filed(
+            id: "birthDay",
             text: user.birthday == nil ? "День рождения" : user.birthday!,
             textColor: user.birthday == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: birthdayState)
@@ -309,19 +313,20 @@ extension R_PassengerDataEntryController {
         self.inputStates.append(phoneState)
         
         let phoneField = R_PassengerDataEntryView.ViewState.Filed(
+            id: "phone",
             text: user.phoneNumber == nil ? "Телефон" : user.phoneNumber!,
             textColor: user.phoneNumber == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
             self.nestedView.showInput(with: phoneState)
         }.toElement()
         personalItems.append(phoneField)
         
-        let genderField = R_PassengerDataEntryView.ViewState.GenderCell(gender: user.gender ?? .male, onTap: { gender in
+        let genderField = R_PassengerDataEntryView.ViewState.GenderCell(id: "gender", gender: user.gender ?? .male, onTap: { gender in
             self.displayRiverUser?.gender = gender
 
         }).toElement()
         personalItems.append(genderField)
         
-        let personalDataSectionState = SectionState(header: nil, footer: nil)
+        let personalDataSectionState = SectionState(id: "personal", header: nil, footer: nil)
         sections.append(State(model: personalDataSectionState, elements: personalItems))
                 
         let onCountrySelect = Command { [weak self] in
@@ -333,13 +338,14 @@ extension R_PassengerDataEntryController {
             self?.present(citizenshipController, animated: true)
         }
             
-        let countryTitle = R_PassengerDataEntryView.ViewState.Header(title: "Гражданство").toElement()
+        let countryTitle = R_PassengerDataEntryView.ViewState.Header(id: "Citizenship", title: "Гражданство").toElement()
         let cTitle = (displayRiverUser?.citizenShip == nil ? "Указать гражданство" : displayRiverUser?.citizenShip!.name) ?? ""
         let countrySelection = R_PassengerDataEntryView.ViewState.SelectField(
+            id: "country",
             title: cTitle,
             onItemSelect: onCountrySelect
         ).toElement()
-        let countrySection = SectionState(header: nil, footer: nil)
+        let countrySection = SectionState(id: "country", header: nil, footer: nil)
         let countryState = State(model: countrySection, elements: [countryTitle, countrySelection])
         sections.append(countryState)
         
@@ -354,15 +360,16 @@ extension R_PassengerDataEntryController {
             self?.present(documentController, animated: true)
         }
         
-        let docTitle = R_PassengerDataEntryView.ViewState.Header(title: "Документ").toElement()
+        let docTitle = R_PassengerDataEntryView.ViewState.Header(id: "docHedaer", title: "Документ").toElement()
         documentElements.append(docTitle)
         let dTitle = (displayRiverUser?.document == nil ? "Выбрать документ" : displayRiverUser?.document!.name) ?? ""
         let docSelection = R_PassengerDataEntryView.ViewState.SelectField(
+            id: "docSelection",
             title: dTitle,
             onItemSelect: onDocSelect
         ).toElement()
         documentElements.append(docSelection)
-        let docSection = SectionState(header: nil, footer: nil)
+        let docSection = SectionState(id: "doc", header: nil, footer: nil)
         if displayRiverUser?.document != nil {
             // show serial field
             let onSerialEnter: (TextEnterData) -> () = { data in
@@ -386,6 +393,7 @@ extension R_PassengerDataEntryController {
             self.inputStates.append(serialState)
             let serail = displayRiverUser?.document?.cardIdentityNumber
             let serailField = R_PassengerDataEntryView.ViewState.Filed(
+                id: "docNumber",
                 text: serail == nil ? "Введите данные" : serail!,
                 textColor: user.document?.cardIdentityNumber == nil ? .custom(for: .textSecondary) : .custom(for: .textPrimary)) {
                 self.nestedView.showInput(with: serialState)
@@ -397,6 +405,7 @@ extension R_PassengerDataEntryController {
         
         // tickets
         let tickets = R_PassengerDataEntryView.ViewState.Tickets(
+            id: "tickets",
             ticketList: avaliableTariffs,
             onChoice: { ticketIndex in
                 let choiceTicket = self.avaliableTariffs[ticketIndex]
@@ -405,15 +414,17 @@ extension R_PassengerDataEntryController {
             selectedTicket: displayRiverUser?.ticket
         ).toElement()
         let ticketsHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
+            id: "ticketsHeader",
             title: "Тариф",
             ticketsCount: 0,
             isInsetGroup: true
         )
-        let ticketsSection = SectionState(header: ticketsHeader, footer: nil)
+        let ticketsSection = SectionState(id: "tickets", header: ticketsHeader, footer: nil)
         let ticketsState = State(model: ticketsSection, elements: [tickets])
         sections.append(ticketsState)
         if displayRiverUser?.ticket != nil && !additionalService.isEmpty {
             let additionalHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
+                id: "additions",
                 title: "Добавим к поездке?",
                 ticketsCount: 0,
                 isInsetGroup: true
@@ -435,6 +446,7 @@ extension R_PassengerDataEntryController {
                 }
                 
                 let tariffElement: Element = R_BookingWithoutPersonView.ViewState.TariffSteper(
+                    id: tariff.id,
                     height: 100,
                     serviceInfo: "ДОПОЛНИТЕЛЬНАЯ УСЛУГА",
                     tariff: tariff.name,
@@ -445,7 +457,7 @@ extension R_PassengerDataEntryController {
                 ).toElement()
                 additionElements.append(tariffElement)
             }
-            let additionalSection = SectionState(header: additionalHeader, footer: nil)
+            let additionalSection = SectionState(id: "additional", header: additionalHeader, footer: nil)
             let additionalState = State(model: additionalSection, elements: additionElements)
             sections.append(additionalState)
         }
@@ -459,8 +471,8 @@ extension R_PassengerDataEntryController {
                 self.showPlaceController(for: model, selectedPlace: user.ticket?.place, onPlaceSelect: onPlaceSelect)
             }
             let title = user.ticket?.place == nil ? "Выберите место" : "Место \(user.ticket!.place!)"
-            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(title: title, onItemSelect: onSelectPlace).toElement()
-            let choiceSec = SectionState(header: nil, footer: nil)
+            let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(id: "place", title: title, onItemSelect: onSelectPlace).toElement()
+            let choiceSec = SectionState(id: "choice", header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])
             sections.append(choiceState)
         }
