@@ -16,7 +16,7 @@ public class Rechka {
     // TODO: - struct Settings
     public static let shared = Rechka()
     
-    public var token : String? 
+    public var token : String? = "flrWG_N_q-cPyRgwDOpCc8GTFFtarQOpxipTtuCbW_k"
     
     public var failURL = "riverexample://main/riverPaymentFailure"
     
@@ -26,7 +26,7 @@ public class Rechka {
     
     public weak var delegate : RechkaMapDelegate? = nil
     
-    public var APIHost = "dev.sudasuda.ru"
+    public var APIHost = "mm-test.sudasuda.ru"
     
     public var applicationName = ""
     

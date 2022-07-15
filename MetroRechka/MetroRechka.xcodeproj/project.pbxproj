@@ -189,6 +189,9 @@
 		44B41F5628193FE700CB2B2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5428193FE700CB2B2F /* Main.storyboard */; };
 		44B41F5828193FE800CB2B2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5728193FE800CB2B2F /* Assets.xcassets */; };
 		44B41F5B28193FE800CB2B2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44B41F5928193FE800CB2B2F /* LaunchScreen.storyboard */; };
+		44BC040628741136004CFB66 /* R_MailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BC040428741136004CFB66 /* R_MailTableViewCell.swift */; };
+		44BC040728741136004CFB66 /* R_MailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44BC040528741136004CFB66 /* R_MailTableViewCell.xib */; };
+		44BC0409287418E6004CFB66 /* Ext+UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BC0408287418E6004CFB66 /* Ext+UITextField.swift */; };
 		CD481419B5CBCB37ACFE864D /* libPods-RechkaExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */; };
 /* End PBXBuildFile section */
 
@@ -399,6 +402,9 @@
 		44B41F5728193FE800CB2B2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44B41F5A28193FE800CB2B2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		44B41F5C28193FE800CB2B2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		44BC040428741136004CFB66 /* R_MailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R_MailTableViewCell.swift; sourceTree = "<group>"; };
+		44BC040528741136004CFB66 /* R_MailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = R_MailTableViewCell.xib; sourceTree = "<group>"; };
+		44BC0408287418E6004CFB66 /* Ext+UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UITextField.swift"; sourceTree = "<group>"; };
 		55E46465B797F0BA7BD3CE54 /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
 		6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RechkaExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -575,6 +581,7 @@
 				44B022BC2819130A0058F2F4 /* SafeIndex.swift */,
 				44B022BD2819130A0058F2F4 /* Ext+UIImage.swift */,
 				44B022BE2819130A0058F2F4 /* Ext+Notification.swift */,
+				44BC0408287418E6004CFB66 /* Ext+UITextField.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -735,6 +742,8 @@
 				44B022E52819130A0058F2F4 /* TariffSteperCell.swift */,
 				44B022E62819130A0058F2F4 /* ChoicePlaceCell.xib */,
 				44B022E72819130A0058F2F4 /* TariffSteperCell.xib */,
+				44BC040428741136004CFB66 /* R_MailTableViewCell.swift */,
+				44BC040528741136004CFB66 /* R_MailTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1581,6 +1590,7 @@
 				44B024282819130B0058F2F4 /* TripsDateHeader.xib in Resources */,
 				44B0241A2819130B0058F2F4 /* R_BlurResultView.xib in Resources */,
 				44B023FE2819130A0058F2F4 /* CancelCell.xib in Resources */,
+				44BC040728741136004CFB66 /* R_MailTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1725,6 +1735,7 @@
 				44B023A12819130A0058F2F4 /* SomeCache.swift in Sources */,
 				44B024002819130A0058F2F4 /* TitleCell.swift in Sources */,
 				44B023F62819130A0058F2F4 /* TerminalsBubble.swift in Sources */,
+				44BC040628741136004CFB66 /* R_MailTableViewCell.swift in Sources */,
 				44B023C52819130A0058F2F4 /* R_PDFDocView.swift in Sources */,
 				44B0241B2819130B0058F2F4 /* TicketsCell.swift in Sources */,
 				44B023B62819130A0058F2F4 /* Ext+String.swift in Sources */,
@@ -1760,6 +1771,7 @@
 				44B023C22819130A0058F2F4 /* R_Toast.swift in Sources */,
 				44B023EF2819130A0058F2F4 /* R_LoadingView.swift in Sources */,
 				44B023A22819130A0058F2F4 /* AuthorizedClient.swift in Sources */,
+				44BC0409287418E6004CFB66 /* Ext+UITextField.swift in Sources */,
 				44B023F72819130A0058F2F4 /* RechkaMapDelegate.swift in Sources */,
 				44B023A82819130A0058F2F4 /* R_User.swift in Sources */,
 				44B0240F2819130B0058F2F4 /* CommissionCell.swift in Sources */,

@@ -21,7 +21,10 @@ internal final class R_BookingWithoutPersonController: UIViewController {
  
     var selectedTarrifs: SelectionModel = .init(selectedTarrifs: [:], additionServices: [:]) {
         didSet {
-            self.makeState(with: selectedTarrifs)
+            if !isEditingText {
+                self.makeState(with: selectedTarrifs)
+            }
+          
         }
     }
     
@@ -47,7 +50,10 @@ internal final class R_BookingWithoutPersonController: UIViewController {
     struct SelectionModel {
         var selectedTarrifs: [R_Tariff: [R_User]]
         var additionServices: [R_Tariff: Int]
+        var mail: String?
     }
+    
+    private var isEditingText: Bool = false
     
     private func createInitialSelectedItems() {
         guard let tarrifs = model?.tariffs else {
@@ -129,6 +135,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 result.append(contentsOf: element.value)
                 return result
             }
+            users[0].mail = selectedTarrifs.mail
             let additionalServicesCount = self.selectedTarrifs.additionServices.reduce(0, { $0 + $1.value })
             
             // Проверяем, что у нас есть хотя бы один юзер и есть доп услуги
@@ -304,6 +311,9 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 let additionalTariffSection = SectionState(id: "additionalTariffSection", header: nil, footer: nil)
                 resultStates.append(State(model: additionalTariffSection, elements: [tariffElement]))
             }
+       
+            
+            
         }
         
         
@@ -348,6 +358,22 @@ internal final class R_BookingWithoutPersonController: UIViewController {
             let paidSection = SectionState(id: "paySection", header: nil, footer: nil)
             let paidState = State(model: paidSection, elements: paidElements)
             resultStates.append(paidState)
+            
+            let onTextEnter: Command<String> = Command { text in
+                self.isEditingText = true
+                self.selectedTarrifs.mail = text
+            }
+            
+            let onTextFinish: Command<String> = Command { text in
+                self.isEditingText = false
+                self.selectedTarrifs.mail = text
+            }
+            
+            let mail = R_BookingWithoutPersonView.ViewState.Mail(text: selectedTarrifs.mail, placeholder: "Введите e-mail", onTextEnter: onTextEnter, onTextFinish: onTextFinish).toElement()
+            
+            let mailSection = SectionState(id: "mailSection", header: nil, footer: nil)
+            let mailState = State(model: mailSection, elements: [mail])
+            resultStates.append(mailState)
         }
         
         
@@ -355,7 +381,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
         
         
         let onBooking: Command<Void>? = {
-            if totalSelectedTicketsCount > 0 {
+            if totalSelectedTicketsCount > 0 && selectedTarrifs.mail != nil {
                 return Command { [weak self] in
                     self?.startBooking()
                 }

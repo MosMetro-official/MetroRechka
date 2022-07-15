@@ -10,7 +10,6 @@ target 'MetroRechka' do
   # Pods for MetroRechka
   pod 'YandexMobileMetrica'
   pod 'CoreTableView'
-  pod 'MMCoreNetworkCallbacks'
   pod 'SDWebImage', :modular_headers => true
   pod 'SwiftDate', '~> 5.0'
   pod 'MMCoreNetworkAsync'
@@ -24,7 +23,6 @@ target 'RechkaExample' do
   # Pods for RechkaExample
   pod 'YandexMobileMetrica'
   pod 'CoreTableView'
-  pod 'MMCoreNetworkCallbacks'
   pod 'SDWebImage', :modular_headers => true
   pod 'SwiftDate', '~> 5.0'
   pod 'MMCoreNetworkAsync'
