@@ -37,6 +37,8 @@ internal final class SecureAPIClientInterceptor: APIClientInterceptor {
                 return .doNotRetryWith(.badRequest)
             }
         }
+        let error = String(data: data!, encoding: .utf8)
+        print(error)
         return .doNotRetry
     }
     
