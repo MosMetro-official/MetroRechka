@@ -87,7 +87,7 @@ struct R_OperationAdditionService: Decodable {
     
 }
 
-struct RiverOperationTicket: Decodable {
+struct RiverOperationTicket {
     
     enum Status: Int, Decodable {
         case payed = 1 // билет продан
@@ -98,7 +98,7 @@ struct RiverOperationTicket: Decodable {
     }
     
     let id: Int
-    var parentOrderID: Int
+    let parentOrderID: Int
     let routeName: String 
     let price: Double
     let status: Status
@@ -111,7 +111,7 @@ struct RiverOperationTicket: Decodable {
     let operationHash: String
     let additionServices: [R_OperationAdditionService]
     
-    private enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case id
         case routeName
         case price = "ticketPrice"
@@ -126,27 +126,25 @@ struct RiverOperationTicket: Decodable {
         case additionServices
     }
     
-    init(from: Self, parentOrderID: Int) {
-        self = from
-        self.parentOrderID = parentOrderID
-
-    }
+  
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+   
+    
+    
+    init(from container: KeyedDecodingContainer<CodingKeys>, parentOrderID: Int) throws {
         self.id = try container.decode(Int.self, forKey: .id)
         self.routeName = try container.decode(String.self, forKey: .routeName)
         self.price = try container.decode(Double.self, forKey: .price)
         self.status = try container.decode(Status.self, forKey: .status)
-        self.refund = try container.decode(RiverTicketRefund.self, forKey: .refund)
-        self.stationStart = try container.decode(R_Station.self, forKey: .stationStart)
-        self.stationEnd = try container.decode(R_Station.self, forKey: .stationStart)
+        self.refund = try container.decodeIfPresent(RiverTicketRefund.self, forKey: .refund)
+        self.stationStart = try container.decodeIfPresent(R_Station.self, forKey: .stationStart)
+        self.stationEnd = try container.decodeIfPresent(R_Station.self, forKey: .stationStart)
         self.place = try container.decode(Int.self, forKey: .place)
         self.dateTimeStart = try container.decode(Date.self, forKey: .dateTimeStart)
         self.dateTimeEnd = try container.decode(Date.self, forKey: .dateTimeEnd)
         self.operationHash = try container.decode(String.self, forKey: .operationHash)
         self.additionServices = try container.decode([R_OperationAdditionService].self, forKey: .additionServices)
-        self.parentOrderID = 0
+        self.parentOrderID = parentOrderID
     }
     
 //    init(from decoder: Decoder, parentOrderID: Int) throws {

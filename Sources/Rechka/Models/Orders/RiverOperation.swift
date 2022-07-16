@@ -15,13 +15,9 @@ enum RechkaOrderStatus: Int, Decodable {
     case booked = 3
 }
 
-struct RiverOperation: Decodable {
+struct RiverOperation {
     let id: Int
-    var internalOrderID: Int = 0 {
-        didSet {
-            self.tickets = tickets.map { RiverOperationTicket(from: $0, parentOrderID: internalOrderID) }
-        }
-    }
+    let internalOrderID: Int
     let status: RechkaOrderStatus
     let timeLeftToCancel: Int // seconds
     let orderDate: Date // MSK timezone
@@ -37,7 +33,7 @@ struct RiverOperation: Decodable {
         return "\(stationStart.name) → \(stationEnd.name)"
     }
     
-    private enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case id
         case status
         case timeLeftToCancel
@@ -46,14 +42,23 @@ struct RiverOperation: Decodable {
         case tickets
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+    init(internalOrderID: Int, container: KeyedDecodingContainer<CodingKeys>) throws {
+        
+        self.internalOrderID = internalOrderID
         self.id = try container.decode(Int.self, forKey: .id)
         self.status = try container.decode(RechkaOrderStatus.self, forKey: .status)
         self.orderDate = try container.decode(Date.self, forKey: .orderDate)
         self.timeLeftToCancel = try container.decode(Int.self, forKey: .timeLeftToCancel)
         self.hash = try container.decode(String.self, forKey: .hash)
-        self.tickets = try container.decode([RiverOperationTicket].self, forKey: .tickets)
+        var ticketsContainer = try container.nestedUnkeyedContainer(forKey: .tickets)
+        var tickets = [RiverOperationTicket]()
+        while !ticketsContainer.isAtEnd {
+            let ticketContainer = try ticketsContainer.nestedContainer(keyedBy: RiverOperationTicket.CodingKeys.self)
+            let ticket = try RiverOperationTicket(from: ticketContainer, parentOrderID: internalOrderID)
+            tickets.append(ticket)
+        }
+        self.tickets = tickets
     }
     
     

@@ -13,7 +13,7 @@ import MMCoreNetworkAsync
 extension APIClient {
     public static var authorizedClient : APIClient {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .formatted(.river)
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         

@@ -26,9 +26,11 @@ struct RiverOrder: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(Int.self, forKey: .id)
         self.url = try values.decode(String.self, forKey: .url)
-        var operation = try values.decode(RiverOperation.self, forKey: .operation)
-        operation.internalOrderID = id
-        self.operation = operation
+        let operationContainer = try values.nestedContainer(keyedBy: RiverOperation.CodingKeys.self, forKey: .operation)
+        
+        //var operation = try values.decode(RiverOperation.self, forKey: .operation)
+        //operation.internalOrderID = id
+        self.operation = try RiverOperation(internalOrderID: id, container: operationContainer)
         
     }
 }

@@ -130,6 +130,7 @@ internal final class R_BookingScreenView : UIView {
         let table = BaseTableView(frame: .zero, style: .insetGrouped)
         table.clipsToBounds = true
         table.separatorColor = .clear
+        table.rowAnimation = .none
         //table.shouldUseReload = true
         table.showsVerticalScrollIndicator = false
         table.backgroundColor = .custom(for: .base)
