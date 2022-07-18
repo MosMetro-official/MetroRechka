@@ -22,7 +22,7 @@ internal final class R_BookingScreenController : UIViewController {
     var nestedView = R_BookingScreenView(frame: UIScreen.main.bounds)
     
     
-    var orderID: Int? {
+    var orderID: String? {
         didSet {
             guard let orderID = orderID else {
                 return
@@ -95,7 +95,7 @@ internal final class R_BookingScreenController : UIViewController {
             guard let self = self else { return }
             guard let model = self.model else { return }
             /// reload data from server
-            self.orderID = model.id
+            self.orderID = model.orderID
         }
         
     }

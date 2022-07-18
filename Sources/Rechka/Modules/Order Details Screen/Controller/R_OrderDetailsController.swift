@@ -13,7 +13,7 @@ import MMCoreNetworkAsync
 
 internal final class R_OrderDetailsController : UIViewController {
     
-    public var orderID: Int? {
+    public var orderID: String? {
         didSet {
             guard let orderID = orderID else { return }
             self.load(with: orderID)
@@ -140,7 +140,7 @@ internal final class R_OrderDetailsController : UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    private func load(with id: Int) {
+    private func load(with id: String) {
         let onClose = Command { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
