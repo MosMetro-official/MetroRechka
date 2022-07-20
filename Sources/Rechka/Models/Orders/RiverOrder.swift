@@ -10,6 +10,7 @@ import MMCoreNetworkAsync
 
 struct RiverOrder: Decodable {
     let id: Int
+    let orderID: String
     /// payment url
     let url: String
     
@@ -18,6 +19,7 @@ struct RiverOrder: Decodable {
     
     private enum CodingKeys: String, CodingKey {
         case id
+        case orderID = "orderId"
         case url = "formUrl"
         case operation = "operation"
     }
@@ -25,6 +27,7 @@ struct RiverOrder: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(Int.self, forKey: .id)
+        self.orderID = try values.decode(String.self, forKey: .orderID)
         self.url = try values.decode(String.self, forKey: .url)
         let operationContainer = try values.nestedContainer(keyedBy: RiverOperation.CodingKeys.self, forKey: .operation)
         
@@ -43,25 +46,6 @@ extension RiverOrder {
         if case .booked = self.operation.status {
             let client = APIClient.authorizedClient
             try await client.send(.POST(path: "/api/orders/v1/\(self.id)/cancel", contentType: .json))
-    
-            
-//            client.send(.POST(path: "/api/orders/v1/\(self.id)/cancel", body: nil, contentType: .json)) { result in
-//                switch result {
-//                case .success(let response):
-//                    let json = JSON(response.data)
-//                    if let success = json["success"].bool, success {
-//                        print("successfully cancelled order")
-//                        completion(.success(()))
-//                        return
-//                    } else {
-//                        completion(.failure(APIError.genericError("Произошила ошибка при отмене бронирования")))
-//                        return
-//                    }
-//                case .failure(let error):
-//                    completion(.failure(error))
-//                    return
-//                }
-//            }
             
         } else {
             let err = APIError.genericError("Вы не можете произвести отмену этого бронирования")
@@ -69,7 +53,7 @@ extension RiverOrder {
         }
     }
     
-    static func get(by id: Int) async throws -> RiverOrder {
+    static func get(by id: String) async throws -> RiverOrder {
         let client = APIClient.authorizedClient
         let order: R_BaseResponse<RiverOrder> = try await client.send(.GET(path: "/api/orders/v1/\(id)")).value
         return order.data

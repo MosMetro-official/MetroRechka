@@ -28,7 +28,12 @@ struct RiverTicketRefund: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.ticketID = try container.decode(Int.self, forKey: .ticketID)
         self.refundPrice = try container.decode(Double.self, forKey: .refundPrice)
-        self.refundDate = try container.decodeIfPresent(Date.self, forKey: .refundDate)
+        let stringDate = try container.decodeIfPresent(String.self, forKey: .refundDate)
+        guard let date = stringDate?.toISODate(nil, region: .UTC)?.date else {
+            throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.refundDate], debugDescription: "date cant be parsed"))
+        }
+
+        self.refundDate = date
         self.totalPriceRefund = try container.decode(Double.self, forKey: .totalPriceRefund)
         self.additionRefunds = try container.decode([R_OperationAdditionServiceRefund].self, forKey: .additionRefunds)
     }

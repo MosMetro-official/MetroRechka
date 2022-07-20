@@ -95,7 +95,7 @@ internal final class R_TicketsHistoryController: UIViewController {
     private func showDetails(for order: RechkaShortOrder) {
         let orderController = R_OrderDetailsController()
         self.present(orderController, animated: true) {
-            orderController.orderID = order.id
+            orderController.orderID = order.orderID
         }
     }
     

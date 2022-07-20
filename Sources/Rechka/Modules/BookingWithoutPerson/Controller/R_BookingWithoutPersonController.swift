@@ -119,7 +119,7 @@ internal final class R_BookingWithoutPersonController: UIViewController {
                 bookingController.model = order
                 bookingController.onDismiss = { [weak self] in
                     self?.navigationController?.popToRootViewController(animated: false)
-                    NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.id])
+                    NotificationCenter.default.post(name: .riverShowOrder, object: nil, userInfo: ["orderID": order.orderID])
                 }
             }
         }

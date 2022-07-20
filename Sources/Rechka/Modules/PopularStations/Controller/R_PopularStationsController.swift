@@ -126,7 +126,7 @@ internal final class R_PopularStationsController : UIViewController {
     }
     
     @objc private func showOrder(from notification: Notification) {
-        if let orderID = notification.userInfo?["orderID"] as? Int {
+        if let orderID = notification.userInfo?["orderID"] as? String {
             print("Order: \(orderID)")
             let orderController = R_OrderDetailsController()
             self.present(orderController, animated: true) {
