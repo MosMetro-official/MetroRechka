@@ -237,6 +237,7 @@ internal class R_RouteDetailsController: UIViewController {
                     let summary = R_RootDetailStationView.ViewState.Summary(
                         id: "summary",
                         text: text,
+                        isExpanded: isTextCollapsed,
                         onMore: isTextCollapsed ? onMore : nil,
                         height: isTextCollapsed ? 80 + 24 :  size.height + 24)
                         .toElement()
@@ -247,6 +248,7 @@ internal class R_RouteDetailsController: UIViewController {
                     let summary = R_RootDetailStationView.ViewState.Summary(
                         id: "summary",
                         text: text,
+                        isExpanded: true,
                         onMore: nil,
                         height: size.height + 24)
                         .toElement()

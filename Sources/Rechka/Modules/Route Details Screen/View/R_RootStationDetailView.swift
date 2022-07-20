@@ -27,7 +27,7 @@ internal final class R_RootDetailStationView: UIView {
         struct Summary: _Summary {
             var id: String
             var text: NSAttributedString
-            
+            var isExpanded: Bool
             var onMore: Command<Void>?
             
             var height: CGFloat

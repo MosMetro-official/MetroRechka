@@ -10,6 +10,7 @@ import CoreTableView
 
 protocol _Summary: CellData {
     var text: NSAttributedString { get }
+    var isExpanded: Bool { get }
     var onMore: Command<Void>? { get }
 }
 
@@ -17,7 +18,7 @@ extension _Summary {
     
     
     public func hashValues() -> [Int] {
-        return [text.hashValue]
+        return [text.hashValue, isExpanded.hashValue]
     }
     
     func prepare(cell: UITableViewCell, for tableView: UITableView, indexPath: IndexPath) {
