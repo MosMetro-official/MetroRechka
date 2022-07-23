@@ -42,14 +42,14 @@ struct R_BookRequest: Encodable {
 
 // MARK: Gender
 
-enum Gender: Int, Encodable {
+enum Gender: Int, Encodable, Decodable {
     case male = 1
     case female = 0
 }
 
 // MARK: - User
-struct R_User: Equatable, Encodable {
-    let id = UUID().uuidString
+struct R_User: Equatable, Codable {
+    var id = UUID().uuidString
     var name: String?
     var surname: String?
     var middleName: String?
@@ -61,6 +61,50 @@ struct R_User: Equatable, Encodable {
     var gender: Gender?
     var ticket: R_Tariff?
     var additionServices: [R_AdditionService]?
+    
+    var data: Data {
+        guard let data = try? JSONEncoder().encode(self) else { return Data() }
+        return data
+    }
+    
+    var key: String {
+        guard let name = name, let surname = surname, let gender = gender?.rawValue else { return "" }
+        return "\(name)-\(surname)-\(gender)"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: R_User.CodingKeys.self)
+        let fullName = try values.decode(String.self, forKey: .passengerName).components(separatedBy: " ")
+        if let name = fullName[safe: 0], let middleName = fullName[safe: 1], let surname = fullName[safe: 2] {
+            self.name = "\(name)"
+            self.middleName = "\(middleName)"
+            self.surname = "\(surname)"
+        }
+        
+        let birthday = try values.decode(String.self, forKey: .passengerBirthday).components(separatedBy: "-")
+        if let day = birthday[safe: 0], let month = birthday[safe: 1], let year = birthday[safe: 2] {
+            self.birthday = "\(day).\(month).\(year)"
+        }
+        
+        gender = try values.decode(Gender.self, forKey: .passengerGender)
+        
+        var phoneNumber = try values.decode(String.self, forKey: .passengerPhone)
+        
+        phoneNumber.insert("+", at: phoneNumber.startIndex)
+        self.phoneNumber = phoneNumber
+        
+        document = try values.decode(R_Document.self, forKey: .document)
+        citizenShip = try values.decode(R_Citizenship.self, forKey: .citizenship)
+        ticket = nil
+        additionServices = nil
+        mail = nil
+        id = ""
+    }
+    
+    init?(data: Data) {
+        guard let user = try? JSONDecoder().decode(R_User.self, from: data) else { return nil }
+        self = user
+    }
     
     init(ticket: R_Tariff) {
         self.ticket = ticket
@@ -76,10 +120,12 @@ struct R_User: Equatable, Encodable {
         case passengerPhone
         case cardIdentityId
         case cardIdentityNumber
-        case citizenshipId
+        case citizenshipId = "id"
         case ticketTariffId
         case position
         case additionService
+        case document
+        case citizenship
     }
     
     func encode(to encoder: Encoder) throws {
@@ -93,7 +139,7 @@ struct R_User: Equatable, Encodable {
             let separated = birthday.split(separator: ".")
             
             if let day = separated[safe: 0], let month = separated[safe: 1], let year = separated[safe: 2] {
-                let newBirthdayString = "\(year)-\(month)-\(day)"
+                let newBirthdayString = "\(day)-\(month)-\(year)"
                 try container.encode(newBirthdayString, forKey: .passengerBirthday)
             }
         }
@@ -101,18 +147,19 @@ struct R_User: Equatable, Encodable {
         try container.encodeIfPresent(mail, forKey: .passengerEmail)
         try container.encodeIfPresent(gender, forKey: .passengerGender)
         if var phoneNumber = phoneNumber {
-            phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
             phoneNumber = phoneNumber.replacingOccurrences(of: "+", with: "")
             try container.encode(phoneNumber, forKey: .passengerPhone)
         }
         
         
         if let document = document, let cardIdentityNumber = document.cardIdentityNumber {
+            try container.encode(document, forKey: .document)
             try container.encode(document.id, forKey: .cardIdentityId)
             try container.encode(cardIdentityNumber, forKey: .cardIdentityNumber)
         }
         
         try container.encodeIfPresent(citizenShip?.id, forKey: .citizenshipId)
+        try container.encodeIfPresent(citizenShip, forKey: .citizenship)
         if let ticket = ticket {
             try container.encode(ticket.id, forKey: .ticketTariffId)
             if ticket.isWithoutPlace {

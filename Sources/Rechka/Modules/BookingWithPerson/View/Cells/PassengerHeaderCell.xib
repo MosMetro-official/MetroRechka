@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -35,9 +35,6 @@
                         </constraints>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" image="addPlus"/>
-                        <connections>
-                            <action selector="onAddButtonTapped" destination="KGk-i7-Jjw" eventType="touchUpInside" id="V3c-Wz-lRx"/>
-                        </connections>
                     </button>
                 </subviews>
                 <constraints>
@@ -50,13 +47,14 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" name="content"/>
             <connections>
+                <outlet property="addButton" destination="k69-Fi-cSv" id="QTo-Sd-ikw"/>
                 <outlet property="titleLabel" destination="1Wg-Ae-RLG" id="pdV-MD-nd9"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="81.696428571428569"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="addPlus" width="96" height="97"/>
+        <image name="addPlus" width="24" height="24"/>
         <namedColor name="content">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

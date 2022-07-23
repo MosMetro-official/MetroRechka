@@ -121,6 +121,9 @@ internal class R_RouteDetailsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        if let route = route {
+            self.nestedView.viewState.posterTitle = route.name
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

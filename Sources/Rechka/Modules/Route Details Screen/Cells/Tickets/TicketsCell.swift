@@ -61,6 +61,7 @@ class TicketsCell: UITableViewCell {
         model = data.ticketList
         choiceTicket = data.onChoice
         selectedTicket = data.selectedTicket
+        selectedTicket?.place = nil
     }
 }
 

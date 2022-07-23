@@ -11,7 +11,8 @@ import MMCoreNetworkAsync
 
 internal final class R_BookingWithPersonController: UIViewController {
     
-    let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
+    private let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
+    private let cacheService: DefaultCacheService = R_CacheUserService()
     
     var model: R_Trip?
     private var riverUsers: [R_User] = []
@@ -46,6 +47,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             menuActions: setupPersonMenu(),
             dataState: .addPersonData,
             state: [],
+            isUserCacheEmpty: cacheService.isUserCacheEmpty,
             showPersonAlert: showPersonAlert,
             showPersonDataEntry: showPersonDataEntry,
             book: nil
@@ -87,6 +89,7 @@ internal final class R_BookingWithPersonController: UIViewController {
                         menuActions: self.nestedView.viewState.menuActions,
                         dataState: .error(config),
                         state: self.nestedView.viewState.state,
+                        isUserCacheEmpty: self.nestedView.viewState.isUserCacheEmpty,
                         book: self.nestedView.viewState.book
                     )
                     self.nestedView.viewState = newErrorState
@@ -111,11 +114,11 @@ internal final class R_BookingWithPersonController: UIViewController {
         // passenger header with add button
         var passElements = [Element]()
         let passengerHeaderCell = R_BookingWithPersonView.ViewState.PassengerHeader(
+            newUserAvailable: riverUsers.count < newModel.buyPlaceCountMax,
+            menuActions: setupPersonMenu(),
             onAdd: { [weak self] in
                 guard let self = self else { return }
-                if riverUsers.count < newModel.buyPlaceCountMax {
-                    self.pushPersonDataEntry(with: newModel)
-                }
+                self.setupPersonAlert()
             }
         ).toElement()
         passElements.append(passengerHeaderCell)
@@ -130,9 +133,7 @@ internal final class R_BookingWithPersonController: UIViewController {
                 tariff: user.ticket?.name ?? "",
                 onSelect: onSelect
             ).toElement()
-            if !passElements.contains(passenger) {
-                passElements.append(passenger)
-            }
+            passElements.append(passenger)
         }
         let passengerSection = SectionState(id: "passenger", header: nil, footer: nil)
         let passengerState = State(model: passengerSection, elements: passElements)
@@ -191,6 +192,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             menuActions: setupPersonMenu(),
             dataState: .addedPersonData,
             state: [passengerState, tariffState],
+            isUserCacheEmpty: cacheService.isUserCacheEmpty,
             showPersonAlert: showPersonAlert,
             showPersonDataEntry: showPersonDataEntry,
             book: book
@@ -200,7 +202,7 @@ internal final class R_BookingWithPersonController: UIViewController {
     
     private func setupPersonAlert() {
         guard let newModel = model else { return }
-        guard let users = SomeCache.shared.cache["user"] else { return }
+        let users = cacheService.getUsersFromCache()
         let personAlert = UIAlertController(title: "Пассажиры", message: "", preferredStyle: .actionSheet)
         let addAction = UIAlertAction(title: "Новый пассажир", style: .default) { [weak self] _ in
             guard let self = self else { return }
@@ -209,7 +211,7 @@ internal final class R_BookingWithPersonController: UIViewController {
         personAlert.addAction(addAction)
         users.forEach { [weak self] user in
             guard let self = self else { return }
-            let action = UIAlertAction(title: "\(user.surname ?? "")", style: .default) { _ in
+            let action = UIAlertAction(title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).", style: .default) { _ in
                 self.pushPersonDataEntry(with: newModel, and: user)
             }
             personAlert.addAction(action)
@@ -222,7 +224,7 @@ internal final class R_BookingWithPersonController: UIViewController {
     private func setupPersonMenu() -> [UIAction] {
         guard let newModel = model else { return [] }
         var actions: [UIAction] = []
-        guard let users = SomeCache.shared.cache["user"] else { return [] }
+        let users = cacheService.getUsersFromCache()
         for user in users {
             let action = UIAction(
                 title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
@@ -246,6 +248,8 @@ internal final class R_BookingWithPersonController: UIViewController {
         if user != nil {
             passenderDataEntry.displayRiverUser = user!
             passenderDataEntry.index = index
+            passenderDataEntry.selectedPlace = user?.ticket?.place
+            passenderDataEntry.selectedTicket = user?.ticket
             navigationController?.pushViewController(passenderDataEntry, animated: true)
         } else {
             navigationController?.pushViewController(passenderDataEntry, animated: true)

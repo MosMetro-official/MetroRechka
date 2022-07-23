@@ -133,7 +133,7 @@ internal final class R_PassengerDataEntryView: UIView {
         super.init(frame: frame)
         setupBlur()
         setupConstrains()
-        backgroundColor = .custom(for: .base)
+        backgroundColor = Appearance.colors[.base]
     }
     
     @available(*, unavailable)

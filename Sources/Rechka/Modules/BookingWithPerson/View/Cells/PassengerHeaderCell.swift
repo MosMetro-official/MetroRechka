@@ -9,6 +9,8 @@ import UIKit
 import CoreTableView
 
 protocol _PassengerHeaderCell: CellData {
+    var newUserAvailable: Bool { get }
+    var menuActions: [UIAction] { get }
     var onAdd: () -> () { get }
 }
 
@@ -37,17 +39,19 @@ extension _PassengerHeaderCell {
 class PassengerHeaderCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
-    var onAdd: (() -> ())?
+    @IBOutlet weak var addButton: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()
     }
 
     public func configure(with data: _PassengerHeaderCell) {
-        onAdd = data.onAdd
-    }
-    
-    @IBAction func onAddButtonTapped() {
-        onAdd?()
+        if data.newUserAvailable {
+            if #available(iOS 14.0, *) {
+                addButton.menu = UIMenu(title: "Пассажиры", children: data.menuActions)
+            } else {
+                data.onAdd()
+            }
+        }
     }
 }
