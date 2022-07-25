@@ -532,10 +532,15 @@ extension R_PassengerDataEntryController {
             return (text,true)
         }
 
-        if text.count >= 12 {
-            return (text,false)
+        var _text = text
+        if _text.count == 2 || _text.count == 6 || _text.count == 10 || _text.count == 13 {
+            _text.append(" ")
         }
 
-        return (text,true)
+        if _text.count >= 16 {
+            return (_text,false)
+        }
+
+        return (_text,true)
     }
 }

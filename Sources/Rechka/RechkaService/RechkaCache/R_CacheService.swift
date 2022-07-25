@@ -8,6 +8,7 @@
 import Foundation
 
 protocol DefaultCacheService: AnyObject {
+    var userDefaults: UserDefaults { get }
     var isUserCacheEmpty: Bool { get }
     func addUserToCache(_ user: R_User)
     func getUsersFromCache() -> [R_User]
@@ -16,17 +17,17 @@ protocol DefaultCacheService: AnyObject {
 
 extension DefaultCacheService {
     var isUserCacheEmpty: Bool {
-        return getUsersFromCache().isEmpty
+        guard let cachedUsers = userDefaults.object(forKey: "users") as? [Data] else { return true }
+        return cachedUsers.isEmpty
     }
 }
 
 final class R_CacheUserService: DefaultCacheService {
-    private let userDefaults: UserDefaults = UserDefaults.standard
+    let userDefaults: UserDefaults = UserDefaults.standard
     private let keychainHelper: _KeychainHelper = R_KeychainHelper()
     
     func addUserToCache(_ user: R_User) {
         var _user = user
-        _user.id = ""
         _user.document?.cardIdentityNumber = ""
         _user.additionServices = nil
         _user.ticket = nil
@@ -85,12 +86,7 @@ final class R_CacheUserService: DefaultCacheService {
         var result: Bool = false
         if let cachedUsersData = UserDefaults.standard.object(forKey: "users") as? [Data] {
             let cachedUsers = cachedUsersData.map { R_User(data: $0) }
-            let cachedUsersWithouId: [R_User?] = cachedUsers.map { user -> R_User? in
-                var _user = user
-                _user?.id = ""
-                return _user
-            }
-            if cachedUsersWithouId.contains(user) {
+            if cachedUsers.contains(user) {
                 result = true
             }
         }

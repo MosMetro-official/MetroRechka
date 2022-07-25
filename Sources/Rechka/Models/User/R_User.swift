@@ -88,10 +88,7 @@ struct R_User: Equatable, Codable {
         
         gender = try values.decode(Gender.self, forKey: .passengerGender)
         
-        var phoneNumber = try values.decode(String.self, forKey: .passengerPhone)
-        
-        phoneNumber.insert("+", at: phoneNumber.startIndex)
-        self.phoneNumber = phoneNumber
+        self.phoneNumber = try values.decode(String.self, forKey: .cachePhone)
         
         document = try values.decode(R_Document.self, forKey: .document)
         citizenShip = try values.decode(R_Citizenship.self, forKey: .citizenship)
@@ -118,9 +115,10 @@ struct R_User: Equatable, Codable {
         case passengerEmail
         case passengerGender
         case passengerPhone
+        case cachePhone
         case cardIdentityId
         case cardIdentityNumber
-        case citizenshipId = "id"
+        case citizenshipId
         case ticketTariffId
         case position
         case additionService
@@ -148,8 +146,10 @@ struct R_User: Equatable, Codable {
         try container.encodeIfPresent(gender, forKey: .passengerGender)
         if var phoneNumber = phoneNumber {
             phoneNumber = phoneNumber.replacingOccurrences(of: "+", with: "")
+            phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
             try container.encode(phoneNumber, forKey: .passengerPhone)
         }
+        try container.encode(phoneNumber, forKey: .cachePhone)
         
         
         if let document = document, let cardIdentityNumber = document.cardIdentityNumber {

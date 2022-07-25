@@ -15,7 +15,6 @@
 		44B0239E2819130A0058F2F4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44B022952819130A0058F2F4 /* Media.xcassets */; };
 		44B0239F2819130A0058F2F4 /* _RiverStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022962819130A0058F2F4 /* _RiverStation.swift */; };
 		44B023A02819130A0058F2F4 /* R_ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022972819130A0058F2F4 /* R_ErrorView.swift */; };
-		44B023A12819130A0058F2F4 /* SomeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B022982819130A0058F2F4 /* SomeCache.swift */; };
 		44B023A22819130A0058F2F4 /* AuthorizedClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229B2819130A0058F2F4 /* AuthorizedClient.swift */; };
 		44B023A32819130A0058F2F4 /* BasicClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229C2819130A0058F2F4 /* BasicClient.swift */; };
 		44B023A42819130A0058F2F4 /* R_Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B0229E2819130A0058F2F4 /* R_Gallery.swift */; };
@@ -229,7 +228,6 @@
 		44B022952819130A0058F2F4 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		44B022962819130A0058F2F4 /* _RiverStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _RiverStation.swift; sourceTree = "<group>"; };
 		44B022972819130A0058F2F4 /* R_ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_ErrorView.swift; sourceTree = "<group>"; };
-		44B022982819130A0058F2F4 /* SomeCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SomeCache.swift; sourceTree = "<group>"; };
 		44B0229B2819130A0058F2F4 /* AuthorizedClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizedClient.swift; sourceTree = "<group>"; };
 		44B0229C2819130A0058F2F4 /* BasicClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicClient.swift; sourceTree = "<group>"; };
 		44B0229E2819130A0058F2F4 /* R_Gallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R_Gallery.swift; sourceTree = "<group>"; };
@@ -484,7 +482,6 @@
 				44B022952819130A0058F2F4 /* Media.xcassets */,
 				44B022962819130A0058F2F4 /* _RiverStation.swift */,
 				44B022972819130A0058F2F4 /* R_ErrorView.swift */,
-				44B022982819130A0058F2F4 /* SomeCache.swift */,
 				44B022992819130A0058F2F4 /* Models */,
 				44B022B02819130A0058F2F4 /* RechkaService */,
 				44B022B32819130A0058F2F4 /* Extensions */,
@@ -1751,7 +1748,6 @@
 				44B023A72819130A0058F2F4 /* R_Vehicle.swift in Sources */,
 				44B023E22819130A0058F2F4 /* R_TicketsHistoryView.swift in Sources */,
 				44B024072819130A0058F2F4 /* R_CancelBookingView.swift in Sources */,
-				44B023A12819130A0058F2F4 /* SomeCache.swift in Sources */,
 				44B024002819130A0058F2F4 /* TitleCell.swift in Sources */,
 				44B023F62819130A0058F2F4 /* TerminalsBubble.swift in Sources */,
 				44BC040628741136004CFB66 /* R_MailTableViewCell.swift in Sources */,
