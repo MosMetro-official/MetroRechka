@@ -17,7 +17,7 @@ protocol DefaultCacheService: AnyObject {
 
 extension DefaultCacheService {
     var isUserCacheEmpty: Bool {
-        guard let cachedUsers = userDefaults.object(forKey: "users") as? [Data] else { return true }
+        guard let cachedUsers = userDefaults.object(forKey: "users") as? [String] else { return true }
         return cachedUsers.isEmpty
     }
 }
@@ -25,46 +25,38 @@ extension DefaultCacheService {
 final class R_CacheUserService: DefaultCacheService {
     let userDefaults: UserDefaults = UserDefaults.standard
     private let keychainHelper: _KeychainHelper = R_KeychainHelper()
+    private let udKey = "users"
     
     func addUserToCache(_ user: R_User) {
         var _user = user
-        _user.document?.cardIdentityNumber = ""
         _user.additionServices = nil
         _user.ticket = nil
         let data = _user.data
-        let keyForKeychain = _user.key
+        let key = _user.key
         
-        if var cachedUsersData = UserDefaults.standard.object(forKey: "users") as? [Data] {
+        if var cachedUserData = userDefaults.object(forKey: udKey) as? [String] {
             if !existUserInCache(_user) {
-                cachedUsersData.append(data)
-                UserDefaults.standard.set(cachedUsersData, forKey: "users")
-                if let id = user.document?.cardIdentityNumber {
-                    guard let _ = try? keychainHelper.save(value: id, forKey: keyForKeychain) else {
-                        return
-                    }
+                cachedUserData.append(key)
+                userDefaults.setValue(cachedUserData, forKey: udKey)
+                guard let _ = try? keychainHelper.save(value: data, forKey: key) else {
+                    return
                 }
             } else {
                 return
             }
         } else {
-            UserDefaults.standard.set([data], forKey: "users")
-            if let id = user.document?.cardIdentityNumber {
-                guard let _ = try? keychainHelper.save(value: id, forKey: keyForKeychain) else {
-                    return
-                }
+            userDefaults.setValue([key], forKey: udKey)
+            guard let _ = try? keychainHelper.save(value: data, forKey: key) else {
+                return
             }
         }
     }
     
     func getUsersFromCache() -> [R_User] {
         var users: [R_User] = []
-        if let cachedUsers = UserDefaults.standard.object(forKey: "users") as? [Data] {
-            cachedUsers.forEach { cachedUser in
-                if var user = R_User(data: cachedUser) {
-                    guard let passport = try? keychainHelper.read(forKey: user.key) else {
-                        return
-                    }
-                    user.document?.cardIdentityNumber = passport
+        if let cachedUsers = userDefaults.object(forKey: udKey) as? [String] {
+            cachedUsers.forEach { key in
+                if let user = try? keychainHelper.read(forKey: key) {
                     users.append(user)
                 }
             }
@@ -73,7 +65,7 @@ final class R_CacheUserService: DefaultCacheService {
     }
     
     func deleteAll() {
-        UserDefaults.standard.removeObject(forKey: "users")
+        UserDefaults.standard.removeObject(forKey: udKey)
         do {
             let res = try keychainHelper.clearAll()
             print("DELETED ALL KEYCHAIN VALUES WITH RESULT - \(res)")
@@ -81,12 +73,17 @@ final class R_CacheUserService: DefaultCacheService {
             print(error)
         }
     }
-        
+    
     private func existUserInCache(_ user: R_User) -> Bool {
-        var result: Bool = false
-        if let cachedUsersData = UserDefaults.standard.object(forKey: "users") as? [Data] {
-            let cachedUsers = cachedUsersData.map { R_User(data: $0) }
-            if cachedUsers.contains(user) {
+        var result = false
+        if let cachedKeys = userDefaults.object(forKey: udKey) as? [String] {
+            var users: [R_User] = []
+            cachedKeys.forEach { key in
+                if let user = try? keychainHelper.read(forKey: key) {
+                    users.append(user)
+                }
+            }
+            if users.contains(user) {
                 result = true
             }
         }

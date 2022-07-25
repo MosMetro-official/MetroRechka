@@ -74,6 +74,7 @@ struct R_User: Equatable, Codable {
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: R_User.CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
         let fullName = try values.decode(String.self, forKey: .passengerName).components(separatedBy: " ")
         if let name = fullName[safe: 0], let middleName = fullName[safe: 1], let surname = fullName[safe: 2] {
             self.name = "\(name)"
@@ -95,7 +96,6 @@ struct R_User: Equatable, Codable {
         ticket = nil
         additionServices = nil
         mail = nil
-        id = ""
     }
     
     init?(data: Data) {
@@ -110,6 +110,7 @@ struct R_User: Equatable, Codable {
     init() { }
     
     private enum CodingKeys: String, CodingKey {
+        case id
         case passengerName
         case passengerBirthday
         case passengerEmail
@@ -128,6 +129,7 @@ struct R_User: Equatable, Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         let fullName = [name,middleName,surname].compactMap { $0 }.joined(separator: " ")
         if !fullName.isEmpty {
             try container.encode(fullName, forKey: .passengerName)

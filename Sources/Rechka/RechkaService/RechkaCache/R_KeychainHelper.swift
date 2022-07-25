@@ -8,8 +8,8 @@
 import Foundation
 
 protocol _KeychainHelper: AnyObject {
-    func save(value: String, forKey: String) throws -> Bool
-    func read(forKey: String) throws -> String
+    func save(value: Data, forKey: String) throws -> Bool
+    func read(forKey: String) throws -> R_User
     func clearAll() throws -> Bool
 }
 
@@ -21,23 +21,22 @@ final public class R_KeychainHelper: _KeychainHelper {
         case badData
         case genericError(OSStatus)
     }
-
-    func save(value: String, forKey: String) throws -> Bool {
-        guard let data = value.data(using: .utf8) else { return false }
+    
+    func save(value: Data, forKey: String) throws -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: forKey,
-            kSecValueData as String: data
+            kSecValueData as String: value
         ]
-
+        
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == 0 else {
             throw KeychainErrors.genericError(status)
         }
         return status == noErr
     }
-
-    func read(forKey: String) throws -> String {
+    
+    func read(forKey: String) throws -> R_User {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: forKey,
@@ -45,21 +44,21 @@ final public class R_KeychainHelper: _KeychainHelper {
             kSecReturnAttributes as String: true,
             kSecReturnData as String: true
         ]
-
+        
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status != errSecItemNotFound else {
             throw KeychainErrors.itemNotFound
         }
         guard status == errSecSuccess else {
-            throw KeychainErrors.badSuccess
-        }
-        guard let existingItem = item as? [String : Any],
-              let secureValue = existingItem[kSecValueData as String] as? Data,
-              let passport = String(data: secureValue, encoding: .utf8) else {
             throw KeychainErrors.badData
         }
-        return passport
+        guard let existingItem = item as? [String: Any],
+              let secureData = existingItem[kSecValueData as String] as? Data,
+              let user = R_User(data: secureData) else {
+            throw KeychainErrors.badData
+        }
+        return user
     }
 
     func clearAll() throws -> Bool {

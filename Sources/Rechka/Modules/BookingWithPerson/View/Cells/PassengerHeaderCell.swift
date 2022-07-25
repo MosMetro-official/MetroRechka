@@ -49,6 +49,7 @@ class PassengerHeaderCell: UITableViewCell {
         if data.newUserAvailable {
             if #available(iOS 14.0, *) {
                 addButton.menu = UIMenu(title: "Пассажиры", children: data.menuActions)
+                addButton.showsMenuAsPrimaryAction = true
             } else {
                 data.onAdd()
             }
