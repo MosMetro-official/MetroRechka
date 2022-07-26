@@ -15,6 +15,7 @@ internal final class R_BookingWithPersonView: UIView {
         let menuActions : [UIAction]
         var dataState : DataState
         let state: [State]
+        var isUserCacheEmpty: Bool
         var showPersonAlert : Command<Void>?
         var showPersonDataEntry : Command<Void>?
         var showUserFromCache : Command<R_User>?
@@ -29,6 +30,8 @@ internal final class R_BookingWithPersonView: UIView {
         
         struct PassengerHeader : _PassengerHeaderCell {
             var id: String = "passengerHeader"
+            let newUserAvailable: Bool
+            let menuActions: [UIAction]
             let onAdd : (() -> Void)
         }
         
@@ -59,7 +62,8 @@ internal final class R_BookingWithPersonView: UIView {
             title: "",
             menuActions: [],
             dataState: .addPersonData,
-            state: []
+            state: [],
+            isUserCacheEmpty: true
         )
     }
     
@@ -178,11 +182,10 @@ internal final class R_BookingWithPersonView: UIView {
     }
     
     private func setupAddActions() {
-        guard let users = SomeCache.shared.cache["user"] else { return }
-        if !users.isEmpty {
+        if !viewState.isUserCacheEmpty {
             if #available(iOS 14, *) {
                 addButton.showsMenuAsPrimaryAction = true
-                addButton.menu = UIMenu(title: "Persons", children: viewState.menuActions)
+                addButton.menu = UIMenu(title: "Пассажиры", children: viewState.menuActions)
             } else {
                 addButton.addTarget(self, action: #selector(preseentPersonAlert), for: .touchUpInside)
             }

@@ -11,6 +11,7 @@ import CoreTableView
 internal final class R_PassengerDataEntryController : UIViewController {
     
     private let nestedView = R_PassengerDataEntryView(frame: UIScreen.main.bounds)
+    private let cacheService = R_KeychainHelper()
     private var inputStates = [InputView.ViewState]()
     private var avaliableTariffs: [R_Tariff] = []
     private var additionalService : [R_Tariff: Int] = [:] {
@@ -20,6 +21,7 @@ internal final class R_PassengerDataEntryController : UIViewController {
     }
     
     var setupUser: ((R_User, Int?, R_Trip) -> Void)?
+    var index: Int?
     var model: R_Trip? {
         didSet {
             setupTariffType()
@@ -35,12 +37,21 @@ internal final class R_PassengerDataEntryController : UIViewController {
         }
     }
     
-    var index: Int?
-            
+    var selectedPlace: Int? {
+        didSet {
+            makeState()
+        }
+    }
+    
+    var selectedTicket: R_Tariff? {
+        didSet {
+            makeState()
+        }
+    }
+        
     override func loadView() {
         super.loadView()
-        view.backgroundColor = .custom(for: .base)
-        view = nestedView
+        self.view = nestedView
     }
     
     override func viewDidLoad() {
@@ -68,49 +79,54 @@ internal final class R_PassengerDataEntryController : UIViewController {
     }
     
     private func makeState() {
-        guard let user = displayRiverUser else { return }
+        guard var user = displayRiverUser else { return }
+        if let place = selectedPlace, var ticket = selectedTicket {
+            ticket.place = place
+            user.ticket = ticket
+        }
         self.inputStates.removeAll()
         let tableState = createTableState(for: user)
         let onReadySelect = Command { [weak self] in
-            self?.setupReadyButton()
+            self?.setupReadyButton(user)
         }
         let viewState = R_PassengerDataEntryView.ViewState(
             state: tableState,
             dataState: .loaded,
             onReadySelect: onReadySelect,
-            validate: setupValidate()
+            validate: setupValidate(user)
         )
         self.nestedView.viewState = viewState
     }
     
-    private func setupReadyButton() {
-        guard var user = displayRiverUser else { return }
-        user.ticket = nil
-        SomeCache.shared.addToCache(user: user)
-        self.popToBooking()
+    private func setupReadyButton(_ displayUser: R_User) {
+        do {
+            try cacheService.saveToKeychain(displayUser)
+        } catch {
+            print(error.localizedDescription)
+        }
+        self.popToBooking(with: displayUser)
     }
     
-    private func setupValidate() -> Bool {
-        guard let user = displayRiverUser else { return false }
+    private func setupValidate(_ displayUser: R_User) -> Bool {
         let result: Bool = {
-            user.name != nil &&
-            user.surname != nil &&
-            user.middleName != nil &&
-            user.birthday != nil &&
-            user.phoneNumber != nil &&
-            user.gender != nil &&
-            user.citizenShip != nil &&
-            user.document != nil &&
-            user.document?.cardIdentityNumber != nil &&
-            user.ticket != nil
+            displayUser.name != nil &&
+            displayUser.surname != nil &&
+            displayUser.middleName != nil &&
+            displayUser.birthday != nil &&
+            displayUser.phoneNumber != nil &&
+            displayUser.gender != nil &&
+            displayUser.citizenShip != nil &&
+            displayUser.document != nil &&
+            displayUser.document?.cardIdentityNumber != nil &&
+            displayUser.ticket != nil &&
+            displayUser.ticket?.place != nil
         }()
         return result
     }
     
-    private func popToBooking() {
-        guard
-            let model = model,
-            var user = displayRiverUser else { return }
+    private func popToBooking(with user: R_User) {
+        var _user = user
+        guard let model = model else { return }
         let additionalServicesCount = self.additionalService.reduce(0, { $0 + $1.value })
         
         if additionalServicesCount > 0 {
@@ -122,9 +138,9 @@ internal final class R_PassengerDataEntryController : UIViewController {
                     selectedServices.append(addService)
                 }
             }
-            user.additionServices = selectedServices
+            _user.additionServices = selectedServices
         }
-        setupUser?(user, index, model)
+        setupUser?(_user, index, model)
         navigationController?.popViewController(animated: true)
     }
     
@@ -320,9 +336,8 @@ extension R_PassengerDataEntryController {
         }.toElement()
         personalItems.append(phoneField)
         
-        let genderField = R_PassengerDataEntryView.ViewState.GenderCell(id: "gender", gender: user.gender ?? .male, onTap: { gender in
+        let genderField = R_PassengerDataEntryView.ViewState.GenderCell(id: "gender", gender: displayRiverUser?.gender ?? .male, onTap: { gender in
             self.displayRiverUser?.gender = gender
-
         }).toElement()
         personalItems.append(genderField)
         
@@ -409,9 +424,9 @@ extension R_PassengerDataEntryController {
             ticketList: avaliableTariffs,
             onChoice: { ticketIndex in
                 let choiceTicket = self.avaliableTariffs[ticketIndex]
-                self.displayRiverUser?.ticket = choiceTicket
+                self.selectedTicket = choiceTicket
             },
-            selectedTicket: displayRiverUser?.ticket
+            selectedTicket: self.selectedTicket
         ).toElement()
         let ticketsHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
             id: "ticketsHeader",
@@ -422,7 +437,7 @@ extension R_PassengerDataEntryController {
         let ticketsSection = SectionState(id: "tickets", header: ticketsHeader, footer: nil)
         let ticketsState = State(model: ticketsSection, elements: [tickets])
         sections.append(ticketsState)
-        if displayRiverUser?.ticket != nil && !additionalService.isEmpty {
+        if self.selectedTicket != nil && !additionalService.isEmpty {
             let additionalHeader = R_PassengerDataEntryView.ViewState.TariffHeader(
                 id: "additions",
                 title: "Добавим к поездке?",
@@ -461,16 +476,15 @@ extension R_PassengerDataEntryController {
             let additionalState = State(model: additionalSection, elements: additionElements)
             sections.append(additionalState)
         }
-        if !(displayRiverUser?.ticket?.isWithoutPlace ?? true) {
+        if !(selectedTicket?.isWithoutPlace ?? true) {
             let onSelectPlace = Command { [weak self] in
                 guard let self = self else { return }
-                let onPlaceSelect: Command<Int> = Command { [weak self] place in
-                    guard let self = self else { return }
-                    self.displayRiverUser?.ticket?.place = place
+                let onPlaceSelect: Command<Int> = Command { place in
+                    self.selectedPlace = place
                 }
-                self.showPlaceController(for: model, selectedPlace: user.ticket?.place, onPlaceSelect: onPlaceSelect)
+                self.showPlaceController(for: model, selectedPlace: self.selectedPlace, onPlaceSelect: onPlaceSelect)
             }
-            let title = user.ticket?.place == nil ? "Выберите место" : "Место \(user.ticket!.place!)"
+            let title = self.selectedPlace == nil ? "Выберите место" : "Место \(self.selectedPlace!)"
             let choicePlace = R_BookingWithoutPersonView.ViewState.ChoicePlace(id: "place", title: title, onItemSelect: onSelectPlace).toElement()
             let choiceSec = SectionState(id: "choice", header: nil, footer: nil)
             let choiceState = State(model: choiceSec, elements: [choicePlace])

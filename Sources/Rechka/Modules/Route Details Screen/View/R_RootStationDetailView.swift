@@ -15,7 +15,7 @@ internal final class R_RootDetailStationView: UIView {
         let dataState: DataState
         let onChoice: Command<Void>?
         let onClose: Command<Void>?
-        let posterTitle: String
+        var posterTitle: String
         let posterImageURL: String?
         
         enum DataState {

@@ -8,9 +8,9 @@
 import Foundation
 import MMCoreNetworkAsync
 
-struct R_Tariff: Hashable, Decodable {
+struct R_Tariff: Hashable, Codable {
     
-    enum TariffType: Int, Decodable {
+    enum TariffType: Int, Codable {
         case base = 1
         case `default` = 2
         case luggage = 3

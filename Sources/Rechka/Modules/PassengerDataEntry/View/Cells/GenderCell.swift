@@ -46,17 +46,13 @@ class GenderCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     @IBAction func handleSegment(_ sender: UISegmentedControl) {
         onGenderSelect?(sender.selectedSegmentIndex == 0 ? .male : .female)
     }
     
     public func configure(with data: _Gender) {
         onGenderSelect = data.onTap
+        segmentControll.selectedSegmentIndex = data.gender == .male ? 0 : 1
     }
     
 }
