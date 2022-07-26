@@ -62,16 +62,6 @@ struct R_User: Equatable, Codable {
     var ticket: R_Tariff?
     var additionServices: [R_AdditionService]?
     
-    var data: Data {
-        guard let data = try? JSONEncoder().encode(self) else { return Data() }
-        return data
-    }
-    
-    var key: String {
-        guard let name = name, let surname = surname, let gender = gender?.rawValue else { return "" }
-        return "\(name)-\(surname)-\(gender)"
-    }
-    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: R_User.CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)

@@ -191,7 +191,6 @@
 		44BC040628741136004CFB66 /* R_MailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BC040428741136004CFB66 /* R_MailTableViewCell.swift */; };
 		44BC040728741136004CFB66 /* R_MailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44BC040528741136004CFB66 /* R_MailTableViewCell.xib */; };
 		44BC0409287418E6004CFB66 /* Ext+UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44BC0408287418E6004CFB66 /* Ext+UITextField.swift */; };
-		95CF52B828894AE500B486EF /* R_CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CF52B728894AE500B486EF /* R_CacheService.swift */; };
 		95CF52BC28894BDF00B486EF /* R_KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CF52BB28894BDF00B486EF /* R_KeychainHelper.swift */; };
 		CD481419B5CBCB37ACFE864D /* libPods-RechkaExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */; };
 		D86F575928817AC30049F292 /* Custom dateformatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F575828817AC30049F292 /* Custom dateformatters.swift */; };
@@ -408,7 +407,6 @@
 		44BC0408287418E6004CFB66 /* Ext+UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+UITextField.swift"; sourceTree = "<group>"; };
 		55E46465B797F0BA7BD3CE54 /* Pods-MetroRechka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetroRechka.debug.xcconfig"; path = "Target Support Files/Pods-MetroRechka/Pods-MetroRechka.debug.xcconfig"; sourceTree = "<group>"; };
 		6748EDABB07EC67C09357F70 /* libPods-RechkaExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RechkaExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		95CF52B728894AE500B486EF /* R_CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R_CacheService.swift; sourceTree = "<group>"; };
 		95CF52BB28894BDF00B486EF /* R_KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = R_KeychainHelper.swift; sourceTree = "<group>"; };
 		C20C3A34BEA35F4B86D6B66F /* libPods-MetroRechka.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MetroRechka.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C956EEAA5D2E420DD72A2452 /* Pods-RechkaExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RechkaExample.release.xcconfig"; path = "Target Support Files/Pods-RechkaExample/Pods-RechkaExample.release.xcconfig"; sourceTree = "<group>"; };
@@ -1428,7 +1426,6 @@
 		95CF52BA28894BC800B486EF /* RechkaCache */ = {
 			isa = PBXGroup;
 			children = (
-				95CF52B728894AE500B486EF /* R_CacheService.swift */,
 				95CF52BB28894BDF00B486EF /* R_KeychainHelper.swift */,
 			);
 			path = RechkaCache;
@@ -1732,7 +1729,6 @@
 				44B023E02819130A0058F2F4 /* RechkaLoadMoreCell.swift in Sources */,
 				44B0241D2819130B0058F2F4 /* EmptyTicketCell.swift in Sources */,
 				44B023D62819130A0058F2F4 /* ChoicePlaceCell.swift in Sources */,
-				95CF52B828894AE500B486EF /* R_CacheService.swift in Sources */,
 				44B023B02819130A0058F2F4 /* R_ShortTrip.swift in Sources */,
 				44B024182819130B0058F2F4 /* R_BlurResultController.swift in Sources */,
 				44B023F02819130A0058F2F4 /* R_BlurLoadingController.swift in Sources */,

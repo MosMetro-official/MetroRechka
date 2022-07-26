@@ -11,7 +11,7 @@ import CoreTableView
 internal final class R_PassengerDataEntryController : UIViewController {
     
     private let nestedView = R_PassengerDataEntryView(frame: UIScreen.main.bounds)
-    private let cacheService: DefaultCacheService = R_CacheUserService()
+    private let cacheService = R_KeychainHelper()
     private var inputStates = [InputView.ViewState]()
     private var avaliableTariffs: [R_Tariff] = []
     private var additionalService : [R_Tariff: Int] = [:] {
@@ -99,7 +99,11 @@ internal final class R_PassengerDataEntryController : UIViewController {
     }
     
     private func setupReadyButton(_ displayUser: R_User) {
-        cacheService.addUserToCache(displayUser)
+        do {
+            try cacheService.saveToKeychain(displayUser)
+        } catch {
+            print(error.localizedDescription)
+        }
         self.popToBooking(with: displayUser)
     }
     

@@ -12,7 +12,7 @@ import MMCoreNetworkAsync
 internal final class R_BookingWithPersonController: UIViewController {
     
     private let nestedView = R_BookingWithPersonView(frame: UIScreen.main.bounds)
-    private let cacheService: DefaultCacheService = R_CacheUserService()
+    private let cacheService = R_KeychainHelper()
     
     var model: R_Trip?
     private var riverUsers: [R_User] = []
@@ -47,7 +47,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             menuActions: setupPersonMenu(),
             dataState: .addPersonData,
             state: [],
-            isUserCacheEmpty: cacheService.isUserCacheEmpty,
+            isUserCacheEmpty: cacheService.isCacheEmpty,
             showPersonAlert: showPersonAlert,
             showPersonDataEntry: showPersonDataEntry,
             book: nil
@@ -192,7 +192,7 @@ internal final class R_BookingWithPersonController: UIViewController {
             menuActions: setupPersonMenu(),
             dataState: .addedPersonData,
             state: [passengerState, tariffState],
-            isUserCacheEmpty: cacheService.isUserCacheEmpty,
+            isUserCacheEmpty: cacheService.isCacheEmpty,
             showPersonAlert: showPersonAlert,
             showPersonDataEntry: showPersonDataEntry,
             book: book
@@ -201,8 +201,8 @@ internal final class R_BookingWithPersonController: UIViewController {
     }
     
     private func setupPersonAlert() {
-        guard let newModel = model else { return }
-        let users = cacheService.getUsersFromCache()
+        guard let newModel = model,
+              let users = try? cacheService.getUsersFromKeychain() else { return }
         let personAlert = UIAlertController(title: "Пассажиры", message: "", preferredStyle: .actionSheet)
         let addAction = UIAlertAction(title: "Новый пассажир", style: .default) { [weak self] _ in
             guard let self = self else { return }
@@ -222,9 +222,9 @@ internal final class R_BookingWithPersonController: UIViewController {
     }
     
     private func setupPersonMenu() -> [UIAction] {
-        guard let newModel = model else { return [] }
+        guard let newModel = model,
+              let users = try? cacheService.getUsersFromKeychain() else { return [] }
         var actions: [UIAction] = []
-        let users = cacheService.getUsersFromCache()
         for user in users {
             let action = UIAction(
                 title: "\(user.surname ?? "") \(user.name?.first ?? Character("")). \(user.middleName?.first ?? Character("")).",
